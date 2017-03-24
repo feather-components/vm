@@ -70,5 +70,4 @@ export default{
         }
     }
 }
-console.log(exports['default']);
 </script>
