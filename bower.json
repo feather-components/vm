@@ -1,0 +1,22 @@
+{
+  "name": "vmui",
+  "main": "index.js",
+  "homepage": "https://github.com/feather-components/vmui",
+  "authors": [
+    "zhanghao639 <jsyczhanghao@sina.com>"
+  ],
+  "description": "",
+  "moduleType": [],
+  "license": "MIT",
+  "dependencies": {
+    "vue": "~2.2.0",
+    "iscroll": "~.5.2.0"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
