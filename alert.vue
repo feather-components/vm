@@ -45,8 +45,8 @@ import Modal from './widgets/modal';
 
 var override = (callback) => {
     return (...args) => {
-        if(typeof args[1] != 'string'){
-            args.splice(1, 0, '');
+        if(typeof args[1] != 'object'){
+            args.splice(1, 0, {});
         }else if(!args[1]){
             args[1] = '';
         }
@@ -77,10 +77,10 @@ var instance = (content, extras, buttons) => {
     }).$mount(element).$children[0];
 };
 
-var Alert = module.exports = override((content, extras, callback, manualClose) => {
-    return instance(content, extras, {
+var Alert = module.exports = override((content, options, callback, manualClose) => {
+    return instance(content, options.extras, options.buttons || {
         '确定': {
-            className: 'vmui-alert-btn vmui-alert-s-btn',
+            className: Alert.STYLES.SINGLE,
             callback: function(){
                 callback && callback();
                 !manualClose && this.close();
@@ -89,17 +89,16 @@ var Alert = module.exports = override((content, extras, callback, manualClose) =
     });
 });
 
-Alert.confirm = override((content, extras, callback, manualClose) => {
-    return instance(content, extras, {
+Alert.confirm = override((content, options, callback, manualClose) => {
+    return instance(content, options.extras, options.buttons || {
         '取消': {
-            className: 'vmui-alert-btn',
             callback: function(){
                 this.close();
             }
         },
 
         '确定': {
-            className: 'vmui-alert-btn vmui-alert-c-btn',
+            className: Alert.STYLES.CONFIRM,
             callback: function(){
                 callback && callback();
                 !manualClose && this.close();
@@ -108,6 +107,10 @@ Alert.confirm = override((content, extras, callback, manualClose) => {
     })
 });
 
+Alert.STYLES = {
+    CONFIRM: 'vmui-alert-c-btn',
+    SINGLE: 'vmui-alert-s-btn'
+};
 </script>
 
 <template>
@@ -117,7 +120,7 @@ Alert.confirm = override((content, extras, callback, manualClose) => {
         <div class="vmui-alert-extras" v-if="!!extras">{{extras}}</div>
     </slot>
     <template slot="footer">
-        <a href="javascript:" v-for="(props, index) in buttons" @click="callButton(index)" :class="props.className">{{index}}</a>
+        <a href="javascript:" v-for="(props, index) in buttons" @click="callButton(index)" :class="'vmui-alert-btn ' + (props.className || '')">{{index}}</a>
     </template>
 </Modal>
 </template>
