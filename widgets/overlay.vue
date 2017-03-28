@@ -1,12 +1,19 @@
 <template>
-<div :class="className" v-if="visibility">
-    <slot></slot>
-</div>
+<transition :name="(fx && position ? 'vmui-fx-' + position : '')">
+    <div :class="className" v-if="visibility" :a="'vmui-fx' + (position ? '-' + position : '')">
+        <slot></slot>
+    </div>
+</transition>
 </template>
 
 <script>
 export default{
     props: {
+        fx: {
+            type: Boolean,
+            default: true
+        },
+
         visible: {
             type: Boolean,
             default: false
@@ -20,7 +27,7 @@ export default{
 
     data(){
         return {
-            visibility: this.visible
+            visibility: false
         }
     },
 
@@ -34,6 +41,10 @@ export default{
         className(){
             return ('vmui-overlay ' + (this.position ? 'vmui-overlay-' + this.position : '') + (this.class || '')).trim();
         }
+    },
+
+    mounted: function(){
+        this.visible && this.open();
     },
 
     methods: {
@@ -67,8 +78,8 @@ export default{
     left: 0px;
 }
 
-.vmui-overlay-right{
-    right: 0px;
+.vmui-overlay-top{
+    top: 0px;
 }
 
 .vmui-overlay-bottom{
@@ -77,5 +88,41 @@ export default{
 
 .vmui-overlay-right{
     right: 0px;
+}
+
+.vmui-fx-enter-active, .vmui-fx-leave-active,
+.vmui-fx-center-enter-active, .vmui-fx-center-leave-active,
+.vmui-fx-left-enter-active, .vmui-fx-left-leave-active,
+.vmui-fx-right-enter-active, .vmui-fx-right-leave-active,
+.vmui-fx-bottom-enter-active, .vmui-fx-bottom-leave-active,
+.vmui-fx-top-enter-active, .vmui-fx-top-leave-active
+{
+    transition: all .3s;
+}
+
+.vmui-fx-enter, .vmui-fx-leave-active,
+.vmui-fx-center-enter, .vmui-fx-center-leave-active,
+{
+    opacity: 0;
+}
+
+.vmui-fx-left-enter, .vmui-fx-left-leave-active,
+{
+    transform: translateX(-100%);
+}
+
+.vmui-fx-right-enter, .vmui-fx-right-leave-active,
+{
+    transform: translateX(100%);
+}
+
+.vmui-fx-bottom-enter, .vmui-fx-bottom-leave-active,
+{
+    transform: translateY(100%);
+}
+
+.vmui-fx-top-enter, .vmui-fx-top-leave-active,
+{
+    transform: translateY(-100%);
 }
 </style>

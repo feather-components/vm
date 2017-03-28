@@ -42,6 +42,7 @@
 <script>
 import Vue from 'vue';
 import Modal from './widgets/modal';
+import Factory from './factory';
 
 var override = (callback) => {
     return (...args) => {
@@ -56,10 +57,7 @@ var override = (callback) => {
 };
 
 var instance = (content, extras, buttons) => {
-    var element = document.createElement('div');
-    document.body.appendChild(element);
-
-    return new Vue({
+    return Factory({
         template: Alert.template,
         components: {
             Modal
@@ -71,10 +69,16 @@ var instance = (content, extras, buttons) => {
         },
         methods: {
             callButton: function(index){
-                this.buttons[index].callback.call(this.$children[0]);
+                var that = this.$children[0], info = this.buttons[index];
+
+                if(typeof info == 'function'){
+                    info.call(that);
+                }else{
+                    info.callback.call(that);
+                }
             }
         }
-    }).$mount(element).$children[0];
+    }).$children[0];
 };
 
 var Alert = module.exports = override((content, options, callback, manualClose) => {
@@ -117,10 +121,10 @@ Alert.STYLES = {
 <Modal :visible="true">
     <slot>
         <div class="vmui-alert-content">{{content}}</div>
-        <div class="vmui-alert-extras" v-if="!!extras">{{extras}}</div>
+        <div class="vmui-alert-extras" v-if="!!extras" v-text="extras"></div>
     </slot>
     <template slot="footer">
-        <a href="javascript:" v-for="(props, index) in buttons" @click="callButton(index)" :class="'vmui-alert-btn ' + (props.className || '')">{{index}}</a>
+        <a href="javascript:" v-for="(props, index) in buttons" @click="callButton(index)" :class="'vmui-alert-btn ' + (props.className || '')" v-text="index"></a>
     </template>
 </Modal>
 </template>

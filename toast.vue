@@ -7,6 +7,18 @@
     max-width: 90%;
     background: rgba(0, 0, 0, 0.7);
     border-radius: 4px;
+    text-align: center;
+}
+
+.vmui-toast-icon{
+    width: 36px;
+    height: 36px;
+    display: block;
+    margin: 5px auto 7px auto;
+}
+
+.vmui-toast-success .vmui-toast-icon{
+    background: url(./assets/success@3x.png);
 }
 </style>
 
@@ -14,33 +26,30 @@
 import Vue from 'vue';
 import Shade from './widgets/shade';
 import Overlay from './widgets/overlay';
+import Factory from './factory';
 
 var instance = null, timeid;
 
-var Toast = module.exports = (content, time, useShade, className) => {
+var Toast = module.exports = (content, time, useShade, className = '') => {
     Toast.destroy();
 
-    var element = document.createElement('div');
-    document.body.appendChild(element);
+    if(time){
+        timeid = setTimeout(Toast.destroy, time);
+    }
 
-    instance = new Vue({
+    return instance = Factory({
         template: Toast.template,
         components: {
             Shade,
             Overlay
         },
         data: {
+            className: 'vmui-toast ' + className,
             content: content,
             useShade: useShade,
             visible: true
         }
-    }).$mount(element).$children[0];
-
-    if(time){
-        timeid = setTimeout(Toast.destroy, time)
-    }
-
-    return instance;
+    })
 };
 
 Toast.destroy = () => {
@@ -54,11 +63,17 @@ Toast.destroy = () => {
         instance = null;
     }
 };
+
+['success'].forEach((method) => {
+    Toast[method] = (content, time, useShade) => {
+        Toast('<i class="vmui-toast-icon"></i>' + content, time, useShade, 'vmui-toast-' + method);
+    };
+});
 </script>
 
 <template>
 <Shade v-if="useShade" :visible="visible">
-    <Overlay class="vmui-toast" position="center" :visible="true">{{content}}</Overlay>
+    <Overlay :class="className" position="center" :visible="true" v-html="content"><div v-html="content"></div></Overlay>
 </Shade>
-<Overlay v-else :visible="visible" class="vmui-toast" position="center">{{content}}</Overlay>
+<Overlay v-else :visible="visible" :class="className" position="center"><div v-html="content"></div></Overlay>
 </template>
