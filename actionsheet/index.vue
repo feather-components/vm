@@ -1,8 +1,8 @@
 <script>
 import Vue from 'vue';
-import Overlay from './widgets/overlay';
-import Shade from './widgets/shade';
-import Factory from './factory';
+import Overlay from '../overlay';
+import Shade from '../shade';
+import Factory from '../factory';
 
 var instance;
 
@@ -42,13 +42,20 @@ var ActionSheet = module.exports = (actions) => {
     width: 100%;
     text-align: center;
     background: transparent;
+    
+    ul{
+        padding: 0px;
+        margin: 0px;
+    }
 
     li{
+        padding: 0px;
         list-style: none;
-        margin-top: 10px;
+        margin: 10px 0px 0px 0px;
     }
 
     a{
+        text-decoration: none;
         background: rgba(255, 255, 255, 0.8);
         border-radius: 100px;
         font-weight: bold;

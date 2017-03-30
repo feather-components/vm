@@ -30,8 +30,8 @@
 </style>
 
 <script>
-import Overlay from './overlay';
-import Shade from './shade';
+import Overlay from '../overlay';
+import Shade from '../shade';
 
 export default{
     mixins: [Overlay],

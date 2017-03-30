@@ -1,6 +1,6 @@
 <template>
 <transition :name="(fx && position ? 'vmui-fx-' + position : '')">
-    <div :class="className" v-if="visibility" :a="'vmui-fx' + (position ? '-' + position : '')">
+    <div :class="className" v-if="visibility" :style="style">
         <slot></slot>
     </div>
 </transition>
@@ -9,6 +9,13 @@
 <script>
 export default{
     props: {
+        style: {
+            type: Object,
+            default(){
+                return {};
+            }
+        },
+
         fx: {
             type: Boolean,
             default: true
@@ -50,12 +57,16 @@ export default{
     methods: {
         open(){
             this.visibility = true;
-            this.$emit('open');
+            this.$nextTick(function(){
+                this.$emit('open');
+            });
         },
 
         close(){
             this.visibility = false;
-            this.$emit('close');
+            this.$nextTick(function(){
+                this.$emit('close');
+            });
         }
     }
 }
@@ -71,23 +82,22 @@ export default{
 .vmui-overlay-center{
     top: 50%;
     left: 50%;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
 }
 
-.vmui-overlay-left{
+.vmui-overlay-left, .vmui-overlay-top{
     left: 0px;
-}
-
-.vmui-overlay-top{
     top: 0px;
 }
 
 .vmui-overlay-bottom{
     bottom: 0px;
+    left: 0px;
 }
 
 .vmui-overlay-right{
     right: 0px;
+    top: 0px;
 }
 
 .vmui-fx-enter-active, .vmui-fx-leave-active,

@@ -18,15 +18,15 @@
 }
 
 .vmui-toast-success .vmui-toast-icon{
-    background: url(./assets/success@3x.png);
+    background: url(./success@3x.png);
 }
 </style>
 
 <script>
 import Vue from 'vue';
-import Shade from './widgets/shade';
-import Overlay from './widgets/overlay';
-import Factory from './factory';
+import Shade from '../shade';
+import Overlay from '../overlay';
+import Factory from '../factory';
 
 var instance = null, timeid;
 

@@ -1,8 +1,10 @@
 import Vue from 'vue';
+import _ from './helper';
 
-export default (options) => {
+export default (options, data = {}) => {
     var instance = new Vue(options);
-    var element = document.createElement('div');
-    document.body.appendChild(element);
-    return instance.$mount(element);
+    Object.assign(instance, data);
+    instance.$mount();
+    document.body.appendChild(instance.$el);
+    return instance;
 }

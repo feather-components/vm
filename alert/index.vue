@@ -41,8 +41,8 @@
 
 <script>
 import Vue from 'vue';
-import Modal from './widgets/modal';
-import Factory from './factory';
+import Modal from '../modal';
+import Factory from '../factory';
 
 var override = (callback) => {
     return (...args) => {
