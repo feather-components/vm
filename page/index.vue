@@ -15,6 +15,7 @@
 <style>
 .vmui-page{
     width: 100%;
+    height: 100%;
     background: #fff;
 }
 
@@ -26,7 +27,7 @@
 
 .vmui-page-footer{
     width: 100%;
-    position: fixed;
+    position: absolute;
     left: 0px;
     bottom: 0px;
 }

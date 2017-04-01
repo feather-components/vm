@@ -83,6 +83,7 @@ export default{
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
 }
 
 .vmui-overlay-left, .vmui-overlay-top{
@@ -108,6 +109,7 @@ export default{
 .vmui-fx-top-enter-active, .vmui-fx-top-leave-active
 {
     transition: all .3s;
+    -webkit-transition: all .3s;
 }
 
 .vmui-fx-enter, .vmui-fx-leave-active,
@@ -119,20 +121,24 @@ export default{
 .vmui-fx-left-enter, .vmui-fx-left-leave-active,
 {
     transform: translateX(-100%);
+    -webkit-transform: translateX(-100%);
 }
 
 .vmui-fx-right-enter, .vmui-fx-right-leave-active,
 {
     transform: translateX(100%);
+    -webkit-transform: translateX(100%);
 }
 
 .vmui-fx-bottom-enter, .vmui-fx-bottom-leave-active,
 {
     transform: translateY(100%);
+    -webkit-transform: translateY(100%);
 }
 
 .vmui-fx-top-enter, .vmui-fx-top-leave-active,
 {
     transform: translateY(-100%);
+    -webkit-transform: translateY(-100%);
 }
 </style>

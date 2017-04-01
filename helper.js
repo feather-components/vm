@@ -18,7 +18,15 @@ export default{
     },
 
     height(element){
-        return element === document.documentElement || element === document ? document.documentElement.clientHeight : element.offsetHeight;
+        return this.isDoc(element) ? document.documentElement.clientHeight : element.offsetHeight;
+    },
+
+    width(element){
+        return this.isDoc(element) ? document.documentElement.clientWidth : element.clientWidth;
+    },
+
+    isDoc(element){
+        return element === document.documentElement || element === document;
     },
 
     assign(obj){

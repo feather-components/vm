@@ -1,5 +1,5 @@
 <template>
-<div class="vmui-scroll" :id="oid" :style="style" >
+<div class="vmui-scroll" :id="oid" :style="style">
     <div class="vmui-scroll-inner">
         <slot></slot>
     </div>
@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import Scroll from 'iscroll';
+import Scroll from 'iscroll/build/iscroll-probe';
 import Resize from '../resize';
 import _ from '../helper';
 
@@ -37,6 +37,11 @@ export default{
             default: function(){
                 return {};
             }
+        },
+
+        bottomDistance: {
+            type: Number,
+            default: 0
         }
     },
 
@@ -45,7 +50,8 @@ export default{
             opts: {
                 scrollbars: true,
                 fadeScrollbars: true,
-                fixedScrollbar: true
+                fixedScrollbar: true,
+                probeType: 1
             },
             oid: this.id || ('s' + Date.now()),
             instance: null
@@ -53,7 +59,11 @@ export default{
     },
 
     mounted: function(){   
-        this.instance = new Scroll('#' + this.oid, Object.assign(this.opts, this.options));
+        this.instance = new Scroll('#' + this.oid, Object.assign({
+            freeScroll: false
+        }, this.opts, this.options));
+
+        this.initEvents();
     },
 
     beforeDestroy: function(){
@@ -61,10 +71,38 @@ export default{
     },
 
     methods: Object.assign(methods, {
+        initEvents(){
+            this.instance.on('scroll', () => {
+                this._check2bottom() && this._execEvent('scroll2bottom');
+            });
+
+            this.instance.on('scrollEnd', () => {
+                this._check2bottom() && this._execEvent('scrollEnd2bottom');
+            });
+        },
+
         refresh(){
             this._resize_();
             this.instance.refresh();
-            this.instance.hasVerticalScroll = true;
+            this.opts.scrollbars && (this.instance.hasVerticalScroll = true);
+        },
+
+        _check2bottom(){
+            var instance = this.instance, isVertical = instance.options.eventPassthrough != 'horizontal';
+
+            var total, value, b;
+
+            if(isVertical){
+                total = _.height(instance.scroller);
+                value = instance.y;
+                b = _.height(this.$el);
+            }else{
+                total = _.width(instance.scroller);
+                value = instance.x;
+                b = _.width(document);
+            }
+
+            return total + value - b <= this.bottomDistance;
         }
     })
 }

@@ -1,11 +1,12 @@
 <template>
 <div class="vmui-list" @touchend="letgo()">
-    <div class="vmui-list-header">
-        <slot name="header"></slot>
-    </div>
-    <Scroll ref="scroll">
+    <Scroll ref="scroll" :bottomDistance="30">
         <div class="vmui-list-pull" v-if="usePullDown" ref="pd">
             <slot name="refresh"><i class="vmui-list-loading-icon"></i>下拉刷新数据</slot>
+        </div>
+
+        <div class="vmui-list-header">
+            <slot name="header"></slot>
         </div>
 
         <ul class="vmui-list-rows" ref="rows">
@@ -20,7 +21,7 @@
             <slot name="error">网络异常，加载失败，上滑尝试重新加载</slot>
         </div>
 
-        <div class="vmui-list-nomore" v-if="showNoMoreStatus">
+        <div class="vmui-list-nomore" v-if="showNoMoreStatus" ref="nomore">
             <slot name="nomore">~没有更多了~</slot>
         </div>
 
@@ -38,13 +39,15 @@
 
 .vmui-list-pull, .vmui-list-loading, .vmui-list-error, .vmui-list-nomore, .vmui-list-empty{
     text-align: center;
-    line-height: 30px;
     padding: 5px;
     color: #878787;
+    width: 100%;
 }
 
 .vmui-list-pull{
-    margin-top: -40px;
+    position: absolute;
+    transform: translateY(-100%);
+    -webkit-transform: translateY(-100%);
 }
 
 .vmui-list-loading-icon{
@@ -54,6 +57,7 @@
     background-image: url(./loading.gif?__inline);
     background-size: 100%;
     transform: translateY(3px);
+    -webkit-transform: translateY(3px);
     margin-right: 5px;
 }
 
@@ -110,7 +114,7 @@ export default{
             }
         },
 
-        countPerPage: {
+        maxCountPerPage: {
             type: Number,
             default: 20
         },
@@ -192,13 +196,8 @@ export default{
                     self.scrolling = true;
                 });
 
-                self.$scroll.on('scrollEnd', () => {
-                    self.scrolling = false;
-
-                    if(self.$scroll.instance.scroller.offsetHeight + self.$scroll.instance.y - 50 < self.$scroll.$el.offsetHeight){
-                        self.load();
-                    }
-                });
+                self.$scroll.on('scroll2bottom', () => this.load());
+                self.$scroll.on('scrollEnd2bottom', () => this.load());
             }
         },
 
@@ -227,7 +226,8 @@ export default{
             self.page = 0;
             self.isCompleted = false;
             self.isLoading = false;
-            self.usePullDown && self.$scroll.scrollTo(0, 40);
+            self.usePullDown && self.$scroll.scrollTo(0, _.height(self.$refs.pd));
+            self.$emit('refresh');
             setTimeout(() => self.load(), 500);
         },
 
@@ -262,21 +262,13 @@ export default{
 
             self.$http.get(self.source, Object.assign(this._params, {
                 page: self.page,
-                count: self.countPerPage,
+                count: self.maxCountPerPage,
                 random: Math.random()
             })).then((response) => {
-                var rand = Math.random();
-                var data = response.body;
-
-                if(rand < 0.5){
-                    console.log(333);
-                    data = {data: []};
-                }
-
                 if(self.isFirstPage){
-                    self.setData(data);
+                    self.setData(response.body);
                 }else{
-                    self.addData(data);
+                    self.addData(response.body);
                 }
                 
                 self.renderScreen();
@@ -293,9 +285,9 @@ export default{
 
         renderScreen(){
             var self = this;
-            var rows = self.data.slice(self.countPerPage * (self.page - 1), self.countPerPage * self.page);
+            var rows = self.data.slice(self.maxCountPerPage * (self.page - 1), self.maxCountPerPage * self.page);
 
-            if(rows.length < self.countPerPage){
+            if(!rows.length){
                 self.isCompleted = true;
                 self.$emit('nomore');
             }
@@ -314,11 +306,11 @@ export default{
 
         afterRenderScreen(){
             var self = this;
-            self.isFirstPage && self.usePullDown && self.backTop();
+            self.isFirstPage && self.usePullDown && self.back2top();
             self.$scroll.refresh();
         },
 
-        backTop(){
+        back2top(){
             this.$scroll.scrollTo(0, 0, 500);
         }
     }
