@@ -1,64 +1,68 @@
 <template>
-<form class="vmui-search" @submit.false="submit()">
-    <div class="vmui-search-input">
-        <i class="vmui-search-icon"></i>
-        <input type="text" :placeholder="placeholder" @input="input()" ref="kw" v-model="value" />
-        <a href="javascript:" class="vmui-search-clear" @touchstart="clear()" v-show="clearVisible">&times;</a>
+<form class="vmui-searchbar" @submit.prevent="submit()">
+    <div class="vmui-searchbar-input">
+        <i class="vmui-searchbar-icon"></i>
+        <input type="text" :placeholder="placeholder" :maxlength="maxlength" @input.trim="input()" v-model="value" ref="input" />
+        <a href="javascript:" class="vmui-searchbar-clear" @touchstart="clear()" v-show="clearVisible">&times;</a>
     </div>
 </form>
 </template>
 
 <style>
-.vmui-search{
+.vmui-searchbar{
     height: 2em;
-    padding: .5em 0px;
+    padding: 13/16/2em 0px;
     line-height: 2em;
 }
 
-.vmui-search-input{
+.vmui-searchbar-input{
     height: 2em;
     border-radius: 100px;
     margin: 0px 1em;
     background: rgba(255, 255, 255, 0.1);
     overflow: hidden;
+    position: relative;
 
-    .vmui-search-icon{
+    .vmui-searchbar-icon{
+        position: absolute;
         background: url(./search_white@2x.png?__inline) center center no-repeat;
         background-size: 100%;
-        margin: 1px .5em 0px .7em;
+        left: .7em;
         width: 1.25em;
-        float: left;
         height: 2em;
         display: inline-block;
     }
 
     input{
-        max-width: 75%;
-        height: 2em;
-        margin-top: 2px;
+        font-size: 12/16em;
+        box-sizing: border-box;
+        width: 100%;
+        height: 100%;
         color: #fff;
         float: left;
         display: block;
         border: 0px;
+        padding: 0px 3em;
         outline: none;
         background: transparent;
+        -webkit-transform: translateY(-1px);
+        transform: translateY(0px);
     }
 
-    .vmui-search-clear{
+    .vmui-searchbar-clear{
+        position: absolute;
         font-family: consolas;
         text-decoration: none;
         text-align: center;
+        right: .7em;
+        top: .45em;
         color: #fff;
         line-height: 1em;
         width: 1em;
         height: 1em;
         display: inline-block;
-        margin: .5em .7em 0px 0px;
-        float: right;
         border: 1px solid #fff;
         border-radius: 100px;
-        transform: translateY(-1px);
-        -webkit-transform: translateY(-1px);
     }
 }
 </style>
@@ -66,6 +70,11 @@
 <script>
 export default{
     props: {
+        maxlength: {
+            type: Number,
+            default: 50
+        },
+
         placeholder: {
             type: String,
             default: "请输入关键字进行搜索"
@@ -86,17 +95,18 @@ export default{
 
     methods: {
         input(){
-            this.$emit('input', this.value);
+            this.$emit('input', this.value.trim());
         },
 
         clear(){
             this.value = '';
-            this.$emit('input', this.value);
+            this.$emit('input', this.value.trim());
             this.$emit('clear');
         },
 
         submit(){
             this.$emit('submit');
+            this.$refs.input.blur();
         }
     }
 }

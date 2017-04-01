@@ -120,7 +120,7 @@ Alert.STYLES = {
 <template>
 <Modal :visible="true">
     <slot>
-        <div class="vmui-alert-content">{{content}}</div>
+        <div class="vmui-alert-content" v-html="content"></div>
         <div class="vmui-alert-extras" v-if="!!extras" v-text="extras"></div>
     </slot>
     <template slot="footer">

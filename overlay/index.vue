@@ -1,6 +1,6 @@
 <template>
 <transition :name="(fx && position ? 'vmui-fx-' + position : '')">
-    <div :class="className" v-if="visibility" :style="style">
+    <div :class="className" v-show="visibility" :style="style">
         <slot></slot>
     </div>
 </transition>

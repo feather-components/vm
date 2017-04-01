@@ -1,26 +1,32 @@
 <style>
+@h: 45/16em;
+
 .vmui-topbar{
     background: #28304E;
     width: 100%;
-    height: 45px;
-    line-height: 45px;
+    height: @h;
+    line-height: @h;
     color: #fff;
     text-align: center;
+    position: relative;
 }
 
 .vmui-topbar-btn-back{
     background: url(./arrow_back_white@2x.png?__inline) no-repeat center center;
-    width: 45px;
-    height: 45px;
+    width: @h;
+    height: @h;
     display: inline-block;
-    float: left;
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
 }
 
 .vmui-topbar-left, .vmui-topbar-right{
     position: absolute;
     bottom: 0px;
-    height: 45px;
-    min-width: 45px;
+    right: 0px;
+    height: @h;
+    min-width: @h;
     display: inline-block;
 }
 
@@ -35,20 +41,25 @@
 
 <template>
 <div class="vmui-topbar" :style="{paddingTop: top}">
-    <div class="vmui-topbar-left">
+    <div class="vmui-topbar-left" v-if="leftEnabled">
         <slot name="left">
             <a href="javascript:" class="vmui-topbar-btn-back" @touchstart="back()"></a>
         </slot>
     </div>
     <slot>无标题页面</slot>
-    <div class="vmui-topbar-right" v-if="visibleRight"><slot name="right"></slot></div>
+    <div class="vmui-topbar-right" v-if="rightEnabled"><slot name="right"></slot></div>
 </div>
 </template>
 
 <script>
 var TopBar = module.exports = {
     props: {
-        rightVisible: {
+        leftEnabled: {
+            type: Boolean,
+            default: true
+        },
+
+        rightEnabled: {
             type: Boolean,
             default: true
         }
@@ -62,13 +73,13 @@ var TopBar = module.exports = {
     },
 
     watch: {
-        rightVisible(v){
-            v ? this.showRight() : this.hideRight();
+        rightEnabled(v){
+            v ? this.enableRight() : this.disableRight();
         }
     },
 
     mounted(){
-        this.rightVisible && this.showRight();
+        this.rightVisible && this.enableRight();
     },
 
     methods: {
@@ -76,11 +87,11 @@ var TopBar = module.exports = {
             history.back();
         },
 
-        hideRight(){
+        disableRight(){
             this.visibleRight = false;
         },
 
-        showRight(){
+        enableRight(){
             this.visibleRight = true;
         }
     }

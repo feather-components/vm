@@ -1,5 +1,5 @@
 <template>
-<Scroll ref="scroll" :is2bottom="is2bottom" :is2top="is2top">
+<Scroll ref="scroll" :is2bottom="is2bottom" :is2top="is2top" :style="style">
     <div class="vmui-list">
         <div class="vmui-list-pull" v-if="pulldown2refresh" ref="pd">
             <slot name="refresh"><i class="vmui-list-loading-icon"></i>下拉刷新数据</slot>
@@ -10,7 +10,7 @@
         </div>
 
         <ul class="vmui-list-rows" ref="rows">
-            <li v-for="(item, index) in rows" v-html="rowFormatter(item)"></li>
+            <li v-for="(item, index) in rows" v-html="rowFormatter(item)" @click="$emit('clickRow', item, index)"></li>
         </ul>
 
         <div class="vmui-list-loading" v-if="showLoadingStatus">
@@ -18,7 +18,7 @@
         </div>
 
         <div class="vmui-list-error" v-if="showErrorStatus">
-            <slot name="error">网络异常，加载失败，上滑尝试重新加载</slot>
+            <slot name="error">网络异常，加载失败</slot>
         </div>
 
         <div class="vmui-list-nomore" v-if="showNoMoreStatus" ref="nomore">
@@ -26,7 +26,7 @@
         </div>
 
         <div class="vmui-list-empty" v-if="showEmptyStatus">
-            <slot name="empty"><i class="vmui-list-empty-icon"></i><br />没有任何结果~</slot>
+            <slot name="nores"><i class="vmui-list-nores-icon"></i><br />没有任何结果~</slot>
         </div>
     </div>
 </Scroll>
@@ -42,6 +42,7 @@
     padding: 5px;
     color: #878787;
     width: 100%;
+    font-size: 12/16em;
 }
 
 .vmui-list-pull{
@@ -72,7 +73,11 @@
     }
 }
 
-.vmui-list-empty-icon{
+.vmui-list-nores{
+    margin-top: 20px;
+}
+
+.vmui-list-nores-icon{
     background: url(./empty.png?__inline);
     width: 130px;
     height: 130px;
@@ -83,55 +88,78 @@
 
 <script>
 import Vue from 'vue';
-import Resource from 'vue-resource';
 import Scroll from '../scroll';
 import Resize from '../resize';
 import _ from '../helper';
-
-Vue.use(Resource);
+import Ajax from 'ajax';
 
 export default{
     props: {
+        options: {
+            type: Object,
+            default: function(){
+                return {}
+            }
+        },
+
+        autoRefresh: {
+            type: Boolean,
+            default: true
+        },
+
+        style: {
+            type: Object,
+            default: function(){
+                return this.options.style;
+            }
+        },
+
         source: {
             default(){
-                return [];
+                return this.options.source || [];
             }
         },
 
         dataFormatter: {
             type: Function,
             default(data = []){
-                return data;
+                return this.options.dataFormatter ? this.options.dataFormatter(data) : data;
             }
         },
 
         rowFormatter: {
             type: Function,
             default(rowData){
-                return rowData;
+                return this.options.rowFormatter ? this.options.rowFormatter(rowData) : rowData;
             }
         },
 
         maxCountPerPage: {
             type: Number,
-            default: 20
+            default(){
+                return this.options.maxCountPerPage || 20;
+            }
         },
 
         params: {
             type: Object,
             default(){
-                return {}
+                return this.options.params || {};
             }
         },
 
         pulldown2refresh: {
             type: Boolean,
-            default: false
+            default(){
+                return this.options.pulldown2refresh || false;
+            }
         },
 
         pullup2load: {
             type: Boolean,
-            default: false
+            default(){
+                return this.options.pullup2load || false;
+            }
         }
     },
 
@@ -188,7 +216,7 @@ export default{
         init(){
             this.$scroll = this.$refs.scroll;
             this.initEvents();
-            this.refresh();
+            this.autoRefresh && this.refresh();
         },
 
         initEvents(){
@@ -206,8 +234,12 @@ export default{
             }
         },
 
-        setParams(params){
-            this._params = params;
+        setParams(params, append){
+            if(append){
+                this._params = Object.assign(this._params, params);
+            }else{
+                this._params = params;
+            }
         },
 
         setData(source = []){
@@ -227,12 +259,13 @@ export default{
             return v >= (this.pulldown2refresh ? _.height(this.$refs.pd) : 0);
         },
 
-        refresh(pulldownFx = this.pulldown2refresh){
+        refresh(pulldownFx = this.pulldown2refresh, clearData = true){
             var self = this;
 
             self.page = 0;
             self.isCompleted = false;
             self.isLoading = false;
+            clearData && self.setData();
             pulldownFx && self.$scroll.scrollTo(0, _.height(self.$refs.pd));
             self.$emit('refresh');
             setTimeout(() => self.load(), 500);
@@ -255,7 +288,7 @@ export default{
             self.isLoading = true;
 
             setTimeout(() => {
-                if(typeof self.source == 'string' && (self.rows.length == self.data.length || self.isFirstPage)){
+                if(typeof self.source == 'string' && (self.rows.length == self.data.length || self.isFirstPage && !self.data.length)){
                     self.loadRemote();
                 }else{
                     self.renderScreen();
@@ -267,27 +300,39 @@ export default{
         loadRemote(){
             var self = this;
 
-            self.$http.get(self.source, Object.assign(this._params, {
-                page: self.page,
-                count: self.maxCountPerPage,
-                random: Math.random()
-            })).then((response) => {
-                if(self.isFirstPage){
-                    self.setData(response.body);
-                }else{
-                    self.addData(response.body);
+            self.$http = Ajax({
+                url: self.source,
+                data: Object.assign(this._params, {
+                    page: self.page,
+                    count: self.maxCountPerPage
+                }),
+                dataType: 'json',
+                success: (data) => {
+                    if(self.isFirstPage){
+                        self.setData(data);
+                    }else{
+                        self.addData(data);
+                    }
+                    
+                    self.renderScreen();
+                    self.isLoading = false;
+                    self.$emit('success', data);
+                },
+                error: (data) => {
+                    self.isLoading = false;
+                    self.page--;
+                    self.error = data;
+                    self.$emit('error');
+                    self.afterRenderScreen();
+                },
+                complete: () => {
+                    self.$http = null;
                 }
-                
-                self.renderScreen();
-                self.isLoading = false;
-                self.$emit('success');
-            }, (response) => {
-                self.isLoading = false;
-                self.page--;
-                self.error = response;
-                self.$emit('error');
-                self.afterRenderScreen();
             });
+        },
+
+        abort(){
+            return this.$http && this.$http.abort();
         },
 
         renderScreen(){
@@ -299,7 +344,7 @@ export default{
                 self.$emit('nomore');
             }
 
-            self.$emit('renderScreen');
+            self.$emit('renderScreen', rows);
 
             if(rows.length){
                 self.rows = self.isFirstPage ? rows : self.rows.concat(rows);

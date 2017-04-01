@@ -19,7 +19,7 @@ export default {
             if(parent.style.height){
                 height = _.height(parent);
             }else{
-                height = _.height(document.documentElement) - _.offset(element).top;
+                height = _.height(document.documentElement) - _.offset(parent).top;
             }
 
             _.siblings(element).forEach((child) => otherHeight += _.height(child));
