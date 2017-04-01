@@ -57,8 +57,8 @@
     height: 1em;
     background-image: url(./loading.gif?__inline);
     background-size: 100%;
-    transform: translateY(3px);
-    -webkit-transform: translateY(3px);
+    transform: translateY(2px);
+    -webkit-transform: translateY(2px);
     margin-right: 5px;
 }
 

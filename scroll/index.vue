@@ -69,11 +69,13 @@ export default{
     },
 
     mounted: function(){   
-        this.instance = new Scroll('#' + this.oid, Object.assign({
-            freeScroll: false
-        }, this.opts, this.options));
+        this.$nextTick(() => {
+            this.instance = new Scroll('#' + this.oid, Object.assign({
+                freeScroll: false
+            }, this.opts, this.options));
 
-        this.initEvents();
+            this.initEvents();
+        })
     },
 
     beforeDestroy: function(){

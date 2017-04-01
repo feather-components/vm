@@ -2,7 +2,7 @@
 <form class="vmui-searchbar" @submit.prevent="submit()">
     <div class="vmui-searchbar-input">
         <i class="vmui-searchbar-icon"></i>
-        <input type="text" :placeholder="placeholder" :maxlength="maxlength" @input.trim="input()" v-model="value" ref="input" />
+        <input type="text" :placeholder="placeholder" :maxlength="maxlength" @input.trim="input()" v-model="value" ref="input" @focus="$emit('focus')" />
         <a href="javascript:" class="vmui-searchbar-clear" @touchstart="clear()" v-show="clearVisible">&times;</a>
     </div>
 </form>
