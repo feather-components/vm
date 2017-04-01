@@ -1,6 +1,6 @@
 <template>
 <transition :name="(fx && position ? 'vmui-fx-' + position : '')">
-    <div :class="className" v-show="visibility" :style="style">
+    <div :class="className" v-show="visibility" :style="style" @click="$emit('click')">
         <slot></slot>
     </div>
 </transition>
@@ -40,6 +40,7 @@ export default{
 
     watch: {
         visible(v){
+        console.log(v);
             v ? this.open() : this.close();
         }
     },

@@ -1,11 +1,11 @@
 export default{
     offset(element){
         var top = 0, left = 0;
-
-        while(element = element.offsetParent){
+        console.log(element);
+        do{
             top += element.offsetTop;
             left += element.offsetLeft;
-        }
+        }while(element = element.offsetParent);
 
         return {
             left,
@@ -37,7 +37,11 @@ export default{
         })
 
         return obj
+    },
+
+    $: (str) => {
+        return typeof str == 'string' ? document.querySelector(str) : str;
     }
 }
 
-!Object.assign && (Object.assign = exports.default.assign);
+!Object.assign && (Object.assign = assign);

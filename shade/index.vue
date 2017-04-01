@@ -1,5 +1,5 @@
 <template>
-<Overlay :visible="visibility" class="vmui-shade" :fx="fx"><slot></slot></Overlay>
+<Overlay :visible="visibility" class="vmui-shade" :fx="fx" @click="$emit('click')"><slot></slot></Overlay>
 </template>
 
 <script>
