@@ -40,7 +40,6 @@ export default{
 
     watch: {
         visible(v){
-        console.log(v);
             v ? this.open() : this.close();
         }
     },

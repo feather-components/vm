@@ -13,6 +13,7 @@
     height: 2em;
     padding: 13/16/2em 0px;
     line-height: 2em;
+    background: #28304E;
 }
 
 .vmui-searchbar-input{

@@ -1,7 +1,7 @@
 export default{
     offset(element){
         var top = 0, left = 0;
-        console.log(element);
+
         do{
             top += element.offsetTop;
             left += element.offsetLeft;
@@ -22,7 +22,7 @@ export default{
     },
 
     width(element){
-        return this.isDoc(element) ? document.documentElement.clientWidth : element.clientWidth;
+        return this.isDoc(element) ? document.documentElement.clientWidth : element.offsetWidth;
     },
 
     isDoc(element){

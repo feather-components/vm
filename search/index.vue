@@ -135,7 +135,7 @@ export default{
                 self.caches[self.value] = data;
             });
 
-            self.$list.$on('renderScreen', (data) => {
+            self.$list.$on('renderRows', (data) => {
                 self.isEmpty = !!!data.length;
             });
         },

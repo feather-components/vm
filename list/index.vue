@@ -2,7 +2,9 @@
 <Scroll ref="scroll" :is2bottom="is2bottom" :is2top="is2top" :style="style">
     <div class="vmui-list">
         <div class="vmui-list-pull" v-if="pulldown2refresh" ref="pd">
-            <slot name="refresh"><i class="vmui-list-loading-icon"></i>下拉刷新数据</slot>
+            <slot name="pulldown-msg" v-if="!isRefreshing && !intop">下拉刷新数据</slot>
+            <slot name="pullleave-msg" v-if="!isRefreshing && intop">松手刷新数据</slot>
+            <slot name="refresh-msg" v-if="isRefreshing"><i class="vmui-list-loading-icon"></i>正在刷新数据</slot>
         </div>
 
         <div class="vmui-list-header">
@@ -169,11 +171,13 @@ export default{
             rows: [],
             _params: this.params,
             isLoading: false,
+            isRefreshing: false,
             isCompleted: false,
             page: 0,
             error: 0,
             scrolling: false,
-            $scroll: null
+            $scroll: null,
+            intop: false
         }
     },
 
@@ -192,10 +196,6 @@ export default{
 
         showEmptyStatus(){
             return !this.rows.length && this.isCompleted;
-        },
-
-        isFirstPage(){
-            return this.page <= 1;
         }
     },
 
@@ -224,6 +224,7 @@ export default{
 
             if(self.pulldown2refresh){
                 self.$scroll.on('leave2top', () => {
+                    this.intop = false;
                     setTimeout(() => this.refresh(true));
                 });
             }
@@ -252,11 +253,11 @@ export default{
         },
 
         is2bottom(v){
-            return v <= (this.pullup2load ? 40 : 0);
+            return this.$scroll.instance.y <= (this.pullup2load ? 40 : 0);
         },
 
         is2top(v){
-            return v >= (this.pulldown2refresh ? _.height(this.$refs.pd) : 0);
+            return this.intop = this.$scroll.instance.y >= (this.pulldown2refresh ? _.height(this.$refs.pd) : 0);
         },
 
         refresh(pulldownFx = this.pulldown2refresh, clearData = true){
@@ -267,6 +268,7 @@ export default{
             self.isLoading = false;
             clearData && self.setData();
             pulldownFx && self.$scroll.scrollTo(0, _.height(self.$refs.pd));
+            self.isRefreshing = true;
             self.$emit('refresh');
             setTimeout(() => self.load(), 500);
         },
@@ -288,10 +290,10 @@ export default{
             self.isLoading = true;
 
             setTimeout(() => {
-                if(typeof self.source == 'string' && (self.rows.length == self.data.length || self.isFirstPage && !self.data.length)){
+                if(typeof self.source == 'string' && (self.rows.length == self.data.length || self.isRefreshing && !self.data.length)){
                     self.loadRemote();
                 }else{
-                    self.renderScreen();
+                    self.renderRows();
                     self.isLoading = false;
                 }
             }, 0);
@@ -308,22 +310,20 @@ export default{
                 }),
                 dataType: 'json',
                 success: (data) => {
-                    if(self.isFirstPage){
+                    if(self.isRefreshing){
                         self.setData(data);
                     }else{
                         self.addData(data);
                     }
                     
-                    self.renderScreen();
-                    self.isLoading = false;
+                    self.renderRows();
                     self.$emit('success', data);
                 },
                 error: (data) => {
-                    self.isLoading = false;
                     self.page--;
                     self.error = data;
                     self.$emit('error');
-                    self.afterRenderScreen();
+                    self.afterRenderRows();
                 },
                 complete: () => {
                     self.$http = null;
@@ -335,7 +335,7 @@ export default{
             return this.$http && this.$http.abort();
         },
 
-        renderScreen(){
+        renderRows(){
             var self = this;
             var rows = self.data.slice(self.maxCountPerPage * (self.page - 1), self.maxCountPerPage * self.page);
 
@@ -344,26 +344,26 @@ export default{
                 self.$emit('nomore');
             }
 
-            self.$emit('renderScreen', rows);
+            self.$emit('renderRows', rows);
 
             if(rows.length){
-                self.rows = self.isFirstPage ? rows : self.rows.concat(rows);
+                self.rows = self.isRefreshing ? rows : self.rows.concat(rows);
             }
 
-            self.$nextTick(() => {
-                self.afterRenderScreen();
-                self.$refs.scroll.refresh();
-            });
+            self.afterRenderRows();
+            self.$refs.scroll.refresh();
         },
 
-        afterRenderScreen(){
+        afterRenderRows(){
             var self = this;
-            self.isFirstPage && self.pulldown2refresh && self.back2top();
+            self.isRefreshing && self.pulldown2refresh && self.back2top();
+            self.isLoading = false;
+            self.isRefreshing = false;
             self.$scroll.refresh();
         },
 
         back2top(){
-            this.$scroll.scrollTo(0, 0, 500);
+            !this.is2top() && this.$scroll.scrollTo(0, 0, 500);
         }
     }
 }
