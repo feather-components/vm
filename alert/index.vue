@@ -26,6 +26,7 @@
     font-size: 14px;
     color: #555555;
     margin: 0px 4px 4px 4px;
+    text-decoration: none;
 }
 
 .vmui-alert-c-btn{

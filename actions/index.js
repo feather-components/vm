@@ -11,10 +11,6 @@ export default{
 
         o.element = element;
 
-        var instance = Factory(Actions, o);
-        element.addEventListener('touchstart', (e) => {
-            instance.open();
-            e.stopPropagation();
-        }, false);
+        Factory(Actions, o);
     }
 }

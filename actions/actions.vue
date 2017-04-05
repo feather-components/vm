@@ -1,16 +1,24 @@
 <template>
-<Overlay :visible="visibility" :class="'vmui-actions' + (this.above ? ' vmui-actions-above' : '')" @click.stop="">
-    <i class="vmui-actions-arrow" ref="arrow"></i>
-    <a href="javascript:void(0);" :class="'vmui-actions-item' + (action.className || '')" v-for="(action, index) of actions" v-html="index" @click="callAction(index)"></a>
-</Overlay>
+<Dropdown :useShade="false" ref="dropdown" :element="element" class="vmui-actions" :offset="offset" :auto-bind="false">
+    <div class="vmui-actions-inner" ref="inner">
+        <i class="vmui-actions-arrow" ref="arrow"></i>
+        <a href="javascript:void(0);" :class="'vmui-actions-item' + (action.className || '')" v-for="(action, index) of actions" v-html="index" @click.stop="callAction(index)"></a>
+    </div>
+</Dropdown>
 </template>
 
 <style>
 .vmui-actions{
-    position: absolute;
+    .vmui-overlay{
+        background: transparent;
+    }
+}
+
+.vmui-actions-inner{
     border-radius: 5px;
     background: #28304E;
     padding: 0px .8em;
+    margin: 7px 0px;
 }
 
 .vmui-actions-item{
@@ -34,7 +42,8 @@
     width: 0px;
     display: inline-block;
     border-bottom-color: #28304E; 
-    top: -12px;
+    top: -6px;
+    left: 50%;
     transform: translate(-6px, 1px);
 }
 
@@ -47,12 +56,10 @@
 </style>
 
 <script>
-import Overlay from '../overlay';
+import DropDown from '../dropdown';
 import _ from '../helper';
 
 export default{
-    mixins: [Overlay],
-
     props: {
         actions: {
             type: Object,
@@ -61,10 +68,7 @@ export default{
             }
         },
 
-        element: {
-            type: [String, Object],
-            default: null
-        },
+        element: null,
 
         visible: {
             type: Boolean,
@@ -82,44 +86,34 @@ export default{
         }
     },
 
-    data(){
-        return {
-            above: false
-        };
-    },
-    
     components: {
-        Overlay
+        Dropdown: DropDown
     },
 
     mounted(){
-        document.addEventListener('touchstart', () => this.close());
+        _.on(_.$(this.element), 'click', (e) => {
+            this.open();
+            e.stopPropagation();
+        });
     },
 
     methods: {
         open(){
-            Overlay.methods.open.call(this);
-            this.$nextTick(() => {
-                var $el = this.$el, dom = _.$(this.element);
-                var offset = _.offset(dom), height = _.height(dom), width = _.width(dom);
-                var bodyHeight = _.height(document), bodyWidth = _.width(document);
-                var elHeight = _.height($el), elWidth = _.width($el);
-                var top, left;
+            this.$refs.dropdown.open();
+            setTimeout(() => {
+                var dom = _.$(this.element);
+                var offset = _.offset(dom), width = _.width(dom);
+                var innerOffset = _.offset(this.$refs.inner), innerWidth = _.width(this.$refs.inner);
 
-                if(bodyHeight - (offset.top + height + elHeight) <= 0){
-                    top = offset.top - elHeight - this.offset.y;
-                    this.above = true;
-                }else{
-                    top = offset.top + height + this.offset.y;
-                    this.above = false;
-                }
-
-                var arrowLeft = offset.left + width/2;
-                left = Math.min(Math.max(arrowLeft - elWidth/2, this.offset.x), bodyWidth - elWidth - this.offset.x);
-
-                this.$refs.arrow.style.left = Math.min(Math.max(arrowLeft - left, this.offset.x), elWidth - this.offset.x) + 'px';
-                $el.style.top = top + 'px';
-                $el.style.left = left + 'px';
+                _.css(
+                    this.$refs.arrow, 
+                    'left', 
+                    Math.min(
+                        Math.max(offset.left + width/2 - innerOffset.left, this.offset.x), 
+                        innerWidth - this.offset.x
+                    )
+                );
+                this.$emit('open');
             });
         },
 
@@ -133,6 +127,11 @@ export default{
             }
 
             this.close();
+        },
+
+        close(){
+            this.$refs.dropdown.close();
+            this.$emit('close');
         }
     }
 }

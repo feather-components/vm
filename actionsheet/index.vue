@@ -75,8 +75,8 @@ var ActionSheet = module.exports = (actions) => {
 </style>
 
 <template>
-<Shade :visible="visibility">
-    <Overlay :visible="true" class="vmui-actionsheet" position="bottom">
+<Shade :visible="visibility" :fx="true">
+    <Overlay :visible="visibility" :fx="true" class="vmui-actionsheet" position="bottom">
         <ul>
             <li v-for="(action, index) in actions">
                 <a href="javascript:" v-text="index" @click="callAction(index)" :class="action.className"></a>

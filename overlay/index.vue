@@ -1,5 +1,5 @@
 <template>
-<transition :name="(fx && position ? 'vmui-fx-' + position : '')">
+<transition :name="transition || (fx ? 'vmui-fx-' + (position || 'center') : '')">
     <div :class="className" v-show="visibility" :style="style" @click="$emit('click')">
         <slot></slot>
     </div>
@@ -29,6 +29,11 @@ export default{
         position: {
             type: String,
             default: null
+        },
+
+        transition: {
+            type: String,
+            default: null
         }
     },
 
@@ -56,6 +61,8 @@ export default{
 
     methods: {
         open(){
+            if(this.visibility) return;
+
             this.visibility = true;
             this.$nextTick(function(){
                 this.$emit('open');
@@ -67,6 +74,10 @@ export default{
             this.$nextTick(function(){
                 this.$emit('close');
             });
+        },
+
+        destroy(){
+            this.$destroy();
         }
     }
 }
@@ -77,6 +88,7 @@ export default{
     position: fixed;
     z-index: 10000;
     background: #fff;
+    overflow: hidden;
 }
 
 .vmui-overlay-center{
@@ -108,8 +120,8 @@ export default{
 .vmui-fx-bottom-enter-active, .vmui-fx-bottom-leave-active,
 .vmui-fx-top-enter-active, .vmui-fx-top-leave-active
 {
-    transition: all .3s;
-    -webkit-transition: all .3s;
+    transition: transform .3s ease, opacity .3s ease;
+    -webkit-transition: -webkit-transform .3s ease, opacity .3s ease;
 }
 
 .vmui-fx-enter, .vmui-fx-leave-active,

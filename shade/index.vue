@@ -8,6 +8,8 @@ import Overlay from '../overlay';
 export default{
     mixins: [Overlay],
 
+    name: 'shade',
+
     components: {
         Overlay
     }

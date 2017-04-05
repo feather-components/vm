@@ -1,5 +1,5 @@
 <template>
-<Shade :visible="visibility">
+<Shade :visible="visibility" :fx="true">
     <Overlay :visible="true" :class="className" position="center">
         <section class="vmui-modal-header">
             <slot name="header"></slot>

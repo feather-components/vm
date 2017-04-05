@@ -25,8 +25,40 @@ export default{
         return this.isDoc(element) ? document.documentElement.clientWidth : element.offsetWidth;
     },
 
+    size(element){
+        return {width: this.width(element), height: this.height(element)};
+    },
+
     isDoc(element){
         return element === document.documentElement || element === document;
+    },
+
+    on(element, event, callback){
+        element.addEventListener(event, callback);
+    },
+
+    off(element, event, callback){
+        element.removeEventListener(event, callback);
+    },
+
+    l2camel(str){
+        return str.replace(/-(\w)/g, (all, c) => c.toUpperCase());
+    },
+
+    css(element, name, value){
+        if(typeof name == 'object'){
+            for(var key in name){
+                this.css(element, key, name[key]);
+            }
+        }else{
+            name = this.l2camel(name);
+
+            if(typeof value == 'undefined'){
+                return element.style[name];
+            }else{
+                element.style[name] = value + (typeof value == 'number' && !/^(?:opacity|zIndex)$/.test(name) ? 'px' : '');
+            }
+        }
     },
 
     assign(obj){
@@ -44,4 +76,4 @@ export default{
     }
 }
 
-!Object.assign && (Object.assign = assign);
+!Object.assign && (Object.assign = exports.default.assign);

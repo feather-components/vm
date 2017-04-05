@@ -28,6 +28,11 @@
     height: @h;
     min-width: @h;
     display: inline-block;
+
+    *{
+        color: #fff;
+        text-decoration: none;
+    }
 }
 
 .vmui-topbar-right{

@@ -252,12 +252,12 @@ export default{
             this.data = this.data.concat(this.dataFormatter(source) || []);
         },
 
-        is2bottom(v){
-            return this.$scroll.instance.y <= (this.pullup2load ? 40 : 0);
+        is2bottom(distance){
+            return distance <= (this.pullup2load ? 40 : 0);
         },
 
-        is2top(v){
-            return this.intop = this.$scroll.instance.y >= (this.pulldown2refresh ? _.height(this.$refs.pd) : 0);
+        is2top(distance){
+            return this.intop = distance >= (this.pulldown2refresh ? _.height(this.$refs.pd) : 0);
         },
 
         refresh(pulldownFx = this.pulldown2refresh, clearData = true){
@@ -267,7 +267,7 @@ export default{
             self.isCompleted = false;
             self.isLoading = false;
             clearData && self.setData();
-            pulldownFx && self.$scroll.scrollTo(0, _.height(self.$refs.pd));
+            pulldownFx && self.$scroll._translate(0, _.height(self.$refs.pd));
             self.isRefreshing = true;
             self.$emit('refresh');
             setTimeout(() => self.load(), 500);
@@ -289,14 +289,12 @@ export default{
             self.page++;
             self.isLoading = true;
 
-            setTimeout(() => {
-                if(typeof self.source == 'string' && (self.rows.length == self.data.length || self.isRefreshing && !self.data.length)){
-                    self.loadRemote();
-                }else{
-                    self.renderRows();
-                    self.isLoading = false;
-                }
-            }, 0);
+            if(typeof self.source == 'string' && (self.rows.length == self.data.length || self.isRefreshing && !self.data.length)){
+                self.loadRemote();
+            }else{
+                self.renderRows();
+                self.isLoading = false;
+            }
         },
 
         loadRemote(){
@@ -309,23 +307,18 @@ export default{
                     count: self.maxCountPerPage
                 }),
                 dataType: 'json',
-                success: (data) => {
-                    if(self.isRefreshing){
-                        self.setData(data);
-                    }else{
-                        self.addData(data);
-                    }
-                    
+                success(data){
+                    self.isRefreshing ? self.setData(data) : self.addData(data);  
                     self.renderRows();
                     self.$emit('success', data);
                 },
-                error: (data) => {
+                error(data){
                     self.page--;
                     self.error = data;
                     self.$emit('error');
                     self.afterRenderRows();
                 },
-                complete: () => {
+                complete(){
                     self.$http = null;
                 }
             });
@@ -350,8 +343,8 @@ export default{
                 self.rows = self.isRefreshing ? rows : self.rows.concat(rows);
             }
 
+            self.isRefreshing && self.$emit('refreshSuccess', rows);
             self.afterRenderRows();
-            self.$refs.scroll.refresh();
         },
 
         afterRenderRows(){
@@ -359,7 +352,7 @@ export default{
             self.isRefreshing && self.pulldown2refresh && self.back2top();
             self.isLoading = false;
             self.isRefreshing = false;
-            self.$scroll.refresh();
+            setTimeout(() => self.$scroll.refresh());;
         },
 
         back2top(){
