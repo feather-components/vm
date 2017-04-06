@@ -1,9 +1,6 @@
 <template>
 <ul class="vmui-filterbox">
-    <li v-for="source of sources" class="vmui-filter-group">
-        <list :source="source" :data-formatter="dataFormatter" :row-formatter="rowFormatter" :showMsg="false" :fitHeight="false"></list>
-    </li>
-    <li v-for="source of sources" class="vmui-filter-group">
+    <li v-for="source of sources" class="vmui-filterbox-group">
         <list :source="source" :data-formatter="dataFormatter" :row-formatter="rowFormatter" :showMsg="false" :fitHeight="false"></list>
     </li>
 </ul>
@@ -11,14 +8,18 @@
 
 <style>
 .vmui-filterbox{
-    display: flex;
-    flex-direction: row;
+    display: -webkit-box;
+    display: box;
 }
 
 .vmui-filterbox-group{
-display:flex;
-flex-direction: column;
-    flex: 1;
+    -webkit-box-flex: 1;
+    box-flex: 1;
+    border-left: 1px solid #ccc;
+
+    &:nth-child(1){
+        border-left: 0px;
+    }
 }
 
 .vmui-filterbox-item{
@@ -32,15 +33,33 @@ flex-direction: column;
 import List from '../list';
 import _ from '../helper';
 
+/*
+[
+    {
+        label: "xxx",
+        value: "xx",
+        items: [
+
+        ]
+    } 
+]
+*/
+
 export default{
     props: {
         items: {
-            type: [Object, Array],
+            type: Array,
             default(){
-                return {};
+                return [];
             }
         },
 
+        match: {
+            type: Function,
+            default(value, data){
+                return data;
+            }
+        }
         dataFormatter: null,
         rowFormatter: {
             type: Function,
@@ -56,12 +75,18 @@ export default{
 
     data(){
         return {
-            sources: [this.items]
+            sources: Array.isArray(this.items[0]) ? this.items[0] : [this.items] 
         };
     },
 
     mounted(){
-        console.log(this.sources);
+        this.init();
+    },
+
+    methods: {
+        init(){
+
+        }
     }
 }
 </script>
