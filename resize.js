@@ -1,6 +1,13 @@
 import _ from './helper';
 
 export default {
+    props: {
+        fitHeight: {
+            type: Boolean,
+            default: true
+        }
+    },  
+
     mounted: function(){   
         window.addEventListener('resize', () => {
             this._resize_();
@@ -11,7 +18,7 @@ export default {
 
     methods: {
         _resize_(){
-            if(this.style && this.style.height) return;
+            if(this.style && this.style.height || !this.fitHeight) return;
 
             var element = this.$el, parent = element.parentNode;
             var height, otherHeight = 0;

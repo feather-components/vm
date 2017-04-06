@@ -1,5 +1,5 @@
 <template>
-<Scroll ref="scroll" :is2bottom="is2bottom" :is2top="is2top" :style="style">
+<Scroll ref="scroll" :is2bottom="is2bottom" :is2top="is2top" :style="style" :fit-height="fitHeight">
     <div class="vmui-list">
         <div class="vmui-list-pull" v-if="pulldown2refresh" ref="pd">
             <slot name="pulldown-msg" v-if="!isRefreshing && !intop">下拉刷新数据</slot>
@@ -15,21 +15,23 @@
             <li v-for="(item, index) in rows" v-html="rowFormatter(item)" @click="$emit('clickRow', item, index)"></li>
         </ul>
 
-        <div class="vmui-list-loading">
+        <div class="vmui-list-loading" v-if="showLoadingStatus">
             <slot name="loading"><i class="vmui-list-loading-icon"></i>正在加载中</slot>
         </div>
 
-        <div class="vmui-list-error" v-if="showErrorStatus">
-            <slot name="error">网络异常，加载失败</slot>
-        </div>
+        <template v-if="showMsg">
+            <div class="vmui-list-error" v-if="showErrorStatus">
+                <slot name="error">网络异常，加载失败</slot>
+            </div>
 
-        <div class="vmui-list-nomore" v-if="showNoMoreStatus" ref="nomore">
-            <slot name="nomore">~没有更多了~</slot>
-        </div>
+            <div class="vmui-list-nomore" v-if="showNoMoreStatus" ref="nomore">
+                <slot name="nomore">~没有更多了~</slot>
+            </div>
 
-        <div class="vmui-list-empty" v-if="showEmptyStatus">
-            <slot name="nores"><i class="vmui-list-nores-icon"></i><br />没有任何结果~</slot>
-        </div>
+            <div class="vmui-list-empty" v-if="showEmptyStatus">
+                <slot name="nores"><i class="vmui-list-nores-icon"></i><br />没有任何结果~</slot>
+            </div>
+        </template>
     </div>
 </Scroll>
 </template>
@@ -97,6 +99,11 @@ import Ajax from 'ajax';
 
 export default{
     props: {
+        fitHeight: {
+            type: Boolean,
+            default: true
+        },
+
         options: {
             type: Object,
             default: function(){
@@ -162,6 +169,11 @@ export default{
             default(){
                 return this.options.pullup2load || false;
             }
+        },
+
+        showMsg: {
+            type: Boolean,
+            default: true
         }
     },
 
@@ -216,7 +228,7 @@ export default{
         init(){
             this.$scroll = this.$refs.scroll;
             this.initEvents();
-            this.autoRefresh && this.refresh();
+            this.autoRefresh && this.refresh(this.pulldown2refresh, false);
         },
 
         initEvents(){
