@@ -10,10 +10,15 @@
 <style>
 .vmui-actions{
     background: transparent;
+
+    .vmui-overlay{
+        background: transparent;
+    }
 }
 
 .vmui-actions-inner{
-    position: absolute;
+    float: left;
+    position: relative;
     border-radius: 5px;
     background: #28304E;
     padding: 0px .12rem;
@@ -41,7 +46,7 @@
     width: 0px;
     display: inline-block;
     border-bottom-color: #28304E; 
-    top: -8px;
+    top: -14px;
     left: 50%;
     transform: translateX(-8px);
     -webkit-transform: translateX(-8px);
@@ -84,47 +89,36 @@ export default{
     },
 
     mounted(){
+        var self = this;
+
+        self.dom = _.$(self.handler);
+
         this.$refs.dropdown.$on('open', () => {
             setTimeout(() => {
                 var self = this;
-                var offset = _.offset(self.dom), size = _.size(self.dom);
-                var bodyHeight = _.height(document), bodyWidth = _.width(document);
-                var top, left, h;
+                var $inner = self.$refs.inner;
+                var x = self.offset.x;
+                var {width, left} = _.rect(self.dom);
 
-                if(bodyHeight - (offset.top + size.height + self.size.height) <= 0){
-                    top = offset.top - self.size.height - self.offset.y;
-                    h = offset.top;
-                    self.above = true;
-                }else{
-                    top = offset.top + size.height + self.offset.y;
-                    h = bodyHeight - offset.top + size.height;
-                    self.above = false;
-                }
+                var {width: innerWidth, left: innerLeft} = _.rect($inner);
+                var bodyWidth = _.width(document);
 
-                left = Math.min(
-                    Math.max(offset.left + self.size.width/2 - size.width/2, self.offset.x), 
-                    bodyWidth - self.size.width - self.offset.x
+                var m = left + width/2;
+                var l = Math.min(
+                    Math.max(m - innerWidth/2, x), 
+                    bodyWidth - innerWidth - x
                 );
 
-                _.css(self.$el, {
-                    left: left,
-                    top: top,
-                    height: h
+                _.css($inner, {
+                    left: l
                 });
 
-
-                var dom = _.$(this.element);
-                var offset = _.offset(dom), width = _.width(dom);
-                var innerOffset = _.offset(this.$refs.inner), innerWidth = _.width(this.$refs.inner);
-
                 _.css(
-                    this.$refs.arrow, 
+                    self.$refs.arrow, 
                     'left', 
-                    Math.min(
-                        Math.max(offset.left + width/2 - innerOffset.left, this.offset.x), 
-                        innerWidth - this.offset.x
-                    )
+                    innerWidth/2
                 );
+
                 this.$emit('open');
             });
         });

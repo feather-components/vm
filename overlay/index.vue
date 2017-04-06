@@ -103,6 +103,14 @@ export default{
     top: 0px;
 }
 
+.vmui-overlay-left, .vmui-overlay-right{
+    height: 100%;
+}
+
+.vmui-overlay-top, .vmui-overlay-bottom{
+    width: 100%;
+}
+
 .vmui-overlay-bottom{
     bottom: 0px;
     left: 0px;
