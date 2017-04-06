@@ -10,7 +10,8 @@
   "license": "MIT",
   "dependencies": {
     "vue": "~2.2.0",
-    "iscroll": "~5.2.0"
+    "iscroll": "~5.2.0",
+    "nouislider": "~9.2.0"
   },
   "ignore": [
     "**/.*",
