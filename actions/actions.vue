@@ -1,5 +1,5 @@
 <template>
-<Dropdown :useShade="false" ref="dropdown" :element="element" class="vmui-actions" :offset="offset" :auto-bind="false">
+<Dropdown class="vmui-actions" ref="dropdown" :handler="handler" :offset="offset">
     <div class="vmui-actions-inner" ref="inner">
         <i class="vmui-actions-arrow" ref="arrow"></i>
         <a href="javascript:void(0);" :class="'vmui-actions-item' + (action.className || '')" v-for="(action, index) of actions" v-html="index" @click.stop="callAction(index)"></a>
@@ -9,24 +9,23 @@
 
 <style>
 .vmui-actions{
-    .vmui-overlay{
-        background: transparent;
-    }
+    background: transparent;
 }
 
 .vmui-actions-inner{
+    position: absolute;
     border-radius: 5px;
     background: #28304E;
-    padding: 0px .8em;
-    margin: 7px 0px;
+    padding: 0px .12rem;
+    margin: .07rem 0px;
 }
 
 .vmui-actions-item{
     display: block;
     text-decoration: none;
     color: #fff;
-    padding: .8em 0px;
-    font-size: 12/16em;
+    padding: .12rem 0px;
+    font-size: .12rem;
     border-bottom: 1px solid #ddd;
 
     &:last-child{
@@ -37,21 +36,21 @@
 .vmui-actions-arrow{
     position: absolute;
     content: "";  
-    border: 6px solid transparent;  
+    border: 8px solid transparent;  
     height: 0px;
     width: 0px;
     display: inline-block;
     border-bottom-color: #28304E; 
-    top: -6px;
+    top: -8px;
     left: 50%;
-    transform: translate(-6px, 1px);
+    transform: translateX(-8px);
+    -webkit-transform: translateX(-8px);
 }
 
 .vmui-actions-above .vmui-actions-arrow{
     border-bottom-color: transparent;
     border-top-color: #28304E; 
     top: 100%;
-    transform: translate(-6px, -1px);
 }
 </style>
 
@@ -68,13 +67,7 @@ export default{
             }
         },
 
-        element: null,
-
-        visible: {
-            type: Boolean,
-            default: false
-        },
-
+        handler: null,
         offset: {
             type: Object,
             default(){
@@ -91,16 +84,35 @@ export default{
     },
 
     mounted(){
-        _.on(_.$(this.element), 'click', (e) => {
-            this.open();
-            e.stopPropagation();
-        });
-    },
-
-    methods: {
-        open(){
-            this.$refs.dropdown.open();
+        this.$refs.dropdown.$on('open', () => {
             setTimeout(() => {
+                var self = this;
+                var offset = _.offset(self.dom), size = _.size(self.dom);
+                var bodyHeight = _.height(document), bodyWidth = _.width(document);
+                var top, left, h;
+
+                if(bodyHeight - (offset.top + size.height + self.size.height) <= 0){
+                    top = offset.top - self.size.height - self.offset.y;
+                    h = offset.top;
+                    self.above = true;
+                }else{
+                    top = offset.top + size.height + self.offset.y;
+                    h = bodyHeight - offset.top + size.height;
+                    self.above = false;
+                }
+
+                left = Math.min(
+                    Math.max(offset.left + self.size.width/2 - size.width/2, self.offset.x), 
+                    bodyWidth - self.size.width - self.offset.x
+                );
+
+                _.css(self.$el, {
+                    left: left,
+                    top: top,
+                    height: h
+                });
+
+
                 var dom = _.$(this.element);
                 var offset = _.offset(dom), width = _.width(dom);
                 var innerOffset = _.offset(this.$refs.inner), innerWidth = _.width(this.$refs.inner);
@@ -115,8 +127,10 @@ export default{
                 );
                 this.$emit('open');
             });
-        },
+        });
+    },
 
+    methods: {
         callAction(index){
             var action = this.actions[index];
 
@@ -127,11 +141,6 @@ export default{
             }
 
             this.close();
-        },
-
-        close(){
-            this.$refs.dropdown.close();
-            this.$emit('close');
         }
     }
 }

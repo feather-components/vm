@@ -1,9 +1,9 @@
 <style>
 .vmui-toast{
-    font-size: 16px;
+    font-size: 0.16rem;
     color: #FFFFFF;
-    line-height: 28px;
-    padding: 8px 20px;
+    line-height: 0.28rem;
+    padding: 0.08rem 0.2rem;
     max-width: 90%;
     background: rgba(0, 0, 0, 0.7);
     border-radius: 4px;
@@ -11,10 +11,10 @@
 }
 
 .vmui-toast-icon{
-    width: 36px;
-    height: 36px;
+    width: .36rem;
+    height: .36rem;
     display: block;
-    margin: 5px auto 7px auto;
+    margin: .05rem auto 0.07rem auto;
 }
 
 .vmui-toast-success .vmui-toast-icon{

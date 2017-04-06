@@ -1,5 +1,5 @@
 <template>
-<Page position="right" :fx="true" :visible="visibility" class="vmui-search">
+<Page position="right" :fx="true" :visible="visibility" class="vmui-search" ref="page">
     <Topbar :leftEnabled="false">
         <search-bar :style="{
             'margin-right': '2.5em'
@@ -32,22 +32,22 @@
 <style>
 .vmui-search-cancel{
     float: right;
-    width: 2em;
-    margin: 0px 1em;
+    width: .32rem;
+    margin: 0px .16rem;
     display: inline-block;
     text-decoration: none;
     color: #fff;
-    font-size: 14/16em;
+    font-size: 0.14rem;
 }
 
 .vmui-search-desc{
-    font-size: 12/16em;
-    padding: 1em 0px;
+    font-size: 0.12rem;
+    padding: .16rem 0px;
 }
 
 .vmui-search{
     .vmui-list{
-        padding: 0px 1em;
+        padding: 0px .16rem;
 
         li{
             border-bottom: 1px solid #E1E1E1;
@@ -55,7 +55,7 @@
     }
 
     .vmui-list-rows{
-        margin-bottom: 30px;
+        margin-bottom: .3rem;
     }
 }
 </style>
@@ -82,6 +82,11 @@ export default{
             default(){
                 return {}
             }
+        },
+
+        autofocus: {
+            type: Boolean,
+            default: true
         },
 
         delay: {
@@ -156,6 +161,20 @@ export default{
                 }, true);
                 self.$list.refresh(false);
             }
+        },
+
+        open(){
+            this.$refs.page.open();
+            this.$emit('open');
+            setTimeout(() => {
+                this.$refs.search.focus();
+            }, 400);
+        },
+
+        close(){
+            this.$refs.page.close();
+            this.$refs.search.blur();
+            this.$emit('close');
         }
     }
 }

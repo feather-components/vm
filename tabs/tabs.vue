@@ -15,7 +15,7 @@
             <li v-for="(item, index) in rows" v-html="rowFormatter(item)" @click="$emit('clickRow', item, index)"></li>
         </ul>
 
-        <div class="vmui-list-loading">
+        <div class="vmui-list-loading" v-if="showLoadingStatus">
             <slot name="loading"><i class="vmui-list-loading-icon"></i>正在加载中</slot>
         </div>
 
@@ -36,15 +36,15 @@
 
 <style>
 .vmui-list{
-    font-size: 0.16rem;
+    font-size: 1em;
 }
 
 .vmui-list-pull, .vmui-list-loading, .vmui-list-error, .vmui-list-nomore, .vmui-list-empty{
     text-align: center;
-    padding: 0.05rem;
+    padding: 5px;
     color: #878787;
     width: 100%;
-    font-size: 0.12rem;
+    font-size: 12/16em;
 }
 
 .vmui-list-pull{
@@ -53,16 +53,6 @@
     -webkit-transform: translateY(-100%);
 }
 
-.vmui-list-loading-icon{
-    display: inline-block;
-    width: 0.16rem;
-    height: 0.16rem;
-    background-image: url(./loading.gif?__inline);
-    background-size: 100%;
-    margin-right: 0.05rem;
-    transform: translateY(0.03rem);
-    -webkit-transform: translateY(0.03rem);
-}
 
 .vmui-list-rows{
     padding: 0px;
@@ -76,16 +66,10 @@
 }
 
 .vmui-list-nores{
-    margin-top: 0.2rem;
+    margin-top: 20px;
 }
 
-.vmui-list-nores-icon{
-    background: url(./empty.png?__inline);
-    width: 1.3rem;
-    height: 1.3rem;
-    display: inline-block;
-    margin-bottom: 0.1rem;
-}
+
 </style>
 
 <script>

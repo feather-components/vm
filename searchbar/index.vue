@@ -2,24 +2,24 @@
 <form class="vmui-searchbar" @submit.prevent="submit()">
     <div class="vmui-searchbar-input">
         <i class="vmui-searchbar-icon"></i>
-        <input type="text" :placeholder="placeholder" :maxlength="maxlength" @input.trim="input()" v-model="value" ref="input" @focus="$emit('focus')" />
-        <a href="javascript:" class="vmui-searchbar-clear" @touchstart="clear()" v-show="clearVisible">&times;</a>
+        <input type="text" :placeholder="placeholder" :maxlength="maxlength" @input.trim="input()" v-model="value" ref="input" @focus="$emit('focus')"  @click="$emit('click')" :readonly="readonly" />
+        <a href="javascript:" class="vmui-searchbar-clear" @click="clear()" v-show="clearVisible">&times;</a>
     </div>
 </form>
 </template>
 
 <style>
 .vmui-searchbar{
-    height: 2em;
-    padding: 13/16/2em 0px;
-    line-height: 2em;
+    height: .32rem;
+    padding: .06rem 0px;
+    line-height: .32rem;
     background: #28304E;
 }
 
 .vmui-searchbar-input{
-    height: 2em;
+    height: .32rem;
     border-radius: 100px;
-    margin: 0px 1em;
+    margin: 0px 0.16rem;
     background: rgba(255, 255, 255, 0.1);
     overflow: hidden;
     position: relative;
@@ -28,14 +28,14 @@
         position: absolute;
         background: url(./search_white@2x.png?__inline) center center no-repeat;
         background-size: 100%;
-        left: .7em;
-        width: 1.25em;
-        height: 2em;
+        left: .07rem;
+        width: 0.2rem;
+        height: .32rem;
         display: inline-block;
     }
 
     input{
-        font-size: 12/16em;
+        font-size: .12rem;
         box-sizing: border-box;
         width: 100%;
         height: 100%;
@@ -43,7 +43,7 @@
         float: left;
         display: block;
         border: 0px;
-        padding: 0px 3em;
+        padding: 0px 0.32rem;
         outline: none;
         background: transparent;
         -webkit-transform: translateY(-1px);
@@ -55,12 +55,12 @@
         font-family: consolas;
         text-decoration: none;
         text-align: center;
-        right: .7em;
-        top: .45em;
+        right: .07rem;
+        top: .072rem;
         color: #fff;
-        line-height: 1em;
-        width: 1em;
-        height: 1em;
+        line-height: 0.16rem;
+        width: 0.16rem;
+        height: 0.16rem;
         display: inline-block;
         border: 1px solid #fff;
         border-radius: 100px;
@@ -79,6 +79,11 @@ export default{
         placeholder: {
             type: String,
             default: "请输入关键字进行搜索"
+        },
+
+        readonly: {
+            type: Boolean,
+            default: false
         }
     },
 
@@ -95,6 +100,14 @@ export default{
     },
 
     methods: {
+        focus(){
+            this.$refs.input.focus();
+        },
+
+        blur(){
+            this.$refs.input.blur();
+        },
+
         input(){
             this.$emit('input', this.value.trim());
         },

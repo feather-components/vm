@@ -29,6 +29,10 @@ export default{
         return {width: this.width(element), height: this.height(element)};
     },
 
+    rect(element){
+        return element.getBoundingClientRect();
+    },
+
     isDoc(element){
         return element === document.documentElement || element === document;
     },

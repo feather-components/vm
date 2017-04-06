@@ -9,7 +9,7 @@ export default{
             o = {actions: data.value};
         }
 
-        o.element = element;
+        o.handler = element;
 
         Factory(Actions, o);
     }

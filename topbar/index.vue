@@ -1,5 +1,5 @@
 <style>
-@h: 45/16em;
+@h: 0.44rem;
 
 .vmui-topbar{
     background: #28304E;
@@ -9,6 +9,7 @@
     color: #fff;
     text-align: center;
     position: relative;
+    font-size: 0.16rem;
 }
 
 .vmui-topbar-btn-back{

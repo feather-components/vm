@@ -1,25 +1,18 @@
 <template>
-<Shade :class="'vmui-dropdown' + (!useShade ? ' vmui-dropdown-transparent' : '')" ref="container" :visible="visibility">
-    <Overlay ref="overlay" :visible="false" :position="above ? 'bottom' : 'top'" :fx="true">
+<Shade ref="container" :visible="visibility">
+    <Overlay ref="overlay" :visible="visibility" :position="above ? 'bottom' : 'top'" :fx="true" class="vmui-dropdown">
         <slot></slot>
     </Overlay>
 </Shade>
 </template>
 
 <style>
+.vmui-dropdown-transparent{
+    background: transparent;
+}
+
 .vmui-dropdown{
-    position: fixed;
-    width: 100%;
-    overflow: hidden;
-    z-index: 1000000;
-
-    &.vmui-dropdown-transparent{
-        background: transparent;
-    }
-
-    .vmui-overlay{
-        position: absolute;
-    }
+    position: absolute;
 }
 </style>
 
@@ -32,22 +25,7 @@ export default{
     mixins: [Overlay],
 
     props: {
-        useShade: {
-            type: Boolean,
-            default: true
-        },
-
-        autoBind: {
-            type: Boolean,
-            default: true
-        },
-
-        element: null,
-
-        visible: {
-            type: Boolean,
-            default: false
-        },
+        handler: null,
 
         offset: {
             type: Object,
@@ -62,10 +40,6 @@ export default{
 
     data(){
         return {
-            above: false,
-            _inited: false,
-            visibility: true,
-            size: {},
             above: false
         };
     },
@@ -76,79 +50,44 @@ export default{
     },
 
     computed: {
-        fx(){
-            return this._inited;
+        above(){
+            var bodyHeight = _.height(document);
+            var rect = _.rect(this.dom);
+
+            return rect.top + rect.height > bodyHeight/2;
         }
     },
 
     mounted(){
-        this.$nextTick(() => this.init());
-        _.on(document, 'click', () => this.close());
+        var self = this;
+
+        _.on(document, 'click', () => self.close());
+
+        self.dom = _.$(self.handler || self.$el.parentNode);
+        _.on(self.dom, 'click', (e) => {
+            self.toggle();
+            e.stopPropagation();
+        });
     },
 
     methods: {
-        init(){
-            var self = this, $overlay;
-
-            self.dom = _.$(this.element);
-
-            self.visibility = true;
-            $overlay = self.$overlay = self.$refs.overlay;
-            $overlay.open();
-
-            self.$nextTick(() => {  
-                self.size = _.size(self.$overlay.$el);
-                self._inited = true;
-                self.visibility = false;
-                self.$overlay.close();
-            });
-
-            this.autoBind && _.on(this.dom, 'click', (e) => {
-                this.open();
-                e.stopPropagation();
-            });
+        toggle(){
+            this.visibility ? this.close() : this.open();
         },
 
         open(){
-            Overlay.methods.open.call(this);
-            this.$nextTick(() => this.resetPosition());
-            this.$emit('open');
-        },
+            var self = this, bottom = _.rect(self.dom).bottom;
 
-        resetPosition(){
-            var self = this;
-            var offset = _.offset(self.dom), size = _.size(self.dom);
-            var bodyHeight = _.height(document), bodyWidth = _.width(document);
-            var top, left, h;
-
-            if(bodyHeight - (offset.top + size.height + self.size.height) <= 0){
-                top = offset.top - self.size.height - self.offset.y;
-                h = offset.top;
-                self.above = true;
-            }else{
-                top = offset.top + size.height + self.offset.y;
-                h = bodyHeight - offset.top + size.height;
-                self.above = false;
-            }
-
-            left = Math.min(
-                Math.max(offset.left + self.size.width/2 - size.width/2, self.offset.x), 
-                bodyWidth - self.size.width - self.offset.x
-            );
+            Overlay.methods.open.call(self);
 
             _.css(self.$el, {
-                left: left,
-                top: top,
-                height: h
+                top: bottom,
+                height: _.height(document) - bottom
             });
-
-            self.$nextTick(() => self.$overlay.open());
         },
 
         close(){
-            this.visibility = false;
-            this.$overlay.close();
-            this.$emit('close');
+            Overlay.methods.close.call(this);
         }
     }
 }
