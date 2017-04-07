@@ -37,12 +37,22 @@ export default{
         return element === document.documentElement || element === document;
     },
 
+    contains(root, el){
+        return root === el || !!(root.compareDocumentPosition(el) & 16); 
+    },
+
     on(element, event, callback){
         element.addEventListener(event, callback);
     },
 
     off(element, event, callback){
         element.removeEventListener(event, callback);
+    },
+
+    trigger(element, event){
+        var evt = document.createEvent('HTMLEvents');  
+        evt.initEvent(event, true, true);  
+        return !element.dispatchEvent(evt); 
     },
 
     l2camel(str){

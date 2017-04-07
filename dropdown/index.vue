@@ -61,12 +61,16 @@ export default{
     mounted(){
         var self = this;
 
-        _.on(document, 'click', () => self.close());
-
         self.dom = _.$(self.handler || self.$el.parentNode);
+
+        _.on(document, 'click', (e) => {
+            if(!_.contains(self.dom, e.target) && !_.contains(self.$el, e.target)){
+                this.close();
+            }
+        })
+
         _.on(self.dom, 'click', (e) => {
             self.toggle();
-            e.stopPropagation();
         });
     },
 
@@ -84,10 +88,14 @@ export default{
                 top: bottom,
                 height: _.height(document) - bottom
             });
+
+            self.$emit('open');
         },
 
         close(){
+            console.log('331113');
             Overlay.methods.close.call(this);
+            this.$emit('close');
         }
     }
 }
