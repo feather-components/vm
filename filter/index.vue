@@ -2,7 +2,7 @@
 <div :class="'vmui-filter' + (this.visibility ? ' vmui-filter-open' : '')">
     <div class="vmui-filter-handler"><slot></slot></div>
     <Dropdown ref="dropdown">
-        <Filterbox :children="children" :row-formatter="rowFormatter" :auto-render="false" ref="filterbox" :filter-style="{maxHeight: '300px'}">
+        <Filterbox :source="source" :item-formatter="itemFormatter" :data-formatter="dataFormatter" :auto-render="false" ref="filterbox" :filter-style="{maxHeight: '300px'}" :names="names" :multiple="multiple">
             <template slot="footer">
                 <slot name="footer"></slot>
             </template>    
@@ -52,8 +52,11 @@ import _ from '../helper';
 
 export default{
     props: {
-        children: null,
-        rowFormatter: null
+        source: null,
+        itemFormatter: null,
+        dataFormatter: null,
+        names: null,
+        multiple: null
     },
 
     components: {

@@ -12,7 +12,9 @@
         </div>
 
         <ul class="vmui-list-rows" ref="rows">
-            <li v-for="(item, index) in rows" v-html="rowFormatter(item)" @click="$emit('clickRow', item, index)" class="vmui-list-item"></li>
+            <slot name="rows">
+                 <li v-for="(item, index) in rows" v-html="rowFormatter(item)" @click="$emit('clickRow', item, index)" class="vmui-list-item"></li>
+            </slot>
         </ul>
 
         <div class="vmui-list-loading" v-if="showLoadingStatus">

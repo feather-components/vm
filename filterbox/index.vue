@@ -1,20 +1,20 @@
 <template>
-<div class="vmui-filterbox">
-    <ul class="vmui-filterbox-groups" @click.stop="">
-        <li v-for="(source, index) of sources" class="vmui-filterbox-group" :style="filterStyle">
-            <list source="" :data-formatter="source.dataFormatter" :row-formatter="rowFormatter" :showMsg="false" @clickRow="select" :fill-height="false" :pullup2load="true" ref="list" :auto-refresh="false"></list>
-        </li>
-    </ul>
+<div class="vmui-filterbox" @click.stop="">
+    <div v-for="(data, index) of filters" class="vmui-filterbox-column">
+        <scroll :fill-height="false" ref="scroll" :style="filterStyle">
+            <a href="javascript:" v-for="(item, key) of data" v-html="itemFormatter(item)" @click="select(item, key, index)" :class="'vmui-filterbox-item' + (indexs[index] == data.value ? ' vmui-filterbox-selected' : '')"></a>
+        </scroll>   
+    </div>
 </div>
 </template>
 
 <style>
-.vmui-filterbox-groups{
+.vmui-filterbox{
     display: -webkit-box;
     display: box;
 }
 
-.vmui-filterbox-group{
+.vmui-filterbox-column{
     -webkit-box-flex: 1;
     box-flex: 1;
     border-left: 1px solid #eee;
@@ -23,26 +23,36 @@
         border-left: 0px;
     }
 
-    .vmui-list-item{
+    .vmui-filterbox-item{
         height: .44rem;
+        text-decoration: none;
+        display: inline-block;
+        width: 100%;
         font-size: .14rem;
         color: #555;
         line-height: .44rem;
         text-align: center;
         border-top: 1px solid #eee;
- 
-        &:first{
-            border-top: 0px;
-        }
+    }
+
+    .vmui-filterbox-selected{
+        color: #6281C2;
     }
 }
 </style>
 
 <script>
-import List from '../list';
+import Scroll from '../scroll';
+import Ajax from 'ajax';
 import _ from '../helper';
 
 /*
+
+source: "",
+names: [],
+dataFormatter:
+
+
 [
     {
         label: "xxx",
@@ -62,15 +72,6 @@ import _ from '../helper';
 }
 */
 
-var overrideDataFormatter = (level, formatter) => {
-    return (data) => {
-        return (formatter ? formatter(data) : data).map((item) => {
-            item._level_ = level;
-            return item;
-        });
-    }
-};
-
 export default{
     props: {
         filterStyle: {
@@ -80,40 +81,70 @@ export default{
             }
         },
 
-        children: {
-            type: [Array, Object],
+        source: {
+            type: [Array, String],
             default(){
                 return [];
             }
         },
 
-        rowFormatter: {
+        itemFormatter: {
             type: Function,
-            default(rowData){
-                return rowData.label;
+            default(item){
+                return item.label;
+            }
+        },
+
+        dataFormatter: {
+            type: Function,
+            default(data){
+                return data || [];
+            }
+        },
+
+        names: {
+            type: Array,
+            default(){
+                return [];
             }
         },
 
         autoRender: {
             type: Boolean,
             default: true
+        },
+
+        multiple: {
+            type: Boolean,
+            default: false
+        },
+
+        multipleSize: {
+            type: Number,
+            default: 0
         }
     },
 
     components: {
-        List: List
+        Scroll: Scroll
     },
 
     data(){
         return {
-            level: -1,
-            sources: [],
+            level: 0,
+            filters: [],
             indexs: [],
             vals: []
         };
     },
 
     mounted(){
+        this._names = this.multiple ? this.names.slice(0, 2) : this.names;
+
+        if(this._names.length > 1 && this.multiple){
+            this.vals = {};
+        }
+
         this.initEvent();
         this.autoRender && this.render();
     },
@@ -131,56 +162,104 @@ export default{
             }
 
             this._isRendered = true;
-            this.renderList(this.children);
+
+            if(this.isRemoteSource()){
+                this.renderFromRemote();
+            }else{
+                this.renderList(this.source);
+            };
         },
 
         renderList(source){
-            this.level++;
+            var self = this;
 
-            var formatter = overrideDataFormatter(this.level, source.dataFormatter);
-
-            if(!Array.isArray(source)){
-                source = Object.assign({}, source, {
-                    dataFormatter: formatter
-                });
-            }else{
-                source = {
-                    source: source,
-                    dataFormatter: formatter
-                };
+            try{
+                source = self.dataFormatter(source); 
+            }catch(e){
+                source = [];
             }
 
-            this.sources.push(source);
-            this.$nextTick(() => {
-                var $list = this.$refs.list[this.level];
-                $list.setSource(source.source);
-                $list.refresh(false, !Array.isArray(source.source));
+            if(!source.length) return;
+
+            if(self.level > 0){
+                source = source.map((item) => {
+                    item.__p__ = self.indexs[self.level];
+                    return item;
+                });
+            }
+            
+            self.filters = self.filters.slice(0, self.level).concat([source]);
+            console.log(self.indexs, self.filters);
+            self.$nextTick(() => {
+                self.$refs.scroll[self.level].refresh();
             });
         },
 
-        clearList(level){
-            this.sources = this.sources.slice(0, level + 1);
-            this.indexs = this.indexs.slice(0, level + 1);
-            this.level = level;
-        },
-
-        select(data, index){
-            var level = data._level_;
+        renderFromRemote(){
             var self = this;
+            var params = {}, level = self.level;
 
-            self.clearList(level);
-            self.indexs.push(index);
-
-            if(data.children && data.children.length){
-                self.renderList(data.children);
-            }else{
-                if(!Array.isArray(self.children) && this.children.names.length > level + 1){
-                    self.renderList(self.children, level);
-                }
+            if(level > 0){
+                params[self._names[level]] = self.vals[level];
             }
 
-            this.vals = this.vals.slice(0, level).concat(data.value);
-            this.$emit('select', this.vals);
+            self.abort();
+            self.$http = Ajax({
+                url: self.source,
+                data: params,
+                success: (data) => self.renderList(data)
+            });
+        },
+
+        abort(){
+            this.$http && this.$http.abort();
+        },
+
+        clear(level){
+            var self = this;
+
+            self.filters = self.filters.slice(0, level + 1);
+            self.indexs = self.indexs.slice(0, level);
+
+            if(!self.multiple){
+                self.vals = self.vals.slice(0, level);
+            }
+            
+            self.level = level;
+        },
+
+        select(data, level){
+            var self = this;
+
+            if(self.vals[level] == data.value) return;
+
+            self.clear(level);
+
+            if(!self.multiple){
+                self.vals[level] = data.value;
+            }else if(level == self._names.length - 1){
+                var index = self.vals[level].indexOf(data.value);
+
+                if(index > -1){
+                    self.vals[level].splice(index, 1);
+                }
+            }
+            
+            self.$emit('select', self.vals);
+
+            self.level++;
+
+            if(!self.isRemoteSource()){
+                if(data.children && data.children.length){
+                    self.renderList(data.children);
+                }
+            }else if(self._names.length > self.level){
+                self.renderFromRemote();
+            }
+        },
+
+        isRemoteSource(){
+            return typeof this.source == 'string';
         }
     }
 }
