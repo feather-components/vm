@@ -1,32 +1,32 @@
 <style>
-    .noUi-connect{
+    .slider .noUi-connect{
         background:#6281C2!important;
     }
-    .noUi-target{
+    .slider.noUi-target{
         background: #e1e1e1;
         border: 0;
         box-shadow: none;
     }
-    .noUi-horizontal{
+    .slider.noUi-horizontal{
         height:3px;
         border-radius:1.5px;
     }
-    .noUi-origin{
+    .slider .noUi-origin{
         top:-6px;
     }
-    .noUi-horizontal .noUi-handle{
+    .slider.noUi-horizontal .noUi-handle{
         width:24px;
         height:24px;
         border-radius:50%;
         box-shadow: 0 1px 2px 0 rgba(0,0,0,0.20);
     }
-    .noUi-handle:before, .noUi-handle:after{
+    .slider .noUi-handle:before, .slider .noUi-handle:after{
         display: none;
     }
 </style>
 
 <template>
-    <div :id="id"></div>
+    <div :id="id" class="slider"></div>
 </template>
 
 <script>
@@ -39,7 +39,6 @@
             /*id*/
             sid:{
                 type:String,
-                require:true
             },
             /*初始值*/
             initStart:{
@@ -61,7 +60,7 @@
                 require:true
             },
             /*是否为一个/两个滑块*/
-            single:{
+            sliderNumber:{
                 type:Number,
                 validator: val=> {
                     if([1,2].indexOf(val)>-1){  /*滑块个数1,2*/
@@ -72,67 +71,69 @@
                 }
             },
 
-            /*connect*/
-            connect:{
-                type:Number,
-                require:true,
-                validator: val=> {
-                    if([0,1,2].indexOf(val)>-1){  /*0:代表单滑块邹策高亮；1：代表单滑块右侧高亮；2：代表双滑块中间高亮*/
-                        return val;
-                    }else{
-                        return 0;
-                    }
-
-                }
+            /*rangeLight*/
+           rangeLight:{
+                type:Number
             },
 
             /*父元素手动设置*/
-            changeValue:{
+            value:{
                 type:Array
             }
         },
 
         data(){
             return {
-                id:this.sid,
                 $ele:"",
                 min:this.minValue,
                 max:this.maxValue,
                 events:['update','slide','set','change','start','end'],  /*事件触发*/
-
+                range:"",
             }
         },
 
 
         watch:{
             getChangeValue:function (val) {
+                console.log(this.$ele,9999)
                 this.$ele.noUiSlider.set(val);
             }
         },
 
         computed:{
+
+            id(){
+                if(this.sid!=undefined){
+                     return this.sid;
+                }else{
+                    return 'slider'+Math.ceil(Math.random()*100);
+                }
+            },
             getChangeValue(){
-                return this.changeValue;
+                return this.value;
             },
 
             startValue(){
-                if(this.single!=2){
+                if(this.sliderNumber!=2){
                     return [this.initStart];
                 }else{
                     return [this.initStart,this.initEnd];
                 }
             },
 
-            connectValue(){
-                switch(this.connect){
-                    case 0:
-                        return [true, false];
-                    case 1:
-                        return [false, true];
-                    case 2:
-                        return true;
+            rangeValue(){
+                if(this.sliderNumber==2){
+                    return true;
+                }else{
+                    switch(this.rangeLight){
+                        case 0:
+                            return [true, false];
+                        case 1:
+                            return [false, true];
+                        default:
+                            return [true, false];
+                    }
                 }
-
             }
         },
 
@@ -149,7 +150,7 @@
                 var _$=this;
                 noUiSlider.create(_$.$ele, {
                     start: _$.startValue,
-                    connect:_$.connectValue,
+                    connect:_$.rangeValue,
                     range: {
                         'min': [ _$.minValue ],
                         'max': [ _$.maxValue ]
