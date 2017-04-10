@@ -1,5 +1,5 @@
 <template>
-<scroll ref="scroll" :class="'vmui-filter' + (size > 1 ? ' vmui-filter-multiple' : '')" >
+<scroll ref="scroll" :class="'vmui-filter' + (size > 1 ? ' vmui-filter-multiple' : '')">
     <a href="javascript:" v-for="(item, key) of data" v-html="itemFormatter(item)" @click="clickItem(item)" :class="getItemClass(item)"></a>
 </scroll>
 </template>

@@ -87,7 +87,6 @@ export default{
         clickItem(item){
             if(item.__level < this.maxLevel){
                 this.filters = this.filters.slice(0, item.__level + 1).concat([item.children || this.source]);
-                console.log(this.filters);
             }
         }
 
