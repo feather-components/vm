@@ -1,14 +1,33 @@
 
 <style>
-
+    .ios-select-widget-box header.iosselect-header{
+        background-color:#fff;
+    }
+    .ios-select-widget-box ul{
+        background-color: transparent;
+    }
+    .ios-select-widget-box ul li{
+        background-color: transparent;
+    }
+    .ios-select-widget-box ul li.at{
+        /*background-color: #fff;*/
+        color:#6281C2;
+    }
+    .ios-select-widget-box .cover-area1,.ios-select-widget-box .cover-area2{
+        border:0;
+    }
+    .ios-select-widget-box header.iosselect-header a.sure{
+        color:#6281C2;
+        font-size:14px;
+    }
+    .ios-select-widget-box header.iosselect-header a.close{
+        color:#222222;
+        font-size:14px;
+    }
 </style>
 
 <template>
-    <div >
-        <div class="pc-box">
-            <span data-year="" data-month="" data-date="" id="showDate">点击这里选择时间</span>
-        </div>
-    </div>
+    <div></div>
 </template>
 
 <script>
@@ -17,7 +36,7 @@
     import IScroll from 'iscroll';
     import IosSelect from 'iosSelect';
 
-    const   DAYS_ONE=31,
+    const  DAYS_ONE=31,
             DAYS_TWO=30,
             DAYS_THREE=29,
             DAYS_FOUR=28;
@@ -27,36 +46,64 @@
 
         props:{
 
+            initYear:{
+                type:Number,
+                default:()=>{
+                    console.log( new Date().getFullYear())
+                    return new Date().getFullYear()
+                }
+            },
+
+            initMonth:{
+                type:Number,
+                default:()=>{
+                    return new Date().getMonth()+1
+                }
+            },
+
+            initDay:{
+                type:Number,
+                default:()=>{
+                    return new Date().getDate()
+                }
+            }
         },
 
         data(){
             return{
                 $ele:"",
-                year:"",
-                month:"",
-                day:"",
                 yearArgs:[],
                 monthArgs:[],
                 dayArgs:[],
+                iosSelect:""
             }
         },
 
         computed:{
+            year(){
+                return this.initYear
+            },
+            month(){
+                return this.initMonth
+            },
+            day(){
+                return this.initDay
+            },
+        },
+
+        watch:{
 
         },
 
         created(){
             var _$=this;
-            new Promise((resolve,reject)=>{resolve()}).then(()=>{
 
-                var now = new Date();
-                var nowYear = now.getFullYear();
-                var nowMonth = now.getMonth() + 1;
-                var nowDate = now.getDate();
+            new Promise((resolve,reject)=>{resolve()}).then(()=>{
 
                 // 数据初始化
                 function formatYear (nowYear) {
                     var arr = [];
+
                     for (var i = nowYear - 5; i <= nowYear + 5; i++) {
                         arr.push({
                             id: i + '',
@@ -89,7 +136,7 @@
                 }
 
                 var yearData = function(callback) {
-                    callback(formatYear(nowYear))
+                    callback(formatYear(_$.year))
                 };
 
                 var monthData = function (year, callback) {
@@ -116,29 +163,31 @@
                     }
                 };
 
-                var iosSelect = new IosSelect(3,
+                _$.iosSelect = new IosSelect(3,
                         [yearData, monthData, dateData],
                         {
-                            title: '日期选择',
+                            title: '',
                             itemHeight: 35,
                             relation: [1, 1],
-                            oneLevelId: nowYear,
-                            twoLevelId: nowMonth,
-                            threeLevelId: nowDate,
+                            oneLevelId: _$.year,
+                            twoLevelId: _$.month,
+                            threeLevelId: _$.day,
+                            itemShowCount:5,
                             callback: function (selectOneObj, selectTwoObj, selectThreeObj) {
-
+                                _$.$emit("selected",selectOneObj, selectTwoObj, selectThreeObj);
                             }
                         });
 
+
+                _$.iosSelect.closeBtnDom.addEventListener("click",()=>{
+                    _$.$emit("cancel");
+                });
 
             })
 
 
         },
 
-        watch:{
-
-        },
 
         methods:{
 
