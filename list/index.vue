@@ -1,5 +1,5 @@
 <template>
-<Scroll ref="scroll" :is2bottom="is2bottom" :is2top="is2top" :style="style" :fit-height="fitHeight">
+<Scroll ref="scroll" :is2bottom="is2bottom" :is2top="is2top" :style="style" :fill-height="fillHeight">
     <div class="vmui-list">
         <div class="vmui-list-pull" v-if="pulldown2refresh" ref="pd">
             <slot name="pulldown-msg" v-if="!isRefreshing && !intop">下拉刷新数据</slot>
@@ -12,7 +12,9 @@
         </div>
 
         <ul class="vmui-list-rows" ref="rows">
-            <li v-for="(item, index) in rows" v-html="rowFormatter(item)" @click="$emit('clickRow', item, index)"></li>
+            <slot name="rows">
+                 <li v-for="(item, index) in rows" v-html="rowFormatter(item)" @click="$emit('clickRow', item, index)" class="vmui-list-item"></li>
+            </slot>
         </ul>
 
         <div class="vmui-list-loading" v-if="showLoadingStatus">
@@ -99,7 +101,7 @@ import Ajax from 'ajax';
 
 export default{
     props: {
-        fitHeight: {
+        fillHeight: {
             type: Boolean,
             default: true
         },
@@ -189,7 +191,8 @@ export default{
             error: 0,
             scrolling: false,
             $scroll: null,
-            intop: false
+            intop: false,
+            _source: ''
         }
     },
 
@@ -216,10 +219,7 @@ export default{
     },
 
     mounted(){
-        if(typeof this.source != 'string'){
-            this.setData(this.source);
-        }
-
+        this.setSource(this.source);
         this.setParams(this.params);    
         this.$nextTick(() => this.init());
     },
@@ -255,13 +255,26 @@ export default{
             }
         },
 
-        setData(source = []){
+        setSource(source = ''){
+            if(typeof source != 'string'){
+                this.setData(source);
+            }else{
+                this._source = source;
+            }
+        },
+
+        setData(data = []){
             this.data = [];
-            this.addData(source);
+            this.addData(data);
         },
 
         addData(source){
-            this.data = this.data.concat(this.dataFormatter(source) || []);
+            try{
+                source = this.dataFormatter(source);
+            }catch(e){}
+
+            this.data = this.data.concat(source || []);
+            this.$emit('addData');
         },
 
         is2bottom(distance){
@@ -274,7 +287,6 @@ export default{
 
         refresh(pulldownFx = this.pulldown2refresh, clearData = true){
             var self = this;
-
             self.page = 0;
             self.isCompleted = false;
             self.isLoading = false;
@@ -301,7 +313,7 @@ export default{
             self.page++;
             self.isLoading = true;
 
-            if(typeof self.source == 'string' && (self.rows.length == self.data.length || self.isRefreshing && !self.data.length)){
+            if(self._source && typeof self._source == 'string' && (self.rows.length == self.data.length || self.isRefreshing && !self.data.length)){
                 self.loadRemote();
             }else{
                 self.renderRows();
@@ -312,9 +324,10 @@ export default{
         loadRemote(){
             var self = this;
 
+            self.abort();
             self.$http = Ajax({
-                url: self.source,
-                data: Object.assign(this._params, {
+                url: self._source,
+                data: Object.assign(self._params, {
                     page: self.page,
                     count: self.maxCountPerPage
                 }),
@@ -349,11 +362,13 @@ export default{
                 self.$emit('nomore');
             }
 
-            self.$emit('renderRows', rows);
-
             if(rows.length){
                 self.rows = self.isRefreshing ? rows : self.rows.concat(rows);
             }
+
+            self.$nextTick(() => {
+                self.$emit('renderRows', rows);
+            });
 
             self.isRefreshing && self.$emit('refreshSuccess', rows);
             self.afterRenderRows();
@@ -364,7 +379,7 @@ export default{
             self.isRefreshing && self.pulldown2refresh && self.back2top();
             self.isLoading = false;
             self.isRefreshing = false;
-            setTimeout(() => self.$scroll.refresh());;
+            setTimeout(() => self.$scroll.refresh(), 0);
         },
 
         back2top(){

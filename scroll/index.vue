@@ -103,9 +103,11 @@ export default{
         },
 
         refresh(){
-            this._resize_();
-            this.instance.refresh();
-            this.opts.scrollbars && (this.instance.hasVerticalScroll = true);
+            setTimeout(() => {
+                this._resize_();
+                this.instance.refresh();
+                this.opts.scrollbars && (this.instance.hasVerticalScroll = true);
+            }, 0);
         },
 
         tryTrigger(event){
