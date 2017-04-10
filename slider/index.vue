@@ -95,7 +95,6 @@
 
         watch:{
             getChangeValue:function (val) {
-                console.log(this.$ele,9999)
                 this.$ele.noUiSlider.set(val);
             }
         },
