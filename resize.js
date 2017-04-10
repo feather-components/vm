@@ -8,17 +8,25 @@ export default {
         }
     },  
 
+    data: {
+        height: null
+    },
+
     mounted: function(){   
         window.addEventListener('resize', () => {
             this._resize_();
         });
+
+        if(this.$el.style.height && (!this.style || !this.style.height)){
+            this.height = this.$el.style.height;
+        }
 
         this._resize_();
     },
 
     methods: {
         _resize_(){
-            if(this.style && this.style.height) return;
+            if(this.style && this.style.height || this.height) return;
 
             var element = this.$el, parent = element.parentNode;
             var height, otherHeight = 0;
