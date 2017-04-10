@@ -1,6 +1,8 @@
 <template>
-<div :class="vmui-filters">
-    <filter v-for="(index) of level"></filter>
+<div class="vmui-filters">
+    <template v-for="(filter, index) of filters">
+        <box :source="filter" @item:click="clickItem" :level="index"></box>
+    </template>
 </div>
 </template>
 
@@ -22,7 +24,7 @@
 </style>
 
 <script>
-import Filter from '../filter';
+import Box from './index';
 import Ajax from 'ajax';
 import _ from '../helper';
 
@@ -53,41 +55,43 @@ dataFormatter:
 */
 
 export default{
-    mixins: [Filter],
+    mixins: [Box],
 
     props: {
         names: {
             type: Array,
-            validator: (v) => {
-                return this.size > 1 ? v.slice(0, 2) : v;
+            default(){
+                return [];
             }
         }
     },
 
     components: {
-        Filter: Filter
+        Box: Box
     },
 
     data(){
-        filters: []
+        return {
+            filters: [this.source],
+            maxLevel: (this.size > 1 ? 2 : this.names.length) - 1
+        };
+    },
+
+    mounted(){
+
     },
 
     methods: {
-        render(){
-            if(this._isRendered){
-                return;
+        render(){},
+
+        clickItem(item){
+            if(item.__level < this.maxLevel){
+                this.filters = this.filters.slice(0, item.__level + 1).concat([item.children || this.source]);
+                console.log(this.filters);
             }
+        }
 
-            this._isRendered = true;
-
-            if(this.isRemoteSource()){
-                this.renderFromRemote();
-            }else{
-                this.renderList(this.source);
-            };
-        },
-
-        renderList(source){
+        /*renderList(source){
             var self = this;
 
             try{
@@ -227,7 +231,7 @@ export default{
             isSeled && className.push('vmui-filterbox-selected');
 
             return className.join(' ');
-        }
+        }*/
     }
 }
 </script>

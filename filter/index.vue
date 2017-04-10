@@ -13,7 +13,7 @@
 
 <style>
 .vmui-filter{
-    height: .44rem;
+    height: .44rem;;
     line-height: 44px;
 }
 

@@ -114,7 +114,7 @@ export default{
     },
 
     components: {
-        Scroll: Scroll
+        Scroll: Scroll,
     },
 
     data(){
