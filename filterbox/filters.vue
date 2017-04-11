@@ -1,7 +1,7 @@
 <template>
 <div class="vmui-filters">
     <template v-for="(filter, index) of filters">
-        <box :source="filter" @item:click="clickItem" :level="index"></box>
+        <box :source="filter" @item:click="clickItem" :level="index" @change="changeVals" :size="index > 0 ? perSize : 1" :default-value="perSize > 1 && index == 1 ? multipleVals[parent.value] : null" :item-formatter="overrideItemFormatter(index)"></box>
     </template>
 </div>
 </template>
@@ -63,6 +63,16 @@ export default{
             default(){
                 return [];
             }
+        },
+
+        perSize: {
+            type: Number,
+            default: 1
+        },
+
+        totalSize: {
+            type: Number,
+            default: -1
         }
     },
 
@@ -73,23 +83,68 @@ export default{
     data(){
         return {
             filters: [this.source],
-            maxLevel: (this.size > 1 ? 2 : this.names.length) - 1
+            maxLevel: Math.max(this.size > 1 ? 1 : this.names.length - 1, 0),
+            singleVals: [],
+            multipleVals: {},
+            parent: null
         };
-    },
-
-    mounted(){
-
     },
 
     methods: {
         render(){},
 
         clickItem(item){
-            if(item.__level < this.maxLevel){
-                this.filters = this.filters.slice(0, item.__level + 1).concat([item.children || this.source]);
-            }
-        }
+            var self = this, nextLevel = item.__level + 1
 
+            self.filters = self.filters.slice(0, nextLevel);
+            self.$emit('item:click', item);
+
+            if(self.isMaxLevel(item)){
+                return;
+            }else{
+                self.parent = item;
+                self.filters.push(item.children || self.source);
+            }
+        },
+
+        changeVals(val){
+            var self = this, parent = self.parent;
+
+            if(self.perSize == 1){
+                self.singleVals = self.singleVals.slice(0, parent.__level + 1).concat(val);
+                self.$emit('change', self.singleVals);
+            }else{
+                if(val.length){
+                    self.multipleVals[parent.value] = val;
+                }else{
+                    delete self.multipleVals[parent.value];
+                }
+
+                console.log(self.multipleVals);
+
+                self.$emit('change', self.multipleVals);
+            }
+        },
+
+        isMaxLevel(item){   
+            return item.__level == this.maxLevel || !item.children && !this.isRemoteSource();
+        },
+
+        getFilterDefaultValue(index){
+
+        },
+
+        overrideItemFormatter(index){
+            var self = this;
+
+            if(self.perSize != 1 && index == 0){
+                return (item) => {
+                    return item.value in self.multipleVals ? '<strong style="color: red">' + item.label + '</strong>' : item.label;
+                };
+            }
+
+            return self.itemFormatter;
+        }
         /*renderList(source){
             var self = this;
 

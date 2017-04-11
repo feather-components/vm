@@ -29,7 +29,7 @@ export default {
             if(this.style && this.style.height || this.height) return;
 
             var element = this.$el, parent = element.parentNode;
-            var height, otherHeight = 0;
+            var height, otherHeight = 0, selfTop = _.offset(element).top;
 
             element.style.height = 'auto';
 
@@ -47,7 +47,7 @@ export default {
                 height = Math.min(_.height(element), height);
             }
 
-            _.siblings(element).forEach((child) => otherHeight += _.height(child));
+            _.siblings(element).forEach((child) => _.offset(child).top != selfTop && (otherHeight += _.height(child)));
             element.style.height = height - otherHeight + 'px';
         }
     }

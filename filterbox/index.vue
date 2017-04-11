@@ -84,6 +84,7 @@ export default{
         itemFormatter: {
             type: Function,
             default(item){
+                console.log(333);
                 return item.label;
             }
         },
@@ -126,16 +127,17 @@ export default{
 
     watch: {
         defaultValue(v){
+            console.log(v);
             this.value = typeof v == 'undefined' ? [] : Array.isArray(v) ? v : [v];
         },
 
         source(v){
-            this.render(v);
+            this.render();
         }
     },
 
     mounted(){
-        this.render(this.source);
+        this.render();
     },
 
     methods: {
@@ -147,15 +149,15 @@ export default{
             }
         },
 
-        render(source){
-            if(this.isRemoteSource(source)){
-                this.renderFromRemote(source);
+        render(){
+            if(this.isRemoteSource()){
+                this.renderFromRemote();
             }else{
-                this.renderList(source);
-            };
+                this.renderList();
+            }
         },
 
-        renderList(source){
+        renderList(source = this.source){
             var self = this;
 
             try{
