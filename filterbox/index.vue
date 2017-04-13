@@ -1,6 +1,6 @@
 <template>
 <scroll ref="scroll" :class="'vmui-filter' + (size > 1 ? ' vmui-filter-multiple' : '')">
-    <a href="javascript:" v-for="(item, key) of data" v-html="itemFormatter(item)" @click="clickItem(item)" :class="getItemClass(item)"></a>
+    <a href="javascript:" v-for="(item, key) of data" v-html="itemFormatter(item)" @touchstart="clickItem(item)" :class="getItemClass(item)"></a>
 </scroll>
 </template>
 
@@ -111,7 +111,14 @@ export default{
             default: 0
         },
 
-        defaultValue: null
+        defaultValue: null,
+
+        change: {
+            type: Function,
+            default(){
+
+            }
+        }
     },
 
     components: {
@@ -127,8 +134,7 @@ export default{
 
     watch: {
         defaultValue(v){
-            console.log(v);
-            this.value = typeof v == 'undefined' ? [] : Array.isArray(v) ? v : [v];
+            this.val(v);
         },
 
         source(v){
@@ -138,15 +144,20 @@ export default{
 
     mounted(){
         this.render();
+        this.$on('change', this.change);
     },
 
     methods: {
-        val(){
-            if(this.size > 1){
-                return this.value;
+        val(v){
+            if(typeof v == 'undefined'){
+                if(this.size > 1){
+                    return this.value;
+                }else{
+                    return this.value[0];
+                }
             }else{
-                return this.value[0];
-            }
+                this.value = typeof v == 'undefined' ? [] : Array.isArray(v) ? v.slice(0) : [v];
+            }   
         },
 
         render(){
@@ -195,21 +206,24 @@ export default{
 
             self.$emit('item:click', item);
 
+            var vals = self.value.slice(0);
+
             if(self.size > 1){
                 var index = self.value.indexOf(value);
-
+                
                 if(index > -1){
-                    self.value.splice(index, 1);
+                    vals.splice(index, 1);
                 }else if(self.size == self.value.length){
                     return;
                 }else{
-                    self.value.push(value);
+                    vals.push(value);
                 }
             }else{
-                self.value = [value];
+                vals = value;
             }
 
-            self.$emit('change', self.val());
+            self.val(vals);
+            self.$emit('change', vals);
         },
 
         isRemoteSource(){

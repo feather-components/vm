@@ -8,10 +8,6 @@ export default {
         }
     },  
 
-    data: {
-        height: null
-    },
-
     mounted: function(){   
         window.addEventListener('resize', () => {
             this._resize_();
