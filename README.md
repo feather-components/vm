@@ -32,13 +32,13 @@ require.async('vmui/actionsheet', function(ActionSheet){
 
 ## 组件列表
 
-[actions](./actions)
-[actionsheet](./actionsheet)
-[alert](./alert)
-[list](./list)
-[page](./page)
-[scroll](./scroll)
-[search](./search)
-[searchbar](./searchbar)
-[toast](./toast)
-[topbar](./topbar)
+* [actions](./actions)
+* [actionsheet](./actionsheet)
+* [alert](./alert)
+* [list](./list)
+* [page](./page)
+* [scroll](./scroll)
+* [search](./search)
+* [searchbar](./searchbar)
+* [toast](./toast)
+* [topbar](./topbar)
