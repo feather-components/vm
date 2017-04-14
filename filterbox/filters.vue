@@ -1,7 +1,7 @@
 <template>
 <div class="vmui-filters">
     <template v-for="(filter, index) of filters">
-        <box :source="filter.source" @item:click="clickItem" :level="index" :data-index="index" :change="filter.change" :size="filter.size" :item-formatter="filter.itemFormatter" ref="box" :data-formatter="filter.dataFormatter"></box>
+        <box :source="filter" @item:click="clickItem" :level="index" @change="changeVals" :size="index > 0 ? perSize : 1" :default-value="perSize > 1 && index == 1 ? multipleVals[parent.value] : null" :item-formatter="overrideItemFormatter(index)"></box>
     </template>
 </div>
 </template>
@@ -22,15 +22,17 @@
     }
 }
 
-.vmui-filters-selected{
-    &:after{
-        content: "";
-        display: inline-block;
-        float: right;
-        height: .44rem;
-        width: .20rem;
-        background: url(./selected@2x.png) no-repeat center center;
-    }
+
+.lm-form-box label, .lm-label{
+    
+}
+
+input:focus + {
+    border: 1px solid #ccc;
+}
+
+.iconfont-xxx{
+    
 }
 </style>
 
@@ -66,7 +68,9 @@ dataFormatter:
 */
 
 export default{
-    props: Object.assign({}, Box.props, {
+    mixins: [Box],
+
+    props: {
         names: {
             type: Array,
             default(){
@@ -83,15 +87,15 @@ export default{
             type: Number,
             default: -1
         }
-    }),
+    },
 
     components: {
-        Box
+        Box: Box
     },
 
     data(){
         return {
-            filters: [],
+            filters: [this.source],
             maxLevel: Math.max(this.size > 1 ? 1 : this.names.length - 1, 0),
             singleVals: [],
             multipleVals: {},
@@ -99,13 +103,11 @@ export default{
         };
     },
 
-    mounted(){
-        this.create();
-    },
-
     methods: {
+        render(){},
+
         clickItem(item){
-            var self = this, nextLevel = item.__level + 1;
+            var self = this, nextLevel = item.__level + 1
 
             self.filters = self.filters.slice(0, nextLevel);
             self.$emit('item:click', item);
@@ -114,75 +116,189 @@ export default{
                 return;
             }else{
                 self.parent = item;
-                self.create(item.children, nextLevel);
-
-                self.$nextTick(() => {
-                    if(self.perSize > 1){
-                        if(nextLevel == 1){
-                            self.$refs.box[nextLevel].val(self.multipleVals[item.value] || []);
-                        }   
-                    }else{
-                        self.$refs.box[nextLevel].val(self.singleVals[nextLevel]);
-                    }
-                });
+                self.filters.push(item.children || self.source);
             }
         },
 
-        create(source = this.source, level = 0){
-            var self = this;
-            var props = {
-                level: level,
-                source: source,
-                dataFormatter: self.dataFormatter,
-                size: level == 0 ? 1 : self.perSize,
-                itemFormatter: self.itemFormatter,
-                defaultValue: [],
-                change: this.listenChange(level)
-            };
+        changeVals(val){
+            var self = this, parent = self.parent;
 
-            if(self.perSize > 1 && level == 0){
-                props.itemFormatter = (item) => {
-                    return item.value in self.multipleVals ? '<span class="vmui-filters-selected">' + item.label + '</span>' : item.label;
-                };
-            }
-
-            if(self.filters[level]){
-                self.filters.splice(level, 1, props);
+            if(self.perSize == 1){
+                self.singleVals = self.singleVals.slice(0, parent.__level + 1).concat(val);
+                self.$emit('change', self.singleVals);
             }else{
-                self.filters.push(props);
-            }
-        },
-
-        listenChange(index){
-            var self = this
-
-            if(self.perSize > 1 && index == 1){
-                return (val) => {
-                    var parent = self.parent;
-
-                    if(val.length){
-                        self.multipleVals[parent.value] = val;
-                    }else{
-                        delete self.multipleVals[parent.value];
-                    }
-
-                    self.create();
-                    self.$emit('change', self.multipleVals);
+                if(val.length){
+                    self.multipleVals[parent.value] = val;
+                }else{
+                    delete self.multipleVals[parent.value];
                 }
-            }else if(self.perSize == 1){
-                return (val) => {
-                    var parent = self.parent;
-                    self.singleVals = self.singleVals.slice(0, parent.__level + 1).concat(val);
-                    self.$emit('change', self.singleVals);
-                }
-            }else{
-                return () => {};
+
+                console.log(self.multipleVals);
+
+                self.$emit('change', self.multipleVals);
             }
         },
 
         isMaxLevel(item){   
             return item.__level == this.maxLevel || !item.children && !this.isRemoteSource();
+        },
+
+        getFilterDefaultValue(index){
+
+        },
+
+        overrideItemFormatter(index){
+            var self = this;
+
+            if(self.perSize != 1 && index == 0){
+                return (item) => {
+                    return item.value in self.multipleVals ? '<strong style="color: red">' + item.label + '</strong>' : item.label;
+                };
+            }
+
+            return self.itemFormatter;
         }
+        /*renderList(source){
+            var self = this;
+
+            try{
+                source = self.dataFormatter(source); 
+            }catch(e){
+                source = [];
+            }
+
+            if(!source.length) return;
+
+            self.level++;
+
+            if(self.level > 0){
+                source = source.map((item) => {
+                    item.__p__ = self.indexs[self.level - 1];
+                    return item;
+                });
+            }
+            
+            self.filters = self.filters.slice(0, self.level).concat([source]);
+            self.$nextTick(() => {
+                self.$refs.scroll[self.level].refresh();
+            });
+        },
+
+        renderFromRemote(){
+            var self = this;
+            var params = {}, level = self.level;
+
+            if(level > 0){
+                params[self._names[level]] = self.indexs[level];
+            }
+
+            self.abort();
+            self.$http = Ajax({
+                url: self.source,
+                data: params,
+                success: (data) => self.renderList(data)
+            });
+        },
+
+        abort(){
+            this.$http && this.$http.abort();
+        },
+
+        clear(level, clearFilters){
+            var self = this;
+
+            if(clearFilters){
+                self.filters = self.filters.slice(0, level + 1);
+            }
+            
+            self.indexs = self.indexs.slice(0, level);
+
+            if(!self.multiple){
+                self.vals = self.vals.slice(0, level);
+            }
+            
+            self.level = level;
+        },
+
+        select(data, level){
+            var self = this;
+
+            if(self.vals[level] == data.value) return;
+
+            self.clear(level, false);
+            self.indexs.push(data.value);
+
+            if(!self.multiple){
+                self.vals[level] = data.value;
+            }else{
+                var index;
+  
+                if(typeof data.__p__ !== 'undefined'){
+                    var vals = self.vals[data.__p__] || [];
+
+                    index = vals.indexOf(data.value);
+
+                    if(index > -1){
+                        vals.splice(index, 1);
+                    }else if(!self.multipleSize || vals.length < self.multipleSize){
+                        vals.push(data.value);
+                    }
+
+                    if(vals.length){
+                        self.vals[data.__p__] = vals;
+                    }else{
+                        delete self.vals[data.__p__];
+                    }
+                }else if(self._names.length == 1){
+                    index = self.vals.indexOf(data.value);
+
+                    if(index > -1){
+                        self.vals.splice(index, 1);
+                    }else if(vals.length < multipleSize){
+                        self.vals.push(data.value);
+                    }
+                }
+            }
+
+            self.$emit('select', self.vals);
+
+            if(!self.isRemoteSource()){
+                if(data.children && data.children.length){
+                    self.renderList(data.children);
+                }
+            }else if(self._names.length - 1 > self.level){
+                self.renderFromRemote();
+            }
+        },
+
+        isRemoteSource(){
+            return typeof this.source == 'string';
+        },
+
+        getItemClass(item, index){
+            var self = this;
+            var className = ['vmui-filterbox-item'], isSeled = false;
+
+            if(self.indexs[index] == item.value){
+                className.push('vmui-filterbox-ii');
+            }
+
+            if(self.multiple){
+                if(self._names.length == 2){
+                    if(level == 0){
+                        isSeled = data.value in self.vals;
+                    }else{
+                        isSeled = (self.vals[data.__p__] || []).indexOf(data.value) > -1;
+                    }
+                }else{
+                    isSeled = self.vals.indexOf(data.value) > -1;
+                }
+            }
+
+            isSeled && className.push('vmui-filterbox-selected');
+
+            return className.join(' ');
+        }*/
     }
 }
 </script>
