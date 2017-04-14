@@ -2,9 +2,7 @@ list
 ===========
 该列表组件，自动集成了scroll功能，并支持下拉刷新，上滑加载功能
 
-## Options
-
-* source: Array|String 数据源，数组为本地数据源，string类型为远程数据源
+## Props
 
 ```html
 <div id="list-container">
@@ -65,4 +63,16 @@ new Vue({
 <div id="list-container">
     <list :source="{data: [{title: '第1行', desc: 'lalala'}, {title: '第2行', desc: 'lalala'}]}" :data-formatter="function(data){return data.data;}" :row-formatter="rowFormatter" :pullup2load="true"></list>
 </div>
+```
+
+## Slot
+
+* header： 组件头部显示
+* nores： 无结果时显示
+
+```html
+<list>
+    <div slot="header">这里是头部</div>
+    <div slot="nores">无结果时显示我</div>
+</list>
 ```
