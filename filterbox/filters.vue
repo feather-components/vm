@@ -1,7 +1,7 @@
 <template>
 <div class="vmui-filters">
     <template v-for="(filter, index) of filters">
-        <box :source="filter" @item:click="clickItem" :level="index" @change="changeVals" :size="index > 0 ? perSize : 1" :default-value="perSize > 1 && index == 1 ? multipleVals[parent.value] : null" :item-formatter="overrideItemFormatter(index)"></box>
+        <box :source="filter.source" @item:click="clickItem" :level="index" :data-index="index" :change="filter.change" :size="filter.size" :item-formatter="filter.itemFormatter" ref="box" :data-formatter="filter.dataFormatter"></box>
     </template>
 </div>
 </template>
@@ -20,19 +20,25 @@
     &:nth-child(1){
         border-left: 0px;
     }
+
+    .vmui-filter-item{
+        text-align: left;
+    }
+
+    .vmui-filters-ln{
+        float: right;
+    }
 }
 
-
-.lm-form-box label, .lm-label{
-    
-}
-
-input:focus + {
-    border: 1px solid #ccc;
-}
-
-.iconfont-xxx{
-    
+.vmui-filters-selected{
+    &:after{
+        content: "";
+        display: inline-block;
+        float: right;
+        height: .44rem;
+        width: .20rem;
+        background: url(./selected@2x.png) no-repeat center center;
+    }
 }
 </style>
 
@@ -68,9 +74,7 @@ dataFormatter:
 */
 
 export default{
-    mixins: [Box],
-
-    props: {
+    props: Object.assign({}, Box.props, {
         names: {
             type: Array,
             default(){
@@ -78,36 +82,68 @@ export default{
             }
         },
 
-        perSize: {
+        size: {
             type: Number,
             default: 1
         },
 
-        totalSize: {
+        perMaxSize: {
             type: Number,
-            default: -1
+            default: 1
         }
-    },
+    }),
 
     components: {
-        Box: Box
+        Box
     },
 
     data(){
         return {
-            filters: [this.source],
-            maxLevel: Math.max(this.size > 1 ? 1 : this.names.length - 1, 0),
+            filters: [],
+            infinite: this.size < 0,
             singleVals: [],
             multipleVals: {},
             parent: null
         };
     },
 
-    methods: {
-        render(){},
+    computed: {
+        maxLevel(){
+            return Math.max(1, this.size > 1 || this.infinite ? 1 : this.names.length - 1);
+        },
 
+        isMultiple(){
+            return this.infinite || this.size > 1;
+        },
+
+        perInfinite(){
+            return this.isMultiple && this.perMaxSize < 0;
+        },
+
+        perSize(){
+            if(this.isMultiple){
+                return this.perInfinite ? 10000000 : this.perMaxSize;
+            }
+
+            return 1;
+        },
+
+        totalSize(){
+            if(this.isMultiple){
+                return this.infinite ? 10000000 : this.size;
+            }
+
+            return 1;
+        }
+    },
+
+    mounted(){
+        this.create();
+    },
+
+    methods: {
         clickItem(item){
-            var self = this, nextLevel = item.__level + 1
+            var self = this, nextLevel = item.__level + 1;
 
             self.filters = self.filters.slice(0, nextLevel);
             self.$emit('item:click', item);
@@ -116,187 +152,112 @@ export default{
                 return;
             }else{
                 self.parent = item;
-                self.filters.push(item.children || self.source);
+                self.create(item.children, nextLevel);
+
+                self.$nextTick(() => {
+                    var $instance = self.$refs.box[nextLevel];
+
+                    if(self.isMultiple){
+                        nextLevel == 1 && $instance.val(self.multipleVals[item.value] || []);
+                    }else{
+                        $instance.val(self.singleVals[nextLevel]);
+                    }
+                });
             }
         },
 
-        changeVals(val){
-            var self = this, parent = self.parent;
+        create(source = this.source, level = 0){
+            var self = this;
+            var props = {
+                level: level,
+                source: source,
+                dataFormatter: self.dataFormatter,
+                size: level == 0 ? 1 : self.perSize,
+                itemFormatter: self.itemFormatter,
+                defaultValue: []
+            };
 
-            if(self.perSize == 1){
-                self.singleVals = self.singleVals.slice(0, parent.__level + 1).concat(val);
-                self.$emit('change', self.singleVals);
-            }else{
-                if(val.length){
-                    self.multipleVals[parent.value] = val;
+            props.itemFormatter = (item) => {
+                if(level == 0 && self.isMultiple){
+                    if(self.perInfinite || self.perSize == 1){
+                        if(item.value in self.multipleVals){
+                            return '<span class="vmui-filters-selected">' + item.label + '</span>';
+                        }else{
+                            return item.label;
+                        }
+                    }else{
+                        var vals = self.multipleVals[item.value];
+                        var len = vals ? vals.length : 0;
+
+                        return '<span class="vmui-filters-limit">' + item.label + '<span class="vmui-filters-ln">(' + len + '/' + self.perSize + ')</span></span>';
+                    }
                 }else{
-                    delete self.multipleVals[parent.value];
-                }
+                    return item.label;
+                }                    
+            };
 
-                self.$emit('change', self.multipleVals);
+            props.change = (val) => {
+                var parent = self.parent;
+
+                do{
+                    if(level == 1){
+                        if(self.isMultiple){
+                            if(val.length){
+                                self.multipleVals[parent.value] = val;
+                            }else{
+                                delete self.multipleVals[parent.value];
+                            }
+
+                            self.create();
+                            self.$emit('change', self.multipleVals);
+                            break;
+                        }
+                    }
+
+                    self.singleVals = self.singleVals.slice(0, parent.__level + 1).concat(val);
+                    self.$emit('change', self.singleVals);
+                }while(0);
+                
+                self.isPerSizeExceeded() && self.$emit('persize:exceed');
+                self.isSizeExceeded() && self.$emit('size:exceed');
+            };
+
+            if(self.filters[level]){
+                self.filters.splice(level, 1, props);
+            }else{
+                self.filters.push(props);
             }
         },
 
         isMaxLevel(item){   
-            return item.__level == this.maxLevel || !item.children && !this.isRemoteSource();
+            return item.__level == this.maxLevel;
         },
 
-        getFilterDefaultValue(index){
+        isSizeExceeded(){
+            if(this.isMultiple){
+                var count = 0;
 
-        },
+                for(var l0 in this.multipleVals){
+                    count += this.multipleVals[l0].length;
+                }
 
-        overrideItemFormatter(index){
-            var self = this;
-
-            if(self.perSize != 1 && index == 0){
-                return (item) => {
-                    return item.value in self.multipleVals ? '<strong style="color: red">' + item.label + '</strong>' : item.label;
-                };
+                return count > this.totalSize;
             }
 
-            return self.itemFormatter;
+            return false;
+        },
+
+        isPerSizeExceeded(){
+            if(this.isMultiple){
+                for(var l0 in this.multipleVals){
+                    if(this.multipleVals[l0].length > this.perSize){
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
-        /*renderList(source){
-            var self = this;
-
-            try{
-                source = self.dataFormatter(source); 
-            }catch(e){
-                source = [];
-            }
-
-            if(!source.length) return;
-
-            self.level++;
-
-            if(self.level > 0){
-                source = source.map((item) => {
-                    item.__p__ = self.indexs[self.level - 1];
-                    return item;
-                });
-            }
-            
-            self.filters = self.filters.slice(0, self.level).concat([source]);
-            self.$nextTick(() => {
-                self.$refs.scroll[self.level].refresh();
-            });
-        },
-
-        renderFromRemote(){
-            var self = this;
-            var params = {}, level = self.level;
-
-            if(level > 0){
-                params[self._names[level]] = self.indexs[level];
-            }
-
-            self.abort();
-            self.$http = Ajax({
-                url: self.source,
-                data: params,
-                success: (data) => self.renderList(data)
-            });
-        },
-
-        abort(){
-            this.$http && this.$http.abort();
-        },
-
-        clear(level, clearFilters){
-            var self = this;
-
-            if(clearFilters){
-                self.filters = self.filters.slice(0, level + 1);
-            }
-            
-            self.indexs = self.indexs.slice(0, level);
-
-            if(!self.multiple){
-                self.vals = self.vals.slice(0, level);
-            }
-            
-            self.level = level;
-        },
-
-        select(data, level){
-            var self = this;
-
-            if(self.vals[level] == data.value) return;
-
-            self.clear(level, false);
-            self.indexs.push(data.value);
-
-            if(!self.multiple){
-                self.vals[level] = data.value;
-            }else{
-                var index;
-  
-                if(typeof data.__p__ !== 'undefined'){
-                    var vals = self.vals[data.__p__] || [];
-
-                    index = vals.indexOf(data.value);
-
-                    if(index > -1){
-                        vals.splice(index, 1);
-                    }else if(!self.multipleSize || vals.length < self.multipleSize){
-                        vals.push(data.value);
-                    }
-
-                    if(vals.length){
-                        self.vals[data.__p__] = vals;
-                    }else{
-                        delete self.vals[data.__p__];
-                    }
-                }else if(self._names.length == 1){
-                    index = self.vals.indexOf(data.value);
-
-                    if(index > -1){
-                        self.vals.splice(index, 1);
-                    }else if(vals.length < multipleSize){
-                        self.vals.push(data.value);
-                    }
-                }
-            }
-
-            self.$emit('select', self.vals);
-
-            if(!self.isRemoteSource()){
-                if(data.children && data.children.length){
-                    self.renderList(data.children);
-                }
-            }else if(self._names.length - 1 > self.level){
-                self.renderFromRemote();
-            }
-        },
-
-        isRemoteSource(){
-            return typeof this.source == 'string';
-        },
-
-        getItemClass(item, index){
-            var self = this;
-            var className = ['vmui-filterbox-item'], isSeled = false;
-
-            if(self.indexs[index] == item.value){
-                className.push('vmui-filterbox-ii');
-            }
-
-            if(self.multiple){
-                if(self._names.length == 2){
-                    if(level == 0){
-                        isSeled = data.value in self.vals;
-                    }else{
-                        isSeled = (self.vals[data.__p__] || []).indexOf(data.value) > -1;
-                    }
-                }else{
-                    isSeled = self.vals.indexOf(data.value) > -1;
-                }
-            }
-
-            isSeled && className.push('vmui-filterbox-selected');
-
-            return className.join(' ');
-        }*/
     }
 }
 </script>

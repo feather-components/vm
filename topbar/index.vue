@@ -49,7 +49,7 @@
 <div class="vmui-topbar" :style="{paddingTop: top}">
     <div class="vmui-topbar-left" v-if="leftEnabled">
         <slot name="left">
-            <a href="javascript:" class="vmui-topbar-btn-back" @touchstart="back()"></a>
+            <a href="javascript:" class="vmui-topbar-btn-back" @touchstart="leftCallback && leftCallback()"></a>
         </slot>
     </div>
     <slot>无标题页面</slot>
@@ -63,6 +63,13 @@ var TopBar = module.exports = {
         leftEnabled: {
             type: Boolean,
             default: true
+        },
+
+        leftCallback: {
+            type: Function,
+            default(){
+                history.back();
+            }
         },
 
         rightEnabled: {
@@ -89,10 +96,6 @@ var TopBar = module.exports = {
     },
 
     methods: {
-        back(){
-            history.back();
-        },
-
         disableRight(){
             this.visibleRight = false;
         },

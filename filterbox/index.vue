@@ -1,5 +1,5 @@
 <template>
-<scroll ref="scroll" :class="'vmui-filter' + (size > 1 ? ' vmui-filter-multiple' : '')">
+<scroll ref="scroll" :class="'vmui-filter' + (isMultiple ? ' vmui-filter-multiple' : '')">
     <a href="javascript:" v-for="(item, key) of data" v-html="itemFormatter(item)" @click="clickItem(item)" :class="getItemClass(item)"></a>
 </scroll>
 </template>
@@ -115,9 +115,7 @@ export default{
 
         change: {
             type: Function,
-            default(){
-
-            }
+            default(){}
         }
     },
 
@@ -128,8 +126,15 @@ export default{
     data(){
         return {
             data: [],
-            value: []
+            value: [],
+            infinite: this.size < 0
         };
+    },
+
+    computed: {
+        isMultiple(){
+            return this.infinite || this.size > 1;
+        }
     },
 
     watch: {
@@ -150,7 +155,7 @@ export default{
     methods: {
         val(v){
             if(typeof v == 'undefined'){
-                if(this.size > 1){
+                if(this.isMultiple){
                     return this.value;
                 }else{
                     return this.value[0];
@@ -192,7 +197,10 @@ export default{
             self.$http = Ajax({
                 url: source,
                 data: params,
-                success: (data) => self.renderList(data),
+                success: (data) => {
+                    self.$emit('xhr:success', data);
+                    self.renderList(data);
+                },
                 complete: () => self.$emit('xhr:completed')
             });
         },
@@ -208,7 +216,7 @@ export default{
 
             var vals = self.value.slice(0);
 
-            if(self.size > 1){
+            if(self.isMultiple){
                 var index = self.value.indexOf(value);
                 
                 if(index > -1){
