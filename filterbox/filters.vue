@@ -133,8 +133,6 @@ export default{
                     delete self.multipleVals[parent.value];
                 }
 
-                console.log(self.multipleVals);
-
                 self.$emit('change', self.multipleVals);
             }
         },
