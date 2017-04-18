@@ -45,7 +45,7 @@
 <div class="vmui-topbar" :style="{paddingTop: top}">
     <div class="vmui-topbar-left" v-if="leftEnabled">
         <slot name="left">
-            <a href="javascript:" class="vmui-topbar-btn-back" @touchstart="leftCallback && leftCallback()"></a>
+            <a href="javascript:" class="vmui-topbar-btn-back" @click="leftCallback && leftCallback()"></a>
         </slot>
     </div>
     <slot>无标题页面</slot>
