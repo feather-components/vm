@@ -48,6 +48,10 @@
         background: transparent;
         -webkit-transform: translateY(-1px);
         transform: translateY(0px);
+
+        &:focus{
+            border: 0px;
+        }
     }
 
     .vmui-searchbar-clear{

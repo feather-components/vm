@@ -85,8 +85,36 @@ export default{
         return obj
     },
 
-    $: (str) => {
-        return typeof str == 'string' ? document.querySelector(str) : str;
+    $(str, root = document){
+        return typeof str == 'string' ? root.querySelector(str) : str;
+    },
+
+    $$(str, root = document){
+        return (typeof str == 'string' ? root.querySelectorAll(str) : str) || [];
+    },
+
+    each(arr, callback){
+        if(arr.length){
+            [].forEach.call(arr, callback);
+        }else{
+            for(var i in arr){
+                callback(arr[i], i);
+            }
+        }
+    },
+
+    hasClass(element, className){  
+        return element.className.match(new RegExp('(\\s+|^)' + className + '(\\s+|$)'));  
+    },
+
+    addClass(element, className){
+        if(this.hasClass(element, className)){
+            element.className += ' ' + className;
+        }
+    },
+
+    removeClass(element, className){
+        element.className = element.className.replace(new RegExp('(\\s+|^)' + className + '(\\s+|$)'));
     }
 }
 

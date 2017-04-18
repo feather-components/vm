@@ -14,10 +14,10 @@
             </div>
 
             <div class="vmui-search-desc" v-if="!isEmpty">
-                <slot name="">搜索结果</slot>
+                <slot name="resdesc">搜索结果</slot>
             </div>
 
-            <div class="vmui-search-default" v-if="empty2load && !value">
+            <div class="vmui-search-default" v-if="!empty2load && !value">
                 <slot name="default"></slot>
             </div>
         </template>

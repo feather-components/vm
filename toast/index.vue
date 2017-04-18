@@ -30,7 +30,7 @@ import Factory from '../factory';
 
 var instance = null, timeid;
 
-var Toast = module.exports = (content, time, useShade, className = '') => {
+var Toast = module.exports = (content, time = 3000, useShade, className = '') => {
     Toast.destroy();
 
     if(time){
