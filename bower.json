@@ -10,7 +10,8 @@
   "dependencies": {
     "vue": "feather-components/vue#production",
     "iscroll": "~5.2.0",
-    "nouislider": "~9.2.0",
+    "nouislider": "feather-components/nouislider",
+    "iosselect": "feather-components/iosselect",
     "type-of": "ForbesLindesay/type-of",
     "ajax": "ForbesLindesay/ajax"
   }
