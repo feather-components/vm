@@ -154,12 +154,11 @@ export default{
 
             if(self.caches[self.value]){
                 self.$list.setData(self.caches[self.value]);
-                self.$list.refresh(false, false);
             }else{
                 self.$list.setParams({
                     kw: self.value
                 }, true);
-                self.$list.refresh(false);
+                self.$list.refresh(false, false);
             }
         },
 

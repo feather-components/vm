@@ -61,7 +61,9 @@ export default{
                 scrollbars: true,
                 fadeScrollbars: true,
                 fixedScrollbar: true,
-                probeType: 1
+                probeType: 1,
+                click: true,
+                tap: true
             },
             oid: this.id || ('s' + Date.now()),
             instance: null
@@ -143,7 +145,6 @@ export default{
 <style>
 .vmui-scroll{
     position: relative;
-    background: #fff;
     width: 100%;
     overflow: hidden;
 

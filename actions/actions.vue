@@ -134,7 +134,7 @@ export default{
                 action.callback.call(this);
             }
 
-            this.close();
+            this.$refs.dropdown.close();
         }
     }
 }

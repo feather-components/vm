@@ -219,9 +219,21 @@ export default{
     },
 
     mounted(){
-        this.setSource(this.source);
-        this.setParams(this.params);    
+        this._params = this.params;
+        this.setSource(this.source);    
         this.$nextTick(() => this.init());
+    },
+
+    watch: {
+        source(v){
+            this.setSource(v);
+            this.autoRefresh && this.refresh(this.pulldown2refresh, false);
+        },
+
+        params(v){
+            this.setParams(v);
+            this.autoRefresh && this.refresh(this.pulldown2refresh, false);
+        }
     },
 
     methods: {
@@ -327,7 +339,7 @@ export default{
             self.abort();
             self.$http = Ajax({
                 url: self._source,
-                data: Object.assign(self._params, {
+                data: Object.assign({}, self._params || {}, {
                     page: self.page,
                     count: self.maxCountPerPage
                 }),

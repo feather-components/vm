@@ -17,15 +17,11 @@
     width: @h;
     height: @h;
     display: inline-block;
-    position: absolute;
-    left: 0px;
-    bottom: 0px;
 }
 
 .vmui-topbar-left, .vmui-topbar-right{
     position: absolute;
     bottom: 0px;
-    right: 0px;
     height: @h;
     min-width: @h;
     display: inline-block;

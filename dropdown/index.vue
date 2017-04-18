@@ -93,7 +93,6 @@ export default{
         },
 
         close(){
-            console.log('331113');
             Overlay.methods.close.call(this);
             this.$emit('close');
         }
