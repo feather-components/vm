@@ -1,25 +1,17 @@
 {
   "name": "vmui",
   "main": "index.js",
+  "version": "0.1.0",
   "homepage": "https://github.com/feather-components/vmui",
   "authors": [
     "zhanghao639 <jsyczhanghao@sina.com>"
   ],
   "description": "",
-  "moduleType": [],
-  "license": "MIT",
   "dependencies": {
     "vue": "~2.2.0",
     "iscroll": "~5.2.0",
     "nouislider": "~9.2.0",
     "type-of": "ForbesLindesay/type-of",
     "ajax": "ForbesLindesay/ajax"
-  },
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ]
+  }
 }
