@@ -34,7 +34,7 @@
 
     import Vue from 'vue';
     import IScroll from 'iscroll';
-    import IosSelect from 'iosselect';
+    import IosSelect from 'iosSelect';
 
     const  DAYS_ONE=31,
             DAYS_TWO=30,
@@ -42,14 +42,11 @@
             DAYS_FOUR=28;
 
     export default{
-        name:"datepicker",
 
         props:{
-
             initYear:{
                 type:Number,
                 default:()=>{
-                    console.log( new Date().getFullYear())
                     return new Date().getFullYear()
                 }
             },
@@ -91,17 +88,11 @@
             },
         },
 
-        watch:{
-
-        },
-
-        created(){
-            var _$=this;
-
-            new Promise((resolve,reject)=>{resolve()}).then(()=>{
-
+        methods:{
+            createDatepicker(){
+                var _$=this;
                 // 数据初始化
-                function formatYear (nowYear) {
+                function formatYear(nowYear) {
                     var arr = [];
 
                     for (var i = nowYear - 5; i <= nowYear + 5; i++) {
@@ -113,7 +104,7 @@
                     return arr;
                 }
 
-                function formatMonth () {
+                function formatMonth() {
                     var arr = [];
                     for (var i = 1; i <= 12; i++) {
                         arr.push({
@@ -124,7 +115,7 @@
                     return arr;
                 }
 
-                function formatDate (count) {
+                function formatDate(count) {
                     var arr = [];
                     for (var i = 1; i <= count; i++) {
                         arr.push({
@@ -135,7 +126,7 @@
                     return arr;
                 }
 
-                var yearData = function(callback) {
+                var yearData = function (callback) {
                     callback(formatYear(_$.year))
                 };
 
@@ -151,7 +142,7 @@
                         callback(formatDate(DAYS_TWO));
                     }
                     else if (/^2$/.test(month)) {
-                        if (year % 4 === 0 && year % 100 !==0 || year % 400 === 0) {
+                        if (year % 4 === 0 && year % 100 !== 0 || year % 400 === 0) {
                             callback(formatDate(DAYS_THREE));
                         }
                         else {
@@ -162,7 +153,6 @@
                         throw new Error('month is illegal');
                     }
                 };
-
                 _$.iosSelect = new IosSelect(3,
                         [yearData, monthData, dateData],
                         {
@@ -172,29 +162,20 @@
                             oneLevelId: _$.year,
                             twoLevelId: _$.month,
                             threeLevelId: _$.day,
-                            itemShowCount:5,
+                            itemShowCount: 5,
                             callback: function (selectOneObj, selectTwoObj, selectThreeObj) {
-                                _$.$emit("selected",selectOneObj, selectTwoObj, selectThreeObj);
+                                _$.$emit("select", selectOneObj, selectTwoObj, selectThreeObj);
                             }
                         });
 
-
-                _$.iosSelect.closeBtnDom.addEventListener("click",()=>{
+                _$.iosSelect.closeBtnDom.addEventListener("click", ()=> {
                     _$.$emit("cancel");
                 });
-
-            })
-
-
+            }
         },
-
-
-        methods:{
-
-        },
-
-
 
     }
+
+
 
 </script>

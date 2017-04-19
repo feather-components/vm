@@ -95,6 +95,7 @@
 
         watch:{
             getChangeValue:function (val) {
+                console.log(this.$ele,9999)
                 this.$ele.noUiSlider.set(val);
             }
         },
@@ -138,9 +139,9 @@
 
         created(){
             var _$=this;
-            new Promise((resolve,reject)=>{resolve()}).then(()=>{
-                    _$.$ele=document.getElementById(_$.id);
-                    _$.createSlider();
+            _$.$nextTick(()=>{
+                _$.$ele=document.getElementById(_$.id);
+                _$.createSlider();
             })
         },
 
