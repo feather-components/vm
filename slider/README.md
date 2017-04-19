@@ -24,7 +24,7 @@ slider
 | max-value | /| Y |最大范围 |
 | value | /| N |可通过外部设置滑块值|
 
-##事件
+## 事件
 
 'update','slide','set','change','start','end'
 
