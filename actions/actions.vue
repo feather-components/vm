@@ -1,10 +1,10 @@
 <template>
-<Dropdown class="vmui-actions" ref="dropdown" :handler="handler" :offset="offset">
+<Dropbox class="vmui-actions" ref="box" :handler="handler" :offset="offset">
     <div class="vmui-actions-inner" ref="inner">
         <i class="vmui-actions-arrow" ref="arrow"></i>
         <a href="javascript:void(0);" :class="'vmui-actions-item' + (action.className || '')" v-for="(action, index) of actions" v-html="index" @click.stop="callAction(index)"></a>
     </div>
-</Dropdown>
+</Dropbox>
 </template>
 
 <style>
@@ -60,7 +60,7 @@
 </style>
 
 <script>
-import DropDown from '../dropdown';
+import Dropbox from '../dropbox';
 import _ from '../helper';
 
 export default{
@@ -85,7 +85,7 @@ export default{
     },
 
     components: {
-        Dropdown: DropDown
+        Dropbox: Dropbox
     },
 
     mounted(){
@@ -93,7 +93,7 @@ export default{
 
         self.dom = _.$(self.handler);
 
-        this.$refs.dropdown.$on('open', () => {
+        this.$refs.box.$on('open', () => {
             setTimeout(() => {
                 var self = this;
                 var $inner = self.$refs.inner;
@@ -134,7 +134,7 @@ export default{
                 action.callback.call(this);
             }
 
-            this.$refs.dropdown.close();
+            this.$refs.box.close();
         }
     }
 }

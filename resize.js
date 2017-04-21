@@ -1,6 +1,6 @@
 import _ from './helper';
 
-export default {
+module.exports = {
     props: {
         fillHeight: {
             type: Boolean,
@@ -17,6 +17,7 @@ export default {
             this.height = this.$el.style.height;
         }
 
+        this.$el.$resize = this;
         this._resize_();
     },
 
@@ -36,15 +37,25 @@ export default {
             }
 
             if(parent.style.maxHeight){
-                height = Math.min(height, parseInt(parent.style.maxHeight));
+                height = Math.min(height, parseFloat(parent.style.maxHeight));
             }
 
             if(!this.fillHeight){
                 height = Math.min(_.height(element), height);
+            }else{
+                _.siblings(element).forEach((child) => _.offset(child).top != selfTop && (otherHeight += _.height(child)));
+                height -= otherHeight;
             }
 
-            _.siblings(element).forEach((child) => _.offset(child).top != selfTop && (otherHeight += _.height(child)));
-            element.style.height = height - otherHeight + 'px';
+            element.style.height = height + 'px';
         }
     }
+}
+
+module.exports.resize = (element) => {
+    element.$resize && element.$resize._resize_();
+
+    _.each(_.$$('*', element), (element) => {
+        element.$resize && element.$resize._resize_();
+    });
 }
