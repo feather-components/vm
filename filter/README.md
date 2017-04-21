@@ -7,7 +7,7 @@ filter组件集合中包含了4个组件：
 
     ### Example
 
-    ```html
+```html
 <div id="test">
     <single-filter :source="[{label: '1', value: 1}, {label: '2', value: 2}]" @change="print"></single-filter>
 </div>
@@ -28,16 +28,16 @@ require.async(['vue', 'vmui/filter'], function(Vue, Filter){
     });
 });
 </script>
-    ```
+```
 
     ### Props
 
     * source: Array 数据源，数据源的要求必须是对象数组，且对象必须有value属性
     * itemFormatter: Function 格式化输出的每一项的显示文字
 
-    ```html
+```html
     <single-filter :source="[{label: '1', value: 1}, {label: '2', value: 2}]" :item-formatter="function(item){return item.label + 'lala'}"></single-filter>
-    ```
+```
 
     * disabled: Boolean 是否禁用
     * selectedClassName: String 选中后的class
@@ -53,7 +53,7 @@ require.async(['vue', 'vmui/filter'], function(Vue, Filter){
 
 ### Example
 
-    ```js
+```js
 //html同single
 require.async(['vue', 'vmui/filter'], function(Vue, Filter){
     new Vue({
@@ -69,7 +69,7 @@ require.async(['vue', 'vmui/filter'], function(Vue, Filter){
         }
     });
 });
-    ```
+```
 
     ### Props
 
@@ -88,7 +88,7 @@ require.async(['vue', 'vmui/filter'], function(Vue, Filter){
 
 #### 远程数据源
 
-    ```html
+```html
 <div id="test">
     <!--
     level指定3级， names指定远程请求时，每一级的id参数名
@@ -112,9 +112,9 @@ require.async(['vue', 'vmui/filter'], function(Vue, Filter){
     });
 });
 </script>
-    ```
+```
 
-    ```js
+```js
 {
     "data": [
         {
@@ -128,11 +128,11 @@ require.async(['vue', 'vmui/filter'], function(Vue, Filter){
         }
     ]
 }
-    ```
+```
 
 #### 本地数据源
 
-    ```html
+```html
 <div id="test">
     <!--本地数据源多级必须存在children属性-->
     <link-filter :source="[
@@ -154,7 +154,7 @@ require.async(['vue', 'vmui/filter'], function(Vue, Filter){
         }
     ]" @change="print" :level="2"></link-filter>
 </div>
-    ```
+```
 
     ### Props
 
@@ -178,7 +178,7 @@ require.async(['vue', 'vmui/filter'], function(Vue, Filter){
 
     ### Example
 
-    ```js
+```js
 require.async(['vue', 'vmui/filter'], function(Vue, Filter){
     new Vue({
         el: '#test',
@@ -193,7 +193,7 @@ require.async(['vue', 'vmui/filter'], function(Vue, Filter){
         }
     });
 });
-    ```
+```
 
     ### Props
 
