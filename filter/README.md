@@ -5,7 +5,7 @@ filter组件集合中包含了4个组件：
 
 * 单选filter
 
-    ### Example
+   ### Example
 
 ```html
 <div id="test">
@@ -30,7 +30,7 @@ require.async(['vue', 'vmui/filter'], function(Vue, Filter){
 </script>
 ```
 
-    ### Props
+   ### Props
 
     * source: Array 数据源，数据源的要求必须是对象数组，且对象必须有value属性
     * itemFormatter: Function 格式化输出的每一项的显示文字
@@ -44,14 +44,14 @@ require.async(['vue', 'vmui/filter'], function(Vue, Filter){
     * fillHeight: Boolean 是否自动填充组件高度，默认为false
 
 
-    ### Events
+   ### Events
 
     * change: 当值改变时触发
     * reject: 拒绝选择操作时触发
 
 * 多选filter
 
-### Example
+   ### Example
 
 ```js
 //html同single
@@ -71,22 +71,22 @@ require.async(['vue', 'vmui/filter'], function(Vue, Filter){
 });
 ```
 
-    ### Props
+   ### Props
 
     Props继承single的props
 
     * size: Number， 默认为-1，表示可无限选择
     * canBeSelect: Function，在点击筛选项时，会调用该函数判断当前是否可以继续进行选择，默认小于size都可以选择
 
-    ### Events
+   ### Events
 
     同single
 
 * 多级联动单选
 
-### Example
+   ### Example
 
-#### 远程数据源
+   #### 远程数据源
 
 ```html
 <div id="test">
@@ -130,7 +130,7 @@ require.async(['vue', 'vmui/filter'], function(Vue, Filter){
 }
 ```
 
-#### 本地数据源
+   #### 本地数据源
 
 ```html
 <div id="test">
@@ -156,7 +156,7 @@ require.async(['vue', 'vmui/filter'], function(Vue, Filter){
 </div>
 ```
 
-    ### Props
+   ### Props
 
     同single的props
 
@@ -166,7 +166,7 @@ require.async(['vue', 'vmui/filter'], function(Vue, Filter){
     * level: Number 共多少级
     * dataFormatter: Function 进行数据的格式化
 
-    ### Events
+   ### Events
 
     同single的events
 
@@ -176,7 +176,7 @@ require.async(['vue', 'vmui/filter'], function(Vue, Filter){
 
 * 2级联动多选
 
-    ### Example
+   ### Example
 
 ```js
 require.async(['vue', 'vmui/filter'], function(Vue, Filter){
@@ -195,13 +195,13 @@ require.async(['vue', 'vmui/filter'], function(Vue, Filter){
 });
 ```
 
-    ### Props
+   ### Props
 
     同link的props
 
     * size：Number 一共可以选择多少个二季选项
     * perSize: Number 每一个一级可以选择几个二级选项
 
-    ### Events
+   ### Events
 
     同link的eventss
