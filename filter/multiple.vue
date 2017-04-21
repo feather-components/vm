@@ -35,8 +35,6 @@ export default{
             default: -1
         },
 
-        defaultValue: null,
-
         canBeSelect: {
             type: Function,
             default(){

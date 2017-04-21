@@ -40,7 +40,7 @@ export default{
         },
 
         source: {
-            type: [Array, String],
+            type: [Array, String, Object],
             default(){
                 return []
             }
