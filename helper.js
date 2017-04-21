@@ -51,7 +51,9 @@ export default{
 
     trigger(element, event){
         var evt = document.createEvent('HTMLEvents');  
-        evt.initEvent(event, true, true);  
+        evt.initEvent(event, true, true);
+        console.log(evt);
+        console.log(1233);
         return !element.dispatchEvent(evt); 
     },
 
