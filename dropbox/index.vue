@@ -68,21 +68,22 @@ export default{
 
     methods: {
         initEvent(){
-            var self = this;
+            _.on(this.$refs.overlay.$el, 'click', (e) => {
+                e.stopPropagation();
+            });
 
-            _.on(document, 'click', (e) => {
-                if(!_.contains(self.dom, e.target) && !_.contains(self.$el, e.target) || e.target === self.$refs.container.$el){
-                    self.close();
-                }
-            })
-
-            _.on(document, 'click', (e) => {
-                self.dom === e.target && self.toggle();
+            _.on(document, 'click', () => {
+                this.close();
             });
         },
 
         setHandler(handler){
             this.dom = handler;
+
+            _.on(this.dom, 'click', (e) => {
+                this.toggle();
+                e.stopPropagation();
+            }); 
         },
 
         toggle(){
