@@ -5,7 +5,6 @@
 </div>
 </template>
 
-
 <style>
 .vmui-filters-lm .vmui-filter-item{
     text-align: left;

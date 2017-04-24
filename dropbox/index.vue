@@ -63,27 +63,35 @@ export default{
         var self = this;
 
         self.handler && self.setHandler(self.handler);
-        self.initEvent();
+        self.$nextTick(() => {
+            self.initEvent();
+        });
     },
 
     methods: {
         initEvent(){
+            var $overlay = this.$refs.overlay.$el;
+
             _.on(this.$refs.overlay.$el, 'click', (e) => {
                 e.stopPropagation();
             });
 
-            _.on(document, 'click', () => {
+            _.on(document, 'click', (e) => {   
+                if(_.contains($overlay, e.target)){
+                    return false;
+                }
+
+                if(_.contains(this.dom, e.target)){
+                    this.toggle();
+                    return false;
+                }
+
                 this.close();
             });
         },
 
         setHandler(handler){
             this.dom = handler;
-
-            _.on(this.dom, 'click', (e) => {
-                this.toggle();
-                e.stopPropagation();
-            }); 
         },
 
         toggle(){
@@ -106,7 +114,7 @@ export default{
             }
         },
 
-        close(){
+        close(){   
             if(Overlay.methods.close.call(this) !== false){
                 this.$emit('close');
             }

@@ -1,6 +1,6 @@
 <template>
 <div :class="'vmui-dropdown' + (isOpen ? ' vmui-dropdown-open' : '')">
-    <div class="vmui-dropdown-label" v-html="label" ref="label"></div>
+    <a class="vmui-dropdown-label" v-html="label" ref="label" href="javascript:"></a>
 
     <dropbox ref="box">
         <div class="vmui-dropdown-inner">

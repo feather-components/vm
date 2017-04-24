@@ -7,25 +7,41 @@
         <a href="javascript:" class="vmui-search-cancel" @touchstart="close()" slot="right">取消</a>
     </Topbar>
 
-    <List ref="list" :options="listOptions" :pullup2load="false" :pulldown2refresh="false" :auto-refresh="false">
-        <template slot="header">
-            <div class="vmui-search-header">
-                <slot name="header"></slot>
-            </div>
+    <div class="vmui-search-inner">
+        <div class="vmui-search-header">
+            <slot name="header"></slot>
+        </div>
 
-            <div class="vmui-search-desc" v-if="!isEmpty">
-                <slot name="resdesc">搜索结果</slot>
+        <div class="vmui-search-history-container" v-if="!empty2load && !value && historys.length && useHistory">
+            <div class="vmui-search-history-header">
+                历史搜索
+                <a href="javascript:" @click="clearHistory()" class="vmui-searcy-history-clear">清除</a>
             </div>
-
-            <div class="vmui-search-default" v-if="!empty2load && !value">
-                <slot name="default"></slot>
+            <div class="vmui-search-historys">
+                <a v-for="(item, index) of historys" class="vmui-search-history" href="javascript:" @click="$emit('select', item, index)">
+                    <slot name="history-row" :data="item" v-text="item"></slot>
+                </a>
             </div>
-        </template>
+        </div>
 
-        <template slot="nores" v-if="$slots.nores">
-            <slot name="nores"></slot>
-        </template>
-    </List>
+        <div class="vmui-search-desc" v-if="!isEmpty">
+            <slot name="desc" v-if="!isEmpty">附近小区</slot>
+        </div>
+
+        <div class="vmui-search-default" v-if="!empty2load && !value">
+            <slot name="default"></slot>
+        </div>
+
+        <List ref="list" :source="source" :data-formatter="dataFormatter" :params="params"  :auto-refresh="false">
+            <template slot="row" scope="props">
+                <slot name="row" :data="props.data"></slot>
+            </template>
+
+            <template slot="nores" v-if="$slots.nores">
+                <slot name="nores"></slot>
+            </template>
+        </List>
+    </div>
 </Page>
 </template>
 
@@ -40,15 +56,8 @@
     font-size: 0.14rem;
 }
 
-.vmui-search-desc{
-    font-size: 0.12rem;
-    padding: .16rem 0px;
-}
-
 .vmui-search{
     .vmui-list{
-        padding: 0px .16rem;
-
         li{
             border-bottom: 1px solid #E1E1E1;
         }
@@ -57,6 +66,36 @@
     .vmui-list-rows{
         margin-bottom: .3rem;
     }
+}
+
+.vmui-search-inner{
+    margin: 0 .16rem;
+    margin-top: .08rem;
+}
+
+.vmui-search-desc, .vmui-search-history-header{
+    height: .28rem;
+    line-height: .28rem;
+}
+
+.vmui-search-historys{
+    margin: 0.08rem 0px;
+}
+
+.vmui-search-history{
+    background: #eee;
+    margin-bottom: .08rem;
+    margin-right: 0.08rem;
+    height: .24rem;
+    line-height: .24rem;
+    display: inline-block;
+    border-radius: 10px;
+    padding: 0px .10rem;
+}
+
+.vmui-searcy-history-clear{
+    float: right;
+    color: #6281C2;
 }
 </style>
 
@@ -77,12 +116,20 @@ export default{
     },
 
     props: {
-        listOptions: {
-            type: Object,
+        source: {
             default(){
-                return {}
+                return [];
             }
         },
+
+        useHistory: {
+            type: Boolean,
+            default: true
+        },
+
+        dataFormatter: null,
+
+        params: null,
 
         autofocus: {
             type: Boolean,
@@ -111,13 +158,18 @@ export default{
         this.$search = this.$refs.search;
         this.$list = this.$refs.list;
         this.initEvents();
+
+        this.autofocus && setTimeout(() => {
+            this.$search.focus();
+        }, 1000);
     },
 
     data(){
         return {
             caches: {},
             value: '',
-            isEmpty: true
+            isEmpty: true,
+            historys: []
         };
     },
 
@@ -132,15 +184,19 @@ export default{
                 tid = setTimeout(() => self.load(), self.delay);              
             });
 
-            self.$list.$on('clickRow', (item, index) => {
+            self.$list.$on('row:click', (item, index) => {
                 self.$emit('select', item, index);
-            })
 
-            self.$list.$on('success', (data) => {
+                if(self.historys.indexOf(item) == -1){
+                    self.historys.push(item);
+                }
+            });
+
+            self.$list.$on('xhr.success', (data) => {
                 self.caches[self.value] = data;
             });
 
-            self.$list.$on('renderRows', (data) => {
+            self.$list.$on('rows:render', (data) => {
                 self.isEmpty = !!!data.length;
             });
         },
@@ -174,6 +230,10 @@ export default{
             this.$refs.page.close();
             this.$refs.search.blur();
             this.$emit('close');
+        },
+
+        clearHistory(){
+            this.historys = [];
         }
     }
 }

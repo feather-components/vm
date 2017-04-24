@@ -73,6 +73,8 @@
 </style>
 
 <script>
+import _ from '../helper';
+
 export default{
     props: {
         maxlength: {
