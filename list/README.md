@@ -26,29 +26,6 @@ list
 </div>
 ```
 
-* rowFormatter: Function 格式化每条渲染出来的html
-
-```html
-<div id="list-container">
-    <list :source="{data: [{title: '第1行', desc: 'lalala'}, {title: '第2行', desc: 'lalala'}]}" :data-formatter="function(data){return data.data;}" :row-formatter="rowFormatter"></list>
-</div>
-
-<script>
-new Vue({
-    el: '#list-container',
-    components: {
-        List: List
-    },
-    methods: {
-        //遍历data
-        rowFormatter: function(item){
-            return '<div class="header">' + item.title + '</div><div class="contente">' + item.desc + '</div>';
-        }
-    }
-});
-</script>
-```
-
 * pulldown2refresh: 开启下拉刷新
 
 ```html
@@ -69,10 +46,24 @@ new Vue({
 
 * header： 组件头部显示
 * nores： 无结果时显示
+* row: 每条渲染
 
 ```html
-<list>
+<list source="/list" :data-formatter="function(data){return data.data}" :pulldown2refresh="true" :pullup2load="true" ref="list">
     <div slot="header">这里是头部</div>
     <div slot="nores">无结果时显示我</div>
+
+    <!--可见vue官网scope slot文档-->
+    <template slot="row" scope="props">
+        <div class="list-item">
+            <div class="list-item-inner">
+                <p> {%props.data.name%} </p>
+                <p>（一期）</p>
+                <p class="row-content"> {%props.data.content%} </p>
+                <a href="javascript:" class="action" @click="callTel(12345678901)">拨打电话</a> | 
+                <a href="javascript:" class="detail" @click="openDetail">详情</a>
+            </div>
+        </div>
+    </template> 
 </list>
 ```

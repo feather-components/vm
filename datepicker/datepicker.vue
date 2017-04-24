@@ -34,7 +34,7 @@
 
     import Vue from 'vue';
     import IScroll from 'iscroll';
-    import IosSelect from 'iosSelect';
+    import IosSelect from 'iosselect';
 
     const  DAYS_ONE=31,
             DAYS_TWO=30,

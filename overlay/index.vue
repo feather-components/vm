@@ -61,7 +61,7 @@ export default{
 
     methods: {
         open(){
-            if(this.visibility) return;
+            if(this.visibility) return false;
 
             this.visibility = true;
             this.$nextTick(function(){
@@ -70,6 +70,8 @@ export default{
         },
 
         close(){
+            if(!this.visibility) return false;
+
             this.visibility = false;
             this.$nextTick(function(){
                 this.$emit('close');

@@ -1,99 +1,100 @@
 <template>
-<Shade ref="container" :visible="visibility">
-    <Overlay ref="overlay" :visible="visibility" :position="above ? 'bottom' : 'top'" :fx="true" class="vmui-dropdown">
-        <slot></slot>
-    </Overlay>
-</Shade>
+<div :class="'vmui-dropdown' + (isOpen ? ' vmui-dropdown-open' : '')">
+    <a class="vmui-dropdown-label" v-html="label" ref="label" href="javascript:"></a>
+
+    <dropbox ref="box">
+        <div class="vmui-dropdown-inner">
+            <slot></slot>
+        </div>
+    </dropbox>
+</div>
 </template>
 
 <style>
-.vmui-dropdown-transparent{
-    background: transparent;
+.vmui-dropdown{
+    height: .44rem;;
+    line-height: 44px;
 }
 
-.vmui-dropdown{
-    position: absolute;
+.vmui-dropdown-label{
+    font-size: .14rem;
+    color: #6281C2;
+    display: inline-block;
+    height: .44rem;
+    margin: auto;
+    width: 100%;
+    text-align: center;
+    line-height: .44rem;
+
+    &:after{
+        content: "";
+        background: url(./down@2x.png?__inline) no-repeat center center;
+        height: .20rem;
+        display: inline-block;
+        width: .20rem;
+        transform: translateY(.04rem);
+        -webkit-transform: translateY(.04rem);
+    }
+}
+
+.vmui-dropdown-open{
+    .vmui-dropdown-label:after{
+        background: url(./up@2x.png?__inline) no-repeat center center;
+    }
+}
+
+.vmui-dropdown-inner{
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
 }
 </style>
 
 <script>
-import Overlay from '../overlay';
-import Shade from '../shade';
 import _ from '../helper';
+import Dropbox from '../dropbox';
 
 export default{
-    mixins: [Overlay],
-
     props: {
-        handler: null,
-
-        offset: {
-            type: Object,
-            default(){
-                return {
-                    x: 0,
-                    y: 0
-                }
-            }
+        label: {
+            type: String,
+            default: ''
         }
+    },
+    
+    components: {
+        Dropbox
     },
 
     data(){
         return {
-            above: false
-        };
-    },
-    
-    components: {
-        Overlay,
-        Shade
-    },
-
-    computed: {
-        above(){
-            var bodyHeight = _.height(document);
-            var rect = _.rect(this.dom);
-
-            return rect.top + rect.height > bodyHeight/2;
+            isOpen: false
         }
     },
 
     mounted(){
-        var self = this;
+        this.$nextTick(() => {
+            var self = this;
+            var $box = self.$refs.box;
 
-        self.dom = _.$(self.handler || self.$el.parentNode);
+            $box.setHandler(self.$refs.label);
+            $box.$on('open', () => {
+                self.isOpen = true;
+            });
 
-        _.on(document, 'click', (e) => {
-            if(!_.contains(self.dom, e.target) && !_.contains(self.$el, e.target)){
-                this.close();
-            }
-        })
-
-        _.on(self.dom, 'click', (e) => {
-            self.toggle();
+            $box.$on('close', () => {
+                self.isOpen = false;
+            })
         });
     },
 
     methods: {
-        toggle(){
-            this.visibility ? this.close() : this.open();
-        },
-
         open(){
-            var self = this, bottom = _.rect(self.dom).bottom;
-
-            Overlay.methods.open.call(self);
-
-            _.css(self.$el, {
-                top: bottom,
-                height: _.height(document) - bottom
-            });
-
-            self.$emit('open');
+            this.$refs.box.open();
+            this.$emit('open');
         },
 
         close(){
-            Overlay.methods.close.call(this);
+            this.$refs.box.close();
             this.$emit('close');
         }
     }

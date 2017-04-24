@@ -11,16 +11,34 @@ searchview组件
 * caching：Boolean 默认为true，是否缓存查询信息
 * empty2load: Boolean 默认为false，如果输入为空时，同样做请求
 * kw：String 请求时关键词的参数名，默认为kw
-* listOptions：Object， 同list组件参数，主要为source，params，rowFormatter，dataFormatter
+* source: Array|String 数据源，字符串为远程数据
+* dataFormatter：Function，格式化数据，返回一个数组
+* params：Object 请求远程时额外参数设置
+* useHistory: Boolean 开启历史记录，注，历史记录只有在empty2load为false且关键词为空时才会显示出来
 
 # Slots
 
 * header： 头部显示
-* resdesc：搜索结果的描述
+* desc：搜索结果的描述
 * default：搜索关键词为空时且empty2load为false时
 * nores：搜索结果为空时显示
+* history-row: 历史记录渲染行
+* row: 记录行渲染
+
+```html
+<search ref="search" :visible="false" :fx="true" source="/list" @select="select" :data-formatter="function(data){return data.data}">
+    <template slot="row" scope="props">
+        <div>{{props.data.content}}</div>
+    </template>
+
+    <template slot="history-row" scope="props">
+        <h1 v-text="props.data.content"></h1>
+    </template>
+</search>
+```
 
 # Methods
 
 * open
 * close
+* clearHistorys 清空历史记录

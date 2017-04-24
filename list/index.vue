@@ -12,10 +12,8 @@
         </div>
 
         <ul class="vmui-list-rows" ref="rows">
-            <li v-for="(item, index) in rows" @click="$emit('clickRow', item, index)" class="vmui-list-item">
-                <slot name="row" :data="item">
-                    <div v-html="rowFormatter(item)"></div>
-                </slot>
+            <li v-for="(item, index) in rows" @click="$emit('row:click', item, index)" class="vmui-list-item">
+                <slot name="row" :data="item" v-html="item"></slot>
             </li>
         </ul>
 
@@ -108,13 +106,6 @@ export default{
             default: true
         },
 
-        options: {
-            type: Object,
-            default: function(){
-                return {}
-            }
-        },
-
         autoRefresh: {
             type: Boolean,
             default: true
@@ -122,56 +113,47 @@ export default{
 
         style: {
             type: Object,
-            default: function(){
-                return this.options.style;
-            }
+            default: null
         },
 
         source: {
             default(){
-                return this.options.source || [];
+                return [];
             }
         },
 
         dataFormatter: {
             type: Function,
             default(data = []){
-                return this.options.dataFormatter ? this.options.dataFormatter(data) : data;
-            }
-        },
-
-        rowFormatter: {
-            type: Function,
-            default(rowData){
-                return this.options.rowFormatter ? this.options.rowFormatter(rowData) : rowData;
+                return data;
             }
         },
 
         maxCountPerPage: {
             type: Number,
             default(){
-                return this.options.maxCountPerPage || 20;
+                return 20;
             }
         },
 
         params: {
             type: Object,
             default(){
-                return this.options.params || {};
+                return {};
             }
         },
 
         pulldown2refresh: {
             type: Boolean,
             default(){
-                return this.options.pulldown2refresh || false;
+                return false;
             }
         },
 
         pullup2load: {
             type: Boolean,
             default(){
-                return this.options.pullup2load || false;
+                return false;
             }
         },
 
@@ -224,6 +206,7 @@ export default{
         this._params = this.params;
         this.setSource(this.source);    
         this.$nextTick(() => this.init());
+        console.log(this)
     },
 
     watch: {
@@ -349,12 +332,12 @@ export default{
                 success(data){
                     self.isRefreshing ? self.setData(data) : self.addData(data);  
                     self.renderRows();
-                    self.$emit('success', data);
+                    self.$emit('xhr:success', data);
                 },
                 error(data){
                     self.page--;
                     self.error = data;
-                    self.$emit('error');
+                    self.$emit('xhr:error');
                     self.afterRenderRows();
                 },
                 complete(){
@@ -381,10 +364,10 @@ export default{
             }
 
             self.$nextTick(() => {
-                self.$emit('renderRows', rows);
+                self.$emit('rows:render', rows);
             });
 
-            self.isRefreshing && self.$emit('refreshSuccess', rows);
+            self.isRefreshing && self.$emit('refresh:success', rows);
             self.afterRenderRows();
         },
 

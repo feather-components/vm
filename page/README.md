@@ -33,6 +33,11 @@ new Vue({
 </script>
 ```
 
+## Slots
+
+* header：顶部区域
+* footer: 底部区域
+
 ## Methods
 
 * open
