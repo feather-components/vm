@@ -49,12 +49,11 @@ export default{
         element.removeEventListener(event, callback);
     },
 
-    trigger(element, event){
-        var evt = document.createEvent('HTMLEvents');  
+    trigger(element, event, data = []){
+        var evt = document.createEvent('HTMLEvents');
         evt.initEvent(event, true, true);
-        console.log(evt);
-        console.log(1233);
-        return !element.dispatchEvent(evt); 
+        evt.data = data;
+        return !element.dispatchEvent(evt);
     },
 
     l2camel(str){

@@ -4,10 +4,9 @@ datepicker
 ## Example
 
 ```html
-  <datepicker @cancel="closeDatepicker" :init-year="2016"
-                :init-month="2" :init-day="29"></datepicker>
+
                 
-  <button v-datepicker @datepicker:change="showDate">12333</button>
+  <button v-datepicker @datepicker:change="showDate">显示时间</button>
                 
 ```
 
@@ -18,6 +17,14 @@ datepicker
 | init-year | / | N | 初始化选定的年份|
 |init-month |/| N | 初始化选定的月份|
 | init-day | /| N | 初始化选定的日|
+
+### 参数使用
+```html
+
+                
+  <button v-datepicker="{initYear:2016,initMonth:2,initDay:28 }" @datepicker:change="showDate">显示时间</button>
+                
+```
 
 ## 事件
 

@@ -1,10 +1,10 @@
 import Factory from '../factory';
 import datepicker from './datepicker';
 import _ from '../helper';
-
 export default{
     bind(el, data){
-        var instance = Factory(datepicker);
+        var instance = Factory(datepicker, data.value);
+
         instance.$on('select',(a,b,c)=>{
             _.trigger(el, 'datepicker:change',[a,b,c]);
         });
