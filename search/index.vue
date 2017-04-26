@@ -3,7 +3,7 @@
     <Topbar :leftEnabled="false">
         <search-bar :style="{
             'margin-right': '2.5em'
-        }" :placeholder="placeholder" :maxlength="maxlength" ref="search" />
+        }" :placeholder="placeholder" :maxlength="maxlength" ref="search" :theme="theme" />
         <a href="javascript:" class="vmui-search-cancel" @touchstart="close()" slot="right">取消</a>
     </Topbar>
 
@@ -116,6 +116,11 @@ export default{
     },
 
     props: {
+        theme: {
+            type: String,
+            default: 'white'
+        },
+
         source: {
             default(){
                 return [];
