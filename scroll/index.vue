@@ -1,5 +1,5 @@
 <template>
-<div class="vmui-scroll" :id="oid" :style="style" @touchend="leave()">
+<div class="vmui-scroll" :id="oid" :style="style" @touchend="leave()" @click="listenClick">
     <div class="vmui-scroll-inner">
         <slot></slot>
     </div>
@@ -98,6 +98,11 @@ export default{
                 this.scrolling = false;
                 this.tryTrigger('scrollEnd');
             });
+
+            this.$on('resize', () => {
+                this.instance.refresh();
+                this.opts.scrollbars && (this.instance.hasVerticalScroll = true);
+            });
         },
 
         leave(){
@@ -107,9 +112,7 @@ export default{
         refresh(){
             setTimeout(() => {
                 this._resize_();
-                this.instance.refresh();
-                this.opts.scrollbars && (this.instance.hasVerticalScroll = true);
-            }, 0);
+            }, 10);
         },
 
         tryTrigger(event){
@@ -136,6 +139,14 @@ export default{
                 this._execEvent(event + '2bottom');
                 this.$emit(event + '2bottom');
                 this.$emit('2bottom');
+            }
+        },
+
+        listenClick(event){
+            var target = event.target;
+
+            if(target.nodeType == 1 && /input|select|button/.test(target)){
+                event.stopPropagation();
             }
         }
     })

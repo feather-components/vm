@@ -48,6 +48,7 @@ module.exports = {
             }
 
             element.style.height = height + 'px';
+            this.$emit('resize');
         }
     }
 }
