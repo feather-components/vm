@@ -51,7 +51,7 @@
 
 <script>
 import _ from '../helper';
-import Dropbox from '../dropbox';
+import Dropbox from './box';
 
 export default{
     props: {

@@ -7,6 +7,7 @@ SearchBar
 * maxlength: Number 最大输入长度
 * placeholder：String input的placeholder
 * readonly：Boolean 是否只可读，一般情况下用于配合search组件使用
+* theme: String 风格可选 blue
 
 ## Events
 

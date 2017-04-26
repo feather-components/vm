@@ -102,7 +102,7 @@
 <script>
 import Page from '../page';
 import Topbar from '../topbar';
-import SearchBar from '../searchbar';
+import SearchBar from './bar';
 import List from '../list';
 
 export default{

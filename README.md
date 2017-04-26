@@ -39,7 +39,7 @@ require.async('vmui/actionsheet', function(ActionSheet){
 * [page](./page)
 * [scroll](./scroll)
 * [search](./search)
-* [searchbar](./searchbar)
+* [searchbar](./search/bar.md)
 * [toast](./toast)
 * [topbar](./topbar)
 * [slider](./slider)

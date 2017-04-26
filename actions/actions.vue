@@ -60,7 +60,7 @@
 </style>
 
 <script>
-import Dropbox from '../dropbox';
+import Dropbox from '../dropdown/box';
 import _ from '../helper';
 
 export default{
