@@ -1,26 +1,31 @@
 <style>
-    .slider .noUi-connect{
-        background:#6281C2!important;
+    .slider .noUi-connect {
+        background: #6281C2 !important;
     }
-    .slider.noUi-target{
+
+    .slider.noUi-target {
         background: #e1e1e1;
         border: 0;
         box-shadow: none;
     }
-    .slider.noUi-horizontal{
-        height:3px;
-        border-radius:1.5px;
+
+    .slider.noUi-horizontal {
+        height: 3px;
+        border-radius: 1.5px;
     }
-    .slider .noUi-origin{
-        top:-6px;
+
+    .slider .noUi-origin {
+        top: -6px;
     }
-    .slider.noUi-horizontal .noUi-handle{
-        width:24px;
-        height:24px;
-        border-radius:50%;
-        box-shadow: 0 1px 2px 0 rgba(0,0,0,0.20);
+
+    .slider.noUi-horizontal .noUi-handle {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.20);
     }
-    .slider .noUi-handle:before, .slider .noUi-handle:after{
+
+    .slider .noUi-handle:before, .slider .noUi-handle:after {
         display: none;
     }
 </style>
@@ -34,79 +39,79 @@
     import noUiSlider from 'nouislider';
 
     export default{
-        name:"slider",
-        props:{
+        name: "slider",
+        props: {
             /*id*/
-            sid:{
-                type:String,
+            sid: {
+                type: String,
             },
             /*初始值*/
-            initStart:{
-                type:Number,
-                require:true
+            initStart: {
+                type: Number,
+                require: true
             },
-            initEnd:{
-                type:Number,
-                require:true
+            initEnd: {
+                type: Number,
+                require: true
             },
             /*最小值*/
-            minValue:{
-                type:Number,
-                require:true
+            minValue: {
+                type: Number,
+                require: true
             },
             /*最大值*/
-            maxValue:{
-                type:Number,
-                require:true
+            maxValue: {
+                type: Number,
+                require: true
             },
             /*是否为一个/两个滑块*/
-            sliderNumber:{
-                type:Number,
+            sliderNumber: {
+                type: Number,
                 validator: val=> {
-                    if([1,2].indexOf(val)>-1){  /*滑块个数1,2*/
+                    if ([1, 2].indexOf(val) > -1) {  /*滑块个数1,2*/
                         return val;
-                    }else{
+                    } else {
                         return 1;
                     }
                 }
             },
 
             /*rangeLight*/
-           rangeLight:{
-                type:Number
+            rangeLight: {
+                type: Number
             },
 
             /*父元素手动设置*/
-            value:{
-                type:Array
+            value: {
+                type: Array
             }
         },
 
         data(){
             return {
-                $ele:"",
-                min:this.minValue,
-                max:this.maxValue,
-                events:['update','slide','set','change','start','end'],  /*事件触发*/
-                range:"",
+                $ele: "",
+                min: this.minValue,
+                max: this.maxValue,
+                events: ['update', 'slide', 'set', 'change', 'start', 'end'], /*事件触发*/
+                range: "",
             }
         },
 
 
-        watch:{
-            getChangeValue:function (val) {
-                console.log(this.$ele,9999)
+        watch: {
+            getChangeValue: function (val) {
+                console.log(this.$ele, 9999)
                 this.$ele.noUiSlider.set(val);
             }
         },
 
-        computed:{
+        computed: {
 
             id(){
-                if(this.sid!=undefined){
-                     return this.sid;
-                }else{
-                    return 'slider'+Math.ceil(Math.random()*100);
+                if (this.sid != undefined) {
+                    return this.sid;
+                } else {
+                    return 'slider' + Math.ceil(Math.random() * 100);
                 }
             },
             getChangeValue(){
@@ -114,18 +119,18 @@
             },
 
             startValue(){
-                if(this.sliderNumber!=2){
+                if (this.sliderNumber != 2) {
                     return [this.initStart];
-                }else{
-                    return [this.initStart,this.initEnd];
+                } else {
+                    return [this.initStart, this.initEnd];
                 }
             },
 
             rangeValue(){
-                if(this.sliderNumber==2){
+                if (this.sliderNumber == 2) {
                     return true;
-                }else{
-                    switch(this.rangeLight){
+                } else {
+                    switch (this.rangeLight) {
                         case 0:
                             return [true, false];
                         case 1:
@@ -138,22 +143,22 @@
         },
 
         created(){
-            var _$=this;
-            _$.$nextTick(()=>{
-                _$.$ele=document.getElementById(_$.id);
+            var _$ = this;
+            _$.$nextTick(()=> {
+                _$.$ele = document.getElementById(_$.id);
                 _$.createSlider();
             })
         },
 
-        methods:{
+        methods: {
             createSlider(){
-                var _$=this;
+                var _$ = this;
                 noUiSlider.create(_$.$ele, {
                     start: _$.startValue,
-                    connect:_$.rangeValue,
+                    connect: _$.rangeValue,
                     range: {
-                        'min': [ _$.minValue ],
-                        'max': [ _$.maxValue ]
+                        'min': [_$.minValue],
+                        'max': [_$.maxValue]
                     }
                 });
 
@@ -162,11 +167,11 @@
             },
 
             addEvents (){
-                var _$=this;
+                var _$ = this;
 
-                _$.events.forEach(function(v,k){
-                    _$.$ele.noUiSlider.on(v, function(a,b,c,d){
-                        _$.$emit(v,a,b,c,d);
+                _$.events.forEach(function (v, k) {
+                    _$.$ele.noUiSlider.on(v, function (a, b, c, d) {
+                        _$.$emit(v, a, b, c, d);
                     });
                 });
 

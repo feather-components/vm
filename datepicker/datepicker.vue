@@ -1,28 +1,33 @@
-
 <style>
-    .ios-select-widget-box header.iosselect-header{
-        background-color:#fff;
+    .ios-select-widget-box header.iosselect-header {
+        background-color: #fff;
     }
-    .ios-select-widget-box ul{
+
+    .ios-select-widget-box ul {
         background-color: transparent;
     }
-    .ios-select-widget-box ul li{
+
+    .ios-select-widget-box ul li {
         background-color: transparent;
     }
-    .ios-select-widget-box ul li.at{
+
+    .ios-select-widget-box ul li.at {
         /*background-color: #fff;*/
-        color:#6281C2;
+        color: #6281C2;
     }
-    .ios-select-widget-box .cover-area1,.ios-select-widget-box .cover-area2{
-        border:0;
+
+    .ios-select-widget-box .cover-area1, .ios-select-widget-box .cover-area2 {
+        border: 0;
     }
-    .ios-select-widget-box header.iosselect-header a.sure{
-        color:#6281C2;
-        font-size:14px;
+
+    .ios-select-widget-box header.iosselect-header a.sure {
+        color: #6281C2;
+        font-size: 14px;
     }
-    .ios-select-widget-box header.iosselect-header a.close{
-        color:#222222;
-        font-size:14px;
+
+    .ios-select-widget-box header.iosselect-header a.close {
+        color: #222222;
+        font-size: 14px;
     }
 </style>
 
@@ -36,47 +41,47 @@
     import IScroll from 'iscroll';
     import IosSelect from 'iosselect';
 
-    const  DAYS_ONE=31,
-            DAYS_TWO=30,
-            DAYS_THREE=29,
-            DAYS_FOUR=28;
+    const DAYS_ONE = 31,
+            DAYS_TWO = 30,
+            DAYS_THREE = 29,
+            DAYS_FOUR = 28;
 
     export default{
 
-        props:{
-            initYear:{
-                type:Number,
-                default:()=>{
+        props: {
+            initYear: {
+                type: Number,
+                default: ()=> {
                     return new Date().getFullYear()
                 }
             },
 
-            initMonth:{
-                type:Number,
-                default:()=>{
-                    return new Date().getMonth()+1
+            initMonth: {
+                type: Number,
+                default: ()=> {
+                    return new Date().getMonth() + 1
                 }
             },
 
-            initDay:{
-                type:Number,
-                default:()=>{
+            initDay: {
+                type: Number,
+                default: ()=> {
                     return new Date().getDate()
                 }
             }
         },
 
         data(){
-            return{
-                $ele:"",
-                yearArgs:[],
-                monthArgs:[],
-                dayArgs:[],
-                iosSelect:""
+            return {
+                $ele: "",
+                yearArgs: [],
+                monthArgs: [],
+                dayArgs: [],
+                iosSelect: ""
             }
         },
 
-        computed:{
+        computed: {
             year(){
                 return this.initYear
             },
@@ -88,9 +93,9 @@
             },
         },
 
-        methods:{
+        methods: {
             createDatepicker(){
-                var _$=this;
+                var _$ = this;
                 // 数据初始化
                 function formatYear(nowYear) {
                     var arr = [];
@@ -175,7 +180,6 @@
         },
 
     }
-
 
 
 </script>
