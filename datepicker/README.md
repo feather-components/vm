@@ -6,7 +6,7 @@ datepicker
 ```html
 
                 
-  <button v-datepicker @datepicker:change="showDate">显示时间</button>
+  <button v-datepicker="{initYear:2016,initMonth:2,initDay:28 }" @datepicker:change="showDate">显示时间</button>
                 
 ```
 
@@ -14,17 +14,9 @@ datepicker
 
 | 选项 | 默认值 | 必填 | 说明 |
 |----------|----------|----------|----------|
-| init-year | / | N | 初始化选定的年份|
-|init-month |/| N | 初始化选定的月份|
-| init-day | /| N | 初始化选定的日|
-
-### 参数使用
-```html
-
-                
-  <button v-datepicker="{initYear:2016,initMonth:2,initDay:28 }" @datepicker:change="showDate">显示时间</button>
-                
-```
+| initYear | / | N | 初始化选定的年份|
+|initMonth |/| N | 初始化选定的月份|
+| initDay | /| N | 初始化选定的日|
 
 ## 事件
 
