@@ -182,7 +182,7 @@ export default{
 
     computed: {
         showLoadingStatus(){
-            return !this.isCompleted && this.pullup2load && this.page > 1 && !this.error
+            return !this.isCompleted && this.pullup2load && this.isLoading && !this.error && this.page >= 1;
         },
 
         showErrorStatus(){
@@ -190,7 +190,7 @@ export default{
         },
 
         showNoMoreStatus(){
-            return (this.page > 1 || this.page == 1 && this.rows.length) && this.isCompleted;
+            return this.page >= 1 && this.rows.length && this.isCompleted;
         },
 
         showEmptyStatus(){
@@ -206,7 +206,6 @@ export default{
         this._params = this.params;
         this.setSource(this.source);    
         this.$nextTick(() => this.init());
-        console.log(this)
     },
 
     watch: {
@@ -291,13 +290,13 @@ export default{
             pulldownFx && self.$scroll._translate(0, _.height(self.$refs.pd));
             self.isRefreshing = true;
             self.$emit('refresh');
-            setTimeout(() => self.load(), 500);
+            self.load();
         },
 
         load(){
             var self = this;
 
-            self.error = null;
+            self.error = null; 
 
             if(self.isCompleted){
                 return false;
@@ -307,7 +306,6 @@ export default{
                 return false;
             }
 
-            self.page++;
             self.isLoading = true;
 
             if(self._source && typeof self._source == 'string' && (self.rows.length == self.data.length || self.isRefreshing && !self.data.length)){
@@ -325,7 +323,7 @@ export default{
             self.$http = Ajax({
                 url: self._source,
                 data: Object.assign({}, self._params || {}, {
-                    page: self.page,
+                    page: self.page + 1,
                     count: self.maxCountPerPage
                 }),
                 dataType: 'json',
@@ -335,7 +333,6 @@ export default{
                     self.$emit('xhr:success', data);
                 },
                 error(data){
-                    self.page--;
                     self.error = data;
                     self.$emit('xhr:error');
                     self.afterRenderRows();
@@ -352,7 +349,9 @@ export default{
 
         renderRows(){
             var self = this;
-            var rows = self.data.slice(self.maxCountPerPage * (self.page - 1), self.maxCountPerPage * self.page);
+            var page = ++self.page;
+
+            var rows = self.data.slice(self.maxCountPerPage * (page - 1), self.maxCountPerPage * page);
 
             if(!rows.length || !self.pullup2load){
                 self.isCompleted = true;
