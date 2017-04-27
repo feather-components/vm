@@ -116,6 +116,14 @@ export default{
 
     removeClass(element, className){
         element.className = element.className.replace(new RegExp('(\\s+|^)' + className + '(\\s+|$)'));
+    },
+
+    makeArray(arr){
+        if(Array.isArray(arr)){
+            return arr;
+        }
+
+        return arr == null ? [] : [arr];
     }
 }
 

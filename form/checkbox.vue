@@ -1,35 +1,20 @@
 <template>
     <v-box :label="label">
         <span slot="left" class="vumi-label-left" v-text="left"></span>
-        <span slot="right" class="vumi-label-right" v-text="right"></span> 
-        <div class="vumi-radio-plain" v-for="(option,index) in options">
-            <input type="radio" class="vumi-radio" :id="option.name+index" :disabled="option.disabled" :value="option.value" v-model="currentValue">
+        <span slot="right" class="vumi-label-right" v-text="right"></span>
+        <div class="vumi-checkbox-plain" v-for="(option,index) in options">
+            <input type="checkbox" class="vumi-radio" :id="option.name+index" :disabled="option.disabled" :value="option.value" v-model="currentValue">
             <label v-text="option.label" :for="option.name+index"></label>
         </div>
     </v-box>
 </template>
 
 <style>
-    .vumi-radio-plain{
+    .vumi-checkbox-plain{
         display: inline-block;
     }
-
-    .vumi-label-left{
-        display: inline-block;
-        font-size: .1rem;
-        color: #878787;
-        margin-left: .025rem;
-        line-height: .26rem;
-    }
-
-    .vumi-label-right{
-        display: inline-block;
-        float: right;
-        color: #F96854;
-        line-height: 2;
-    }
-
-    .vumi-radio{
+     
+    .vumi-checkbox{
         opacity: 0;
         z-index: 1;
         height: 0;
@@ -37,7 +22,7 @@
         margin: 0;
     }
 
-    .vumi-radio + label {
+    .vumi-checkbox + label {
         display: inline-block;
         min-width: .8rem;
         height: .24rem;
@@ -52,7 +37,7 @@
         padding: 0.02rem 0.24rem;
     }
 
-    .vumi-radio:checked + label{
+    .vumi-checkbox:checked + label{
         color: #6281c2;
         border: 1px solid #6281c2;
     }
@@ -62,7 +47,7 @@
 import vBox from "./box.vue"
 
 export default{
-    name: 'v-radio',
+    name: 'v-checkbox',
 
     props: {
         label: {
@@ -86,8 +71,10 @@ export default{
         },
 
         value: {
-            type: String,
-            default: null
+            type: Array,
+            default(){
+                return [];
+            }
         }
     },
 

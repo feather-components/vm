@@ -1,22 +1,58 @@
 <template>
-    <div>
-        <label class="lm-label">
-            <span class="lm-label-title" v-text="title"></span>
-            <slot name="sub"></slot>
-            <slot name="right"></slot>
+    <div class="vmui-box">
+        <label class="vmui-label">
+            {{label}}
+            <span class="vmui-label-left">
+                <slot name="msg-left"></slot>
+            </span>
+            <span class="vmui-label-right">
+                <slot name="msg-right"></slot>
+            </span>
         </label>
-        <slot name=""></slot>
+
+        <slot></slot>
     </div>
 </template>
 
-<style lang="css">
-import "../../legomini/build/legomini.css";
+<style>
+.vmui-label-left{
+    display: inline-block;
+    font-size: .1rem;
+    color: #878787;
+    margin-left: .025rem;
+    line-height: .26rem;
+}
+
+.vmui-label-right{
+    display: inline-block;
+    float: right;
+    color: #F96854;
+    line-height: 2;
+}
+
+
+.vmui-box{
+    background: #fff;
+    padding: 0 0.16rem 0;
+}
+
+.vmui-label{
+    display: block;
+    height: 0.24rem;
+    font-size: 0.14rem;
+    color: #222222;
+    line-height: 0.24rem;
+    padding: 0.1rem 0 0.08rem 0;
+}
+
 </style>
 
 <script>
 export default {
+    name: 'v-box',
+
     props: {
-        title: {
+        label: {
             type: String,
             default: ''
         }
