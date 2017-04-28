@@ -27,7 +27,7 @@
 </style>
 
 <script>
-import vBox from "./box.vue";
+import vBox from "./box";
 import _ from '../helper';
 
 export default{
