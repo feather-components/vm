@@ -92,12 +92,7 @@ export default{
     watch: {
         value(v) {
             this._select(v);   
-        },
-
-        // result(v){
-        //     console.log(1);
-        //     this._select(v);
-        // }
+        }
     },
 
     created(){
@@ -106,8 +101,7 @@ export default{
 
     methods:{
         _select(v = this.val){
-            console.log(this);
-            this.result = this.textarea ? '' : v;
+            this.result = this.textarea ? this.$el.children[1].innerText : v;
             this.$emit('input', this.result);
             this.$emit('change', this.result);
         }
