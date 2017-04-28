@@ -104,14 +104,12 @@ export default{
     },
 
     created(){
-        console.log(1);
         this._select();
     },
 
     methods:{
         _select(v = this.val){
             if( this.textarea ){
-                console.log(this);
                 this.result = this.$el ? this.$el.children[1].innerText : v;
                 this.size = this.$el ? this.$el.children[1].innerText.length : v.length;
             }else{
