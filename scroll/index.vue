@@ -1,38 +1,38 @@
 <template>
-<div class="vmui-scroll" :id="oid" :style="style" @touchend="leave()" @click="listenClick">
-    <div class="vmui-scroll-inner">
+<div :class="'vmui-scroll vmui-scroll-' + axis" :style="style">
+    <div ref="inner" class="vmui-scroll-inner" @drag:start="onDragStart" @draging="onDraging" @drag:end="onDragEnd" @webkitTransitionEnd="onScrollEnd">
+        <div class="vmui-scroll-header" ref="header">
+            <slot name="header"></slot>
+        </div>
         <slot></slot>
     </div>
+
+    <transition name="vmui-scroll-bar-fade" v-if="scrollbars">
+        <div ref="bar" class="vmui-scroll-bar" v-show="barVisible"></div>
+    </transition>
 </div>
 </template>
 
 <script>
-import Scroll from 'iscroll/build/iscroll-probe';
 import Resize from '../resize';
 import _ from '../helper';
-
-var methods = {};
-
-for(var property in Scroll.prototype){
-    (function(property){
-       methods[property] = function(...args){
-            return this.instance[property](...args);
-        }; 
-    })(property);
-}
+import {Draggable} from '../draggable';
 
 export default{
     mixins: [Resize],
 
     props: {
-        style: {
-            type: Object,
-            default: function(){
-                return {};
-            }
+        scrollbars: {
+            type: Boolean,
+            default: true
         },
 
-        options: {
+        axis: {
+            type: String,
+            default: 'y'
+        },
+
+        style: {
             type: Object,
             default: function(){
                 return {};
@@ -66,90 +66,100 @@ export default{
                 tap: true
             },
             oid: this.id || ('s' + Date.now()),
-            instance: null
+            instance: null,
+            barVisible: true
         }
     },
 
     mounted: function(){   
-        this.$nextTick(() => {
-            this.instance = new Scroll('#' + this.oid, Object.assign({
-                freeScroll: false
-            }, this.opts, this.options));
-
-            this.initEvents();
-        })
+        this.$drag = new Draggable(this.$refs.inner, {
+            axis: this.axis
+        });
     },
 
-    beforeDestroy: function(){
-        this.instance.destroy();
-    },
-
-    methods: Object.assign(methods, {
-        initEvents(){
-            this.instance.on('scrollStart', () => {
-                this.scrolling = true;
-            });
-
-            this.instance.on('scroll', () => {
-                this.tryTrigger('scroll');
-            });
-
-            this.instance.on('scrollEnd', () => {
-                this.scrolling = false;
-                this.tryTrigger('scrollEnd');
-            });
-
-            this.$on('resize', () => {
-                this.instance.refresh();
-                this.opts.scrollbars && (this.instance.hasVerticalScroll = true);
-            });
-        },
-
-        leave(){
-            this.scrolling && this.tryTrigger('leave');
-        },
-
+    methods: {
         refresh(){
-            setTimeout(() => {
-                this._resize_();
-            }, 10);
+            var self = this;
+            var method = self.axis == 'x' ? 'width' : 'height';
+
+            self.max = _[method](self.$refs.header);
+            self.min = -(_[method](self.$refs.inner) - _[method](self.$el));
+            self.baseTime = Date.now();
+            self.base = Draggable.getTransform(self.$refs.inner)[self.axis];
         },
 
-        tryTrigger(event){
-            var instance = this.instance, isVertical = instance.options.eventPassthrough != 'horizontal';
-            var total, value, b;
+        onDragStart(event){
+            var self = this;
 
-            if(isVertical){
-                total = _.height(instance.scroller);
-                value = instance.y;
-                b = _.height(this.$el);
-            }else{
-                total = _.width(instance.scroller);
-                value = instance.x;
-                b = _.width(document);
-            }
-
-            if(this.is2top(value)){
-                this._execEvent(event + '2top');
-                this.$emit(event + '2top');
-                this.$emit('2top');
-            }
-
-            if(this.is2bottom(total + value - b)){
-                this._execEvent(event + '2bottom');
-                this.$emit(event + '2bottom');
-                this.$emit('2bottom');
-            }
+            self.refresh();
+            self.scrollTo(self.base);
+            self.barVisible = true;
         },
 
-        listenClick(event){
-            var target = event.target;
+        onDraging(event){
+            var self = this;
+            var duration = Date.now() - self.baseTime;
+            var translate = event.data[self.axis];
 
-            if(target.nodeType == 1 && /input|select|button/.test(target)){
-                event.stopPropagation();
+            duration >= 300 && self.refresh();   
+            self.$drag.stack(translate > 0 || translate < self.min ? 5 : 1);
+        },
+
+        onDragEnd(event){
+            var self = this;
+            var duration = Date.now() - self.baseTime;
+            var translate = event.data[self.axis];
+
+            if(duration < 300){
+                var distance = event.data[self.axis] - self.base;
+                var speed = Math.abs(distance)/duration, deceleration = 0.0006;
+                var destination = translate + Math.pow(speed, 2) / (2 * 0.0006) * (distance < 0 ? -1 : 1);
+
+                if(destination < self.min){
+                    destination = self.min;
+                }else if(destination > 0){
+                    destination = self.max;
+                }
+
+                duration = speed / deceleration;
+                duration > 300 && self.scrollTo(destination, duration);
             }
+
+            if(self.max && translate > 0){
+                if(translate > self.max){
+                    self.scrollTo(self.max, (translate - self.max) * 5 + 1);
+                }else if(translate < self.max){
+                    self.scrollTo(0, translate * 5 + 1);
+                }
+            }
+
+            if(translate < self.min){
+                self.scrollTo(self.min, 300);
+            }
+
+            self.barVisible = false;
+            self.baseTime = null;
+            self.distance = null;
+            self.base = null;
+        },
+
+        scrollTo(destination, duration = 0){
+            var self = this;
+
+            _.css(self.$refs.inner, {
+                '-webkit-transition': duration ? `transform ${duration}ms` : 'none',
+                '-webkit-transform': 'translate' + self.axis.toUpperCase() + `(${destination}px)`
+            });
+        },
+
+        onScrollEnd(){
+            
+        },
+
+        tryTrigger2bottom(){
+
         }
-    })
+    }
 }
 </script>
 
@@ -159,8 +169,30 @@ export default{
     width: 100%;
     overflow: hidden;
 
-    .iScrollVerticalScrollbar{
-        width: 3px !important;
+    .vmui-scroll-bar{
+        position: absolute;
+        right: 0px;
+        width: 10px;
+        height: 10px;
+        background: black;
+        top: 0px;
     }
+}
+
+.vmui-scroll-header{
+    position: absolute;
+    transform: translateY(-100%);
+    -webkit-transform: translateY(-100%);
+}
+
+.vmui-scroll-bar-fade-enter-active, .vmui-scroll-bar-fade-leave-active
+{
+    transition: transform 3s ease, opacity 3s ease;
+    -webkit-transition: -webkit-transform 3s ease, opacity 3s ease;
+}
+
+.vmui-scroll-bar-fade-enter, .vmui-fx-center-leave-active,
+{
+    opacity: 0;
 }
 </style>

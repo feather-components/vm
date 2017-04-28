@@ -57,7 +57,7 @@ export default{
     },
 
     l2camel(str){
-        return str.replace(/-(\w)/g, (all, c) => c.toUpperCase());
+        return str.replace(/-(\w)/g, (all, c, index) => index > 0 ? c.toUpperCase() : c);
     },
 
     css(element, name, value){
@@ -69,7 +69,7 @@ export default{
             name = this.l2camel(name);
 
             if(typeof value == 'undefined'){
-                return element.style[name];
+                return window.getComputedStyle(element).getPropertyValue(name);
             }else{
                 element.style[name] = value + (typeof value == 'number' && !/^(?:opacity|zIndex)$/.test(name) ? 'px' : '');
             }
