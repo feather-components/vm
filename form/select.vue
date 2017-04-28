@@ -71,8 +71,6 @@
 import vBox from "./box"
 
 export default{
-    name: 'v-input',
-
     props: {
         multiple: {
             type: Boolean,

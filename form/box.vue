@@ -51,8 +51,6 @@
 
 <script>
 export default {
-    name: 'v-box',
-
     props: {
         label: {
             type: String,
