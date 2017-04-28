@@ -2,7 +2,7 @@
     <v-box :label="label"> 
         <input v-if="!textarea" type="text" class="vmui-input" :name="name" :placeholder="ph" v-model="value" /> 
         <template v-else>
-            <template slot="msg-left">{{size}}/50</template> 
+            <template slot="msg-left" v-if="maxSize">{{size}}/{{maxSize}}</template> 
             <div class="vmui-textarea" contenteditable="true" v-text="result" @input="_select" ></div>
         </template>    
     </v-box>
@@ -84,6 +84,11 @@ export default{
         size: {
             type: [Number,String],
             default: 0
+        },
+
+        maxSize: {
+            type: [Number,String],
+            default: null
         }
     },
 
