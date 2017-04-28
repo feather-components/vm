@@ -33,7 +33,7 @@
     overflow: auto;
     font-size: .16rem;
     color: #222222;
-    padding-bottom: .08rem;
+    margin-bottom: .08rem;
 
     &:focus {
         border: 0;

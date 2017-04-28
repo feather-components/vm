@@ -1,19 +1,21 @@
 <template>
-    <v-box :label="label"> 
-        <select class="vmui-select" :name="name" v-model="selected">
-            <option value='' disabled selected style="display:none;color:#E1E1E1">{{ph}}</option>
-            <option v-for="(option, index) in options" :value="option.value" v-text="option.label" ></option>
+    <v-box :label="label">
+        <select v-if="!multiple" class="vmui-select" :name="name" v-model="selected">
+            <option  v-for="(option, index) in options" :value="option.value" v-text="option.label"></option>
         </select> 
-        <span class="lm-select-icon icon iconfont icon-right"></span>
+        <div v-else class="vmui-select" v-text="val" @click="_click">
+        </div>
+        <span v-if="!result" class="vmui-select-ph" v-text="ph" @click="_click"></span>
+        <span class="lm-select-icon icon iconfont icon-right" @click="_click"></span>
     </v-box>
 </template>
 
 <style>
 .vmui-select{   
     width: 100%;
+    height: 0.28rem;
     font-size: .16rem;
-    // color: #222222;
-    color:#E1E1E1;
+    color: #222222;
     line-height: .28rem;
     margin-bottom: .08rem;
     border: 0;
@@ -23,6 +25,15 @@
         outline: none;
         border: none;
     }
+}
+
+.vmui-select-ph{
+    position: absolute;
+    bottom: 0.08rem;
+    height: 0.28rem;
+    font-size: .16rem;
+    color: #E1E1E1;
+    line-height: .28rem;
 }
 
 @font-face {font-family: "iconfont";
@@ -63,6 +74,11 @@ export default{
     name: 'v-input',
 
     props: {
+        multiple: {
+            type: Boolean,
+            default: false
+        },
+
         label: {
             type: String,
             default: null
@@ -77,7 +93,9 @@ export default{
 
         options: {
             type: Array,
-            required: true
+            default(){
+                return [];
+            }
         },
 
         ph: {
@@ -93,6 +111,13 @@ export default{
         val: {
             type: [String, Array],
             default: null
+        },
+
+        selectValue: {
+            type: Function,
+            default(){
+                return false;
+            }
         }
     },
 
@@ -109,6 +134,11 @@ export default{
     watch: {
         selected(v) {
             this._select(v);   
+        },
+
+        val(v){
+            console.log(456);
+            this._select(v);
         }
     },
 
@@ -121,6 +151,10 @@ export default{
             this.result = this.selected = v;
             this.$emit('input', this.result);
             this.$emit('change', this.result);
+        },
+
+        _click(){
+            this.$emit('select', this);
         }
     }
 }

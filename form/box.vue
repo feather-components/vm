@@ -35,6 +35,7 @@
     position: relative;
     background: #fff;
     padding: 0 0.16rem 0;
+    overflow: hidden;
 }
 
 .vmui-label{
