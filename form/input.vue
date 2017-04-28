@@ -1,7 +1,10 @@
 <template>
-    <v-box :label="label">
-        <input v-if="!textarea" type="text" class="vmui-input" :name="name" :placeholder="ph" v-model="value" :val="val"/>      
-        <div v-else class="vmui-textarea" contenteditable="true" v-text="result" @input="_select" ></div>
+    <v-box :label="label"> 
+        <input v-if="!textarea" type="text" class="vmui-input" :name="name" :placeholder="ph" v-model="value" /> 
+        <template v-else>
+            <template slot="msg-left">{{size}}/50</template> 
+            <div class="vmui-textarea" contenteditable="true" v-text="result" @input="_select" ></div>
+        </template>    
     </v-box>
 </template>
 
@@ -46,6 +49,11 @@ export default{
     name: 'v-input',
 
     props: {
+        textarea: {
+            type: Boolean,
+            default: false
+        },
+
         label: {
             type: String,
             default: null
@@ -73,9 +81,9 @@ export default{
             default: null
         },
 
-        textarea: {
-            type: Boolean,
-            default: false
+        size: {
+            type: [Number,String],
+            default: 0
         }
     },
 
@@ -96,12 +104,19 @@ export default{
     },
 
     created(){
+        console.log(1);
         this._select();
     },
 
     methods:{
         _select(v = this.val){
-            this.result = this.textarea ? this.$el.children[1].innerText : v;
+            if( this.textarea ){
+                console.log(this);
+                this.result = this.$el ? this.$el.children[1].innerText : v;
+                this.size = this.$el ? this.$el.children[1].innerText.length : v.length;
+            }else{
+                this.result = v;
+            }
             this.$emit('input', this.result);
             this.$emit('change', this.result);
         }
