@@ -32,6 +32,7 @@
 
 
 .vmui-box{
+    position: relative;
     background: #fff;
     padding: 0 0.16rem 0;
 }
