@@ -1,15 +1,11 @@
 <template>
-<div :class="'vmui-scroll vmui-scroll-' + axis" :style="style">
+<div :class="'vmui-scroll vmui-scroll-' + axis">
     <div ref="inner" class="vmui-scroll-inner" @drag:start="onDragStart" @draging="onDraging" @drag:end="onDragEnd" @webkitTransitionEnd="onScrollEnd">
-        <div class="vmui-scroll-header" ref="header">
-            <slot name="header"></slot>
+        <div class="vmui-scroll-pulldown" ref="pulldown">
+            <slot name="pulldown"></slot>
         </div>
         <slot></slot>
     </div>
-
-    <transition name="vmui-scroll-bar-fade" v-if="scrollbars">
-        <div ref="bar" class="vmui-scroll-bar" v-show="barVisible"></div>
-    </transition>
 </div>
 </template>
 
@@ -30,27 +26,6 @@ export default{
         axis: {
             type: String,
             default: 'y'
-        },
-
-        style: {
-            type: Object,
-            default: function(){
-                return {};
-            }
-        },
-
-        is2bottom: {
-            type: Function,
-            default: function(distance){
-                return distance <= 0;
-            }
-        },
-
-        is2top: {
-            type: Function,
-            default: function(distance){
-                return distance >= 0;
-            }
         }
     },
 
@@ -65,8 +40,6 @@ export default{
                 click: true,
                 tap: true
             },
-            oid: this.id || ('s' + Date.now()),
-            instance: null,
             barVisible: true
         }
     },
@@ -82,8 +55,8 @@ export default{
             var self = this;
             var method = self.axis == 'x' ? 'width' : 'height';
 
-            self.max = _[method](self.$refs.header);
-            self.min = -(_[method](self.$refs.inner) - _[method](self.$el));
+            self.max = _[method](self.$refs.pulldown);
+            self.min = Math.min(0, _[method](self.$el) - _[method](self.$refs.inner));
             self.baseTime = Date.now();
             self.base = Draggable.getTransform(self.$refs.inner)[self.axis];
         },
@@ -94,21 +67,35 @@ export default{
             self.refresh();
             self.scrollTo(self.base);
             self.barVisible = true;
+            self.$emit('drag:start', event.data[self.axis]);
         },
 
         onDraging(event){
             var self = this;
-            var duration = Date.now() - self.baseTime;
-            var translate = event.data[self.axis];
+            var duration = Date.now() - self.baseTime, 
+                translate = event.data[self.axis],
+                stack = 1;
 
-            duration >= 300 && self.refresh();   
-            self.$drag.stack(translate > 0 || translate < self.min ? 5 : 1);
+            duration >= 300 && self.refresh();  
+            self.$emit('draging', translate); 
+
+            if(translate >= self.max){
+                self.$emit('drag:limit', translate, 1);
+                stack = 3;
+            }else if(translate <= self.min){
+                self.$emit('drag:limit', translate, -1);
+                stack = 3;
+            }else{
+                self.$emit('drag:normal', translate);
+            }
+
+            self.$drag.stack(stack);
         },
 
         onDragEnd(event){
             var self = this;
-            var duration = Date.now() - self.baseTime;
-            var translate = event.data[self.axis];
+            var duration = Date.now() - self.baseTime,
+                translate = event.data[self.axis];
 
             if(duration < 300){
                 var distance = event.data[self.axis] - self.base;
@@ -125,18 +112,15 @@ export default{
                 duration > 300 && self.scrollTo(destination, duration);
             }
 
-            if(self.max && translate > 0){
-                if(translate > self.max){
-                    self.scrollTo(self.max, (translate - self.max) * 5 + 1);
-                }else if(translate < self.max){
-                    self.scrollTo(0, translate * 5 + 1);
-                }
-            }
-
-            if(translate < self.min){
+            if(translate >= self.max){
+                self.scrollTo(self.max, (translate - self.max) * 5 + 1);
+            }else if(translate > 0 && translate < self.max){
+                self.scrollTo(0, translate * 5 + 1);
+            }else if(translate < self.min){
                 self.scrollTo(self.min, 300);
             }
 
+            self.$emit('drag:end', translate);
             self.barVisible = false;
             self.baseTime = null;
             self.distance = null;
@@ -153,11 +137,16 @@ export default{
         },
 
         onScrollEnd(){
-            
-        },
+            var self = this;
+            var translate = Draggable.getTransform(self.$refs.inner)[self.axis];
 
-        tryTrigger2bottom(){
+            self.$emit('scroll:end', translate);
 
+            if(translate >= self.max){
+                self.$emit('scroll:limit', translate, 1);
+            }else if(translate <= self.min){
+                self.$emit('scroll:limit', translate, -1);
+            }
         }
     }
 }
@@ -179,7 +168,8 @@ export default{
     }
 }
 
-.vmui-scroll-header{
+.vmui-scroll-pulldown{
+    width: 100%;
     position: absolute;
     transform: translateY(-100%);
     -webkit-transform: translateY(-100%);

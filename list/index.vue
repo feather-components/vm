@@ -1,40 +1,46 @@
 <template>
-<Scroll ref="scroll" :is2bottom="is2bottom" :is2top="is2top" :style="style" :fill-height="fillHeight">
-    <div class="vmui-list">
-        <div class="vmui-list-pull" v-if="pulldown2refresh" ref="pd">
-            <slot name="pulldown-msg" v-if="!isRefreshing && !intop">下拉刷新数据</slot>
-            <slot name="pullleave-msg" v-if="!isRefreshing && intop">松手刷新数据</slot>
-            <slot name="refresh-msg" v-if="isRefreshing"><i class="vmui-list-loading-icon"></i>正在刷新数据</slot>
-        </div>
-
-        <div class="vmui-list-header">
-            <slot name="header"></slot>
-        </div>
-
-        <ul class="vmui-list-rows" ref="rows">
-            <li v-for="(item, index) in rows" @click="$emit('row:click', item, index)" class="vmui-list-item">
-                <slot name="row" :data="item" v-html="item"></slot>
-            </li>
-        </ul>
-
-        <div class="vmui-list-loading" v-if="showLoadingStatus">
-            <slot name="loading"><i class="vmui-list-loading-icon"></i>正在加载中</slot>
-        </div>
-
-        <template v-if="showMsg">
-            <div class="vmui-list-error" v-if="showErrorStatus">
-                <slot name="error">网络异常，加载失败</slot>
-            </div>
-
-            <div class="vmui-list-nomore" v-if="showNoMoreStatus" ref="nomore">
-                <slot name="nomore">~没有更多了~</slot>
-            </div>
-
-            <div class="vmui-list-empty" v-if="showEmptyStatus">
-                <slot name="nores"><i class="vmui-list-nores-icon"></i><br />没有任何结果~</slot>
-            </div>
-        </template>
+<Scroll 
+    ref="scroll" 
+    :style="style" 
+    :fill-height="fillHeight" 
+    class="vmui-list"
+    @drag:limit="onDragLimit"
+    @drag:normal="onDragNormal"
+    @scroll:limit="onScrollLimit"
+>
+    <div class="vmui-list-pull" v-if="pulldown2refresh" ref="pd" slot="pulldown">
+        <slot name="pulldown-msg" v-if="!isRefreshing && !intop">下拉刷新数据</slot>
+        <slot name="pullleave-msg" v-if="!isRefreshing && intop">松手刷新数据</slot>
+        <slot name="refresh-msg" v-if="isRefreshing"><i class="vmui-list-loading-icon"></i>正在刷新数据</slot>
     </div>
+
+    <div class="vmui-list-header">
+        <slot name="header"></slot>
+    </div>
+
+    <ul class="vmui-list-rows" ref="rows">
+        <li v-for="(item, index) in rows" @click="$emit('row:click', item, index)" class="vmui-list-item">
+            <slot name="row" :data="item" v-html="item"></slot>
+        </li>
+    </ul>
+
+    <div class="vmui-list-loading" v-if="showLoadingStatus">
+        <slot name="loading"><i class="vmui-list-loading-icon"></i>正在加载中</slot>
+    </div>
+
+    <template v-if="showMsg">
+        <div class="vmui-list-error" v-if="showErrorStatus">
+            <slot name="error">网络异常，加载失败</slot>
+        </div>
+
+        <div class="vmui-list-nomore" v-if="showNoMoreStatus" ref="nomore">
+            <slot name="nomore">~没有更多了~</slot>
+        </div>
+
+        <div class="vmui-list-empty" v-if="showEmptyStatus">
+            <slot name="nores"><i class="vmui-list-nores-icon"></i><br />没有任何结果~</slot>
+        </div>
+    </template>
 </Scroll>
 </template>
 
@@ -49,12 +55,6 @@
     color: #878787;
     width: 100%;
     font-size: 0.12rem;
-}
-
-.vmui-list-pull{
-    position: absolute;
-    transform: translateY(-100%);
-    -webkit-transform: translateY(-100%);
 }
 
 .vmui-list-loading-icon{
@@ -223,24 +223,23 @@ export default{
     methods: {
         init(){
             this.$scroll = this.$refs.scroll;
-            this.initEvents();
             this.autoRefresh && this.refresh(this.pulldown2refresh, false);
         },
 
-        initEvents(){
+        onScrollLimit(translate, direction){
             var self = this;
 
-            if(self.pulldown2refresh){
-                self.$scroll.on('leave2top', () => {
-                    this.intop = false;
-                    setTimeout(() => this.refresh(true));
-                });
-            }
+            self.pulldown2refresh && direction == 1 && self.refresh(true);
+            self.pullup2load && direction == -1 && self.load();
+        },
 
-            if(self.pullup2load){
-                self.$scroll.on('scroll2bottom', () => this.load());
-                self.$scroll.on('scrollEnd2bottom', () => this.load());
-            }
+        onDragLimit(translate, direction){
+            this.intop = direction == 1;
+            direction == -1 && this.onScrollLimit(translate, -1);
+        },
+
+        onDragNormal(translate){
+            this.intop = false;
         },
 
         setParams(params, append){
@@ -273,21 +272,13 @@ export default{
             this.$emit('addData');
         },
 
-        is2bottom(distance){
-            return distance <= (this.pullup2load ? 40 : 0);
-        },
-
-        is2top(distance){
-            return this.intop = distance >= (this.pulldown2refresh ? _.height(this.$refs.pd) : 0);
-        },
-
         refresh(pulldownFx = this.pulldown2refresh, clearData = true){
             var self = this;
             self.page = 0;
             self.isCompleted = false;
             self.isLoading = false;
             clearData && self.setData();
-            pulldownFx && self.$scroll._translate(0, _.height(self.$refs.pd));
+            pulldownFx && self.$scroll.scrollTo(_.height(self.$refs.pd));
             self.isRefreshing = true;
             self.$emit('refresh');
             self.load();
@@ -308,7 +299,13 @@ export default{
 
             self.isLoading = true;
 
-            if(self._source && typeof self._source == 'string' && (self.rows.length == self.data.length || self.isRefreshing && !self.data.length)){
+            if(self._source 
+                && typeof self._source == 'string' 
+                && (
+                    self.rows.length == self.data.length 
+                    || self.isRefreshing && !self.data.length
+                    )
+                ){
                 self.loadRemote();
             }else{
                 self.renderRows();
@@ -372,14 +369,10 @@ export default{
 
         afterRenderRows(){
             var self = this;
-            self.isRefreshing && self.pulldown2refresh && self.back2top();
+            self.isRefreshing && self.pulldown2refresh && this.$scroll.scrollTo(0, 300);
             self.isLoading = false;
             self.isRefreshing = false;
             setTimeout(() => self.$scroll.refresh(), 0);
-        },
-
-        back2top(){
-            !this.is2top() && this.$scroll.scrollTo(0, 0, 500);
         }
     }
 }
