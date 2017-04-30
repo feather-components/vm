@@ -116,6 +116,16 @@ export default{
 
     removeClass(element, className){
         element.className = element.className.replace(new RegExp('(\\s+|^)' + className + '(\\s+|$)'));
+    },
+
+    observer(element, options, callback){
+        var MutationObserver = window.MutationObserver ||
+        window.WebKitMutationObserver ||
+        window.MozMutationObserver;
+
+        var instance = new MutationObserver(callback);
+        instance.observe(element, options);
+        return instance;
     }
 }
 

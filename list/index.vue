@@ -1,6 +1,7 @@
 <template>
 <Scroll 
     ref="scroll" 
+    :scrollbars="true"
     :style="style" 
     :fill-height="fillHeight" 
     class="vmui-list"
@@ -306,7 +307,10 @@ export default{
                     || self.isRefreshing && !self.data.length
                     )
                 ){
-                self.loadRemote();
+                setTimeout(() => {
+                    self.loadRemote();
+                }, 100);
+                
             }else{
                 self.renderRows();
                 self.isLoading = false;

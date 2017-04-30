@@ -6,6 +6,8 @@
         </div>
         <slot></slot>
     </div>
+
+    <div class="vmui-scroll-bar" ref="bar" v-if="scrollbars"></div>
 </div>
 </template>
 
@@ -20,7 +22,7 @@ export default{
     props: {
         scrollbars: {
             type: Boolean,
-            default: true
+            default: false
         },
 
         axis: {
@@ -31,15 +33,6 @@ export default{
 
     data(){
         return {
-            scrolling: false,
-            opts: {
-                scrollbars: true,
-                fadeScrollbars: true,
-                fixedScrollbar: true,
-                probeType: 1,
-                click: true,
-                tap: true
-            },
             barVisible: true
         }
     },
@@ -55,10 +48,17 @@ export default{
             var self = this;
             var method = self.axis == 'x' ? 'width' : 'height';
 
+            var s1 = self.eHeight = _[method](self.$el);
+            var s2 = self.iHeight = _[method](self.$refs.inner);
             self.max = _[method](self.$refs.pulldown);
-            self.min = Math.min(0, _[method](self.$el) - _[method](self.$refs.inner));
+            self.min = Math.min(0, s1 - s2);
             self.baseTime = Date.now();
             self.base = Draggable.getTransform(self.$refs.inner)[self.axis];
+
+            if(self.scrollbars){
+                self.barPercent = s1/Math.max(s1, s2);
+                _.css(self.$refs.bar, method, 100 * self.barPercent + '%');
+            }
         },
 
         onDragStart(event){
@@ -127,12 +127,17 @@ export default{
             self.base = null;
         },
 
-        scrollTo(destination, duration = 0){
+        scrollTo(destination, duration){
             var self = this;
 
-            _.css(self.$refs.inner, {
+            self.translate(self.$refs.inner, destination, duration);
+            self.$refs.bar && self.translate(self.$refs.bar, self.eHeight * Math.abs(destination/self.iHeight), duration);
+        },
+
+        translate(element, destination, duration = 0){
+            _.css(element, {
                 '-webkit-transition': duration ? `transform ${duration}ms` : 'none',
-                '-webkit-transform': 'translate' + self.axis.toUpperCase() + `(${destination}px)`
+                '-webkit-transform': 'translate' + this.axis.toUpperCase() + `(${destination}px)`
             });
         },
 
@@ -161,9 +166,10 @@ export default{
     .vmui-scroll-bar{
         position: absolute;
         right: 0px;
-        width: 10px;
-        height: 10px;
-        background: black;
+        width: 2px;
+        height: 0px;
+        border-radius: 5px;
+        background: #ccc;
         top: 0px;
     }
 }
