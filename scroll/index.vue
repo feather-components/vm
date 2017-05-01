@@ -7,7 +7,7 @@
         <slot></slot>
     </div>
 
-    <div class="vmui-scroll-bar" ref="bar" v-if="scrollbars"></div>
+    <div class="vmui-scroll-bar" ref="bar" v-if="scrollbars" v-show="barVisible"></div>
 </div>
 </template>
 
@@ -33,7 +33,7 @@ export default{
 
     data(){
         return {
-            barVisible: true
+            barVisible: false
         }
     },
 
@@ -56,7 +56,7 @@ export default{
             self.base = Draggable.getTransform(self.$refs.inner)[self.axis];
 
             if(self.scrollbars){
-                self.barPercent = s1/Math.max(s1, s2);
+                self.barPercent = s1 / Math.max(s1, s2);
                 _.css(self.$refs.bar, method, 100 * self.barPercent + '%');
             }
         },
@@ -66,7 +66,6 @@ export default{
 
             self.refresh();
             self.scrollTo(self.base);
-            self.barVisible = true;
             self.$emit('drag:start', event.data[self.axis]);
         },
 
@@ -89,6 +88,7 @@ export default{
                 self.$emit('drag:normal', translate);
             }
 
+            self.scrollBarTo(translate, 0);
             self.$drag.stack(stack);
         },
 
@@ -99,7 +99,7 @@ export default{
 
             if(duration < 300){
                 var distance = event.data[self.axis] - self.base;
-                var speed = Math.abs(distance)/duration, deceleration = 0.0006;
+                var speed = Math.abs(distance) / duration, deceleration = 0.0006;
                 var destination = translate + Math.pow(speed, 2) / (2 * 0.0006) * (distance < 0 ? -1 : 1);
 
                 if(destination < self.min){
@@ -121,7 +121,6 @@ export default{
             }
 
             self.$emit('drag:end', translate);
-            self.barVisible = false;
             self.baseTime = null;
             self.distance = null;
             self.base = null;
@@ -131,7 +130,20 @@ export default{
             var self = this;
 
             self.translate(self.$refs.inner, destination, duration);
-            self.$refs.bar && self.translate(self.$refs.bar, self.eHeight * Math.abs(destination/self.iHeight), duration);
+            self.scrollBarTo(destination, duration);
+        },
+
+        scrollBarTo(destination, duration){
+            var self = this;
+
+            if(self.scrollbars){
+                self.bartid = clearTimeout(self.bartid);
+                self.bartid = setTimeout(() => {
+                    self.barVisible = false;
+                }, 3000);
+                self.barVisible = true;
+                self.translate(self.$refs.bar, self.eHeight * Math.abs(destination / self.iHeight), duration);
+            }
         },
 
         translate(element, destination, duration = 0){
@@ -179,16 +191,5 @@ export default{
     position: absolute;
     transform: translateY(-100%);
     -webkit-transform: translateY(-100%);
-}
-
-.vmui-scroll-bar-fade-enter-active, .vmui-scroll-bar-fade-leave-active
-{
-    transition: transform 3s ease, opacity 3s ease;
-    -webkit-transition: -webkit-transform 3s ease, opacity 3s ease;
-}
-
-.vmui-scroll-bar-fade-enter, .vmui-fx-center-leave-active,
-{
-    opacity: 0;
 }
 </style>
