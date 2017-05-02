@@ -1,8 +1,8 @@
 <template>
     <v-box :label="label">
         <img v-for="(photo, index) in photos" :src="photo.src" class="vmui-photo"/>
-        <a href="javascript:;" class="vmui-photo-add">
-            <input ref="inputer" class="vmui-photo-input" name="name" type="file" @change="_click"/>
+        <a href="javascript:;" class="vmui-photo-add" @change="_click">
+            <input ref="file" class="vmui-photo-input" name="name" type="file"/>
         </a>
     </v-box>
 </template>
@@ -38,7 +38,7 @@
     width: 1.09rem;
     height: 0.8rem;
     background: #f3f3f3;
-    border-radius: 0.025rem;  
+    border-radius: 0.05rem;  
     vertical-align: top;
 
     &:before{
@@ -97,9 +97,7 @@ export default{
           default(){
             return []
           }
-        },
-
-        value: {},
+        }
     },
 
     components: {
@@ -108,14 +106,11 @@ export default{
 
     methods:{
         _click(){
-            var inputDOM = this.$refs.inputer;
+            var inputDOM = this.$refs.file;
             this.file = inputDOM.files[0];
-            var size = Math.floor(this.file.size / 1024);
-            console.log('filesize',size);
             this.$emit('input', this.file);
-            this.fileName = this.file.name;
-            this.onChange && this.onChange(this.file, inputDOM.value);
-            // this.$emit('select', this);
+            this.$emit('select', this);
+            // this.onChange && this.onChange(this.file, inputDOM.value);
         }
     }
 }
