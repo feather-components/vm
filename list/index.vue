@@ -183,7 +183,7 @@ export default{
 
     computed: {
         showLoadingStatus(){
-            return !this.isCompleted && this.pullup2load && this.isLoading && !this.error && this.page >= 1;
+            return !this.isCompleted && this.pullup2load && !this.error && this.page >= 1;
         },
 
         showErrorStatus(){
@@ -229,8 +229,11 @@ export default{
 
         onScrollLimit(translate, direction){
             var self = this;
+            console.log(self.pulldown2refresh, direction);
+            if(self.pulldown2refresh && direction == 1){
+                self.refresh(true);
+            }
 
-            self.pulldown2refresh && direction == 1 && self.refresh(true);
             self.pullup2load && direction == -1 && self.load();
         },
 
@@ -373,6 +376,7 @@ export default{
 
         afterRenderRows(){
             var self = this;
+            console.log(self.isRefreshing);
             self.isRefreshing && self.pulldown2refresh && this.$scroll.scrollTo(0, 300);
             self.isLoading = false;
             self.isRefreshing = false;

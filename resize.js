@@ -18,7 +18,10 @@ module.exports = {
         }
 
         this.$el.$resize = this;
-        this._resize_();
+
+        setTimeout(() => {
+            this._resize_();
+        }, 10);
     },
 
     methods: {

@@ -18,3 +18,4 @@ scroll组件
 ## Methods
 
 * refresh: 刷新当前scroll，内部元素结构或者高度等有调整时需手动触发
+* scrollTo(pos, time = 0):  time不为0时，则不使用动画

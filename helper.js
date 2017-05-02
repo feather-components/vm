@@ -1,3 +1,5 @@
+var css3s = ['transform', 'transition'];
+
 export default{
     offset(element){
         var top = 0, left = 0;
@@ -66,14 +68,23 @@ export default{
                 this.css(element, key, name[key]);
             }
         }else{
-            name = this.l2camel(name);
+            var camel = this.l2camel(name);
 
             if(typeof value == 'undefined'){
-                return window.getComputedStyle(element).getPropertyValue(name);
+                return window.getComputedStyle(element).getPropertyValue(camel);
             }else{
-                element.style[name] = value + (typeof value == 'number' && !/^(?:opacity|zIndex)$/.test(name) ? 'px' : '');
+                value += (typeof value == 'number' && !/^(?:opacity|zIndex)$/.test(camel) ? 'px' : '');
+                element.style[camel] = value;
+
+                if(this.css3(name)){
+                    element.style[this.l2camel('-webkit-' + name)] = value; 
+                }
             }
         }
+    },
+
+    css3(name){
+        return css3s.indexOf(name) > -1;
     },
 
     assign(obj){
@@ -118,14 +129,18 @@ export default{
         element.className = element.className.replace(new RegExp('(\\s+|^)' + className + '(\\s+|$)'));
     },
 
-    observer(element, options, callback){
-        var MutationObserver = window.MutationObserver ||
-        window.WebKitMutationObserver ||
-        window.MozMutationObserver;
+    rfa(callback){
+        return (window.requestAnimationFrame     ||
+            window.webkitRequestAnimationFrame  ||
+            function (callback) { window.setTimeout(callback, 1000 / 60); })(callback);
+    },
 
-        var instance = new MutationObserver(callback);
-        instance.observe(element, options);
-        return instance;
+    crfa(id){
+        return id && (
+            window.cancelRequestAnimationFrame ||
+            window.webkitCancelAnimationFrame  ||
+            window.clearTimeout
+        )(id);
     }
 }
 

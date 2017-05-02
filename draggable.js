@@ -58,7 +58,7 @@ class Draggable{
                 return false;
             }
 
-            _.css(self.dom, '-webkit-transform', `translate3d(${x}px, ${y}px, 0)`);
+            _.css(self.dom, 'transform', `translate3d(${x}px, ${y}px, 0)`);
             _.trigger(self.dom, 'draging', info);
         });
 
@@ -83,20 +83,15 @@ class Draggable{
 }
 
 Draggable.getTransform = (element) => {
-    var translate = element.style.webkitTransform || '';
-    var matches = translate.match(/-?\d+(?:\.\d+)?(?=px)/g) || [];
-    var x = 0, y = 0;
+    var matrix = _.css(element, 'transform'), x = 0, y = 0;
 
-    if(/translate3d/.test(translate)){
-        x = matches[0];
-        y = matches[1];
-    }else if(/translateX/.test(translate)){
-        x = matches[0];
-    }else if(/translateY/.test(translate)){
-        y = matches[0];
+    if(matrix != 'none'){
+        matrix = matrix.split(')')[0].split(', ');
+        x = +(matrix[12] || matrix[4]);
+        y = +(matrix[13] || matrix[5]);
     }
 
-    return {x: Number(x), y: Number(y)};
+    return { x: x, y: y };
 };
 
 module.exports = {

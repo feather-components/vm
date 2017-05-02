@@ -1,13 +1,13 @@
 <template>
 <div :class="'vmui-scroll vmui-scroll-' + axis">
-    <div ref="inner" class="vmui-scroll-inner" @drag:start="onDragStart" @draging="onDraging" @drag:end="onDragEnd" @webkitTransitionEnd="onScrollEnd">
+    <div ref="inner" class="vmui-scroll-inner" @drag:start="onDragStart" @draging="onDraging" @drag:end="onDragEnd">
         <div class="vmui-scroll-pulldown" ref="pulldown">
             <slot name="pulldown"></slot>
         </div>
         <slot></slot>
     </div>
 
-    <div class="vmui-scroll-bar" ref="bar" v-if="scrollbars" v-show="barVisible"></div>
+    <div class="vmui-scroll-bar" ref="bar" v-if="scrollbars" v-show="barVisible" :class="{'vmui-scroll-bar-transition': !!fxer}"></div>
 </div>
 </template>
 
@@ -28,12 +28,21 @@ export default{
         axis: {
             type: String,
             default: 'y'
+        },
+
+        ease: {
+            type: Function,
+            default(k){
+                return Math.sqrt(1 - (--k * k));
+            }
         }
     },
 
     data(){
         return {
-            barVisible: false
+            barVisible: false,
+            fxer: false,
+            axi: this.axis.toUpperCase()
         }
     },
 
@@ -41,6 +50,8 @@ export default{
         this.$drag = new Draggable(this.$refs.inner, {
             axis: this.axis
         });
+        this.refresh();
+        this.$on('resize', this.refresh);
     },
 
     methods: {
@@ -52,20 +63,24 @@ export default{
             var s2 = self.iHeight = _[method](self.$refs.inner);
             self.max = _[method](self.$refs.pulldown);
             self.min = Math.min(0, s1 - s2);
-            self.baseTime = Date.now();
-            self.base = Draggable.getTransform(self.$refs.inner)[self.axis];
-
-            if(self.scrollbars){
+            
+            if(self.scrollbars && s1 && s2){
                 self.barPercent = s1 / Math.max(s1, s2);
                 _.css(self.$refs.bar, method, 100 * self.barPercent + '%');
             }
         },
 
+        resetBase(){ 
+            var self = this;
+            self.baseTime = Date.now();
+            self.base = Draggable.getTransform(self.$refs.inner)[self.axis];
+        },
+
         onDragStart(event){
             var self = this;
 
-            self.refresh();
-            self.scrollTo(self.base);
+            self.scrollEnd();
+            self.resetBase();
             self.$emit('drag:start', event.data[self.axis]);
         },
 
@@ -75,7 +90,7 @@ export default{
                 translate = event.data[self.axis],
                 stack = 1;
 
-            duration >= 300 && self.refresh();  
+            duration >= 300 && self.resetBase();
             self.$emit('draging', translate); 
 
             if(translate >= self.max){
@@ -88,16 +103,22 @@ export default{
                 self.$emit('drag:normal', translate);
             }
 
-            self.scrollBarTo(translate, 0);
+            self.scrollBarTo(translate);
             self.$drag.stack(stack);
         },
 
         onDragEnd(event){
             var self = this;
             var duration = Date.now() - self.baseTime,
-                translate = event.data[self.axis];
+                translate = self.pos = event.data[self.axis];
 
-            if(duration < 300){
+            if(translate >= self.max){
+                self.scrollTo(self.max, (translate - self.max) * 3);
+            }else if(translate > 0 && translate < self.max){
+                self.scrollTo(0, translate * 3);
+            }else if(translate < self.min){
+                self.scrollTo(self.min, 300);
+            }else if(duration < 300){
                 var distance = event.data[self.axis] - self.base;
                 var speed = Math.abs(distance) / duration, deceleration = 0.0006;
                 var destination = translate + Math.pow(speed, 2) / (2 * 0.0006) * (distance < 0 ? -1 : 1);
@@ -105,19 +126,11 @@ export default{
                 if(destination < self.min){
                     destination = self.min;
                 }else if(destination > 0){
-                    destination = self.max;
+                    destination = 0;
                 }
 
                 duration = speed / deceleration;
                 duration > 300 && self.scrollTo(destination, duration);
-            }
-
-            if(translate >= self.max){
-                self.scrollTo(self.max, (translate - self.max) * 5 + 1);
-            }else if(translate > 0 && translate < self.max){
-                self.scrollTo(0, translate * 5 + 1);
-            }else if(translate < self.min){
-                self.scrollTo(self.min, 300);
             }
 
             self.$emit('drag:end', translate);
@@ -126,43 +139,75 @@ export default{
             self.base = null;
         },
 
-        scrollTo(destination, duration){
+        scrollTo(destination, duration = 0){
             var self = this;
 
-            self.translate(self.$refs.inner, destination, duration);
+            if(!duration){ 
+                self.pos = destination;
+                _.css(self.$refs.inner, 'transform', 'translate' + this.axi + '(' + destination + 'px)');
+            }else{
+                this.fx(self.$refs.inner, destination, duration);
+            }
+
             self.scrollBarTo(destination, duration);
         },
 
-        scrollBarTo(destination, duration){
+        scrollBarTo(destination, duration = 0){
             var self = this;
 
-            if(self.scrollbars){
-                self.bartid = clearTimeout(self.bartid);
+            if(self.scrollbars && self.eHeight && self.iHeight){
+                self.barVisible = true;
+                clearTimeout(self.bartid);
                 self.bartid = setTimeout(() => {
                     self.barVisible = false;
                 }, 3000);
-                self.barVisible = true;
-                self.translate(self.$refs.bar, self.eHeight * Math.abs(destination / self.iHeight), duration);
+                
+                var translate = self.eHeight * (destination / self.iHeight) * -1;
+
+                _.css(self.$refs.bar, {
+                    'transform': 'translate' + this.axi + '(' + translate  + 'px)',
+                    'transition-duration': duration
+                });
             }
         },
 
-        translate(element, destination, duration = 0){
-            _.css(element, {
-                '-webkit-transition': duration ? `transform ${duration}ms` : 'none',
-                '-webkit-transform': 'translate' + this.axis.toUpperCase() + `(${destination}px)`
-            });
+        fx(element, end, duration){
+            var self = this;
+
+            self.scrollEnd();
+
+            var startTime = Date.now(), endTime = startTime + duration;
+            var start = self.pos, range = end - start;
+
+            function step(){
+                var now = Date.now();
+
+                if(now >= endTime){
+                    self.scrollTo(end);
+                    self.scrollEnd(); 
+                }else{
+                    self.scrollTo(start + self.ease((now - startTime) / duration) * range);
+                    self.fxer = _.rfa(step);
+                }
+            }
+
+            self.fxer = _.rfa(step);
         },
 
-        onScrollEnd(){
+        scrollEnd(){
             var self = this;
-            var translate = Draggable.getTransform(self.$refs.inner)[self.axis];
 
-            self.$emit('scroll:end', translate);
+            if(!self.fxer) return;
 
-            if(translate >= self.max){
-                self.$emit('scroll:limit', translate, 1);
-            }else if(translate <= self.min){
-                self.$emit('scroll:limit', translate, -1);
+            _.crfa(self.fxer);
+            self.fxer = false;
+
+            self.$emit('scroll:end', self.pos);
+
+            if(self.pos >= self.max){
+                self.$emit('scroll:limit', self.pos, 1);
+            }else if(self.pos <= self.min){
+                self.$emit('scroll:limit', self.pos, -1);
             }
         }
     }
@@ -183,6 +228,11 @@ export default{
         border-radius: 5px;
         background: #ccc;
         top: 0px;
+    }
+
+    .vmui-scroll-bar-transition{
+        transition-property: transform;
+        -webkit-transition-property: -webkit-transform;
     }
 }
 
