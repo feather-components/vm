@@ -4,6 +4,7 @@
         <template v-else>
             <template slot="msg-left" v-if="maxSize">{{size}}/{{maxSize}}</template> 
             <div class="vmui-textarea" contenteditable="true" v-text="result" @input="_select" ></div>
+            <span v-if="!result" class="vmui-ph" v-text="ph"></span>
         </template>    
     </v-box>
 </template>
@@ -39,6 +40,16 @@
         border: 0;
         outline: 0;
     }
+}
+
+.vmui-ph{
+    position: absolute;
+    bottom: 0.08rem;
+    left: 0.16rem
+    height: 0.28rem;
+    font-size: .16rem;
+    color: #E1E1E1;
+    line-height: .28rem;
 }
 </style>
 

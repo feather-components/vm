@@ -6,8 +6,8 @@
         <div v-else class="vmui-select" v-text="val" @click="_click">
             <slot></slot>
         </div>
-        <span v-if="!result" class="vmui-select-ph" v-text="ph"></span>    
-        <span class="lm-select-icon icon iconfont icon-right"></span>
+        <span v-if="!result" class="vmui-ph" v-text="ph" @click="_click"></span>    
+        <span class="lm-select-icon icon iconfont icon-right" @click="_click"></span>
     </v-box>
 </template>
 
@@ -25,7 +25,7 @@
 
     }
 
-    .vmui-select-ph{
+    .vmui-ph{
         position: absolute;
         bottom: 0.08rem;
         left: 0.16rem
