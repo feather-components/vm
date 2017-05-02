@@ -4,71 +4,69 @@
             <option  v-for="(option, index) in options" :value="option.value" v-text="option.label"></option>
         </select> 
         <div v-else class="vmui-select" v-text="val" @click="_click">
+            <slot></slot>
         </div>
-        <span v-if="!result" class="vmui-select-ph" v-text="ph" @click="_click"></span>
-        <span class="lm-select-icon icon iconfont icon-right" @click="_click"></span>
+        <span v-if="!result" class="vmui-select-ph" v-text="ph"></span>    
+        <span class="lm-select-icon icon iconfont icon-right"></span>
     </v-box>
 </template>
 
 <style>
-.vmui-select{   
-    width: 100%;
-    height: 0.28rem;
-    font-size: .16rem;
-    color: #222222;
-    line-height: .28rem;
-    margin-bottom: .08rem;
-    border: 0;
-    -webkit-appearance: none;
+    .vmui-select{
+        position: relative;
+        width: 100%;
+        height: 0.28rem;
+        font-size: .16rem;
+        color: #222222;
+        line-height: .28rem;
+        margin-bottom: .08rem;
+        border: 0;
+        -webkit-appearance: none;
 
-    &:focus{
-        outline: none;
-        border: none;
     }
-}
 
-.vmui-select-ph{
-    position: absolute;
-    bottom: 0.08rem;
-    height: 0.28rem;
-    font-size: .16rem;
-    color: #E1E1E1;
-    line-height: .28rem;
-}
+    .vmui-select-ph{
+        position: absolute;
+        bottom: 0.08rem;
+        left: 0.16rem
+        height: 0.28rem;
+        font-size: .16rem;
+        color: #E1E1E1;
+        line-height: .28rem;
+    }
 
-@font-face {font-family: "iconfont";
-  src: url('icon/iconfont.eot?t=1491440240409'); /* IE9*/
-  src: url('icon/iconfont.eot?t=1491440240409#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('icon/iconfont.woff?t=1491440240409') format('woff'), /* chrome, firefox */
-  url('icon/iconfont.ttf?t=1491440240409') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
-  url('icon/iconfont.svg?t=1491440240409#iconfont') format('svg'); /* iOS 4.1- */
-}
+    @font-face {font-family: "iconfont";
+      src: url('icon/iconfont.eot?t=1491440240409'); /* IE9*/
+      src: url('icon/iconfont.eot?t=1491440240409#iefix') format('embedded-opentype'), /* IE6-IE8 */
+      url('icon/iconfont.woff?t=1491440240409') format('woff'), /* chrome, firefox */
+      url('icon/iconfont.ttf?t=1491440240409') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+      url('icon/iconfont.svg?t=1491440240409#iconfont') format('svg'); /* iOS 4.1- */
+    }
 
-.iconfont {
-  font-family:"iconfont" !important;
-  font-size:14px;
-  font-style:normal;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+    .iconfont {
+      font-family: "iconfont" !important;
+      font-size: 0.14rem;
+      font-style: normal;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
 
-.lm-select-icon{
-    display: inline-block;
-    position: absolute;
-    right: 0.16rem;
-    bottom: 0.12rem;
-    color: #878787;
-    z-index: 1;
-}
+    .lm-select-icon{
+        display: inline-block;
+        position: absolute;
+        bottom: 0.08rem;
+        right: 0.16rem;
+        color: #878787;
+        z-index: 1;
+    }
 
-.icon-right:before { 
-    content: "\e607"; 
-}
-
+    .icon-right:before { 
+        content: "\e607"; 
+    }   
 </style>
 
 <script>
-import vBox from "./box"
+import vBox from "./box";
 
 export default{
     props: {
@@ -135,7 +133,6 @@ export default{
         },
 
         val(v){
-            console.log(456);
             this._select(v);
         }
     },
