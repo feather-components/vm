@@ -1,7 +1,7 @@
 <template>
 <div :class="'vmui-scroll vmui-scroll-' + axis">
     <div ref="inner" class="vmui-scroll-inner" @drag:start="onDragStart" @draging="onDraging" @drag:end="onDragEnd">
-        <div class="vmui-scroll-pulldown" ref="pulldown">
+        <div class="vmui-scroll-pulldown" ref="pulldown" v-if="axis == 'y'">
             <slot name="pulldown"></slot>
         </div>
         <slot></slot>
@@ -42,7 +42,8 @@ export default{
         return {
             barVisible: false,
             fxer: false,
-            axi: this.axis.toUpperCase()
+            axi: this.axis.toUpperCase(),
+            fillSize: this.axis != 'x'
         }
     },
 
@@ -50,7 +51,7 @@ export default{
         this.$drag = new Draggable(this.$refs.inner, {
             axis: this.axis
         });
-        this.refresh();
+        setTimeout(() => {this.refresh()}, 10);
         this.$on('resize', this.refresh);
     },
 
@@ -59,9 +60,9 @@ export default{
             var self = this;
             var method = self.axis == 'x' ? 'width' : 'height';
 
-            var s1 = self.eHeight = _[method](self.$el);
-            var s2 = self.iHeight = _[method](self.$refs.inner);
-            self.max = _[method](self.$refs.pulldown);
+            var s1 = self.eSize = _[method](self.$el);
+            var s2 = self.iSize = _[method](self.$refs.inner);
+            self.max = self.axis == 'y' ? _[method](self.$refs.pulldown) : 0;
             self.min = Math.min(0, s1 - s2);
             
             if(self.scrollbars && s1 && s2){
@@ -155,14 +156,14 @@ export default{
         scrollBarTo(destination, duration = 0){
             var self = this;
 
-            if(self.scrollbars && self.eHeight && self.iHeight){
+            if(self.scrollbars && self.eSize && self.iSize){
                 self.barVisible = true;
                 clearTimeout(self.bartid);
                 self.bartid = setTimeout(() => {
                     self.barVisible = false;
                 }, 3000);
                 
-                var translate = self.eHeight * (destination / self.iHeight) * -1;
+                var translate = self.eSize * (destination / self.iSize) * -1;
 
                 _.css(self.$refs.bar, {
                     'transform': 'translate' + this.axi + '(' + translate  + 'px)',
@@ -218,21 +219,48 @@ export default{
 .vmui-scroll{
     position: relative;
     width: 100%;
-    overflow: hidden;
-
-    .vmui-scroll-bar{
-        position: absolute;
-        right: 0px;
-        width: 2px;
-        height: 0px;
-        border-radius: 5px;
-        background: #ccc;
-        top: 0px;
-    }
 
     .vmui-scroll-bar-transition{
         transition-property: transform;
         -webkit-transition-property: -webkit-transform;
+    }
+
+    .vmui-scroll-bar{
+        position: absolute;
+        border-radius: 5px;
+        background: #ccc;
+    }
+
+    .vmui-scroll-inner{
+        float: left;
+    }
+}
+
+.vmui-scroll-y{
+    overflow: hidden;
+
+    .vmui-scroll-bar{
+        right: 0px;
+        width: 2px;
+        height: 0px;
+        top: 0px;
+    }
+}
+
+.vmui-scroll-x{
+    overflow-x: hidden;
+    overflow-y: auto;
+    _height: 1%;
+
+    .vmui-scroll-bar{
+        height: 2px;
+        width: 0px;
+        left: 0px;
+        bottom: 0px;
+    }
+
+    .vmui-scroll-inner{
+        float: left;
     }
 }
 

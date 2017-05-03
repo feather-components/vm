@@ -8,13 +8,21 @@ module.exports = {
         }
     },  
 
+    data(){
+        return {
+            fillSize: this.fillHeight
+        };
+    },
+
     mounted: function(){   
         window.addEventListener('resize', () => {
             this._resize_();
         });
 
-        if(this.$el.style.height && (!this.style || !this.style.height)){
-            this.height = this.$el.style.height;
+        var height = _.css(this.$el, 'height');
+
+        if(height != 'auto' && (!this.style || !this.style.height)){
+            this._height = _.css(this.$el, 'height');
         }
 
         this.$el.$resize = this;
@@ -26,7 +34,7 @@ module.exports = {
 
     methods: {
         _resize_(){
-            if(this.style && this.style.height || this.height) return;
+            if(this.style && this.style.height || this._height) return;
 
             var element = this.$el, parent = element.parentNode;
             var height, otherHeight = 0, selfTop = _.offset(element).top;
@@ -39,11 +47,11 @@ module.exports = {
                 height = _.height(document.documentElement) - _.offset(parent).top;
             }
 
-            if(parent.style.maxHeight){
+            if(_.css(parent, 'max-height')){
                 height = Math.min(height, parseFloat(parent.style.maxHeight));
             }
 
-            if(!this.fillHeight){
+            if(!this.fillSize){
                 height = Math.min(_.height(element), height);
             }else{
                 _.siblings(element).forEach((child) => _.offset(child).top != selfTop && (otherHeight += _.height(child)));
