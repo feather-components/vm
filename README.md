@@ -5,7 +5,7 @@ Vmui
 
 ## 使用
 
-### feather2
+###  feather2
 
 ```sh
 feather2 install feather-components/vmui
