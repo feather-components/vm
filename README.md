@@ -46,3 +46,4 @@ require.async('vmui/actionsheet', function(ActionSheet){
 * [datepicker](./datepicker)
 * [filter](./filter)
 * [dropdown](./dropdown)
+* [datepicker](./datepicker)
