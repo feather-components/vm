@@ -59,7 +59,7 @@ export default{
     },
 
     methods: {
-        resize(){
+        _resize_(){
             var self = this;
 
             Resize.methods._resize_.call(self);
@@ -79,7 +79,7 @@ export default{
         },
 
         refresh(){
-            this.resize();
+            this._resize_();
         },
 
         resetBase(){ 
