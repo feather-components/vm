@@ -2,7 +2,10 @@ Vmui
 ================
 基于vue的组件库
 
+
 ## 使用
+
+### feather2
 
 ```sh
 feather2 install feather-components/vmui
@@ -29,6 +32,8 @@ require.async('vmui/actionsheet', function(ActionSheet){
     })
 });
 ```
+
+### webpack
 
 ## 组件列表
 
