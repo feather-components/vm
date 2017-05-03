@@ -229,7 +229,7 @@ export default{
 
         onScrollLimit(translate, direction){
             var self = this;
-            console.log(self.pulldown2refresh, direction);
+
             if(self.pulldown2refresh && direction == 1){
                 self.refresh(true);
             }
@@ -277,6 +277,7 @@ export default{
         },
 
         refresh(pulldownFx = this.pulldown2refresh, clearData = true){
+            console.log(333);
             var self = this;
             self.page = 0;
             self.isCompleted = false;
@@ -376,7 +377,7 @@ export default{
 
         afterRenderRows(){
             var self = this;
-            console.log(self.isRefreshing);
+
             self.isRefreshing && self.pulldown2refresh && this.$scroll.scrollTo(0, 300);
             self.isLoading = false;
             self.isRefreshing = false;
