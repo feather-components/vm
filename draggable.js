@@ -3,6 +3,7 @@ import _ from './helper';
 class Draggable{
     constructor(element, options = {}){
         this.dom = element;
+        this.dom.$draggable = this;
         this.options = Object.assign({
             axis: 'xy',
             stackTimes: 1,
@@ -17,6 +18,10 @@ class Draggable{
         var self = this, options = self.options;
 
         _.on(self.dom, 'touchstart', (event) => {
+            if(event.target && Draggable.isOtherDraggable(event.target, self)){
+                return false;
+            }
+
             var {x, y} = self.translates = Draggable.getTransform(self.dom);
             self.touch = event.touches[0];
 
@@ -92,6 +97,16 @@ Draggable.getTransform = (element) => {
     }
 
     return { x: x, y: y };
+};
+
+Draggable.isOtherDraggable = (target, instance) => {
+    do{
+        if(target.$draggable){
+            return instance !== target.$draggable;
+        }
+    }while(target = target.parentNode);
+
+    return false;
 };
 
 module.exports = {
