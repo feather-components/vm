@@ -11,6 +11,12 @@ Vmui
 feather2 install feather-components/vmui
 ```
 
+编译vue的单文件组件
+
+```sh
+npm install feather2-parser-vue fis-parser-es6-babel --save
+```
+
 conf/conf.js
 
 ```js
