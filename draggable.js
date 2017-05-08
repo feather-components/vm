@@ -7,6 +7,7 @@ class Draggable{
         this.options = Object.assign({
             axis: 'xy',
             stackTimes: 1,
+            ignores: null,
             canDrag(){return true}
         }, options);
 
@@ -18,15 +19,15 @@ class Draggable{
         var self = this, options = self.options;
 
         _.on(self.dom, 'touchstart', (event) => {
-            if(event.target && Draggable.isOtherDraggable(event.target, self)){
+            if(options.ignores && event.target && options.ignores.test(event.target.tagName)){
                 return false;
             }
 
             var {x, y} = self.translates = Draggable.getTransform(self.dom);
-            self.touch = event.touches[0];
+            var {pageX, pageY} = self.touch = event.touches[0];
 
             _.trigger(self.dom, 'drag:start', {
-                x, y, event
+                x, y, pageX, pageY, event
             });
         });
 
@@ -42,7 +43,7 @@ class Draggable{
             var axis = options.axis;
             var x = 0, y = 0;
             var rx = (touch.pageX - pageX)/options.stackTimes, ry = (touch.pageY - pageY)/options.stackTimes;
-
+            
             if(/x/.test(axis)){
                 x = rx + self.translates.x;
             }
@@ -52,11 +53,14 @@ class Draggable{
             }
 
             var info = {
-                x, y, event
+                x, y, pageX: touch.pageX, pageY: touch.pageY, event
             };
 
             self.translates = {x, y};
-            self.touch = touch;
+            self.touch = {
+                pageX: touch.pageX,
+                pageY: touch.pageY
+            };
 
             if(!options.canDrag.call(self, {x, y, rx, ry})){
                 _.trigger(self.dom, 'drag:reject', info);
@@ -90,10 +94,24 @@ class Draggable{
 Draggable.getTransform = (element) => {
     var matrix = _.css(element, 'transform'), x = 0, y = 0;
 
-    if(matrix != 'none'){
-        matrix = matrix.split(')')[0].split(', ');
-        x = +(matrix[12] || matrix[4]);
-        y = +(matrix[13] || matrix[5]);
+    if(matrix && matrix != 'none'){
+        if(matrix[0] != '['){
+            matrix.replace(/translate(3d|X|Y|)\((.+)\)/g, function(all, type, value){
+                if(type == 'X'){
+                    x = parseFloat(value);
+                }else if(type == 'Y'){
+                    y = parseFloat(value);
+                }else{
+                    value = value.split(/\s*,\s*/);
+                    x = parseFloat(value[0]);
+                    y = parseFloat(value[1]);
+                }
+            });
+        }else{
+            matrix = matrix.split(')')[0].split(', ');
+            x = +(matrix[12] || matrix[4]);
+            y = +(matrix[13] || matrix[5]);
+        }
     }
 
     return { x: x, y: y };
