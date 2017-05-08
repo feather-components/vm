@@ -26,8 +26,9 @@
 
     .vmui-ph{
         position: absolute;
-        bottom: 0.08rem;
-        left: 0.16rem
+        top: 0.42rem;
+        left: 0.16rem;
+        height: 0.28rem;
         height: 0.28rem;
         font-size: .16rem;
         color: #E1E1E1;
@@ -38,7 +39,7 @@
         display: inline-block;
         position: absolute;
         right: 0.23rem;
-        bottom: 0.16rem;
+        top: 0.5rem;
         content: '';
         height: 0.12rem;
         width: 0.12rem;
