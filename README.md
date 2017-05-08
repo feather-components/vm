@@ -43,7 +43,6 @@ require.async('vmui/actionsheet', function(ActionSheet){
 
 ## 组件列表
 
-* [actions](./actions)
 * [actionsheet](./actionsheet)
 * [alert](./alert)
 * [list](./list)
@@ -58,4 +57,15 @@ require.async('vmui/actionsheet', function(ActionSheet){
 * [filter](./filter)
 * [dropdown](./dropdown)
 * [datepicker](./datepicker)
+* [grid](./grid)
+* [uploader](./uploader)
+* [modal](./modal)
+* [shade](./shade)
+* [overlay](./overlay)
+
+
+## 指令
+
+* [actions](./actions)
 * [draggable](./draggable.md)
+* [tabs](./tabs)

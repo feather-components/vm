@@ -1,4 +1,4 @@
-var _ = require('../helper');
+var _ = require('./helper');
 
 class Tabs{
     constructor(dom, options = {}){

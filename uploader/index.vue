@@ -34,7 +34,7 @@ var Uploader = {
             default: false
         },
 
-        uploader: {
+        url: {
             type: String,
             default: ''
         },
@@ -103,7 +103,7 @@ var Uploader = {
             xhr.upload.onprogress = (event) => {
                 this.$emit('progress', file, event);
             };
-            xhr.open('post', this.uploader);
+            xhr.open('post', this.url);
             xhr.send(formData);
         },
 
