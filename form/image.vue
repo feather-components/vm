@@ -1,21 +1,21 @@
 <template>
     <v-box :label="label">
-        <img v-for="(photo, index) in photos" :src="photo.src" class="vmui-photo"/>
-        <a href="javascript:;" class="vmui-photo-add" @change="_click">
-            <input ref="file" class="vmui-photo-input" name="name" type="file"/>
+        <img v-for="(image, index) in images" :src="image.src" class="vmui-image"/>
+        <a href="javascript:;" class="vmui-image-add" @change="_click">
+            <input ref="file" type="file" class="vmui-image-input" name="name" />
         </a>
     </v-box>
 </template>
 
 <style>
-  .vmui-photo{
+  .vmui-image{
       width: 1.09rem;
       height: 0.8rem;
       border-radius: 0.05rem;
       margin: 0.04rem 0.05rem 0.04rem 0;
   }
 
-  .vmui-photo-add{
+  .vmui-image-add{
       position: relative;
       display: inline-block;
       margin: 0.04rem 0;
@@ -51,7 +51,7 @@
         background:#fff;
       }
 
-      .vmui-photo-input{
+      .vmui-image-input{
           width: 1.09rem;
           height: 0.8rem;
           opacity: 0;
@@ -76,7 +76,7 @@ export default{
             }
         },
 
-        photos: {
+        images: {
           type: Array,
           default(){
             return []

@@ -6,7 +6,7 @@
         <div v-else class="vmui-select" v-text="val" @click="_click">
             <slot></slot>
         </div>
-        <span v-if="!value" class="vmui-ph" v-text="placeholder" @click="_click"></span>    
+        <span v-if="!selected" class="vmui-ph" v-text="placeholder" @click="_click"></span>    
         <span class="lm-select-icon" @click="_click"></span>
     </v-box>
 </template>
@@ -82,11 +82,6 @@ export default{
             default: null
         },
 
-        selected: {
-            type: [String, Array],
-            default: null
-        },
-
         val: {
             type: [String, Array],
             default: null
@@ -95,7 +90,7 @@ export default{
 
     data() {
         return {
-            value : null
+            selected : null
         };
     },
 
@@ -119,12 +114,12 @@ export default{
 
     methods:{
         _select(v = this.val){
-            this.value = this.selected = v;
-            this.$emit('input', this.value);
+            this.selected = v;
+            this.$emit('input', this.selected);
         },
 
         _click(){
-            this.$emit('select', this);
+            this.$emit('click', this);
         }
     }
 }
