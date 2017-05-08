@@ -8,8 +8,7 @@ class Tabs{
             },
             selector: '*',
             currentClassName: '',
-            current: 0,
-            callback(){}
+            current: 0
         }, options);
 
         this.dom = dom;
@@ -47,7 +46,7 @@ class Tabs{
 
         _.addClass(element);
         self.showTarget(index);
-        self.options.callback.call(self, index, element);
+        _.trigger('switch', this.dom, {index, element});
     }
 
     target(index){
