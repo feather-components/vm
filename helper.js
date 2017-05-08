@@ -141,6 +141,14 @@ export default{
             window.webkitCancelAnimationFrame  ||
             window.clearTimeout
         )(id);
+    },
+
+    makeArray(arr){
+        if(Array.isArray(arr)){
+            return arr;
+        }
+
+        return arr == null ? [] : [arr];
     }
 }
 

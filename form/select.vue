@@ -1,0 +1,131 @@
+<template>
+    <v-box :label="label">
+        <select v-if="!native" class="vmui-select" :name="name" v-model="selected">
+            <option  v-for="(option, index) in options" :value="option.value" v-text="option.label"></option>
+        </select> 
+        <div v-else class="vmui-select" v-text="val" @click="_click">
+            <slot></slot>
+        </div>
+        <span v-if="!value" class="vmui-ph" v-text="placeholder" @click="_click"></span>    
+        <span class="lm-select-icon" @click="_click"></span>
+    </v-box>
+</template>
+
+<style>
+    .vmui-select{
+        position: relative;
+        width: 100%;
+        height: 0.28rem;
+        font-size: .16rem;
+        color: #222222;
+        line-height: .28rem;
+        margin-bottom: .08rem;
+        border: 0;
+        -webkit-appearance: none;
+    }
+
+    .vmui-ph{
+        position: absolute;
+        bottom: 0.08rem;
+        left: 0.16rem
+        height: 0.28rem;
+        font-size: .16rem;
+        color: #E1E1E1;
+        line-height: .28rem;
+    }
+
+    .lm-select-icon{
+        display: inline-block;
+        position: absolute;
+        right: 0.23rem;
+        bottom: 0.16rem;
+        content: '';
+        height: 0.12rem;
+        width: 0.12rem;
+        box-shadow: 0.01rem 0.01rem #878787;
+        transform: rotate(-45deg);
+        -webkit-transform: rotate(-45deg);
+    } 
+</style>
+
+<script>
+import vBox from "./box";
+
+export default{
+    props: {
+        native: {
+            type: Boolean,
+            default: false
+        },
+
+        label: {
+            type: String,
+            default: null
+        },
+
+        name: {
+            type: String,
+            default(){
+                return String(Date.now());
+            }
+        },
+
+        options: {
+            type: Array,
+            default(){
+                return [];
+            }
+        },
+
+        placeholder: {
+            type: String,
+            default: null
+        },
+
+        selected: {
+            type: [String, Array],
+            default: null
+        },
+
+        val: {
+            type: [String, Array],
+            default: null
+        }
+    },
+
+    data() {
+        return {
+            value : null
+        };
+    },
+
+    components: {
+        vBox
+    },
+
+    watch: {
+        selected(v) {
+            this._select(v);   
+        },
+
+        val(v){
+            this._select(v);
+        }
+    },
+
+    created(){
+        this._select();
+    },
+
+    methods:{
+        _select(v = this.val){
+            this.value = this.selected = v;
+            this.$emit('input', this.value);
+        },
+
+        _click(){
+            this.$emit('select', this);
+        }
+    }
+}
+</script>
