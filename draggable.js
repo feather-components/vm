@@ -19,7 +19,12 @@ class Draggable{
         var self = this, options = self.options;
 
         _.on(self.dom, 'touchstart', (event) => {
-            if(options.ignores && event.target && options.ignores.test(event.target.tagName)){
+            var target = event.target;
+
+            if(target && (
+                options.ignores && options.ignores.test(target.tagName) ||
+                Draggable.isOtherDraggable(target, self)
+            )){
                 return false;
             }
 
