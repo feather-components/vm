@@ -149,6 +149,14 @@ export default{
         )(id);
     },
 
+    makeArray(arr){
+        if(Array.isArray(arr)){
+            return arr;
+        }
+
+        return arr == null ? [] : [arr];
+    },
+
     log(){
         var str = JSON.stringify(arguments);
         var container = document.querySelector('#__log__');
