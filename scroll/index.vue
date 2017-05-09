@@ -1,7 +1,7 @@
 <template>
 <div :class="'vmui-scroll vmui-scroll-' + axis">
     <div ref="inner" class="vmui-scroll-inner" @drag:start="onDragStart" @draging="onDraging" @drag:end="onDragEnd">
-        <div class="vmui-scroll-pulldown" ref="pulldown">
+        <div class="vmui-scroll-pulldown" ref="pulldown" v-if="axis == 'y'">
             <slot name="pulldown"></slot>
         </div>
         <slot></slot>
@@ -42,32 +42,44 @@ export default{
         return {
             barVisible: false,
             fxer: false,
-            axi: this.axis.toUpperCase()
+            axi: this.axis.toUpperCase(),
+            fillSize: this.axis != 'x'
         }
     },
 
     mounted: function(){   
-        this.$drag = new Draggable(this.$refs.inner, {
-            axis: this.axis
+        var self = this;
+
+        self.$drag = new Draggable(self.$refs.inner, {
+            axis: self.axis,
+            canDrag: (info) => {
+                return !!self.eSize;
+            }
         });
-        this.refresh();
-        this.$on('resize', this.refresh);
     },
 
     methods: {
-        refresh(){
+        _resize_(){
             var self = this;
+
+            Resize.methods._resize_.call(self);
+
             var method = self.axis == 'x' ? 'width' : 'height';
 
-            var s1 = self.eHeight = _[method](self.$el);
-            var s2 = self.iHeight = _[method](self.$refs.inner);
-            self.max = _[method](self.$refs.pulldown);
+            var s1 = self.eSize = _[method](self.$el);
+            var s2 = self.iSize = _[method](self.$refs.inner);
+
+            self.max = self.axis == 'y' ? _[method](self.$refs.pulldown) : 0;
             self.min = Math.min(0, s1 - s2);
             
             if(self.scrollbars && s1 && s2){
                 self.barPercent = s1 / Math.max(s1, s2);
                 _.css(self.$refs.bar, method, 100 * self.barPercent + '%');
             }
+        },
+
+        refresh(){
+            this._resize_();
         },
 
         resetBase(){ 
@@ -86,6 +98,9 @@ export default{
 
         onDraging(event){
             var self = this;
+
+            self.isMoving = true;
+
             var duration = Date.now() - self.baseTime, 
                 translate = event.data[self.axis],
                 stack = 1;
@@ -109,6 +124,10 @@ export default{
 
         onDragEnd(event){
             var self = this;
+
+            if(!self.isMoving) return false;
+            self.isMoving = false;
+
             var duration = Date.now() - self.baseTime,
                 translate = self.pos = event.data[self.axis];
 
@@ -116,7 +135,7 @@ export default{
                 self.scrollTo(self.max, (translate - self.max) * 3);
             }else if(translate > 0 && translate < self.max){
                 self.scrollTo(0, translate * 3);
-            }else if(translate < self.min){
+            }else if(translate <= self.min){ 
                 self.scrollTo(self.min, 300);
             }else if(duration < 300){
                 var distance = event.data[self.axis] - self.base;
@@ -155,14 +174,14 @@ export default{
         scrollBarTo(destination, duration = 0){
             var self = this;
 
-            if(self.scrollbars && self.eHeight && self.iHeight){
+            if(self.scrollbars && self.eSize && self.iSize){
                 self.barVisible = true;
                 clearTimeout(self.bartid);
                 self.bartid = setTimeout(() => {
                     self.barVisible = false;
                 }, 3000);
                 
-                var translate = self.eHeight * (destination / self.iHeight) * -1;
+                var translate = self.eSize * (destination / self.iSize) * -1;
 
                 _.css(self.$refs.bar, {
                     'transform': 'translate' + this.axi + '(' + translate  + 'px)',
@@ -202,7 +221,7 @@ export default{
             _.crfa(self.fxer);
             self.fxer = false;
 
-            self.$emit('scroll:end', self.pos);
+            self.$emit('compare', 'scroll:end', self.pos);
 
             if(self.pos >= self.max){
                 self.$emit('scroll:limit', self.pos, 1);
@@ -218,21 +237,44 @@ export default{
 .vmui-scroll{
     position: relative;
     width: 100%;
-    overflow: hidden;
-
-    .vmui-scroll-bar{
-        position: absolute;
-        right: 0px;
-        width: 2px;
-        height: 0px;
-        border-radius: 5px;
-        background: #ccc;
-        top: 0px;
-    }
 
     .vmui-scroll-bar-transition{
         transition-property: transform;
         -webkit-transition-property: -webkit-transform;
+    }
+
+    .vmui-scroll-bar{
+        position: absolute;
+        border-radius: 5px;
+        background: #ccc;
+    }
+}
+
+.vmui-scroll-y{
+    overflow: hidden;
+
+    & > .vmui-scroll-bar{
+        right: 0px;
+        width: 2px;
+        height: 0px;
+        top: 0px;
+    }
+}
+
+.vmui-scroll-x{
+    overflow-x: hidden;
+    overflow-y: auto;
+    _height: 1%;
+
+    & > .vmui-scroll-bar{
+        height: 2px;
+        width: 0px;
+        left: 0px;
+        bottom: 0px;
+    }
+
+    & > .vmui-scroll-inner{
+        float: left;
     }
 }
 

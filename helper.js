@@ -68,16 +68,22 @@ export default{
                 this.css(element, key, name[key]);
             }
         }else{
-            var camel = this.l2camel(name);
+            var css3name;
+
+            if(this.css3(name)){
+                css3name = this.l2camel('-webkit-' + name);
+            }
+
+            name = this.l2camel(name);
 
             if(typeof value == 'undefined'){
-                return window.getComputedStyle(element).getPropertyValue(camel);
+                return element.style[css3name || name] || window.getComputedStyle(element).getPropertyValue(css3name || name);
             }else{
-                value += (typeof value == 'number' && !/^(?:opacity|zIndex)$/.test(camel) ? 'px' : '');
-                element.style[camel] = value;
+                value += (typeof value == 'number' && !/^(?:opacity|zIndex)$/.test(name) ? 'px' : '');
+                element.style[name] = value;
 
-                if(this.css3(name)){
-                    element.style[this.l2camel('-webkit-' + name)] = value; 
+                if(css3name){
+                    element.style[css3name] = value; 
                 }
             }
         }
@@ -149,6 +155,19 @@ export default{
         }
 
         return arr == null ? [] : [arr];
+    },
+
+    log(){
+        var str = JSON.stringify(arguments);
+        var container = document.querySelector('#__log__');
+
+        if(!container){
+            container = document.createElement('div');
+            container.style.cssText = 'position: fixed; bottom: 0px; width: 100%; background: #ccc;';
+            document.body.appendChild(container);
+        }
+
+        container.innerHTML = container.innerHTML + '<br />' + str;
     }
 }
 
