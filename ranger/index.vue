@@ -254,7 +254,7 @@
             onDragingSliderOne (e) {
                 let sliderDom = this.$el.querySelector('.drag2')
 
-                if ( sliderDom != undefined) {
+                if (sliderDom != undefined) {
                     sliderDom.style.transform = 'translate3d(0px, 0px, 0px)'
                 }
                 this.dragObj2.left = this.dragObj2.touchStartLeft + e.data.x
@@ -263,8 +263,8 @@
                 } else if (this.dragObj2.left <= -this.initLeft) {
                     this.dragObj2.left = -this.initLeft
                 }
-                this.connectObj.width = parseFloat((this.dragObj2.left + 12) / this.clientMaxWidth).toFixed(6) * 100
-                this.value[1] = ((this.dragObj2.left + 12) / this.clientMaxWidth) * (this.range[1] - this.range[0]) + this.range[0]
+                this.connectObj.width = parseFloat((this.dragObj2.left + this.initLeft) / this.clientMaxWidth).toFixed(6) * 100
+                this.value[1] = ((this.dragObj2.left + this.initLeft) / this.clientMaxWidth) * (this.range[1] - this.range[0]) + this.range[0]
                 this.$emit('onupdating', this.value[1], e)
             },
             onDragingSliderTwo (e) {
@@ -282,7 +282,7 @@
                 } else if (this.dragObj1.left <= -this.initLeft) {
                     this.dragObj1.left = -this.initLeft
                 }
-                if ( dragDom != undefined) {
+                if (dragDom != undefined) {
                     dragDom.style.transform = 'translate3d(0px, 0px, 0px)'
                 }
                 this.value[0] = ((this.dragObj1.left + this.initLeft) / this.clientMaxWidth) * (this.range[1] - this.range[0]) + this.range[0]
@@ -303,7 +303,7 @@
                 } else if (this.dragObj2.left >= this.clientMaxWidth - this.initLeft) {
                     this.dragObj2.left = this.clientMaxWidth - this.initLeft
                 }
-                if ( dragDom != undefined) {
+                if (dragDom != undefined) {
                     dragDom.style.transform = 'translate3d(0px, 0px, 0px)'
                 }
                 this.value[1] = ((this.dragObj2.left + this.initLeft) / this.clientMaxWidth) * (this.range[1] - this.range[0]) + this.range[0]
@@ -319,7 +319,7 @@
             setDragLeft (e) {
                 let dragDom = this.$el.querySelector('.' + e.target.className)
                 this.touchingX = e.data.event.touches[0].pageX
-                if (e.target.className == 'drag2'){
+                if (e.target.className == 'drag2') {
                     this.dragObj2.left = this.dragObj2.touchStartLeft + e.data.x
                 } else {
                     this.dragObj1.left = this.dragObj1.touchStartLeft + e.data.x
@@ -373,7 +373,7 @@
                 let [sliderDom1, sliderDom2] = [this.$el.querySelector('.drag1'), this.$el.querySelector('.drag2')]
                 this.dragObj1.left = (this.value[0] - this.range[0]) / (this.range[1] - this.range[0]) * this.clientMaxWidth - this.initLeft
                 this.dragObj2.left = (this.value[1] - this.range[0]) / (this.range[1] - this.range[0]) * this.clientMaxWidth - this.initLeft
-                this.connectObj.left = (this.dragObj1.left + 12) / this.clientMaxWidth * 100
+                this.connectObj.left = (this.dragObj1.left + this.initLeft) / this.clientMaxWidth * 100
                 this.connectObj.initWidth = this.connectObj.width = (this.dragObj2.left - this.dragObj1.left) / this.clientMaxWidth * 100
                 this.connectObj.widthNumber = this.clientMaxWidth * this.connectObj.width / 100
                 sliderDom1.style.transform = 'translate3d(0, 0, 0)'
