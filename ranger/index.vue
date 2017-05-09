@@ -414,6 +414,12 @@
             /* 父元素改变状态值 */
             setValue (val) {
                 var _$ = this
+                if (val.some((v) => {
+                            return v < _$.range[0] || v > _$.range[1]
+                        })) {
+                    throw new Error('val必须在range范围之内')
+                    return
+                }
                 _$.value = val;
                 _$.setting = true
                 if (_$.sliderNum === 1) {
