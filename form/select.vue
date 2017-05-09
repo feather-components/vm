@@ -6,8 +6,8 @@
         <div v-else class="vmui-select" v-text="val" @click="_click">
             <slot></slot>
         </div>
-        <span v-if="!selected" class="vmui-ph" v-text="placeholder" @click="_click"></span>    
-        <span class="lm-select-icon" @click="_click"></span>
+        <span v-if="!selected" class="vmui-select-placeholder" v-text="placeholder" @click="_click"></span>    
+        <span class="vmui-select-icon" @click="_click"></span>
     </v-box>
 </template>
 
@@ -24,7 +24,7 @@
         -webkit-appearance: none;
     }
 
-    .vmui-ph{
+    .vmui-select-placeholder{
         position: absolute;
         top: 0.42rem;
         left: 0.16rem;
@@ -35,7 +35,7 @@
         line-height: .28rem;
     }
 
-    .lm-select-icon{
+    .vmui-select-icon{
         display: inline-block;
         position: absolute;
         right: 0.23rem;

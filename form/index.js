@@ -1,11 +1,11 @@
 import Tag from './tag';
-import Input from './input';
+import Text from './text';
 import Select from './select';
 import Image from './image';
 
 export default{
     Tag,
-    Input,
+    Text,
     Select,
     Image
 }

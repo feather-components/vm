@@ -1,16 +1,16 @@
 <template>
     <v-box :label="label"> 
-        <input v-if="!multiline" ref="input" type="text" class="vmui-input" :name="name" :placeholder="placeholder" v-model="value" @focus="$emit('focus')" @blur="$emit('blur')" @click="$emit('click')" :readonly="readonly" /> 
+        <input v-if="!multiline" ref="input" type="text" class="vmui-text" :name="name" :placeholder="placeholder" v-model="value" @focus="$emit('focus')" @blur="$emit('blur')" @click="$emit('click')" :readonly="readonly" /> 
         <template v-else>
             <template slot="msg-left" v-if="maxlength">{{length}}/{{maxlength}}</template> 
             <div ref="input" class="vmui-textarea" :contenteditable="!readonly" v-text="val" @input="_input"></div>
-            <span v-if="!val" class="vmui-ph" v-text="placeholder"></span>
+            <span v-if="!val" class="vmui-textarea-placeholder" v-text="placeholder"></span>
         </template>    
     </v-box>
 </template>
 
 <style>
-    .vmui-input{
+    .vmui-text{
         width: 100%;
         font-size: .16rem;
         color: #222222;
@@ -42,7 +42,7 @@
         }
     }
 
-    .vmui-ph{
+    .vmui-textarea-placeholder{
         position: absolute;
         bottom: 0.08rem;
         left: 0.16rem
