@@ -1,12 +1,12 @@
 <template>
     <v-box :label="label">
-        <select v-if="!native" class="vmui-select" :name="name" v-model="selected">
+        <select v-if="!native" class="vmui-select" :name="name" v-model="value">
             <option  v-for="(option, index) in options" :value="option.value" v-text="option.label"></option>
         </select> 
         <div v-else class="vmui-select" v-text="val" @click="_click">
             <slot></slot>
         </div>
-        <span v-if="!selected" class="vmui-select-placeholder" v-text="placeholder" @click="_click"></span>    
+        <span v-if="!value" class="vmui-select-placeholder" v-text="placeholder" @click="_click"></span>    
         <span class="vmui-select-icon" @click="_click"></span>
     </v-box>
 </template>
@@ -91,7 +91,7 @@ export default{
 
     data() {
         return {
-            selected : null
+            value : null
         };
     },
 
@@ -100,7 +100,7 @@ export default{
     },
 
     watch: {
-        selected(v) {
+        value(v) {
             this._select(v);   
         },
 
@@ -115,8 +115,8 @@ export default{
 
     methods:{
         _select(v = this.val){
-            this.selected = v;
-            this.$emit('input', this.selected);
+            this.value = v;
+            this.$emit('input', this.value);
         },
 
         _click(){

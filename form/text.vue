@@ -2,7 +2,7 @@
     <v-box :label="label"> 
         <input v-if="!multiline" ref="input" type="text" class="vmui-text" :name="name" :placeholder="placeholder" v-model="value" @focus="$emit('focus')" @blur="$emit('blur')" @click="$emit('click')" :readonly="readonly" /> 
         <template v-else>
-            <template slot="msg-left" v-if="maxlength">{{length}}/{{maxlength}}</template> 
+        <template slot="msg-left" v-if="maxlength"><span :class="{'vmui-maxlength':checkLength()}">{{length}}</span>/{{maxlength}}</template> 
             <div ref="input" class="vmui-textarea" :contenteditable="!readonly" v-text="val" @input="_input"></div>
             <span v-if="!val" class="vmui-textarea-placeholder" v-text="placeholder"></span>
         </template>    
@@ -50,6 +50,10 @@
         font-size: .16rem;
         color: #E1E1E1;
         line-height: .28rem;
+    }
+
+    .vmui-maxlength{
+        color: #ff6977;
     }
 </style>
 
@@ -138,6 +142,10 @@ export default{
                 this.value = v;
             }
             this.$emit('input', this.value);
+        },
+
+        checkLength(){
+            return this.length > this.maxlength;
         }
     }
 }
