@@ -3,9 +3,9 @@ ranger
 
 ## example
 ```html
-   <div style="margin-top:20px">
-          <ranger @ondragstart="dragstart" @onupdating="updating" @ondragend="updated" ></ranger>
-      </div>
+  <div style="margin-top:20px">
+      <ranger @ondragstart="dragstart" @onupdating="updating" @ondragend="updated" ></ranger>
+  </div>
   
   <div style="margin-top:20px">
       <ranger @ondragstart="dragstart" @onupdating="updating" @ondragend="updated" :slider-num="2" :val="val"></ranger>
@@ -26,9 +26,9 @@ ranger
 'ondragstart','updating','ondragend'
 
 ## slot
-label-min：label块左侧
-label-max：label块右侧
-label-value：label块值显示
+label-min：label块左侧<br/>
+label-max：label块右侧<br/>
+label-value：label块值显示<br/>
 
 
 
