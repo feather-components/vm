@@ -108,7 +108,9 @@
     }
 
     .set-trans {
-        transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1)
+        transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+        -webkit-transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+        -moz-transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1) 0ms;
     }
 </style>
 <script>
@@ -167,14 +169,6 @@
                 },
                 clientMaxWidth: 0,
                 value: this.initRange,
-                minStop: {
-                    status: false,
-                    translateX: 0
-                },
-                maxStop: {
-                    status: false,
-                    translateX: 0
-                },
                 touchStartX: 0,
                 touchingX: 0,
                 setting: false
@@ -258,42 +252,19 @@
                 }
             },
             onDragingSliderOne (e) {
-                let moveX1 = e.data.event.touches[0].pageX - this.touchStartX,
-                        moveX2 = e.data.event.touches[0].pageX - this.touchingX
-                if (moveX1 > 0 || moveX2 > 0) {
-                    this.minStop.status = false
-                }
-                if (moveX1 < 0 || moveX2 < 0) {
-                    this.maxStop.status = false
-                }
                 let sliderDom = this.$el.querySelector('.drag2')
-                if (this.minStop.status) {
-                    sliderDom.style.transform = 'translate3d(-' + parseInt(sliderDom.offsetLeft + this.initLeft) + 'px, 0px, 0px)'
-                    return
+
+                if ( sliderDom != undefined) {
+                    sliderDom.style.transform = 'translate3d(0px, 0px, 0px)'
                 }
-                if (this.maxStop.status) {
-                    sliderDom.style.transform = 'translate3d(' + parseInt(this.maxStop.translateX) + 'px, 0px, 0px)'
-                    return
+                this.dragObj2.left = this.dragObj2.touchStartLeft + e.data.x
+                if (this.dragObj2.left >= this.clientMaxWidth - this.initLeft) {
+                    this.dragObj2.left = this.clientMaxWidth - this.initLeft
+                } else if (this.dragObj2.left <= -this.initLeft) {
+                    this.dragObj2.left = -this.initLeft
                 }
-                this.touchingX = e.data.event.touches[0].pageX
-                this.handleLeftOutOne(e.data.x)
-                this.handleRightOutOne(e.data.x)
-                this.connectObj.width = parseFloat((this.connectObj.widthNumber + e.data.x) / this.clientMaxWidth).toFixed(6) * 100
-                //                this.value[1] = parseInt(parseFloat(this.connectObj.width / 100  * (this.range[1] - this.range[0])).toFixed(this.floatFixed)) + this.range[0]
-                this.value[1] = (this.connectObj.width / 100) * (this.range[1] - this.range[0]) + this.range[0]
-                /* 当滑块超过最大值或者最小值时处理 */
-                if (this.value[1] >= this.range[1])
-                    this.value[1] = this.range[1]
-                this.value[0] = 0
-                if (this.value[1] <= this.range[0])
-                    this.value[1] = this.range[0]
-                /* 滑到左右顶部时意外处理*/
-                if (parseInt(this.value[1]) === this.range[0]) {
-                    this.connectObj.width = 0
-                }
-                if (parseInt(this.value[1]) === this.range[1]) {
-                    this.connectObj.width = 100
-                }
+                this.connectObj.width = parseFloat((this.dragObj2.left + 12) / this.clientMaxWidth).toFixed(6) * 100
+                this.value[1] = ((this.dragObj2.left + 12) / this.clientMaxWidth) * (this.range[1] - this.range[0]) + this.range[0]
                 this.$emit('onupdating', this.value[1], e)
             },
             onDragingSliderTwo (e) {
@@ -304,26 +275,16 @@
                 }
             },
             handleDragingSliderTwoForOne (e) {
-                let moveX1 = e.data.event.touches[0].pageX - this.touchStartX,
-                        moveX2 = e.data.event.touches[0].pageX - this.touchingX
+                this.setDragLeft(e)
                 let dragDom = this.$el.querySelector('.' + e.target.className)
-                if (moveX1 > 0 || moveX2 > 0) {
-                    this.minStop.status = false
-                }
-                if (this.minStop.status) {
-                    this.dragObj1.left = 0 - this.initLeft
-                    dragDom.style.transform = 'translate3d(0px, 0px, 0px)'
-                    return
-                }
-                this.touchingX = e.data.event.touches[0].pageX
-                this.handleLeftOutTwo(e.data.x)
-                this.dragObj1.left = this.dragObj1.touchStartLeft + e.data.x
                 if (this.dragObj1.left >= this.dragObj2.left) {
                     this.dragObj1.left = this.dragObj2.left
                 } else if (this.dragObj1.left <= -this.initLeft) {
                     this.dragObj1.left = -this.initLeft
                 }
-                dragDom.style.transform = 'translate3d(0px, 0px, 0px)'
+                if ( dragDom != undefined) {
+                    dragDom.style.transform = 'translate3d(0px, 0px, 0px)'
+                }
                 this.value[0] = ((this.dragObj1.left + this.initLeft) / this.clientMaxWidth) * (this.range[1] - this.range[0]) + this.range[0]
                 if (this.value[0] <= this.range[0]) {
                     this.value[0] = this.range[0]
@@ -331,34 +292,20 @@
                     this.value[0] = this.value[1]
                 }
                 this.$nextTick(() => {
-                    let left = this.dragObj1.left + this.initLeft
-                    this.connectObj.left = left / this.clientMaxWidth * 100
-                    this.connectObj.width = (this.dragObj2.left + 12 - this.dragObj1.left) / this.clientMaxWidth * 100
-                    this.$emit('onupdating', this.value[1], e)
+                    this.dragingFinished(e)
                 })
             },
-
             handleDragingSliderTwoForTwo (e) {
-                let moveX1 = e.data.event.touches[0].pageX - this.touchStartX,
-                        moveX2 = e.data.event.touches[0].pageX - this.touchingX
+                this.setDragLeft(e)
                 let dragDom = this.$el.querySelector('.' + e.target.className)
-                if (moveX1 < 0 || moveX2 < 0) {
-                    this.maxStop.status = false
-                }
-                if (this.maxStop.status) {
-                    this.dragObj2.left = this.clientMaxWidth - this.initLeft
-                    dragDom.style.transform = 'translate3d(0px, 0px, 0px)'
-                    return
-                }
-                this.touchingX = e.data.event.touches[0].pageX
-                this.handleRightOutTwo(e.data.x)
-                this.dragObj2.left = this.dragObj2.touchStartLeft + e.data.x
                 if (this.dragObj1.left >= this.dragObj2.left) {
                     this.dragObj2.left = this.dragObj1.left
                 } else if (this.dragObj2.left >= this.clientMaxWidth - this.initLeft) {
                     this.dragObj2.left = this.clientMaxWidth - this.initLeft
                 }
-                dragDom.style.transform = 'translate3d(0px, 0px, 0px)'
+                if ( dragDom != undefined) {
+                    dragDom.style.transform = 'translate3d(0px, 0px, 0px)'
+                }
                 this.value[1] = ((this.dragObj2.left + this.initLeft) / this.clientMaxWidth) * (this.range[1] - this.range[0]) + this.range[0]
                 if (this.value[1] >= this.range[1]) {
                     this.value[1] = this.range[1]
@@ -366,42 +313,25 @@
                     this.value[1] = this.value[0]
                 }
                 this.$nextTick(() => {
-                    this.connectObj.width = (this.dragObj2.left - this.dragObj1.left + this.initLeft) / this.clientMaxWidth * 100
-                    this.$emit('onupdating', this.value[1], e)
+                    this.dragingFinished(e)
                 })
             },
-            /*  判断是否左滑出去了（一个滑块）*/
-            handleLeftOutOne (x) {
-                let sliderDom = this.$el.querySelector('.drag2')
-                if (-sliderDom.offsetLeft - 15 >= x) {
-                    this.minStop.status = true
-                    this.minStop.translateX = x - this.initLeft
+            setDragLeft (e) {
+                let dragDom = this.$el.querySelector('.' + e.target.className)
+                this.touchingX = e.data.event.touches[0].pageX
+                if (e.target.className == 'drag2'){
+                    this.dragObj2.left = this.dragObj2.touchStartLeft + e.data.x
+                } else {
+                    this.dragObj1.left = this.dragObj1.touchStartLeft + e.data.x
                 }
             },
-            /*  判断是否右滑出去了（一个滑块）*/
-            handleRightOutOne (x) {
-                let sliderDom = this.$el.querySelector('.drag2')
-                /* 防止不能滑到最大值将12改为8 */
-                if (this.clientMaxWidth - sliderDom.offsetLeft - 8 <= x) {
-                    this.maxStop.status = true
-                    this.maxStop.translateX = this.clientMaxWidth - sliderDom.offsetLeft - this.initLeft
+            dragingFinished (e) {
+                if (e.target.className == 'drag1') {
+                    let left = this.dragObj1.left + this.initLeft
+                    this.connectObj.left = left / this.clientMaxWidth * 100
                 }
-            },
-            /*  判断是否左滑出去了（两个滑块） */
-            handleLeftOutTwo (x) {
-                let sliderDom = this.$el.querySelector('.drag1')
-                if (sliderDom.offsetLeft + this.initLeft <= 0) {
-                    this.dragObj1.left = 0 - this.initLeft
-                    this.connectObj.left = 0
-                    this.minStop.status = true
-                }
-            },
-            handleRightOutTwo (x) {
-                let sliderDom = this.$el.querySelector('.drag2')
-                if (sliderDom.offsetLeft >= this.clientMaxWidth - this.initLeft) {
-                    this.maxStop.status = true
-                    this.maxStop.translateX = this.clientMaxWidth - this.initLeft
-                }
+                this.connectObj.width = (this.dragObj2.left - this.dragObj1.left + this.initLeft) / this.clientMaxWidth * 100
+                this.$emit('onupdating', this.value[1], e)
             },
             /*  判断是否右滑出去了（两个滑块） */
             onDragEnd (e) {
