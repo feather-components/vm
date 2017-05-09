@@ -277,7 +277,6 @@ export default{
         },
 
         refresh(pulldownFx = this.pulldown2refresh, clearData = true){
-            console.log(333);
             var self = this;
             self.page = 0;
             self.isCompleted = false;
@@ -311,10 +310,7 @@ export default{
                     || self.isRefreshing && !self.data.length
                     )
                 ){
-                setTimeout(() => {
-                    self.loadRemote();
-                }, 100);
-                
+                self.loadRemote();
             }else{
                 self.renderRows();
                 self.isLoading = false;
@@ -358,7 +354,7 @@ export default{
 
             var rows = self.data.slice(self.maxCountPerPage * (page - 1), self.maxCountPerPage * page);
 
-            if(!rows.length || !self.pullup2load){
+            if(!self.pullup2load || rows.length < self.maxCountPerPage){
                 self.isCompleted = true;
                 self.$emit('nomore');
             }
