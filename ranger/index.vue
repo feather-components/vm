@@ -380,6 +380,7 @@
                 this.connectObj.widthNumber = this.clientMaxWidth * this.connectObj.width / 100
                 sliderDom1.style.transform = 'translate3d(0, 0, 0)'
                 sliderDom2.style.transform = 'translate3d(0, 0, 0)'
+                this.$emit('ondragend', this.value)
             }
         }
     }
