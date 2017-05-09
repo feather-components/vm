@@ -25,6 +25,7 @@ require.async(['vue', 'vmui/draggable'], function(Vue, Draggable){
 ### 对象方式
 
 ```js
+
 import {Draggable} from Draggable;
 
 var element = document.getElementById('draggable');
@@ -39,6 +40,7 @@ new Draggable(element, {
         return y >= 0;
     }    
 });
+
 ```
 
 ## Options

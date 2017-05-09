@@ -19,10 +19,8 @@ module.exports = {
             this._resize_();
         });
 
-        var height = _.css(this.$el, 'height');
-
-        if(height != 'auto' && (!this.style || !this.style.height)){
-            this._height = _.css(this.$el, 'height');
+        if(this.$el.style.height && (!this.style || !this.style.height)){
+            this._height = this.$el.style.height;
         }
 
         this.$el.$resize = this;
