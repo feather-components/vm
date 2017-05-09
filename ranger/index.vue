@@ -345,7 +345,7 @@
             },
             /* 父元素改变状态值 */
             setValue (val) {
-                var _$ = this
+                let _$ = this
                 if (val.some((v) => {
                             return v < _$.range[0] || v > _$.range[1]
                         })) {
