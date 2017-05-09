@@ -239,6 +239,7 @@
             onDragStartSliderOne (e) {
                 this.connectObj.widthNumber = this.connectObj.initWidth / 100 * this.clientMaxWidth;
                 this.dragObj2.touchStartLeft = this.dragObj2.left
+                this.value[0] = this.range[0]
                 this.$emit('ondragstart', this.value[1], e)
             },
             onDragStartSliderTwo (e) {

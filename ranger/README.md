@@ -30,6 +30,9 @@ label-min：label块左侧<br/>
 label-max：label块右侧<br/>
 label-value：label块值显示<br/>
 
+## 注意
+当为单滑块时，value以initRange[1]为准
+
 
 
 
