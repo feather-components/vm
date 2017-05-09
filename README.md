@@ -2,10 +2,19 @@ Vmui
 ================
 基于vue的组件库
 
+
 ## 使用
+
+###  feather2
 
 ```sh
 feather2 install feather-components/vmui
+```
+
+编译vue的单文件组件
+
+```sh
+npm install feather2-parser-vue fis-parser-es6-babel --save
 ```
 
 conf/conf.js
@@ -30,9 +39,10 @@ require.async('vmui/actionsheet', function(ActionSheet){
 });
 ```
 
+### webpack
+
 ## 组件列表
 
-* [actions](./actions)
 * [actionsheet](./actionsheet)
 * [alert](./alert)
 * [list](./list)
@@ -47,3 +57,15 @@ require.async('vmui/actionsheet', function(ActionSheet){
 * [filter](./filter)
 * [dropdown](./dropdown)
 * [datepicker](./datepicker)
+* [grid](./grid)
+* [uploader](./uploader)
+* [modal](./modal)
+* [shade](./shade)
+* [overlay](./overlay)
+
+
+## 指令
+
+* [actions](./actions)
+* [draggable](./draggable.md)
+* [tabs](./tabs)

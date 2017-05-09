@@ -48,20 +48,27 @@ export default{
     },
 
     mounted: function(){   
-        this.$drag = new Draggable(this.$refs.inner, {
-            axis: this.axis
+        var self = this;
+
+        self.$drag = new Draggable(self.$refs.inner, {
+            axis: self.axis,
+            canDrag: (info) => {
+                return !!self.eSize;
+            }
         });
-        setTimeout(() => {this.refresh()}, 10);
-        this.$on('resize', this.refresh);
     },
 
     methods: {
-        refresh(){
+        _resize_(){
             var self = this;
+
+            Resize.methods._resize_.call(self);
+
             var method = self.axis == 'x' ? 'width' : 'height';
 
             var s1 = self.eSize = _[method](self.$el);
             var s2 = self.iSize = _[method](self.$refs.inner);
+
             self.max = self.axis == 'y' ? _[method](self.$refs.pulldown) : 0;
             self.min = Math.min(0, s1 - s2);
             
@@ -69,6 +76,10 @@ export default{
                 self.barPercent = s1 / Math.max(s1, s2);
                 _.css(self.$refs.bar, method, 100 * self.barPercent + '%');
             }
+        },
+
+        refresh(){
+            this._resize_();
         },
 
         resetBase(){ 
@@ -87,6 +98,9 @@ export default{
 
         onDraging(event){
             var self = this;
+
+            self.isMoving = true;
+
             var duration = Date.now() - self.baseTime, 
                 translate = event.data[self.axis],
                 stack = 1;
@@ -110,6 +124,10 @@ export default{
 
         onDragEnd(event){
             var self = this;
+
+            if(!self.isMoving) return false;
+            self.isMoving = false;
+
             var duration = Date.now() - self.baseTime,
                 translate = self.pos = event.data[self.axis];
 
@@ -117,7 +135,7 @@ export default{
                 self.scrollTo(self.max, (translate - self.max) * 3);
             }else if(translate > 0 && translate < self.max){
                 self.scrollTo(0, translate * 3);
-            }else if(translate < self.min){
+            }else if(translate <= self.min){ 
                 self.scrollTo(self.min, 300);
             }else if(duration < 300){
                 var distance = event.data[self.axis] - self.base;
@@ -203,7 +221,7 @@ export default{
             _.crfa(self.fxer);
             self.fxer = false;
 
-            self.$emit('scroll:end', self.pos);
+            self.$emit('compare', 'scroll:end', self.pos);
 
             if(self.pos >= self.max){
                 self.$emit('scroll:limit', self.pos, 1);
@@ -230,16 +248,12 @@ export default{
         border-radius: 5px;
         background: #ccc;
     }
-
-    .vmui-scroll-inner{
-        float: left;
-    }
 }
 
 .vmui-scroll-y{
     overflow: hidden;
 
-    .vmui-scroll-bar{
+    & > .vmui-scroll-bar{
         right: 0px;
         width: 2px;
         height: 0px;
@@ -252,14 +266,14 @@ export default{
     overflow-y: auto;
     _height: 1%;
 
-    .vmui-scroll-bar{
+    & > .vmui-scroll-bar{
         height: 2px;
         width: 0px;
         left: 0px;
         bottom: 0px;
     }
 
-    .vmui-scroll-inner{
+    & > .vmui-scroll-inner{
         float: left;
     }
 }
