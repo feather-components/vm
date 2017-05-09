@@ -7,12 +7,14 @@
             <slot name="label-max">
                 <span class="label-max">{{range[1]}}</span>
             </slot>
-            <div class="range-value" v-if="sliderNum==1">
-                {{value[1]}}
-            </div>
-            <div class="range-value" v-else>
-                {{value[0]}} - {{value[1]}}
-            </div>
+            <slot name="label-value">
+                <div class="range-value" v-if="sliderNum==1" >
+                    {{value[1]}}
+                </div>
+                <div class="range-value" v-else>
+                    {{value[0]}} - {{value[1]}}
+                </div>
+            </slot>
         </div>
         <div class="ranger">
             <div class="ranger-body">
