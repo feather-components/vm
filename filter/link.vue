@@ -115,10 +115,11 @@ export default{
             })
         },
 
-        render(source = this.source, level = 0){
+        render(source, level = 0){
             var self = this;
 
             self.filters = self.filters.slice(0, level);
+            source = self.getSource(source, level);
 
             if(typeof source == 'string'){
                 self.renderFromRemote(source, level);
@@ -162,6 +163,7 @@ export default{
 
             self.$http && self.$http.abort();
             self.$http = Ajax({
+                dataType: 'json',
                 url: source,
                 data: Object.assign(o, self.params),
                 success: (data) => {
@@ -211,6 +213,18 @@ export default{
 
         isMaxLevel(level){   
             return level == this.maxLevel;
+        },
+
+        getSource(source, level){
+            if(!source){
+                source = this.source;
+
+                if(Array.isArray(source) && typeof source[0] == 'string'){
+                    source = source[level] || source[0];
+                }
+            }
+
+            return source;
         }
     }
 }
