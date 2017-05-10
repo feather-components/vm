@@ -156,7 +156,10 @@ export default{
             default: false
         },
 
-        kw: 'kw'
+        kw: {
+            type: String,
+            default: 'kw'
+        }
     },
 
     mounted(){
@@ -216,9 +219,9 @@ export default{
             if(self.caches[self.value]){
                 self.$list.setData(self.caches[self.value]);
             }else{
-                self.$list.setParams({
-                    kw: self.value
-                }, true);
+                let param = {}
+                param[this.kw] =  self.value
+                self.$list.setParams(param, true);
                 self.$list.refresh(false, false);
             }
         },
