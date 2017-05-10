@@ -112,13 +112,11 @@ export default{
             var self = this, level = item.__level;
 
             if(val.length){
-                self.count++;
                 self.value[self.parent.value] = val;
                 self.labels[self.parent.label] = labels;
             }else{
-                self.count--;
                 delete self.value[self.parent.value];
-                delete self.labesl[self.parent.label];
+                delete self.labels[self.parent.label];
             }
 
             self.renderList(self.data, 0);
@@ -126,7 +124,13 @@ export default{
         },
 
         canBeSelect(){
-            return this.count < this.maxSize;
+            var self = this, count = 0;
+
+            for(var i in self.value){
+                count += self.value[i].length;
+            }
+
+            return count < this.maxSize;
         }
     }
 }

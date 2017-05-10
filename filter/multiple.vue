@@ -73,7 +73,7 @@ export default{
                 vals.push(value);
             }
 
-            self.$emit('change', self.value = vals, self.getSelectedItems(), item);
+            self.$emit('change', self.value = vals, self.getSelectedLabels(), item);
         },
 
         getItemClass(item){
@@ -86,7 +86,7 @@ export default{
             return className;
         },
 
-        getSelectedLabel(){
+        getSelectedLabels(){
             return this.source.filter((item) => {
                 return this.value.indexOf(item.value) > -1;
             }).map((item) => {

@@ -1,7 +1,7 @@
 {
   "name": "vmui",
   "main": "index.js",
-  "version": "0.1.17",
+  "version": "0.1.18",
   "homepage": "https://github.com/feather-components/vmui",
   "authors": [
     "zhanghao639 <jsyczhanghao@sina.com>"
