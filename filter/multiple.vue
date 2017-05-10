@@ -1,6 +1,6 @@
 <template>
 <scroll ref="scroll" class="vmui-filter vmui-filter-multiple" :fill-height="fillHeight">
-    <a href="javascript:" v-for="(item, key) of data" v-html="itemFormatter(item)" @click="clickItem(item)" :class="getItemClass(item)"></a>
+    <a href="javascript:" v-for="(item, key) of data" v-html="item.label" @click="clickItem(item)" :class="getItemClass(item)"></a>
 </scroll>
 </template>
 
@@ -73,7 +73,7 @@ export default{
                 vals.push(value);
             }
 
-            self.$emit('change', self.value = vals, item);
+            self.$emit('change', self.value = vals, self.getSelectedItems(), item);
         },
 
         getItemClass(item){
@@ -84,6 +84,14 @@ export default{
             }
 
             return className;
+        },
+
+        getSelectedLabel(){
+            return this.source.filter((item) => {
+                return this.value.indexOf(item.value) > -1;
+            }).map((item) => {
+                return item.label;
+            });
         }
     }
 }

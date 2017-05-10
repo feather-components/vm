@@ -1,5 +1,5 @@
 <template>
-<scroll ref="scroll" class="vmui-filter" :fill-height="fillHeight"><a href="javascript:" v-for="(item, key) of data" v-html="itemFormatter(item)" @click="clickItem(item)" :class="getItemClass(item)"></a></scroll>
+<scroll ref="scroll" class="vmui-filter" :fill-height="fillHeight"><a href="javascript:" v-for="(item, key) of data" v-html="item.label" @click="clickItem(item)" :class="getItemClass(item)"></a></scroll>
 </template>
 
 <style>
@@ -37,13 +37,6 @@ export default{
             type: Array,
             default(){
                 return [];
-            }
-        },
-
-        itemFormatter: {
-            type: Function,
-            default(item){
-                return item.label;
             }
         },
 
@@ -97,7 +90,7 @@ export default{
                 return false;
             }
             
-            self.$emit('change', self.value = item.value, item);
+            self.$emit('change', self.value = item.value, item.label, item);
         },
 
         getItemClass(item){

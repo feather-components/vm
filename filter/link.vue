@@ -203,11 +203,18 @@ export default{
         change(val, item){  
             var self = this, level = item.__level;
 
-            self.paths = self.paths.slice(0, level).concat(val);
+            self.paths = self.paths.slice(0, level).concat(item);
             self.$emit('paths:change', self.paths);
 
             if(self.isMaxLevel(level)){
-                self.$emit('change', self.value = self.paths.slice(0), item);
+                var paths = self.paths.slice(0), labels = [];
+                
+                self.value = paths.map((item) => {
+                    labels.push(item.label);
+                    return item.value;
+                });
+
+                self.$emit('change', self.value, labels, item);
             }
         },
 

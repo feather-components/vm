@@ -51,7 +51,8 @@ export default{
             infinite: this.size < 0,
             value: {},
             parent: null,
-            count: 0
+            count: 0,
+            labels: {}
         };
     },
 
@@ -107,18 +108,21 @@ export default{
             }
         },
 
-        change(val, item){
+        change(val, labels, item){
             var self = this, level = item.__level;
+
             if(val.length){
                 self.count++;
                 self.value[self.parent.value] = val;
+                self.labels[self.parent.label] = labels;
             }else{
                 self.count--;
                 delete self.value[self.parent.value];
+                delete self.labesl[self.parent.label];
             }
 
             self.renderList(self.data, 0);
-            self.$emit('change', self.value, item);
+            self.$emit('change', self.value, self.labels, item);
         },
 
         canBeSelect(){
