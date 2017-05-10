@@ -115,6 +115,7 @@ require.async(['vue', 'vmui/filter'], function(Vue, Filter){
 ```
 
 ```js
+//ajax/filter.json
 {
     "data": [
         {
@@ -128,6 +129,27 @@ require.async(['vue', 'vmui/filter'], function(Vue, Filter){
         }
     ]
 }
+```
+
+   #### 多个远程数据源
+
+```html
+<div id="test">
+    <!--
+    level指定3级， names指定远程请求时，每一级的id参数名
+    -->
+    <link-filter :source="['/ajax/filter-l1.json', '/ajax/filter-l2.json', '/ajax/filter-l3.json']" @change="print" :data-formatter="function(data){return data.data}" :level="3" :names="['province', 'city']"></link-filter>
+</div>   
+```
+
+```html
+<div id="test">
+    <!--
+    level指定3级， names指定远程请求时，每一级的id参数名
+    第2级的url为null时，则自动使用第1级的url，如果第1级返回的数据中存在children属性，则不使用远程数据源
+    -->
+    <link-filter :source="['/ajax/filter-l1.json', null, '/ajax/filter-l3.json']" @change="print" :data-formatter="function(data){return data.data}" :level="3" :names="['province', 'city']"></link-filter>
+</div>   
 ```
 
    #### 本地数据源
@@ -160,11 +182,11 @@ require.async(['vue', 'vmui/filter'], function(Vue, Filter){
 
     同single的props
 
-    * source: Array|Object|String 为string则为远程请求， 如果是Object，需要通过dateFormatter进行格式化转换为数组
+    * source: Array|Object|String 为string则为远程请求， 如果为数组,且第一项为string，则同样表示为远程请求，如果是Object，需要通过dateFormatter进行格式化转换为数组，
     * params: Object 请求时额外带的参数
     * names: Array 请求时，每一级的id参数名，如果为一个，则始终使用该值
     * level: Number 共多少级
-    * dataFormatter: Function 进行数据的格式化
+    * dataFormatter: Function 进行数据的格式化，如果通过ajax回来的数据中不存在value属性，可通过该函数格式化下
 
    ### Events
 
