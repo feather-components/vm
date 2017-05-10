@@ -340,7 +340,7 @@ form组件集合中包含了4个组件：
 
 
     ### Props
-        * label: String select标题
+        * label: String image标题
         * images: Array 默认值，默认值的要求必须是对象数组，且对象必须有value、label属性
 
     ### Events
