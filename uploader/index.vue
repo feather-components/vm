@@ -34,6 +34,11 @@ var Uploader = {
             default: false
         },
 
+        param: {
+            type: String,
+            default: 'file'
+        },
+
         url: {
             type: String,
             default: ''
@@ -77,10 +82,10 @@ var Uploader = {
 
             var file = this.files.shift();
 
-            this.$emit('start', file);
+            this.$emit('upload:start', file);
 
             var formData = new FormData();
-            formData.append(file.name, file);
+            formData.append(this.param, file);
 
             var xhr = this.xhr = new XMLHttpRequest;
             xhr.onload = () => {
@@ -92,16 +97,16 @@ var Uploader = {
                             data = JSON.parse(xhr.responseText);
                         }catch(e){};
 
-                        this.$emit('complete', file, data);
+                        this.$emit('upload:complete', file, data);
                     }else{
-                        this.$emit('error', file, xhr.status);
+                        this.$emit('upload:error', file, xhr.status);
                     }
 
                     this._upload();
                 }  
             };
             xhr.upload.onprogress = (event) => {
-                this.$emit('progress', file, event);
+                this.$emit('upload:progress', file, event);
             };
             xhr.open('post', this.url);
             xhr.send(formData);

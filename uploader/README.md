@@ -12,7 +12,7 @@ Uploader
 ## Event
 
 * select
-* start
-* complete
-* error
-* progress
+* upload:start
+* upload:complete
+* upload:error
+* upload:progress

@@ -144,6 +144,10 @@ export default{
             }
         },
 
+        paramsAlias: {
+
+        },
+
         pulldown2refresh: {
             type: Boolean,
             default(){
@@ -273,7 +277,7 @@ export default{
             }catch(e){}
 
             this.data = this.data.concat(source || []);
-            this.$emit('addData');
+            this.$emit('data:add', source);
         },
 
         refresh(pulldownFx = this.pulldown2refresh, clearData = true){
