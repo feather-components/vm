@@ -4,7 +4,7 @@ filter/link组件
 
 ### Example
 
-    #### 远程数据源
+#### 远程数据源
 
 ```html
 <div id="test">
