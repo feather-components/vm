@@ -363,8 +363,10 @@ export default{
                 self.$emit('nomore');
             }
 
-            if(rows.length){
-                self.rows = self.isRefreshing ? rows : self.rows.concat(rows);
+            if(self.isRefreshing){
+                self.rows = rows;
+            }else{
+                self.rows = self.rows.concat(rows);
             }
 
             self.$nextTick(() => {

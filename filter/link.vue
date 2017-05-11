@@ -151,13 +151,13 @@ export default{
         renderList(source, level){
             var self = this;
 
+            source = self.formatSource(source, level);
+
             if(level > 0){
                 self.parent.children = source; 
             }else{
                 self.data = source;
             }
-
-            source = self.formatSource(source, level);
 
             var refresh = false;
 
@@ -210,13 +210,17 @@ export default{
         },
 
         formatSource(source, level){
+            if(source.__formatted){
+                return source;
+            }
+
             try{
                 source = this.dataFormatter(source, level, this.parent); 
             }catch(e){
                 source = [];
             }
 
-            return source.map((item) => {
+            source = source.map((item) => {
                 if(this.parent){
                     item.__parent = this.parent.value;
                 }
@@ -224,6 +228,9 @@ export default{
                 item.__level = level;
                 return item;
             });
+
+            source.__formatted = true;
+            return source;
         },
 
         change(val, label, item){  
@@ -234,14 +241,13 @@ export default{
 
             if(self.isMaxLevel(level)){
                 var paths = self.paths.slice(0), labels = [], objs = {};
-                
-                self.value = paths.map((item, level) => {
+                var vals = paths.map((item, level) => {
                     objs[self.names[level] || ('level' + level)] = item.value;
                     labels.push(item.label);
                     return item.value;
                 });
 
-                self.$emit('change', self.value, labels, objs, item);
+                vals.toString() !== self.value.toString() && self.$emit('change', self.value = vals, labels, objs, item);
             }
         },
 
