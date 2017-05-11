@@ -178,7 +178,7 @@ export default{
             var self = this, o = {};
 
             if(level > 0){
-                o[self.names[level] || self.names[0]] = self.parent.value;
+                o[self.names[level - 1] || self.names[0]] = self.parent.value;
             }
 
             self.$http && self.$http.abort();
@@ -211,7 +211,7 @@ export default{
 
         formatSource(source, level){
             try{
-                source = this.dataFormatter(source); 
+                source = this.dataFormatter(source, level, this.parent); 
             }catch(e){
                 source = [];
             }
@@ -233,14 +233,15 @@ export default{
             self.$emit('paths:change', self.paths);
 
             if(self.isMaxLevel(level)){
-                var paths = self.paths.slice(0), labels = [];
+                var paths = self.paths.slice(0), labels = [], objs = {};
                 
-                self.value = paths.map((item) => {
+                self.value = paths.map((item, level) => {
+                    objs[self.names[level] || ('level' + level)] = item.value;
                     labels.push(item.label);
                     return item.value;
                 });
 
-                self.$emit('change', self.value, labels, item);
+                self.$emit('change', self.value, labels, objs, item);
             }
         },
 
