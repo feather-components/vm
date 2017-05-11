@@ -30,6 +30,11 @@ require.async(['vue', 'vmui/filter'], function(Vue, Filter){
 * dataFormatter: Function 进行数据的格式化，如果通过ajax回来的数据中不存在value属性，可通过该函数格式化下
 * size：Number 一共可以选择多少个二季选项
 * perSize: Number 每一个一级可以选择几个二级选项
+* default-value: Object 默认值
+
+```html
+<link-multiple-filter source="/data/filter.json" :default-value="{1: [1]}"></link-multiple-filter>
+```
 
 ### Events
 

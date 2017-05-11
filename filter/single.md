@@ -31,6 +31,7 @@ require.async(['vue', 'vmui/filter'], function(Vue, Filter){
 
 * source: Array 数据源，数据源的要求必须是对象数组，且对象必须有value属性
 * itemFormatter: Function 格式化输出的每一项的显示文字
+* default-value: Number|String 默认值
 
 ```html
 <single-filter 

@@ -1,7 +1,7 @@
 <template>
 <div class="vmui-filters" :class="'vmui-filters-' + filters.length">
     <template v-for="(filter, index) of filters">
-        <single :source="filter" @item:click="clickItem" :item-formatter="itemFormatter" ref="box" @reject="$emit('reject')" @change="change" :fill-height="fillHeight"></single>
+        <single :source="filter" @item:click="click" :item-formatter="itemFormatter" ref="box" @reject="$emit('reject')" @change="change" :fill-height="fillHeight"></single>
     </template>
 </div>
 </template>
@@ -77,7 +77,14 @@ export default{
             default(data){
                 return data;
             }
-        }
+        },
+
+        defaultValue: {
+            type: Array,
+            default(){
+                return [];
+            }
+        },
     },
 
     components: {
@@ -87,10 +94,17 @@ export default{
     data(){
         return {
             filters: [],
-            value: [],
+            value: this.defaultValue,
             paths: [],
             parent: null
         };
+    },
+
+    watch: {
+        defaultValue(v){
+            this.value = v;
+            this.render(this.data);
+        }
     },
 
     computed: {
@@ -109,10 +123,16 @@ export default{
             var self = this;
 
             self.$on('filter:render', (source, level) => {
-                if(level > 0){
-                    self.$refs.box[level].value = self.value[level];
-                }
-            })
+                var items = source.filter((item) => {
+                    return item.value == self.value[level];
+                });  
+
+                if(items.length){
+                    var item = items[0];
+                    self.$refs.box[level].setValue(item.value);
+                    self.click(item);
+                } 
+            });
         },
 
         render(source, level = 0){
@@ -174,7 +194,7 @@ export default{
             });
         },
 
-        clickItem(item){
+        click(item){
             var self = this;
 
             self.$emit('item:click', item);
@@ -195,12 +215,16 @@ export default{
             }
 
             return source.map((item) => {
+                if(this.parent){
+                    item.__parent = this.parent.value;
+                }
+                
                 item.__level = level;
                 return item;
             });
         },
 
-        change(val, item){  
+        change(val, label, item){  
             var self = this, level = item.__level;
 
             self.paths = self.paths.slice(0, level).concat(item);

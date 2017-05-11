@@ -104,6 +104,28 @@ require.async(['vue', 'vmui/filter'], function(Vue, Filter){
 * level: Number 共多少级
 * dataFormatter: Function 进行数据的格式化，如果通过ajax回来的数据中不存在value属性，可通过该函数格式化下
 * itemFormatter: Function 格式化输出的每一项的显示文字
+* default-value: Array 默认值，为数组，level为几，则传递几个数组项
+
+```html
+<link-filter :source="[
+        {
+            label: '1', value: 1, children: [
+                {
+                    label: '3',
+                    value: 3
+                }
+            ]
+        }, 
+        {
+            label: '2', value: 2, children: [
+                {
+                    label: '4',
+                    value: 4
+                }
+            ]
+        }
+    ]" @change="print" :level="2" :default-value="[1, 3]"></link-filter>
+```
 
 ### Events
 
