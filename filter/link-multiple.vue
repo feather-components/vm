@@ -124,23 +124,21 @@ export default{
         change(val, labels, item){
             var self = this, parent = self.parent.value, parentLabel = self.parent.label;
 
-            do{
-                if(!val.length && !self.value[parent]){
-                    break;
-                }
+            if(!val.length && !self.value[parent]){
+                return false;
+            }
 
-                if(val.length){
-                    self.value[parent] = val;
-                    self.labels[parentLabel] = labels;
-                }else{
-                    delete self.value[parent];
-                    delete self.labels[parentLabel];
-                }
+            if(val.length){
+                self.value[parent] = val;
+                self.labels[parentLabel] = labels;
+            }else{
+                delete self.value[parent];
+                delete self.labels[parentLabel];
+            }
 
-                self.$emit('change', self.value, self.labels, item);
-            }while(0);  
-
-            self.filters[0] = self.data.slice(0);
+            self.$refs.left.value = null;
+            self.$refs.left.setValue(parent);
+            self.$emit('change', self.value, self.labels, item);
         },
 
         canSelect(item){

@@ -202,6 +202,8 @@ export default{
             if(self.isMaxLevel(item.__level)){
                 return;
             }else{
+                if(item === self.parent) return false;
+
                 self.parent = item;
                 self.render(item.children, item.__level + 1);
             }
