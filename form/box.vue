@@ -1,6 +1,6 @@
 <template>
     <div class="vmui-box">
-        <label class="vmui-label">
+        <label class="vmui-label" v-if="label">
             {{label}}
             <span class="vmui-label-left">
                 <slot name="msg-left"></slot>

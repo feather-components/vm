@@ -15,10 +15,17 @@
     height: .36rem;
     display: block;
     margin: .05rem auto 0.07rem auto;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center center;
 }
 
 .vmui-toast-success .vmui-toast-icon{
-    background: url(./success@3x.png);
+    background-image: url(./success@3x.png?__inline);
+}
+
+.vmui-toast-loading .vmui-toast-icon{
+    background-image: url(./loading.gif?__inline);
 }
 </style>
 
@@ -64,7 +71,7 @@ Toast.destroy = () => {
     }
 };
 
-['success'].forEach((method) => {
+['success', 'loading'].forEach((method) => {
     Toast[method] = (content, time, useShade) => {
         Toast('<i class="vmui-toast-icon"></i>' + content, time, useShade, 'vmui-toast-' + method);
     };

@@ -23,6 +23,11 @@
     text-align: center;
     word-break: break-all;
     margin-bottom: 0.05rem;
+    font-size: 0rem;
+
+    *{
+        font-size: 0.14rem;
+    }
 }
 </style>
 

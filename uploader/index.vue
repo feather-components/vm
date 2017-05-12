@@ -1,16 +1,39 @@
 <template>
     <a href="javascript:" class="vmui-uploader">
         <slot><i class="vmui-uploader-icon"></i></slot>
-        <input type="file" class="vmui-uploader-input" @click="$emit('click')" @change="onSelect" ref="uploader" :multiple="multiple" />
+        <input type="file" class="vmui-uploader-input" @click="$emit('click')" @change="onSelect" ref="uploader" :multiple="this.size == 1 ? false : true" />
     </a>
 </template>
 
 <style>
 .vmui-uploader{
     display: inline-block;
-    width: 100%;
-    height: 100%;
+    width: 1.09rem;
+    height: 0.8rem;
     position: relative;
+    background: #f3f3f3;
+    border-radius: 0.04rem;
+
+    &:before{
+        width: 0.32rem;
+        height: 0.05rem;
+    }
+
+    &:after{
+        height: 0.32rem;
+        width: 0.05rem;
+    }
+
+    &:before, &:after{
+        content: "";
+        display: block;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        -webkit-transform: translate(-50%, -50%);
+        background:#fff;
+    }
 }
 
 .vmui-uploader-input{
@@ -34,9 +57,9 @@ var Uploader = {
             default: false
         },
 
-        param: {
-            type: String,
-            default: 'file'
+        usePack: {
+            type: Boolean,
+            default: true
         },
 
         url: {
@@ -48,6 +71,13 @@ var Uploader = {
             type: Function,
             default(files){
                 return files;
+            }
+        },
+
+        canUpload: {
+            type: Function,
+            default(files){
+                return true;
             }
         }
     },
@@ -71,23 +101,39 @@ var Uploader = {
 
         upload(files = []){
             files = this.beforeUploadProcessor(files);
+
+            if(!this.canUpload(files)){
+                this.$emit('reject', files);
+                return false;
+            }
+
             this.files = this.files.concat(files);
             this._upload();
         },
 
         _upload(){
-            if(!this.files.length){
+            var self = this, files = self.files;
+
+            if(!files.length){
                 return false;
             }
 
-            var file = this.files.shift();
+            if(!self.usePack){
+                files = [self.files.shift()];
+            }else{
+                files = self.files.slice(0);
+                self.clear();
+            }
 
-            this.$emit('upload:start', file);
+            self.$emit('upload:start', files);
 
             var formData = new FormData();
-            formData.append(this.param, file);
 
-            var xhr = this.xhr = new XMLHttpRequest;
+            files.forEach((file, key) => {
+                formData.append('file' + key, file);
+            });
+
+            var xhr = self.xhr = new XMLHttpRequest;
             xhr.onload = () => {
                 if(xhr.readyState == 4){
                     if(xhr.status == 200){
@@ -97,23 +143,27 @@ var Uploader = {
                             data = JSON.parse(xhr.responseText);
                         }catch(e){};
 
-                        this.$emit('upload:complete', file, data);
+                        self.$emit('upload:complete', files, data);
                     }else{
-                        this.$emit('upload:error', file, xhr.status);
+                        self.$emit('upload:error', files, xhr.status);
                     }
 
                     this._upload();
                 }  
             };
             xhr.upload.onprogress = (event) => {
-                this.$emit('upload:progress', file, event);
+                self.$emit('upload:progress', files, event);
             };
-            xhr.open('post', this.url);
+            xhr.open('post', self.url);
             xhr.send(formData);
         },
 
         abort(){
             this.xhr && this.xhr.abort();
+            this.clear();
+        },
+
+        clear(){
             this.files.length = 0;
         }
     }
