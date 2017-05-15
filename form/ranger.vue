@@ -18,26 +18,22 @@
         </div>
         <div class="ranger">
             <div class="ranger-body" ref="ranger_body">
-                <div class="ranger-cover1" :style="{
+                <div class="ranger-cover1" :class="{setting:setting}" :style="{
                 width:cover1$.width + 'px',
-                transition: setting?'all 0.3s cubic-bezier(0.23, 1, 0.32, 1) 0ms':'none'
                 }" v-if="sliderNum==2"></div>
                 <div class="ranger-connect-line"></div>
-                <div class="ranger-cover2" :style="{
+                <div class="ranger-cover2" :class="{setting:setting}" :style="{
                 width:cover2$.width + 'px',
-                transition: setting?'all 0.3s cubic-bezier(0.23, 1, 0.32, 1) 0ms':'none'
                 }"></div>
                 <div class='drag1' ref="drag1"
-                     @drag:start="onDragStart" @draging="onDraging" @drag:end="onDragEnd"
+                     @drag:start="onDragStart" @draging="onDraging" @drag:end="onDragEnd" :class="{setting:setting}"
                      :style="{
                      left:drag1$.left+'px',
-                     transition: setting?'all 0.3s cubic-bezier(0.23, 1, 0.32, 1) 0ms':'none'
                      }" v-if="sliderNum==2"></div>
                 <div class='drag2' ref="drag2"
-                     @drag:start="onDragStart" @draging="onDraging" @drag:end="onDragEnd"
+                     @drag:start="onDragStart" @draging="onDraging" @drag:end="onDragEnd" :class="{setting:setting}"
                      :style="{
                      left:drag2$.left+'px',
-                     transition: setting?'all 0.3s cubic-bezier(0.23, 1, 0.32, 1) 0ms':'none'
                      }"></div>
             </div>
         </div>
@@ -124,6 +120,9 @@
         box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
         z-index: 1
     }
+    .vmui-ranger .setting{
+        transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1) 0ms
+    }
 </style>
 <script>
     import {Draggable} from '../draggable';
@@ -193,12 +192,8 @@
         methods: {
             /*判断value,是否正确*/
             valueToCorrect () {
-                if (this.val[0] <= this.range[0] || this.val[0] >= this.range[1]) {
-                    this.val[0] = this.range[0]
-                }
-                if (this.val[1] >= this.range[1] || this.val[1] <= this.range[0]) {
-                    this.val[1] = this.range[1]
-                }
+                this.val[0] = this.val[0] < this.range[0] ? this.range[0] : this.val[0]
+                this.val[1] = this.val[1] > this.range[1] ? this.range[1] : this.val[1]
             },
             /* 初始化处理 */
             initRanger () {
@@ -234,16 +229,18 @@
                 this.setInitCover1()
             },
             onDragStart (e){
+                console.log(e,111)
                 this.drag2$.touchStartLeft = this.drag2$.left
                 if (this.sliderNum === 2) {
                     this.drag1$.touchStartLeft = this.drag1$.left
-                    this.$emit('ondragstart', this.val, e)
+                    this.$emit('drag:start', this.val, e)
                 } else {
-                    this.$emit('ondragstart', this.val[1], e)
+                    this.$emit('drag:start', this.val[1], e)
                 }
             },
             /*拖动进行时*/
             onDraging (e) {
+                console.log(e,222)
                 if (e.target.className == 'drag1') {
                     this.setDrag1(e)
                     this.setCover1(e)
@@ -285,18 +282,18 @@
                 this.val[1] = (this.range[1] - this.range[0]) * ((this.clientMaxWidth - this.cover2$.width) / this.clientMaxWidth) + this.range[0]
                 if (this.sliderNum === 2) {
                     this.val[0] = this.cover1$.width / this.clientMaxWidth * (this.range[1] - this.range[0]) + this.range[0]
-                    this.$emit('onupdating', this.val, e)
+                    this.$emit('updating', this.val, e)
                 } else {
-                    this.$emit('onupdating', this.val[1], e)
+                    this.$emit('updating', this.val[1], e)
                 }
             },
             /* 拖动进行时（结束）*/
             /*  拖动结束 */
             onDragEnd (e) {
                 if (this.sliderNum === 1) {
-                    this.$emit('ondragend', this.val[1], e)
+                    this.$emit('drag:end', this.val[1], e)
                 } else {
-                    this.$emit('ondragend', this.val, e)
+                    this.$emit('drag:end', this.val, e)
                 }
             },
             /* 手动设置值 */
