@@ -1,10 +1,12 @@
 <template>
-    <ul class="vmui-grid">
+    <ul :class="'vmui-grid vmui-grid-' + cols">
         <li v-for="(item, index) in source" class="vmui-grid-item" :style="{width: 100 * itemPercent + '%'}">
             <slot name="cell" :data="item" :index="index">{{item}}</slot>
         </li>
 
-        <li v-if="$slots.default" class="vmui-grid-item" :style="{width: 100 * itemPercent + '%'}"><slot></slot></li>
+        <li v-if="$slots.default" class="vmui-grid-item" :style="{width: 100 * itemPercent + '%'}">
+            <slot></slot>
+        </li>
     </ul>
 </template>
 
@@ -22,11 +24,13 @@
 .vmui-grid-item{
     text-align: center;
     word-break: break-all;
-    margin-bottom: 0.05rem;
-    font-size: 0rem;
+    box-sizing: border-box;
+    padding: 0.05rem;
+}
 
-    *{
-        font-size: 0.14rem;
+.vmui-grid-3{
+    .vmui-grid-item{
+        height: 1.09rem;
     }
 }
 </style>
@@ -41,21 +45,21 @@ export default{
             }
         },
 
-        columns: {
+        cols: {
             type: Number,
             default: 3
         }
     },
 
     watch: {
-        columns(v){
+        cols(v){
             this.itemPercent = (1/v).toFixed(2);
         }
     },
 
     data(){
         return {
-            itemPercent: (1/this.columns).toFixed(2)
+            itemPercent: (1/this.cols).toFixed(2)
         }
     }
 }

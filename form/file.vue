@@ -1,14 +1,17 @@
 <template>
-<v-box :label="label">
+<v-box :label="label" class="vmui-file">
     <template slot="msg-left" v-if="count != -1">
         {{value.length}}/{{count}}
     </template> 
 
-    <grid :columns="count == -1 || count > 3 ? 3 : count" :source="value">
+    <grid :cols="count == -1 || count > 3 ? 3 : count" :source="value">
         <template slot="cell" scope="props">
-            <slot :data="props.data" :index="props.index">
-                <img :src="props.data" />
-            </slot>
+            <div class="vmui-file-item">
+                <slot :data="props.data" :index="props.index">
+                    <img :src="props.data" />
+                </slot>
+                <a href="javascript:" class="vmui-file-del" v-if="delEnabled" @click="del(props.index)">删除</a>
+            </div>
         </template>
         
         <uploader 
@@ -21,6 +24,42 @@
     </grid>
 </v-box>
 </template>
+
+<style>
+.vmui-file{
+    .vmui-grid{
+        margin-top: 0px;
+    }
+}
+
+.vmui-file-item{
+    display: -webkit-flex;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    height: 100%;
+    border: 1px dashed #eee;
+    border-radius: 5px;
+}
+
+.vmui-file-item img{
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.vmui-file-del{
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    height: 0.2rem;
+    line-height: 0.2rem;
+    display: block;
+    width: 30%;
+    background: rgba(48, 48, 48, 0.5);
+    color: #fff;
+}
+</style>
 
 <script>
 import vBox from "./box";
@@ -65,6 +104,11 @@ export default{
             default(files, data){
                 return data;
             }
+        },
+
+        delEnabled: {
+            type: Boolean,
+            default: true
         }
     },
 
@@ -100,8 +144,8 @@ export default{
             var data = this.dataFormatter(files, data);
 
             if(data){
-                this.value = this.rest > 1 ? this.value.concat(_.makeArray(data)) : data;
-                this.$emit('input', this.rest > 1 ? this.value : this.value[0]);
+                this.value = this.count > 1 ? this.value.concat(_.makeArray(data)) : [data];
+                this.$emit('input', this.count > 1 ? this.value : this.value[0]);
                 Toast.success('上传成功');
             }else{
                 Toast('上传失败');
@@ -110,6 +154,10 @@ export default{
 
         onUploadError(){
             Toast('网络请求错误');
+        },
+
+        del(index){
+            this.value.splice(index, 1);
         }
     }
 }

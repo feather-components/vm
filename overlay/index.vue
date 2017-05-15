@@ -79,7 +79,7 @@ export default{
         },
 
         destroy(){
-            this.$destroy();
+            this.$destroy(true);
         }
     }
 }
