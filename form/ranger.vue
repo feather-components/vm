@@ -246,16 +246,10 @@
                 _.css(this.$refs.cover2, 'width', this.clientMaxWidth - ($drag2.offsetLeft + this.initLeft) + 'px');
             },
             _setVal (e) {
-                if(e.target.className == 'drag2'){
-                    this.val[1] = this.rangerNumber * ((this.clientMaxWidth - this.$refs.cover2.offsetWidth) / this.clientMaxWidth) + this.range[0]
-                } else {
-                    this.val[0] = this.$refs.cover1.offsetWidth / this.clientMaxWidth * this.rangerNumber + this.range[0]
-                }
-                if (this.sliderNum === 2) {
-                    this.$emit('updating', this.val, e)
-                } else {
-                    this.$emit('updating', this.val[1], e)
-                }
+                e.target.className == 'drag2' ?
+                        this.val[1] = this.rangerNumber * ((this.clientMaxWidth - this.$refs.cover2.offsetWidth) / this.clientMaxWidth) + this.range[0]
+                        : this.val[0] = this.$refs.cover1.offsetWidth / this.clientMaxWidth * this.rangerNumber + this.range[0]
+                this.sliderNum === 2 ? this.$emit('updating', this.val, e) : this.$emit('updating', this.val[1], e)
                 this.$forceUpdate()
             },
             /*  拖动结束 */
