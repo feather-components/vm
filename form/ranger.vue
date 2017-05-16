@@ -1,11 +1,7 @@
 <template>
     <div class="vmui-ranger">
-        <slot name="label-min">
-            <span class="label-min">{{range[0]}}</span>
-        </slot>
-        <slot name="label-max">
-            <span class="label-max">{{range[1]}}</span>
-        </slot>
+        <span class="label-min">{{range[0]}}</span>
+        <span class="label-max">{{range[1]}}</span>
         <div v-if="valueShow">
             <slot name="label-value">
                 <div class="range-value" v-if="sliderNum==1">
