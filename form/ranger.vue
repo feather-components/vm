@@ -158,7 +158,7 @@
             }
         },
         mounted () {
-            this.rangerNumber = this.range[1]-this.range[0]
+            this.rangerNumber = this.range[1] - this.range[0]
             this._initRanger()
         },
         watch: {
