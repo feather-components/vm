@@ -192,7 +192,7 @@
                 _.css(this.$refs.cover2, 'width', this.clientMaxWidth * (( this.range[1] - this.val[1]) / this.rangerNumber)+ 'px');
             },
             _handleSetDrag1 () {
-                var vr = this.val[0] - this.range[0]
+                let vr = this.val[0] - this.range[0]
                 _.css(this.$refs.drag1, 'left', this.clientMaxWidth * (vr / this.rangerNumber) - this.initLeft + 'px');
                 _.css(this.$refs.cover1, 'width', this.clientMaxWidth * (vr / this.rangerNumber) + 'px');
             },
