@@ -207,11 +207,7 @@
             },
             /*拖动进行时*/
             onDraging (e) {
-                if (e.target.className == 'drag1') {
-                    this._setDrag1AndCover1(e)
-                } else {
-                    this._setDrag2AndCover2(e)
-                }
+                e.target.className == 'drag1' ? this._setDrag1AndCover1(e) : this._setDrag2AndCover2(e)
                 this._setVal(e)
             },
             _setDrag1AndCover1 (e) {
@@ -249,16 +245,12 @@
                 e.target.className == 'drag2' ?
                         this.val[1] = this.rangerNumber * ((this.clientMaxWidth - this.$refs.cover2.offsetWidth) / this.clientMaxWidth) + this.range[0]
                         : this.val[0] = this.$refs.cover1.offsetWidth / this.clientMaxWidth * this.rangerNumber + this.range[0]
-                this.sliderNum === 2 ? this.$emit('updating', this.val, e) : this.$emit('updating', this.val[1], e)
+                this.$emit('updating', this.sliderNum === 1 ? this.val[1] : this.val, e)
                 this.$forceUpdate()
             },
             /*  拖动结束 */
             onDragEnd (e) {
-                if (this.sliderNum === 1) {
-                    this.$emit('drag:end', this.val[1], e)
-                } else {
-                    this.$emit('drag:end', this.val, e)
-                }
+                this.$emit('drag:end', this.sliderNum === 1 ? this.val[1] :this.val , e)
             },
             /* 手动设置值 */
             jsToSetVal () {
