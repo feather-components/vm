@@ -264,7 +264,7 @@
                 e.target.className == 'vmui-drag2' ?
                         this.value[1] = this.rangerNumber * ((this.clientMaxWidth - this.$refs.cover2.offsetWidth) / this.clientMaxWidth) + this.range[0]
                         : this.value[0] = this.$refs.cover1.offsetWidth / this.clientMaxWidth * this.rangerNumber + this.range[0]
-                this.$emit('updating', this.sliderNum === 1 ? this.value[1] : this.value, e)
+                this.$emit('input', this.sliderNum === 1 ? this.value[1] : this.value, e)
                 this.$forceUpdate()
             },
             /*  拖动结束 */
