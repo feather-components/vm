@@ -252,21 +252,16 @@
             },
             /*  拖动结束 */
             onDragEnd (e) {
-                if (e.data != undefined) {
-                    e.target.className == 'vmui-drag1' ?  this.drag1$.transX = e.data.x : this.drag2$.transX = e.data.x
-                }
+                e.target.className == 'vmui-drag1' ?  this.drag1$.transX = e.data.x : this.drag2$.transX = e.data.x
                 _.css(this.$refs.drag2, 'z-index', '1');
                 if(this.sliderNum == 2) {
                     _.css(this.$refs.drag1, 'z-index', '1');
                 }
-                if (e.target.className == 'vmui-drag1') {
-                    if(e.data.x >= 0){
-                        _.css(this.$refs.drag1, 'z-index', '10');
-                    }
-                } else {
-                    if(e.data.x <= 0 && this.sliderNum == 2){
-                        _.css(this.$refs.drag2, 'z-index', '10');
-                    }
+                if (e.target.className == 'vmui-drag1' && e.data.x >= this.clientMaxWidth) {
+                    _.css(this.$refs.drag1, 'z-index', '10');
+                }
+                if(e.target.className == 'vmui-drag2' && e.data.x <= -this.clientMaxWidth && this.sliderNum == 2){
+                    _.css(this.$refs.drag2, 'z-index', '10');
                 }
             },
             /* 手动设置值 */
