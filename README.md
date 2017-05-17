@@ -58,6 +58,7 @@ require.async('vmui/actionsheet', function(ActionSheet){
     * [select](./form/select.md)
     * [tag](./form/tag.md)
     * [box](./form/box.md)
+    * [file](./form/file.md)
 * [datepicker](./datepicker)
 * [filter](./filter)
     * [single](./filter/single.md)
