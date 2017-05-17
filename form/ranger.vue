@@ -228,10 +228,13 @@
                 this._setVal(e)
             },
             _setDrag1AndCover1 (e) {
+                if (this.sliderNum != 2) return
+
                 let $drag1 = this.$refs.drag1
                 _.css($drag1, 'transform', 'translate3d(' + e.data.x + 'px,0,0)');
                 _.css(this.$refs.cover1, 'width', Math.abs(e.data.x) + 'px');
                 _.css(this.$refs.drag2, 'z-index', '1');
+
                 if (e.data.x <= 0) {
                     _.css($drag1, 'transform', 'translate3d(0,0,0)');
                     _.css(this.$refs.drag2, 'z-index', '10');
@@ -247,10 +250,14 @@
                 let $drag2 = this.$refs.drag2
                 _.css($drag2, 'transform', 'translate3d(-' + e.data.x + 'px,0,0)');
                 _.css(this.$refs.cover2, 'width', Math.abs(e.data.x) + 'px');
-                _.css(this.$refs.drag1, 'z-index', '1');
+                if (this.sliderNum == 2) {
+                    _.css(this.$refs.drag1, 'z-index', '1');
+                }
                 if (e.data.x >= 0) {
                     _.css($drag2, 'transform', 'translate3d(0,0,0)');
-                    _.css(this.$refs.drag1, 'z-index', '10');
+                    if (this.sliderNum == 2) {
+                        _.css(this.$refs.drag1, 'z-index', '10');
+                    }
                     _.css(this.$refs.cover2, 'width', 0);
                 }
 
@@ -276,12 +283,12 @@
             },
             /* 手动设置值 */
             jsToSetVal () {
-                let _$ = this
-                _$._setValue()
-                _$.setting = true
-                _$.$el.addEventListener('transitionend', (e) => {
-                    _$.setting = false
-                    _$.onDragEnd(e)
+                let self = this
+                self._setValue()
+                self.setting = true
+                self.$el.addEventListener('transitionend', (e) => {
+                    self.setting = false
+                    self.onDragEnd(e)
                 })
             }
         }
