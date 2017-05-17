@@ -14,17 +14,14 @@
         </div>
         <div class="vmui-ranger-content">
             <div class="vmui-ranger-body" ref="ranger_body">
-                <div class="vmui-ranger-cover1" :class="{'vmui-setting':setting}" ref="cover1"
-                     v-if="sliderNum==2"></div>
+                <div class="vmui-ranger-cover1" :class="{'vmui-setting':setting}" ref="cover1"  v-if="sliderNum==2"></div>
                 <div class="vmui-ranger-connect-line"></div>
-                <div class="vmui-ranger-cover2" :class="{'vmui-setting':setting}" ref="cover2"></div>
+                <div class="vmui-ranger-cover2" :class="{'vmui-setting':setting}" ref="cover2" ></div>
                 <div class='vmui-drag1' ref="drag1" v-draggable="{axis: 'x'}"
-                     @drag:start="onDragStart" @draging="onDraging" @drag:end="onDragEnd"
-                     :class="{'vmui-setting':setting}"
+                     @drag:start="onDragStart" @draging="onDraging" @drag:end="onDragEnd" :class="{'vmui-setting':setting}"
                      v-if="sliderNum==2"></div>
                 <div class='vmui-drag2' ref="drag2" v-draggable="{axis: 'x'}"
-                     @drag:start="onDragStart" @draging="onDraging" @drag:end="onDragEnd"
-                     :class="{'vmui-setting':setting}"
+                     @drag:start="onDragStart" @draging="onDraging" @drag:end="onDragEnd" :class="{'vmui-setting':setting}"
                 ></div>
             </div>
         </div>
@@ -99,15 +96,12 @@
         z-index: 1;
         background: #e1e1e1;
     }
-
-    .vmui-ranger .vmui-drag1 {
+    .vmui-ranger .vmui-drag1{
         left: -12px;
     }
-
-    .vmui-ranger .vmui-drag2 {
+    .vmui-ranger .vmui-drag2{
         right: -12px;
     }
-
     .vmui-ranger .vmui-drag1, .vmui-ranger .vmui-drag2 {
         position: absolute;
         top: 0;
@@ -119,8 +113,7 @@
         box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
         z-index: 1
     }
-
-    .vmui-ranger .vmui-setting {
+    .vmui-ranger .vmui-setting{
         transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1) 0ms
     }
 </style>
@@ -163,10 +156,10 @@
                 },
                 clientMaxWidth: 0,
                 setting: false,
-                rangerNumber: 0
+                rangerNumber:0
             }
         },
-        computed: {
+        computed:{
             value () {
                 return typeof this.val == 'number' || (typeof this.val == 'array' && val.length === 1) ? [0, this.val] : this.val
             }
@@ -205,9 +198,9 @@
                 }
             },
             _handleSetDrag2 () {
-                this.drag2$.transX = this.clientMaxWidth * ((this.range[1] - this.value[1]) / this.rangerNumber)
+                this.drag2$.transX =  this.clientMaxWidth * ((this.range[1] - this.value[1]) / this.rangerNumber)
                 _.css(this.$refs.drag2, 'transform', 'translate3d(-' + this.drag2$.transX + 'px,0,0)');
-                _.css(this.$refs.cover2, 'width', this.clientMaxWidth * (( this.range[1] - this.value[1]) / this.rangerNumber) + 'px');
+                _.css(this.$refs.cover2, 'width', this.clientMaxWidth * (( this.range[1] - this.value[1]) / this.rangerNumber)+ 'px');
             },
             _handleSetDrag1 () {
                 let vr = this.val[0] - this.range[0]
@@ -228,40 +221,40 @@
                 this._setVal(e)
             },
             _setDrag1AndCover1 (e) {
-                if (this.sliderNum != 2) return
+                if(this.sliderNum != 2) return
 
                 let $drag1 = this.$refs.drag1
                 _.css($drag1, 'transform', 'translate3d(' + e.data.x + 'px,0,0)');
-                _.css(this.$refs.cover1, 'width', Math.abs(e.data.x) + 'px');
+                _.css(this.$refs.cover1, 'width',  Math.abs(e.data.x) + 'px');
                 _.css(this.$refs.drag2, 'z-index', '1');
 
-                if (e.data.x <= 0) {
+                if(e.data.x <= 0){
                     _.css($drag1, 'transform', 'translate3d(0,0,0)');
-                    _.css(this.$refs.drag2, 'z-index', '10');
+                    _.css(this.$refs.drag2, 'z-index', '100');
                     _.css(this.$refs.cover1, 'width', 0);
                 }
 
-                if (this.clientMaxWidth - Math.abs(e.data.x) - Math.abs(this.drag2$.transX) <= 0) {
+                if (this.clientMaxWidth - Math.abs(e.data.x) - Math.abs(this.drag2$.transX) <= 0){
                     _.css(this.$refs.cover1, 'width', this.clientMaxWidth - Math.abs(this.drag2$.transX));
-                    _.css($drag1, 'transform', 'translate3d(-' + parseFloat(this.clientMaxWidth - Math.abs(this.drag2$.transX)) + 'px,0,0)');
+                    _.css($drag1, 'transform', 'translate3d(' + parseFloat(this.clientMaxWidth - Math.abs(this.drag2$.transX)) + 'px,0,0)');
                 }
             },
             _setDrag2AndCover2 (e) {
                 let $drag2 = this.$refs.drag2
                 _.css($drag2, 'transform', 'translate3d(-' + e.data.x + 'px,0,0)');
                 _.css(this.$refs.cover2, 'width', Math.abs(e.data.x) + 'px');
-                if (this.sliderNum == 2) {
+                if(this.sliderNum == 2) {
                     _.css(this.$refs.drag1, 'z-index', '1');
                 }
-                if (e.data.x >= 0) {
+                if(e.data.x >= 0){
                     _.css($drag2, 'transform', 'translate3d(0,0,0)');
-                    if (this.sliderNum == 2) {
-                        _.css(this.$refs.drag1, 'z-index', '10');
+                    if(this.sliderNum == 2) {
+                        _.css(this.$refs.drag1, 'z-index', '100');
                     }
                     _.css(this.$refs.cover2, 'width', 0);
                 }
 
-                if (this.clientMaxWidth - Math.abs(e.data.x) - Math.abs(this.drag1$.transX) <= 0) {
+                if (this.clientMaxWidth - Math.abs(e.data.x) - Math.abs(this.drag1$.transX) <= 0){
                     _.css(this.$refs.cover2, 'width', this.clientMaxWidth - Math.abs(this.drag1$.transX));
                     _.css($drag2, 'transform', 'translate3d(-' + parseFloat(this.clientMaxWidth - Math.abs(this.drag1$.transX)) + 'px,0,0)');
                 }
@@ -277,9 +270,9 @@
             /*  拖动结束 */
             onDragEnd (e) {
                 if (e.data != undefined) {
-                    e.target.className == 'vmui-drag1' ? this.drag1$.transX = e.data.x : this.drag2$.transX = e.data.x
+                    e.target.className == 'vmui-drag1' ?  this.drag1$.transX = e.data.x : this.drag2$.transX = e.data.x
                 }
-                this.$emit('drag:end', this.sliderNum === 1 ? this.val[1] : this.val, e)
+                this.$emit('drag:end', this.sliderNum === 1 ? this.val[1] :this.val , e)
             },
             /* 手动设置值 */
             jsToSetVal () {
