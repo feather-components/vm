@@ -18,10 +18,10 @@
                 <div class="vmui-ranger-connect-line"></div>
                 <div class="vmui-ranger-cover2" :class="{'vmui-setting':setting}" ref="cover2" ></div>
                 <div class='vmui-drag1' ref="drag1" v-draggable="{axis: 'x'}"
-                     @drag:start="onDragStart" @draging="onDraging" @drag:end="onDragEnd" :class="{'vmui-setting':setting}"
+                     @draging="onDraging" @drag:end="onDragEnd" :class="{'vmui-setting':setting}"
                      v-if="sliderNum==2"></div>
                 <div class='vmui-drag2' ref="drag2" v-draggable="{axis: 'x'}"
-                     @drag:start="onDragStart" @draging="onDraging" @drag:end="onDragEnd" :class="{'vmui-setting':setting}"
+                     @draging="onDraging" @drag:end="onDragEnd" :class="{'vmui-setting':setting}"
                 ></div>
             </div>
         </div>
@@ -100,7 +100,7 @@
         left: -12px;
     }
     .vmui-ranger .vmui-drag2{
-        right: -12px;
+        right: -13px;
     }
     .vmui-ranger .vmui-drag1, .vmui-ranger .vmui-drag2 {
         position: absolute;
@@ -208,13 +208,6 @@
                 _.css(this.$refs.drag1, 'transform', 'translate3d(' + this.drag1$.transX + 'px,0,0)');
                 _.css(this.$refs.cover1, 'width', this.clientMaxWidth * (vr / this.rangerNumber) + 'px');
             },
-            onDragStart (e){
-                if (this.sliderNum === 2) {
-                    this.$emit('drag:start', this.val, e)
-                } else {
-                    this.$emit('drag:start', this.val[1], e)
-                }
-            },
             /*拖动进行时*/
             onDraging (e) {
                 e.target.className == 'vmui-drag1' ? this._setDrag1AndCover1(e) : this._setDrag2AndCover2(e)
@@ -224,13 +217,10 @@
                 if(this.sliderNum != 2) return
 
                 let $drag1 = this.$refs.drag1
-                _.css($drag1, 'transform', 'translate3d(' + e.data.x + 'px,0,0)');
                 _.css(this.$refs.cover1, 'width',  Math.abs(e.data.x) + 'px');
-                _.css(this.$refs.drag2, 'z-index', '1');
 
                 if(e.data.x <= 0){
                     _.css($drag1, 'transform', 'translate3d(0,0,0)');
-                    _.css(this.$refs.drag2, 'z-index', '100');
                     _.css(this.$refs.cover1, 'width', 0);
                 }
 
@@ -241,16 +231,10 @@
             },
             _setDrag2AndCover2 (e) {
                 let $drag2 = this.$refs.drag2
-                _.css($drag2, 'transform', 'translate3d(-' + e.data.x + 'px,0,0)');
                 _.css(this.$refs.cover2, 'width', Math.abs(e.data.x) + 'px');
-                if(this.sliderNum == 2) {
-                    _.css(this.$refs.drag1, 'z-index', '1');
-                }
+
                 if(e.data.x >= 0){
                     _.css($drag2, 'transform', 'translate3d(0,0,0)');
-                    if(this.sliderNum == 2) {
-                        _.css(this.$refs.drag1, 'z-index', '100');
-                    }
                     _.css(this.$refs.cover2, 'width', 0);
                 }
 
@@ -258,13 +242,12 @@
                     _.css(this.$refs.cover2, 'width', this.clientMaxWidth - Math.abs(this.drag1$.transX));
                     _.css($drag2, 'transform', 'translate3d(-' + parseFloat(this.clientMaxWidth - Math.abs(this.drag1$.transX)) + 'px,0,0)');
                 }
-
             },
             _setVal (e) {
                 e.target.className == 'vmui-drag2' ?
                         this.value[1] = this.rangerNumber * ((this.clientMaxWidth - this.$refs.cover2.offsetWidth) / this.clientMaxWidth) + this.range[0]
                         : this.value[0] = this.$refs.cover1.offsetWidth / this.clientMaxWidth * this.rangerNumber + this.range[0]
-                this.$emit('input', this.sliderNum === 1 ? this.value[1] : this.value, e)
+                this.$emit('updating', this.sliderNum === 1 ? this.value[1] : this.value, e)
                 this.$forceUpdate()
             },
             /*  拖动结束 */
@@ -272,7 +255,19 @@
                 if (e.data != undefined) {
                     e.target.className == 'vmui-drag1' ?  this.drag1$.transX = e.data.x : this.drag2$.transX = e.data.x
                 }
-                this.$emit('drag:end', this.sliderNum === 1 ? this.val[1] :this.val , e)
+                _.css(this.$refs.drag2, 'z-index', '1');
+                if(this.sliderNum == 2) {
+                    _.css(this.$refs.drag1, 'z-index', '1');
+                }
+                if (e.target.className == 'vmui-drag1') {
+                    if(e.data.x >= 0){
+                        _.css(this.$refs.drag1, 'z-index', '10');
+                    }
+                } else {
+                    if(e.data.x <= 0 && this.sliderNum == 2){
+                        _.css(this.$refs.drag2, 'z-index', '10');
+                    }
+                }
             },
             /* 手动设置值 */
             jsToSetVal () {
@@ -281,7 +276,6 @@
                 self.setting = true
                 self.$el.addEventListener('transitionend', (e) => {
                     self.setting = false
-                    self.onDragEnd(e)
                 })
             }
         }
