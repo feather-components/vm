@@ -220,7 +220,7 @@ export default{
                 self.$list.setData(self.caches[self.value]);
             }else{
                 let param = {}
-                param[this.kw] =  self.value
+                param[self.kw] =  self.value
                 self.$list.setParams(param, true);
                 self.$list.refresh(false, false);
             }

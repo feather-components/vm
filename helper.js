@@ -149,6 +149,14 @@ export default{
         )(id);
     },
 
+    makeArray(arr){
+        if(Array.isArray(arr)){
+            return arr;
+        }
+
+        return arr == null ? [] : [arr];
+    },
+
     log(){
         var str = JSON.stringify(arguments);
         var container = document.querySelector('#__log__');
@@ -160,6 +168,14 @@ export default{
         }
 
         container.innerHTML = container.innerHTML + '<br />' + str;
+    },
+
+    firstKey(obj){
+        for(var i in obj){
+            return i;
+        }
+
+        return false;
     }
 }
 

@@ -1,7 +1,7 @@
 <template>
 <div class="vmui-filters vmui-filters-lm" v-if="filters.length">
-    <single :source="filters[0]" @item:click="clickItem" :item-formatter="getItemFormatter()" ref="left" class="vmui-filter-lml" :fill-height="fillHeight"></single>
-    <multiple :source="filters[1]" ref="right" selected-class-name="vmui-filter-tick" :size="perSize" @change="change" :can-be-select="canBeSelect" @reject="$emit('reject')" :fill-height="fillHeight"></multiple>
+    <single :source="filters[0]" @item:click="click" :item-formatter="getItemFormatter()" ref="left" class="vmui-filter-lml" :fill-height="fillHeight"></single>
+    <multiple :source="filters[1]" ref="right" selected-class-name="vmui-filter-tick" :size="perSize" @change="change" :can-select="canSelect" @reject="$emit('reject')" :fill-height="fillHeight"></multiple>
 </div>
 </template>
 
@@ -43,15 +43,28 @@ export default{
         perSize: {
             type: Number,
             default: -1
+        },
+
+        onlyOneParent: {
+            type: Boolean,
+            default: false
+        },
+
+        defaultValue: {
+            type: Object,
+            default(){
+                return {}
+            }
         }
     },
 
     data(){
         return {
             infinite: this.size < 0,
-            value: {},
+            value: this.defaultValue,
             parent: null,
-            count: 0
+            count: 0,
+            labels: {}
         };
     },
 
@@ -73,17 +86,18 @@ export default{
         initEvent(){
             var self = this;
 
-            self.$once('filter:render', (source, level) => {
-                if(level == 0){
-                    var item = source[0];
-                    self.clickItem(item);
-                    self.$refs.left.value = item.value;
-                }
-            });
-
             self.$on('filter:render', (source, level) => {
                 if(level == 1){
-                    self.$refs.right.value = self.value[self.parent.value] || [];
+                    self.$refs.right.setValue(self.value[self.parent.value] || []);
+                }else{
+                    var lv = _.firstKey(self.value);
+
+                    if(lv !== false){
+                        self.$refs.left.setValue(lv);
+                        self.click(Single.methods.getItemByValue(lv, source));
+                    }else{
+                        self.click(source[0]);
+                    }
                 }
             });
         },
@@ -107,22 +121,34 @@ export default{
             }
         },
 
-        change(val, item){
-            var self = this, level = item.__level;
-            if(val.length){
-                self.count++;
-                self.value[self.parent.value] = val;
-            }else{
-                self.count--;
-                delete self.value[self.parent.value];
+        change(val, labels, item){
+            var self = this, parent = self.parent.value, parentLabel = self.parent.label;
+
+            if(!val.length && !self.value[parent]){
+                return false;
             }
 
-            self.renderList(self.data, 0);
-            self.$emit('change', self.value, item);
+            if(val.length){
+                self.value[parent] = val;
+                self.labels[parentLabel] = labels;
+            }else{
+                delete self.value[parent];
+                delete self.labels[parentLabel];
+            }
+
+            self.$refs.left.value = null;
+            self.$refs.left.setValue(parent);
+            self.$emit('change', self.value, self.labels, item);
         },
 
-        canBeSelect(){
-            return this.count < this.maxSize;
+        canSelect(item){
+            var self = this, count = 0;
+
+            for(var i in self.value){
+                count += self.value[i].length;
+            }
+
+            return count < self.maxSize && (!self.onlyOneParent || item.__parent == self.parent.value);
         }
     }
 }
