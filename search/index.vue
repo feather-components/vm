@@ -195,8 +195,19 @@ export default{
             self.$list.$on('row:click', (item, index) => {
                 self.$emit('select', item, index);
 
-                if(self.historys.indexOf(item) == -1){
+                let isHistory = false;
+                self.historys.forEach((v, k) => {
+                    if(v == item ){
+                        isHistory = true;
+                    }
+                })
+
+                if (!isHistory) {
                     self.historys.push(item);
+                }
+
+                if (self.historys.length > 10) {
+                    self.historys = self.historys.slice(-10)
                 }
             });
 
