@@ -179,19 +179,11 @@ export default{
             this.$search.focus();
         }, 1000);
 
-        let group_history = localStorage.getItem('group_history')
-        if(group_history){
-            var self = this;
-            if (group_history.indexOf(';') == -1){
-                this.historys = [JSON.parse(group_history)]
-            } else {
-                this.historys = group_history.split(';');
-                this.historys.forEach((v, k) => {
-                    self.historys[k] = JSON.parse(v)
-                })
-            }
+        try{
+            self.historys = JSON.parse(localStorage.getItem('_vmui_search_stores_') || '');
+        }catch(e){
+            self.historys = [];
         }
-        
     },
 
     data(){
@@ -219,20 +211,9 @@ export default{
 
                 if(self.historys.indexOf(item) == -1){
                     self.historys.push(item);
-
-                    if (self.historys.length > 2) {
-                        self.historys = self.historys.slice(-2)
-                    }
-
-                    let historyStr = []
-
-                    self.historys.forEach((v, k) =>{
-                        historyStr[k] = JSON.stringify(v);
-                    })
-
-                    localStorage.setItem('group_history',historyStr.join(';'))
+                    self.historys = self.historys.slice(-10);
+                    localStorage.setItem('_vmui_search_stores_', JSON.stringify(self.historys));
                 }
-
             });
 
             self.$list.$on('xhr.success', (data) => {
@@ -277,7 +258,7 @@ export default{
 
         clearHistory(){
             this.historys = [];
-            localStorage.removeItem('group_history');
+            localStorage.removeItem('_vmui_search_stores_');
         }
     }
 }
