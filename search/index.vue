@@ -179,11 +179,10 @@ export default{
             this.$search.focus();
         }, 1000);
 
-        try{
-            self.historys = JSON.parse(localStorage.getItem('_vmui_search_stores_') || '');
-        }catch(e){
-            self.historys = [];
-        }
+        let historys = JSON.parse(localStorage.getItem('_vmui_search_stores_')) || []
+        historys.forEach((v, k) => {
+            self.historys.push(v)
+        })
     },
 
     data(){
@@ -209,9 +208,10 @@ export default{
             self.$list.$on('row:click', (item, index) => {
                 self.$emit('select', item, index);
 
-                if(self.historys.indexOf(item) == -1){
+                if(!self.historys.some((v, k) => {return v.iAutoID == item.iAutoID})){
                     self.historys.push(item);
                     self.historys = self.historys.slice(-10);
+                    self.historys.reverse();
                     localStorage.setItem('_vmui_search_stores_', JSON.stringify(self.historys));
                 }
             });
