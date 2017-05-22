@@ -136,6 +136,12 @@ export default{
         }
     },
 
+    watch:{
+        value(){
+            this.input()
+        }
+    },
+    
     methods: {
         focus(){
             this.$refs.input.focus();

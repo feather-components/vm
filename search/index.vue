@@ -223,11 +223,9 @@ export default{
             });
         },
 
-        clickHistory(it, i) {
-            if(!this.closeAfterHistoryClick){
-                this.$refs.search.value = it;
-            }else{
-                this.setHistory()
+        clickHistory(text) {
+            this.$refs.search.value = text;
+            if(this.closeAfterSelectHistory){
                 this.handleSearch()
             }
         },
