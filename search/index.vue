@@ -95,12 +95,6 @@
     box-sizing: border-box;
     max-width: 100%;
 }
-.vmui-search-history h1{
-    max-width:100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
 
 .vmui-searcy-history-clear{
     float: right;
@@ -178,7 +172,7 @@ export default{
 
         closeAfterSelectHistory: {
             type: Boolean,
-            default: true
+            default: false
         }
     },
 
@@ -217,6 +211,7 @@ export default{
                 self.$emit('select', item, index);
 
                 self.setHistory()
+
             });
 
             self.$list.$on('xhr.success', (data) => {
