@@ -268,6 +268,12 @@ export default{
             }
         },
 
+        clearHistory(){
+            this.historys= [];
+            this.historysAll[self.historyMark] = this.historys
+            localStorage.setItem('_vmui_history_stores_', JSON.stringify(this.historysAll));
+        },
+
         setHistory(){
             let self = this;
             if(self.historys.indexOf(self.value) == -1 && self.value!=''){
