@@ -4,7 +4,7 @@
         <search-bar :style="{
             'margin-right': '2.5em'
         }" :placeholder="placeholder" :maxlength="maxlength" ref="search" :theme="theme"
-                    :is-search="closeHistoryClick" @submit="handleSearch"/>
+                    :is-search="closeAfterSelectHistory" @submit="handleSearch"/>
         <a href="javascript:" class="vmui-search-cancel" @touchstart="close()" slot="right">取消</a>
     </Topbar>
 
@@ -176,9 +176,9 @@ export default{
             default: null
         },
 
-        closeHistoryClick:{
+        closeAfterSelectHistory: {
             type: Boolean,
-            default: false
+            default: true
         }
     },
 
@@ -229,13 +229,11 @@ export default{
         },
 
         clickHistory(it, i) {
-            if(!this.closeHistoryToSearch){
-                this.$emit('select', it, i);
+            if(!this.closeAfterHistoryClick){
+                this.$refs.search.value = it;
             }else{
-                let param = {}
-                param[this.kw] = it.text;
-                this.$list.setParams(param, true);
-                this.$list.refresh(false, false);
+                this.setHistory()
+                this.handleSearch()
             }
         },
 
@@ -270,10 +268,11 @@ export default{
             this.$emit('close');
         },
 
-        clearHistory(){
-            this.historys= [];
-            self.historysAll[self.historyMark] = self.historys
-            localStorage.setItem('_vmui_history_stores_', JSON.stringify(this.historysAll));
+        clickHistory(text) {
+            if(this.closeAfterSelectHistory){
+                this.$refs.search.value = this.value = text;
+                this.handleSearch()
+            }
         },
 
         setHistory(){
@@ -288,7 +287,8 @@ export default{
 
         handleSearch() {
             this.close()
-            this.$emit('confirm',self.value.trim())
+            this.setHistory()
+            this.$emit('confirm', this.value.trim())
         }
     }
 }
