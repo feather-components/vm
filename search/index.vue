@@ -3,7 +3,8 @@
     <Topbar :leftEnabled="false">
         <search-bar :style="{
             'margin-right': '2.5em'
-        }" :placeholder="placeholder" :maxlength="maxlength" ref="search" :theme="theme" :is-search="isSearch" @submit="handleSearch"/>
+        }" :placeholder="placeholder" :maxlength="maxlength" ref="search" :theme="theme"
+                    :is-search="closeHistoryClick" @submit="handleSearch"/>
         <a href="javascript:" class="vmui-search-cancel" @touchstart="close()" slot="right">取消</a>
     </Topbar>
 
@@ -12,15 +13,14 @@
             <slot name="header"></slot>
         </div>
 
-        <div class="vmui-search-history-container" v-if="!empty2load && !value && useHistory ">
+        <div class="vmui-search-history-container" v-if="!empty2load && !value && historys.length">
             <div class="vmui-search-history-header">
                 历史搜索
                 <a href="javascript:" @click="clearHistory()" class="vmui-searcy-history-clear">清除</a>
             </div>
             <div class="vmui-search-historys">
-                <a v-for="(item, index) of historys[historyMark]" class="vmui-search-history" href="javascript:" @click="clickHistory(item, index)">
-                    <!--<slot name="history-row" :data="item" v-text="item"></slot>-->
-                    <h1>{{item.text}}</h1>
+                <a v-for="(item, index) of historys" class="vmui-search-history" href="javascript:" @click="clickHistory(item, index)">
+                    <slot name="history-row" :data="item" v-text="item"></slot>
                 </a>
             </div>
         </div>
@@ -176,26 +176,9 @@ export default{
             default: null
         },
 
-        closeHistoryToSearch:{
+        closeHistoryClick:{
             type: Boolean,
             default: false
-        },
-
-        isSearch:{
-            type: Boolean,
-            default: true
-        },
-
-        needHistoryField:{    /*需要存储的text字段名称*/
-            type: String,
-            require: true,
-            default: ''
-        },
-
-        idName:{     //id字段的名称
-            type: String,
-            require: true,
-            default:''
         }
     },
 
@@ -233,21 +216,7 @@ export default{
             self.$list.$on('row:click', (item, index) => {
                 self.$emit('select', item, index);
 
-                if(self.historys[this.historyMark] ==undefined ){
-                    self.historys[this.historyMark] = []
-                }
-
-                if(!self.historys[self.historyMark].some((v, k) => { return v.id == item[self.idName]})){
-                    let ob = {
-                        text: item[self.needHistoryField],
-                        id: item[self.idName]
-                    }
-                    self.historys[self.historyMark].reverse();
-                    self.historys[self.historyMark].push(ob);
-                    self.historys[self.historyMark] = self.historys[self.historyMark] .slice(-10);
-                    self.historys[self.historyMark].reverse();
-                    localStorage.setItem('_vmui_history_stores_', JSON.stringify(self.historys));
-                }
+                self.setHistory()
             });
 
             self.$list.$on('xhr.success', (data) => {
@@ -302,15 +271,24 @@ export default{
         },
 
         clearHistory(){
-            this.historys[this.historyMark]= [];
-            localStorage.setItem('_vmui_history_stores_', JSON.stringify(this.historys));
+            this.historys= [];
+            self.historysAll[self.historyMark] = self.historys
+            localStorage.setItem('_vmui_history_stores_', JSON.stringify(this.historysAll));
+        },
+
+        setHistory(){
+            let self = this;
+            if(self.historys.indexOf(self.value) == -1 && self.value!=''){
+                self.historys.unshift(self.value);
+                self.historys = self.historys.slice(0,10);
+                self.historysAll[self.historyMark] = self.historys
+                localStorage.setItem('_vmui_history_stores_', JSON.stringify(self.historysAll));
+            }
         },
 
         handleSearch() {
-            let param = {}
-            param[this.kw] =  this.value
-            this.$list.setParams(param, true);
-            this.$list.refresh(false, false);
+            this.close()
+            this.$emit('confirm',self.value.trim())
         }
     }
 }
