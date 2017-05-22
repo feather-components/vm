@@ -2,8 +2,8 @@
 <form :class="'vmui-searchbar vmui-search-' + theme" @submit.prevent="submit()">
     <div class="vmui-searchbar-inner">
         <i class="vmui-searchbar-icon"></i>
-        <input type="text" :placeholder="placeholder" :maxlength="maxlength" @input.trim="input()" v-model="value" ref="input" @focus="$emit('focus')"  @click="$emit('click')" :readonly="readonly" />
-        <a href="javascript:" class="vmui-searchbar-clear" @click="clear()" v-show="clearVisible">&times;</a>
+        <input type="text" :placeholder="placeholder" :maxlength="maxlength" @input.trim="input()" v-model="value" ref="input" @focus="$emit('focus')"  @click="$emit('click')" :readonly="readonly" v-if="!isSearch"/>
+        <input type="search" :placeholder="placeholder" :maxlength="maxlength" @input.trim="input()" v-model="value" ref="input" @focus="$emit('focus')"  @click="$emit('click')" :readonly="readonly" v-else/>        <a href="javascript:" class="vmui-searchbar-clear" @click="clear()" v-show="clearVisible">&times;</a>
     </div>
 </form>
 </template>
@@ -113,6 +113,11 @@ export default{
         },
 
         readonly: {
+            type: Boolean,
+            default: false
+        },
+
+        isSearch: {
             type: Boolean,
             default: false
         }

@@ -3,7 +3,7 @@
     <Topbar :leftEnabled="false">
         <search-bar :style="{
             'margin-right': '2.5em'
-        }" :placeholder="placeholder" :maxlength="maxlength" ref="search" :theme="theme" />
+        }" :placeholder="placeholder" :maxlength="maxlength" ref="search" :theme="theme" :is-search="isSearch" @submit="handleSearch"/>
         <a href="javascript:" class="vmui-search-cancel" @touchstart="close()" slot="right">取消</a>
     </Topbar>
 
@@ -12,14 +12,15 @@
             <slot name="header"></slot>
         </div>
 
-        <div class="vmui-search-history-container" v-if="!empty2load && !value && historys.length && useHistory">
+        <div class="vmui-search-history-container" v-if="!empty2load && !value && useHistory ">
             <div class="vmui-search-history-header">
                 历史搜索
                 <a href="javascript:" @click="clearHistory()" class="vmui-searcy-history-clear">清除</a>
             </div>
             <div class="vmui-search-historys">
-                <a v-for="(item, index) of historys" class="vmui-search-history" href="javascript:" @click="$emit('select', item, index)">
-                    <slot name="history-row" :data="item" v-text="item"></slot>
+                <a v-for="(item, index) of historys[historyMark]" class="vmui-search-history" href="javascript:" @click="clickHistory(item, index)">
+                    <!--<slot name="history-row" :data="item" v-text="item"></slot>-->
+                    <h1>{{item.text}}</h1>
                 </a>
             </div>
         </div>
@@ -32,7 +33,7 @@
             <slot name="default"></slot>
         </div>
 
-        <List ref="list" :source="source" :data-formatter="dataFormatter" :params="params"  :auto-refresh="false">
+        <List ref="list" :source="source" :data-formatter="dataFormatter" :params="params"  :auto-refresh="false" :max-count-per-page="10">
             <template slot="row" scope="props">
                 <slot name="row" :data="props.data"></slot>
             </template>
@@ -167,6 +168,34 @@ export default{
         kw: {
             type: String,
             default: 'kw'
+        },
+
+        historyMark:{
+            type: String,
+            require: true,
+            default: null
+        },
+
+        closeHistoryToSearch:{
+            type: Boolean,
+            default: false
+        },
+
+        isSearch:{
+            type: Boolean,
+            default: true
+        },
+
+        needHistoryField:{    /*需要存储的text字段名称*/
+            type: String,
+            require: true,
+            default: ''
+        },
+
+        idName:{     //id字段的名称
+            type: String,
+            require: true,
+            default:''
         }
     },
 
@@ -179,10 +208,6 @@ export default{
             this.$search.focus();
         }, 1000);
 
-        let historys = JSON.parse(localStorage.getItem('_vmui_search_stores_')) || []
-        historys.forEach((v, k) => {
-            self.historys.push(v)
-        })
     },
 
     data(){
@@ -190,7 +215,7 @@ export default{
             caches: {},
             value: '',
             isEmpty: true,
-            historys: []
+            historys: JSON.parse(localStorage.getItem('_vmui_history_stores_')) || {}
         };
     },
 
@@ -208,11 +233,20 @@ export default{
             self.$list.$on('row:click', (item, index) => {
                 self.$emit('select', item, index);
 
-                if(!self.historys.some((v, k) => {return v.iAutoID == item.iAutoID})){
-                    self.historys.push(item);
-                    self.historys = self.historys.slice(-10);
-                    self.historys.reverse();
-                    localStorage.setItem('_vmui_search_stores_', JSON.stringify(self.historys));
+                if(self.historys[this.historyMark] ==undefined ){
+                    self.historys[this.historyMark] = []
+                }
+
+                if(!self.historys[self.historyMark].some((v, k) => { return v.id == item[self.idName]})){
+                    let ob = {
+                        text: item[self.needHistoryField],
+                        id: item[self.idName]
+                    }
+                    self.historys[self.historyMark].reverse();
+                    self.historys[self.historyMark].push(ob);
+                    self.historys[self.historyMark] = self.historys[self.historyMark] .slice(-10);
+                    self.historys[self.historyMark].reverse();
+                    localStorage.setItem('_vmui_history_stores_', JSON.stringify(self.historys));
                 }
             });
 
@@ -223,6 +257,17 @@ export default{
             self.$list.$on('rows:render', (data) => {
                 self.isEmpty = !!!data.length;
             });
+        },
+
+        clickHistory(it, i) {
+            if(!this.closeHistoryToSearch){
+                this.$emit('select', it, i);
+            }else{
+                let param = {}
+                param[this.kw] = it.text;
+                this.$list.setParams(param, true);
+                this.$list.refresh(false, false);
+            }
         },
 
         load(){
@@ -257,8 +302,15 @@ export default{
         },
 
         clearHistory(){
-            this.historys = [];
-            localStorage.removeItem('_vmui_search_stores_');
+            this.historys[this.historyMark]= [];
+            localStorage.setItem('_vmui_history_stores_', JSON.stringify(this.historys));
+        },
+
+        handleSearch() {
+            let param = {}
+            param[this.kw] =  this.value
+            this.$list.setParams(param, true);
+            this.$list.refresh(false, false);
         }
     }
 }
