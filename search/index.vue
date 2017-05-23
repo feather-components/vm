@@ -26,7 +26,7 @@
         </div>
 
         <div class="vmui-search-desc" v-if="!isEmpty">
-            <slot name="desc" v-if="!isEmpty">附近小区</slot>
+            <slot name="desc" v-if="!isEmpty">搜索结果</slot>
         </div>
 
         <div class="vmui-search-default" v-if="!empty2load && !value">
