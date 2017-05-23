@@ -262,10 +262,8 @@ export default{
         },
 
         clickHistory(text) {
-            if(this.closeAfterSelectHistory){
-                this.$refs.search.value = this.value = text;
-                this.handleSearch()
-            }
+            this.$refs.search.value = text;
+            this.handleSearch()
         },
 
         clearHistory(){
@@ -285,9 +283,11 @@ export default{
         },
 
         handleSearch() {
-            this.close()
-            this.setHistory()
-            this.$emit('confirm', this.value.trim())
+            if(this.closeAfterSelectHistory){
+                this.close()
+                this.setHistory()
+                this.$emit('confirm', this.value.trim())
+            }
         }
     }
 }
