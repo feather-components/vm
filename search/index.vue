@@ -3,7 +3,8 @@
     <Topbar :leftEnabled="false">
         <search-bar :style="{
             'margin-right': '2.5em'
-        }" :placeholder="placeholder" :maxlength="maxlength" ref="search" :theme="theme" />
+        }" :placeholder="placeholder" :maxlength="maxlength" ref="search" :theme="theme"
+                    :is-search="closeAfterSelectHistory" @submit="handleSearch"/>
         <a href="javascript:" class="vmui-search-cancel" @touchstart="close()" slot="right">取消</a>
     </Topbar>
 
@@ -12,27 +13,27 @@
             <slot name="header"></slot>
         </div>
 
-        <div class="vmui-search-history-container" v-if="!empty2load && !value && historys.length && useHistory">
+        <div class="vmui-search-history-container" v-if="!empty2load && !value && historys.length">
             <div class="vmui-search-history-header">
                 历史搜索
                 <a href="javascript:" @click="clearHistory()" class="vmui-searcy-history-clear">清除</a>
             </div>
             <div class="vmui-search-historys">
-                <a v-for="(item, index) of historys" class="vmui-search-history" href="javascript:" @click="$emit('select', item, index)">
+                <a v-for="(item, index) of historys" class="vmui-search-history" href="javascript:" @click="clickHistory(item, index)">
                     <slot name="history-row" :data="item" v-text="item"></slot>
                 </a>
             </div>
         </div>
 
         <div class="vmui-search-desc" v-if="!isEmpty">
-            <slot name="desc" v-if="!isEmpty">附近小区</slot>
+            <slot name="desc" v-if="!isEmpty">搜索结果</slot>
         </div>
 
         <div class="vmui-search-default" v-if="!empty2load && !value">
             <slot name="default"></slot>
         </div>
 
-        <List ref="list" :source="source" :data-formatter="dataFormatter" :params="params"  :auto-refresh="false">
+        <List ref="list" :source="source" :data-formatter="dataFormatter" :params="params"  :auto-refresh="false" :max-count-per-page="10">
             <template slot="row" scope="props">
                 <slot name="row" :data="props.data"></slot>
             </template>
@@ -91,6 +92,8 @@
     display: inline-block;
     border-radius: 10px;
     padding: 0px .10rem;
+    box-sizing: border-box;
+    max-width: 100%;
 }
 
 .vmui-searcy-history-clear{
@@ -145,7 +148,7 @@ export default{
             type: Number,
             default: 300
         },
-        
+
         caching: {
             type: Boolean,
             default: true
@@ -159,6 +162,17 @@ export default{
         kw: {
             type: String,
             default: 'kw'
+        },
+
+        historyMark:{
+            type: String,
+            require: true,
+            default: null
+        },
+
+        closeAfterSelectHistory: {
+            type: Boolean,
+            default: false
         }
     },
 
@@ -170,6 +184,7 @@ export default{
         this.autofocus && setTimeout(() => {
             this.$search.focus();
         }, 1000);
+
     },
 
     data(){
@@ -177,7 +192,7 @@ export default{
             caches: {},
             value: '',
             isEmpty: true,
-            historys: []
+            historys: JSON.parse(localStorage.getItem('_vmui_history_stores_')) || {}
         };
     },
 
@@ -189,15 +204,14 @@ export default{
                 clearTimeout(tid);
                 self.$list.abort();
                 self.value = value;
-                tid = setTimeout(() => self.load(), self.delay);              
+                tid = setTimeout(() => self.load(), self.delay);
             });
 
             self.$list.$on('row:click', (item, index) => {
                 self.$emit('select', item, index);
 
-                if(self.historys.indexOf(item) == -1){
-                    self.historys.push(item);
-                }
+                self.setHistory()
+
             });
 
             self.$list.$on('xhr.success', (data) => {
@@ -207,6 +221,13 @@ export default{
             self.$list.$on('rows:render', (data) => {
                 self.isEmpty = !!!data.length;
             });
+        },
+
+        clickHistory(text) {
+            this.$refs.search.value = text;
+            if(this.closeAfterSelectHistory){
+                this.handleSearch()
+            }
         },
 
         load(){
@@ -240,8 +261,33 @@ export default{
             this.$emit('close');
         },
 
+        clickHistory(text) {
+            this.$refs.search.value = text;
+            this.handleSearch()
+        },
+
         clearHistory(){
-            this.historys = [];
+            this.historys= [];
+            this.historysAll[self.historyMark] = this.historys
+            localStorage.setItem('_vmui_history_stores_', JSON.stringify(this.historysAll));
+        },
+
+        setHistory(){
+            let self = this;
+            if(self.historys.indexOf(self.value) == -1 && self.value!=''){
+                self.historys.unshift(self.value);
+                self.historys = self.historys.slice(0,10);
+                self.historysAll[self.historyMark] = self.historys
+                localStorage.setItem('_vmui_history_stores_', JSON.stringify(self.historysAll));
+            }
+        },
+
+        handleSearch() {
+            if(this.closeAfterSelectHistory){
+                this.close()
+                this.setHistory()
+                this.$emit('confirm', this.value.trim())
+            }
         }
     }
 }
