@@ -1,6 +1,16 @@
 <template>
     <v-box :label="label">
-        <span v-text="option.label" @click="select(option.value)" class="vmui-tag" v-for="(option, index) in options" :class="{'vmui-tag-selected': isChecked(option.value)}"></span>
+        <span @click="onClick(option.value)" class="vmui-tag" v-for="(option, index) in options" :class="{'vmui-tag-selected': val.indexOf(option.value) > -1}">
+        {{option.label}}
+        </span>
+
+        <template slot="msg-left">
+            <slot name="msg-left"></slot>
+        </template>    
+
+        <template slot="msg-right">
+            <slot name="msg-right"></slot>
+        </template>    
     </v-box>
 </template>
 
@@ -28,41 +38,15 @@
 
 <script>
     import vBox from "./box";
-    import _ from '../helper';
+    import {Multiable} from './abstract';
 
     export default{
+        mixins: [vBox, Multiable],
+
         props: {
-            multiple: {
-                type: Boolean,
-                default: false
-            },
-
-            label: {
-                type: String,
-                default: null
-            },
-
-            name: {
-                type: String,
-                default(){
-                    return String(Date.now());
-                }
-            },
-
             options: {
-              type: Array,
-              required: true
-            },
-
-            val: {
-                type: [String, Array],
-                default: null
-            }
-        },
-
-        data(){
-            return {
-                value: null
+                type: Array,
+                required: true
             }
         },
 
@@ -70,41 +54,24 @@
             vBox
         },
 
-        watch: {
-            val(v){
-                this._select(v);
-            }
-        },
-
-        created(){
-            this._select();
-        },
-
         methods:{
-            select(v){
-                if(this.multiple){
-                    var vals = this.value.slice(0);
+            onClick(v){
+                var vals;
 
-                    if(vals.indexOf(v) > -1){
-                        vals.splice(vals.indexOf(v), 1);
+                if(this.size != 1){
+                    vals = this.val.slice(0);
+                    var index = vals.indexOf(v);
+
+                    if(index > -1){
+                        vals.splice(index, 1);
                     }else{
                         vals.push(v);
                     }
-
-                    this._select(vals)
                 }else{
-                    this._select(v);
+                    vals = v;
                 }
-            },
 
-            _select(v = this.val){
-                this.value = this.multiple ? _.makeArray(v || []) : v;
-                this.$emit('input', this.value);
-                this.$emit('change', this.value);
-            },
-
-            isChecked(v){
-                return this.multiple ? this.value.indexOf(v) > -1 : this.value == v;
+                this.save(vals, false);
             }
         }
     }

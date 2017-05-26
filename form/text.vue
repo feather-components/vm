@@ -1,82 +1,104 @@
 <template>
-    <v-box :label="label"> 
-        <input v-if="!multiline" ref="input" type="text" class="vmui-text" :name="name" :placeholder="placeholder" v-model="value" @focus="$emit('focus')" @blur="$emit('blur')" @click="$emit('click')" :readonly="readonly" /> 
+    <v-box :label="label" class="vmui-form-text-box" @icon:click="clear"> 
+        <input v-if="!multiline" 
+            ref="input" 
+            type="text" 
+            class="vmui-form-text" 
+            :name="name" 
+            :placeholder="placeholder" 
+            v-model="val" 
+            @focus="$emit('focus')" 
+            @blur="$emit('blur')" 
+            @click="$emit('click')" 
+            :readonly="readonly"
+        /> 
+
         <template v-else>
-        <template slot="msg-left" v-if="maxlength"><span :class="{'vmui-maxlength':checkLength()}">{{length}}</span>/{{maxlength}}</template> 
-            <div ref="input" class="vmui-textarea" :contenteditable="!readonly" v-text="val" @input="_input"></div>
-            <span v-if="!val" class="vmui-textarea-placeholder" v-text="placeholder"></span>
+            <div 
+                ref="input" 
+                class="vmui-form-text" 
+                :contenteditable="!readonly" 
+                v-text="val" 
+                @focus="$emit('focus')"
+                @blur="$emit('blur')"
+                @click="$emit('click')"
+                @input="_input"
+            ></div>
+            <span v-if="!val" class="vmui-form-text-placeholder" v-text="placeholder"></span>
+        </template>
+
+        <template slot="msg-left">
+            <slot name="msg-left"></slot>
         </template>    
+
+        <template slot="msg-right">
+            <slot name="msg-right"></slot>
+        </template>    
+
+        <template slot="icon" v-if="clearable && val">
+            &times;
+        </template>
     </v-box>
 </template>
 
 <style>
-    .vmui-text{
+    .vmui-form-text-box{
+        .vmui-form-box-icon{
+            content: '';
+            height: 0.28rem;
+            width: 0.28rem;
+            line-height: 0.28rem;
+            font-size: 0.28rem;
+        }
+    }
+
+    .vmui-form-text{
         width: 100%;
         font-size: .16rem;
         color: #222222;
         line-height: .28rem;
-        margin-bottom: .08rem;
-
         &::-webkit-input-placeholder,
         &:-moz-placeholder,
         &::-moz-placeholder,
         &:-ms-input-placeholder {
-    　　      color: #E1E1E1;
+    　　     color: #E1E1E1;
     　　}
     }
 
-    .vmui-textarea{
-        width: 100%;
+    div.vmui-form-text{
         min-height: .28rem;
         max-height: 1rem;
         height: auto;
         resize: none;
         overflow: auto;
-        font-size: .16rem;
-        color: #222222;
-        margin-bottom: .08rem;
-
         &:focus {
             border: 0;
             outline: 0;
         }
     }
 
-    .vmui-textarea-placeholder{
+    .vmui-form-text-placeholder{
         position: absolute;
-        bottom: 0.08rem;
-        left: 0.16rem
+        left: 0rem;
+        top: 0rem;
         height: 0.28rem;
         font-size: .16rem;
         color: #E1E1E1;
         line-height: .28rem;
     }
-
-    .vmui-maxlength{
-        color: #ff6977;
-    }
 </style>
 
 <script>
-import vBox from "./box"
+import vBox from './box';
+import {Single} from './abstract';
 
 export default{
+    mixins: [vBox, Single],
+
     props: {
         multiline: {
             type: Boolean,
             default: false
-        },
-
-        label: {
-            type: String,
-            default: null
-        },
-
-        name: {
-            type: String,
-            default(){
-                return String(Date.now());
-            }
         },
 
         placeholder: {
@@ -89,41 +111,14 @@ export default{
             default: false
         },
 
-        val: {
-            type: String,
-            default: null
-        },
-
-        maxlength: {
-            type: Number,
-            default: 50
+        clearable: {
+            type: Boolean,
+            default: true
         }
-    },
-
-    data() {
-        return {
-            value : ''
-        };
     },
 
     components: {
         vBox
-    },
-
-    watch: {
-        value(v) {
-            this._input(v);   
-        }
-    },
-
-    created(){
-        this._input();
-    },
-
-    computed: {
-        length(){
-            return this.multiline ? this.value.length : 0;
-        }
     },
 
     methods:{
@@ -135,17 +130,13 @@ export default{
             this.$refs.input.blur();
         },
 
-        _input(v = this.val){
-            if( this.multiline ){
-                this.value = this.$el ? this.$el.children[1].innerText : v;
-            }else{
-                this.value = v;
-            }
-            this.$emit('input', this.value);
+        _input(){
+            this.val = this.$refs.input.innerText;
         },
 
-        checkLength(){
-            return this.length > this.maxlength;
+        clear(){
+            this.val = '';
+            this.$emit('clear');
         }
     }
 }
