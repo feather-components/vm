@@ -2,9 +2,8 @@
 <form :class="'vmui-searchbar vmui-search-' + theme" @submit.prevent="submit()">
     <div class="vmui-searchbar-inner">
         <i class="vmui-searchbar-icon"></i>
-        <input type="text" :placeholder="placeholder" :maxlength="maxlength" @input.trim="input()" v-model="value" ref="input" @focus="$emit('focus')"  @click="$emit('click')" :readonly="readonly" v-if="!isSearch"/>
-        <input type="search" :placeholder="placeholder" :maxlength="maxlength" @input.trim="input()" v-model="value" ref="input" @focus="$emit('focus')"  @click="$emit('click')" :readonly="readonly" v-else/>
-        <a href="javascript:" class="vmui-searchbar-clear" @click="clear()" v-show="clearVisible">&times;</a>
+        <input :type="searchButtonEnabled ? 'search': 'text'" :placeholder="placeholder" :maxlength="maxlength" @input.trim="input" :value="val" ref="input" @focus="$emit('focus')"  @click="$emit('click')" :readonly="readonly" />
+        <a href="javascript:" class="vmui-searchbar-clear" @click="clear()" v-show="val">&times;</a>
     </div>
 </form>
 </template>
@@ -87,6 +86,10 @@
         color: #ccc;
     }
 
+    ::-webkit-search-cancel-button{
+        -webkit-appearance: none;
+    }
+
     .vmui-searchbar-icon{
         background: url(./search_white@2x.png?__inline) center center no-repeat;
     }
@@ -118,21 +121,30 @@ export default{
             default: false
         },
 
-        isSearch: {
+        searchButtonEnabled: {
             type: Boolean,
             default: false
+        },
+
+        value: {
+            type: String,
+            default: ''
         }
     },
 
     data(){
         return {
-            value: ''
+            val: this.value
         };
     },
 
-    computed: {
-        clearVisible(){
-            return this.value.trim() != '';
+    watch: {
+        val(v){
+            this.$emit('input', v);
+        },
+
+        value(v){
+            this.val = v.trim();
         }
     },
 
@@ -146,12 +158,11 @@ export default{
         },
 
         input(){
-            this.$emit('input', this.value.trim());
+            this.val = this.$refs.input.value;
         },
 
         clear(){
-            this.value = '';
-            this.$emit('input', this.value.trim());
+            this.val = '';
             this.$emit('clear');
         },
 

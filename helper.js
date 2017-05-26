@@ -168,6 +168,14 @@ export default{
         }
 
         container.innerHTML = container.innerHTML + '<br />' + str;
+    },
+
+    firstKey(obj){
+        for(var i in obj){
+            return i;
+        }
+
+        return false;
     }
 }
 

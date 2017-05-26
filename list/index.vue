@@ -21,7 +21,7 @@
 
     <ul class="vmui-list-rows" ref="rows">
         <li v-for="(item, index) in rows" @click="$emit('row:click', item, index)" class="vmui-list-item">
-            <slot name="row" :data="item" v-html="item"></slot>
+            <slot name="row" :data="item">{{item}}</slot>
         </li>
     </ul>
 
@@ -142,6 +142,10 @@ export default{
             default(){
                 return {};
             }
+        },
+
+        paramsAlias: {
+
         },
 
         pulldown2refresh: {
@@ -273,7 +277,7 @@ export default{
             }catch(e){}
 
             this.data = this.data.concat(source || []);
-            this.$emit('addData');
+            this.$emit('data:add', source);
         },
 
         refresh(pulldownFx = this.pulldown2refresh, clearData = true){
@@ -359,8 +363,10 @@ export default{
                 self.$emit('nomore');
             }
 
-            if(rows.length){
-                self.rows = self.isRefreshing ? rows : self.rows.concat(rows);
+            if(self.isRefreshing){
+                self.rows = rows;
+            }else{
+                self.rows = self.rows.concat(rows);
             }
 
             self.$nextTick(() => {

@@ -1,7 +1,7 @@
 <template>
 <div class="vmui-filters" :class="'vmui-filters-' + filters.length">
     <template v-for="(filter, index) of filters">
-        <single :source="filter" @item:click="clickItem" :item-formatter="itemFormatter" ref="box" @reject="$emit('reject')" @change="change" :fill-height="fillHeight"></single>
+        <single :source="filter" @item:click="click" :item-formatter="itemFormatter" ref="box" @reject="$emit('reject')" @change="change" :fill-height="fillHeight"></single>
     </template>
 </div>
 </template>
@@ -77,7 +77,14 @@ export default{
             default(data){
                 return data;
             }
-        }
+        },
+
+        defaultValue: {
+            type: Array,
+            default(){
+                return [];
+            }
+        },
     },
 
     components: {
@@ -87,10 +94,17 @@ export default{
     data(){
         return {
             filters: [],
-            value: [],
+            value: this.defaultValue,
             paths: [],
             parent: null
         };
+    },
+
+    watch: {
+        defaultValue(v){
+            this.value = v;
+            this.render(this.data);
+        }
     },
 
     computed: {
@@ -109,16 +123,23 @@ export default{
             var self = this;
 
             self.$on('filter:render', (source, level) => {
-                if(level > 0){
-                    self.$refs.box[level].value = self.value[level];
-                }
-            })
+                var items = source.filter((item) => {
+                    return item.value == self.value[level];
+                });  
+
+                if(items.length){
+                    var item = items[0];
+                    self.$refs.box[level].setValue(item.value);
+                    self.click(item);
+                } 
+            });
         },
 
-        render(source = this.source, level = 0){
+        render(source, level = 0){
             var self = this;
 
             self.filters = self.filters.slice(0, level);
+            source = self.getSource(source, level);
 
             if(typeof source == 'string'){
                 self.renderFromRemote(source, level);
@@ -130,13 +151,13 @@ export default{
         renderList(source, level){
             var self = this;
 
+            source = self.formatSource(source, level);
+
             if(level > 0){
                 self.parent.children = source; 
             }else{
                 self.data = source;
             }
-
-            source = self.formatSource(source, level);
 
             var refresh = false;
 
@@ -157,11 +178,12 @@ export default{
             var self = this, o = {};
 
             if(level > 0){
-                o[self.names[level] || self.names[0]] = self.parent.value;
+                o[self.names[level - 1] || self.names[0]] = self.parent.value;
             }
 
             self.$http && self.$http.abort();
             self.$http = Ajax({
+                dataType: 'json',
                 url: source,
                 data: Object.assign(o, self.params),
                 success: (data) => {
@@ -172,7 +194,7 @@ export default{
             });
         },
 
-        clickItem(item){
+        click(item){
             var self = this;
 
             self.$emit('item:click', item);
@@ -180,37 +202,69 @@ export default{
             if(self.isMaxLevel(item.__level)){
                 return;
             }else{
+                if(item === self.parent) return false;
+
                 self.parent = item;
                 self.render(item.children, item.__level + 1);
             }
         },
 
         formatSource(source, level){
+            if(source.__formatted){
+                return source;
+            }
+
             try{
-                source = this.dataFormatter(source); 
+                source = this.dataFormatter(source, level, this.parent); 
             }catch(e){
                 source = [];
             }
 
-            return source.map((item) => {
+            source = source.map((item) => {
+                if(this.parent){
+                    item.__parent = this.parent.value;
+                }
+                
                 item.__level = level;
                 return item;
             });
+
+            source.__formatted = true;
+            return source;
         },
 
-        change(val, item){  
+        change(val, label, item){  
             var self = this, level = item.__level;
 
-            self.paths = self.paths.slice(0, level).concat(val);
+            self.paths = self.paths.slice(0, level).concat(item);
             self.$emit('paths:change', self.paths);
 
             if(self.isMaxLevel(level)){
-                self.$emit('change', self.value = self.paths.slice(0), item);
+                var paths = self.paths.slice(0), labels = [], objs = {};
+                var vals = paths.map((item, level) => {
+                    objs[self.names[level] || ('level' + level)] = item.value;
+                    labels.push(item.label);
+                    return item.value;
+                });
+
+                vals.toString() !== self.value.toString() && self.$emit('change', self.value = vals, labels, objs, item);
             }
         },
 
         isMaxLevel(level){   
             return level == this.maxLevel;
+        },
+
+        getSource(source, level){
+            if(!source){
+                source = this.source;
+
+                if(Array.isArray(source) && typeof source[0] == 'string'){
+                    source = source[level] || source[0];
+                }
+            }
+
+            return source;
         }
     }
 }

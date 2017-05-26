@@ -79,7 +79,7 @@ var instance = (content, extras, buttons) => {
                 }
             }
         }
-    }).$children[0];
+    })
 };
 
 var Alert = module.exports = override((content, options, callback, manualClose) => {
@@ -88,7 +88,7 @@ var Alert = module.exports = override((content, options, callback, manualClose) 
             className: Alert.STYLES.SINGLE,
             callback: function(){
                 callback && callback();
-                !manualClose && this.close();
+                !manualClose && this.destroy();
             }
         }
     });
@@ -98,7 +98,7 @@ Alert.confirm = override((content, options, callback, manualClose) => {
     return instance(content, options.extras, options.buttons || {
         '取消': {
             callback: function(){
-                this.close();
+                this.destroy();
             }
         },
 
@@ -106,7 +106,7 @@ Alert.confirm = override((content, options, callback, manualClose) => {
             className: Alert.STYLES.CONFIRM,
             callback: function(){
                 callback && callback();
-                !manualClose && this.close();
+                !manualClose && this.destroy();
             }
         }
     })

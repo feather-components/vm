@@ -8,6 +8,7 @@ SearchBar
 * placeholder：String input的placeholder
 * readonly：Boolean 是否只可读，一般情况下用于配合search组件使用
 * theme: String 风格可选 blue
+* searchButtonEnabled: Boolean 是否启动搜索按钮
 
 ## Events
 
@@ -16,14 +17,15 @@ SearchBar
 
 ```js
 <div id="search-bar">
-    <searchbar @input="print" @submit="submit"></searchbar>
+    <searchbar @input="print" @submit="submit" v-model="a"></searchbar>
 </div>
 
 <script>
 new Vue({
     el: '#search-bar',
     data: {
-        v: ''
+        v: '',
+        a: ''
     },
     methods: {
         print: function(v){

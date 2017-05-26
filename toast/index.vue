@@ -15,10 +15,17 @@
     height: .36rem;
     display: block;
     margin: .05rem auto 0.07rem auto;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center center;
 }
 
 .vmui-toast-success .vmui-toast-icon{
-    background: url(./success@3x.png);
+    background-image: url(./success@3x.png?__inline);
+}
+
+.vmui-toast-loading .vmui-toast-icon{
+    background-image: url(./loading.gif?__inline);
 }
 </style>
 
@@ -47,7 +54,7 @@ var Toast = module.exports = (content, time = 3000, useShade, className = '') =>
             className: 'vmui-toast ' + className,
             content: content,
             useShade: useShade,
-            visible: true
+            destroyed: false
         }
     })
 };
@@ -59,12 +66,12 @@ Toast.destroy = () => {
     }
 
     if(instance){
-        instance.visible = false;
+        instance.destroyed = true;
         instance = null;
     }
 };
 
-['success'].forEach((method) => {
+['success', 'loading'].forEach((method) => {
     Toast[method] = (content, time, useShade) => {
         Toast('<i class="vmui-toast-icon"></i>' + content, time, useShade, 'vmui-toast-' + method);
     };
@@ -72,8 +79,8 @@ Toast.destroy = () => {
 </script>
 
 <template>
-<Shade v-if="useShade" :visible="visible">
+<Shade v-if="useShade && !destroyed" :visible="true">
     <Overlay :class="className" position="center" :visible="true" v-html="content"><div v-html="content"></div></Overlay>
 </Shade>
-<Overlay v-else :visible="visible" :class="className" position="center"><div v-html="content"></div></Overlay>
+<Overlay v-else-if="!destroyed" :visible="true" :class="className" position="center"><div v-html="content"></div></Overlay>
 </template>

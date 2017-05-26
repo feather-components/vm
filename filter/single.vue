@@ -1,5 +1,7 @@
 <template>
-<scroll ref="scroll" class="vmui-filter" :fill-height="fillHeight"><a href="javascript:" v-for="(item, key) of data" v-html="itemFormatter(item)" @click="clickItem(item)" :class="getItemClass(item)"></a></scroll>
+<scroll ref="scroll" class="vmui-filter" :fill-height="fillHeight">
+    <a href="javascript:" v-for="(item, key) of data" v-html="itemFormatter(item)" @click="click(item)" :class="getItemClass(item)"></a>
+</scroll>
 </template>
 
 <style>
@@ -40,13 +42,6 @@ export default{
             }
         },
 
-        itemFormatter: {
-            type: Function,
-            default(item){
-                return item.label;
-            }
-        },
-
         disabled: {
             type: Boolean,
             default: false
@@ -55,6 +50,18 @@ export default{
         selectedClassName: {
             type: String,
             default: 'vmui-filter-selected'
+        },
+
+        defaultValue: {
+            type: [String, Number],
+            default: null
+        },
+
+        itemFormatter: {
+            type: Function,
+            default(item){
+                return item.label;
+            }
         }
     },
 
@@ -65,18 +72,23 @@ export default{
     data(){
         return {
             data: [],
-            value: null
+            value: []
         };
     },
 
     watch: {
         source(v){
             this.render(v);
+        },
+
+        defaultValue(v){
+            this.setValue(v);
         }
     },
 
     mounted(){
         this.render();
+        this.defaultValue && this.setValue(this.defaultValue);
     },
 
     methods: {
@@ -87,17 +99,23 @@ export default{
             self.$nextTick(() => self.$refs.scroll.refresh());
         },
 
-        clickItem(item){
+        click(item){
             var self = this;
 
             self.$emit('item:click', item);
+            self.setValue(item.value);
+        },
+
+        setValue(value){
+            var self = this;
 
             if(self.disabled){
                 self.$emit('reject');
                 return false;
             }
-            
-            self.$emit('change', self.value = item.value, item);
+
+            var item = self.getItemByValue(value);
+            self.$emit('change', self.value = value, item.label, item);
         },
 
         getItemClass(item){
@@ -110,6 +128,12 @@ export default{
             }
 
             return className.join(' ');
+        },
+
+        getItemByValue(value, data = this.data){
+            return data.filter((item) => {
+                return item.value == value;
+            })[0];
         }
     }
 }

@@ -4,7 +4,7 @@
         <search-bar :style="{
             'margin-right': '2.5em'
         }" :placeholder="placeholder" :maxlength="maxlength" ref="search" :theme="theme"
-                    :is-search="closeAfterSelectHistory" @submit="handleSearch"/>
+                    :search-button-enabled="closeAfterSelectHistory" @submit="submit" v-model="val" />
         <a href="javascript:" class="vmui-search-cancel" @touchstart="close()" slot="right">取消</a>
     </Topbar>
 
@@ -13,14 +13,14 @@
             <slot name="header"></slot>
         </div>
 
-        <div class="vmui-search-history-container" v-if="!empty2load && !value && historys.length">
+        <div class="vmui-search-history-container" v-if="!empty2load && !val && historys.length">
             <div class="vmui-search-history-header">
                 历史搜索
                 <a href="javascript:" @click="clearHistory()" class="vmui-searcy-history-clear">清除</a>
             </div>
             <div class="vmui-search-historys">
                 <a v-for="(item, index) of historys" class="vmui-search-history" href="javascript:" @click="clickHistory(item, index)">
-                    <slot name="history-row" :data="item" v-text="item"></slot>
+                    <slot name="history-row" :data="item">{{item}}</slot>
                 </a>
             </div>
         </div>
@@ -35,7 +35,7 @@
 
         <List ref="list" :source="source" :data-formatter="dataFormatter" :params="params"  :auto-refresh="false">
             <template slot="row" scope="props">
-                <slot name="row" :data="props.data"></slot>
+                <slot name="row" :data="props.data">{{props.data}}</slot>
             </template>
 
             <template slot="nores" v-if="$slots.nores">
@@ -106,7 +106,7 @@ import Topbar from '../topbar';
 import SearchBar from './bar';
 import List from '../list';
 
-export default{
+var Search = {
     mixins: [Page, SearchBar],
 
     components: {
@@ -185,11 +185,16 @@ export default{
     },
 
     data(){
+        var historys = [];
+
+        try{
+            historys = JSON.parse(localStorage.getItem('_vmui_history_stores_.' + this.historyMark)) || [];
+        }catch(e){};
+
         return {
             caches: {},
-            value: '',
             isEmpty: true,
-            historys: []
+            historys: historys
         };
     },
 
@@ -197,20 +202,18 @@ export default{
         initEvents(){
             var self = this, tid;
 
-            self.$search.$on('input', function(value){
+            self.$search.$on('input', function(){
                 clearTimeout(tid);
                 self.$list.abort();
-                self.value = value;
                 tid = setTimeout(() => self.load(), self.delay);              
             });
 
             self.$list.$on('row:click', (item, index) => {
                 self.$emit('select', item, index);
-
-                self.setHistory()
+                self.addHistory();
             });
 
-            self.$list.$on('xhr.success', (data) => {
+            self.$list.$on('xhr:success', (data) => {
                 self.caches[self.value] = data;
             });
 
@@ -219,25 +222,18 @@ export default{
             });
         },
 
-        clickHistory(text) {
-            this.$refs.search.value = text;
-            if(this.closeAfterSelectHistory){
-                this.handleSearch()
-            }
-        },
-
         load(){
             var self = this;
 
-            if(!self.empty2load && !self.value){
+            if(!self.empty2load && !self.val){
                 return;
             }
 
-            if(self.caches[self.value]){
-                self.$list.setData(self.caches[self.value]);
+            if(self.caches[self.val]){
+                self.$list.setData(self.caches[self.val]);
             }else{
-                let param = {}
-                param[self.kw] =  self.value
+                let param = {};
+                param[self.kw] =  self.val;
                 self.$list.setParams(param, true);
                 self.$list.refresh(false, false);
             }
@@ -257,35 +253,39 @@ export default{
             this.$emit('close');
         },
 
-        clickHistory(text) {
-            this.$refs.search.value = text;
-            this.handleSearch()
+        submit(){
+            if(this.closeAfterSelectHistory){
+                this.close();
+                this.addHistory();
+                this.$emit('confirm', this.val);
+            }
+        },
+
+        clickHistory(text){
+            this.val = text;
+            this.submit();
         },
 
         clearHistory(){
-            this.historys= [];
-            this.historysAll[self.historyMark] = this.historys
-            localStorage.setItem('_vmui_history_stores_', JSON.stringify(this.historysAll));
+            this.historys = [];
+            this.storeHistory();
         },
 
-        setHistory(){
-            let self = this;
-            if(self.historys.indexOf(self.value) == -1 && self.value!=''){
-                self.historys.unshift(self.value);
-                self.historys = self.historys.slice(0,10);
-                self.historysAll[self.historyMark] = self.historys
-                localStorage.setItem('_vmui_history_stores_', JSON.stringify(self.historysAll));
-            }
+        storeHistory(){
+            localStorage.setItem('_vmui_history_stores_.' + this.historyMark, JSON.stringify(this.historys));
         },
 
-        handleSearch() {
-            if(this.closeAfterSelectHistory){
-                this.close()
-                this.setHistory()
-                this.$emit('confirm', this.value.trim())
+        addHistory(val = this.val){
+            var self = this;
+
+            if(val && self.historys.indexOf(val) == -1){
+                self.historys.unshift(val);
+                self.historys = self.historys.slice(0, 10);
+                self.storeHistory();
             }
         }
-
     }
 }
+
+export default Search;
 </script>
