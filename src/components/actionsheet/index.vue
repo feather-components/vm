@@ -6,7 +6,7 @@ import Factory from '../factory';
 
 var instance;
 
-var ActionSheet = module.exports = (actions) => {
+var ActionSheet = (actions) => {
     instance && instance.close();
 
     return instance = Factory({
@@ -35,6 +35,8 @@ var ActionSheet = module.exports = (actions) => {
         }
     });
 }
+
+export default ActionSheet;
 </script>
 
 <style>

@@ -82,7 +82,7 @@ var instance = (content, extras, buttons) => {
     })
 };
 
-var Alert = module.exports = override((content, options, callback, manualClose) => {
+var Alert = override((content, options, callback, manualClose) => {
     return instance(content, options.extras, options.buttons || {
         '确定': {
             className: Alert.STYLES.SINGLE,
@@ -116,16 +116,10 @@ Alert.STYLES = {
     CONFIRM: 'vmui-alert-c-btn',
     SINGLE: 'vmui-alert-s-btn'
 };
+
+export default Alert;
 </script>
 
 <template>
-<Modal :visible="true">
-    <slot>
-        <div class="vmui-alert-content" v-html="content"></div>
-        <div class="vmui-alert-extras" v-if="!!extras" v-text="extras"></div>
-    </slot>
-    <template slot="footer">
-        <a href="javascript:" v-for="(props, index) in buttons" @click="callButton(index)" :class="'vmui-alert-btn ' + (props.className || '')" v-text="index"></a>
-    </template>
-</Modal>
+<div></div>
 </template>

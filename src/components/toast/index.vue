@@ -37,7 +37,7 @@ import Factory from '../factory';
 
 var instance = null, timeid;
 
-var Toast = module.exports = (content, time = 3000, useShade, className = '') => {
+var Toast = (content, time = 3000, useShade, className = '') => {
     Toast.destroy();
 
     if(time){
@@ -76,6 +76,8 @@ Toast.destroy = () => {
         Toast('<i class="vmui-toast-icon"></i>' + content, time, useShade, 'vmui-toast-' + method);
     };
 });
+
+export default Toast;
 </script>
 
 <template>
