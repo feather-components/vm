@@ -9,14 +9,22 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "ajax": "0.0.4",
+    "component-ajax": "github:forbeslindesay/ajax",
     "vue": "^2.3.3",
     "webpack": "^2.6.1"
   },
   "devDependencies": {
+    "autoprefixer": "^7.1.1",
+    "autoprefixer-loader": "^3.2.0",
     "css-loader": "^0.28.3",
     "html-webpack-plugin": "^2.28.0",
     "less": "^2.7.2",
     "less-loader": "^4.0.3",
+    "node-sass": "^4.5.3",
+    "postcss-loader": "^2.0.5",
+    "sass-loader": "^6.0.5",
+    "url-loader": "^0.5.8",
     "vue-loader": "^12.2.0",
     "vue-template-compiler": "^2.3.3"
   }

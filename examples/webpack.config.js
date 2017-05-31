@@ -6,7 +6,7 @@ module.exports = {
     watch: true,
 
     entry: {
-        main: './main/app',
+        main: './main',
         vue: 'vue',
         vmui: '../src'
     },
@@ -26,11 +26,21 @@ module.exports = {
         libraryTarget: 'umd'
     },
 
+
     module: {
         rules: [
             {
                 test: /\.vue$/,
-                use: 'vue-loader'
+                loader: 'vue-loader',
+                options: {
+                    // ...
+                    postcss: [require('autoprefixer')()]
+                }
+            },
+
+            {
+                test: /\.(png|jpg|gif)$/,
+                loader: 'url-loader'
             }
         ]
     },
@@ -39,6 +49,8 @@ module.exports = {
         new webpack.optimize.CommonsChunkPlugin({
             name: ['vmui', 'vue'],
         }),
-        new HtmlWepackPlugin()
+        new HtmlWepackPlugin({
+            template: './main/index.html'
+        })
     ]
 };

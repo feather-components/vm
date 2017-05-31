@@ -34,6 +34,12 @@ module.exports = {
         ]
     },
 
+    vue: {
+        loaders: {
+            css: 'style!css!autoprefixer'
+        }
+    },
+
     plugins: [
         new webpack.optimize.CommonsChunkPlugin({
             name: ['vmui', 'vue'],
