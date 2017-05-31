@@ -178,6 +178,16 @@ export default{
         }
 
         return false;
+    },
+
+    observer(target, config = {}, callback){
+        var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver
+        var observer = new MutationObserver(function(mutations){
+            mutations.forEach(callback);    
+        });
+
+        observer.observe(target, config);
+        return observer;
     }
 }
 

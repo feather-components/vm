@@ -14,7 +14,8 @@ module.exports = {
     resolve: {
         alias: {
             vue: 'vue/dist/vue.js',
-            vmui: path.resolve(__dirname, '../src/index.js')
+            vmui: path.resolve(__dirname, '../src/index.js'),
+            type: 'type-of'
         },
         extensions: ['.js', '.vue']
     },
@@ -25,7 +26,6 @@ module.exports = {
         library: 'this',
         libraryTarget: 'umd'
     },
-
 
     module: {
         rules: [
@@ -41,6 +41,11 @@ module.exports = {
             {
                 test: /\.(png|jpg|gif)$/,
                 loader: 'url-loader'
+            },
+
+            {
+                test: /\.css$/,
+                loader: 'style-loader!css-loader'
             }
         ]
     },

@@ -18,7 +18,7 @@ class Draggable{
     initEvent(){
         var self = this, options = self.options;
 
-        _.on(self.dom, 'touchstart mousedown', (event) => {
+        _.on(self.dom, 'touchstart', (event) => {
             var target = event.target;
 
             if(target && (
@@ -29,21 +29,21 @@ class Draggable{
             }
 
             var {x, y} = self.translates = Draggable.getTransform(self.dom);
-            var {pageX, pageY} = self.touch = event.touches ? event.touches[0] : event;
+            var {pageX, pageY} = self.touch = event.touches[0];
 
             _.trigger(self.dom, 'drag:start', {
                 x, y, pageX, pageY, event
             });
         });
 
-        _.on(document, 'touchmove mousemove', (event) => {
+        _.on(document, 'touchmove', (event) => {
             if(!self.touch){
                 return false;
             }
 
             event.preventDefault();
 
-            var touch = event.touches ? event.touches[0] : event;
+            var touch = event.touches[0];
             var {pageX, pageY} = self.touch;
             var axis = options.axis;
             var x = 0, y = 0;
@@ -76,7 +76,7 @@ class Draggable{
             _.trigger(self.dom, 'draging', info);
         });
 
-        _.on(document, 'touchend mouseup', (event) => {
+        _.on(document, 'touchend', (event) => {
             if(!self.touch){
                 return false;
             }

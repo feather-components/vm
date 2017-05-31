@@ -36,7 +36,7 @@
 <script>
 import Overlay from '../overlay';
 import Factory from '../factory';
-import Resize from '../resize';
+import {resize} from '../resize';
 
 export default{
     mixins: [Overlay],
@@ -63,7 +63,7 @@ export default{
         },
 
         resize(){
-            setTimeout(() => {Resize.resize(this.$el);}, 10);
+            setTimeout(() => {resize(this.$el);}, 10);
         }
     }
 }
