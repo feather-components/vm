@@ -1,10 +1,10 @@
-import _ from './helper';
+import {Dom, Event, Util} from '../../helper';
 
 class Draggable{
     constructor(element, options = {}){
         this.dom = element;
         this.dom.$draggable = this;
-        this.options = Object.assign({
+        this.options = Util.assign({
             axis: 'xy',
             stackTimes: 1,
             ignores: null,
@@ -18,8 +18,8 @@ class Draggable{
     initEvent(){
         var self = this, options = self.options;
 
-        _.on(self.dom, 'touchstart', (event) => {
-            var target = event.target;
+        Event.on(self.dom, 'touchstart', (e) => {
+            var target = e.target;
 
             if(target && (
                 options.ignores && options.ignores.test(target.tagName) ||
@@ -29,21 +29,21 @@ class Draggable{
             }
 
             var {x, y} = self.translates = Draggable.getTransform(self.dom);
-            var {pageX, pageY} = self.touch = event.touches[0];
+            var {pageX, pageY} = self.touch = e.touches[0];
 
-            _.trigger(self.dom, 'drag:start', {
-                x, y, pageX, pageY, event
+            Event.trigger(self.dom, 'drag:start', {
+                x, y, pageX, pageY, e
             });
         });
 
-        _.on(document, 'touchmove', (event) => {
+        Event.on(document, 'touchmove', (e) => {
             if(!self.touch){
                 return false;
             }
 
-            event.preventDefault();
+            e.prEventDefault();
 
-            var touch = event.touches[0];
+            var touch = e.touches[0];
             var {pageX, pageY} = self.touch;
             var axis = options.axis;
             var x = 0, y = 0;
@@ -58,7 +58,7 @@ class Draggable{
             }
 
             var info = {
-                x, y, pageX: touch.pageX, pageY: touch.pageY, event
+                x, y, pageX: touch.pageX, pageY: touch.pageY, e
             };
 
             self.translates = {x, y};
@@ -68,15 +68,15 @@ class Draggable{
             };
 
             if(!options.canDrag.call(self, {x, y, rx, ry})){
-                _.trigger(self.dom, 'drag:reject', info);
+                Event.trigger(self.dom, 'drag:reject', info);
                 return false;
             }
 
-            _.css(self.dom, 'transform', `translate3d(${x}px, ${y}px, 0)`);
-            _.trigger(self.dom, 'draging', info);
+            Dom.css(self.dom, 'transform', `translate3d(${x}px, ${y}px, 0)`);
+            Event.trigger(self.dom, 'draging', info);
         });
 
-        _.on(document, 'touchend', (event) => {
+        Event.on(document, 'touchend', (e) => {
             if(!self.touch){
                 return false;
             }
@@ -85,8 +85,8 @@ class Draggable{
 
             var {x, y} = Draggable.getTransform(self.dom);
 
-            _.trigger(self.dom, 'drag:end', {
-                x, y, event
+            Event.trigger(self.dom, 'drag:end', {
+                x, y, e
             });
         });
     }
@@ -97,7 +97,7 @@ class Draggable{
 }
 
 Draggable.getTransform = (element) => {
-    var matrix = _.css(element, 'transform'), x = 0, y = 0;
+    var matrix = Dom.css(element, 'transform'), x = 0, y = 0;
 
     if(matrix && matrix != 'none'){
         if(matrix[0] != '['){
@@ -135,7 +135,8 @@ Draggable.isOtherDraggable = (target, instance) => {
 export default{
     bind(element, data){
         new Draggable(element, data.value);
-    }
-};
+    },
 
-export {Draggable};
+    Draggable,
+    name: 'draggable'
+};

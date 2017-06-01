@@ -1,13 +1,17 @@
 <template>
     <page>
         <topbar>alert组件</topbar>
-        <a herf="javascript:" @click="alert">alert</a>
-        <a herf="javascript:" @click="confirm">confirm</a>
+        <a herf="javascript:" @click="alert" class="alert">我是alert</a>
+        <a herf="javascript:" @click="confirm" class="confirm">我是confirm</a>
     </page>
 </template>
 
-<style scoped lang="less">
-    
+<style scoped>
+a{
+    font-size: 0.2rem;
+    margin: .2rem;
+    display: block;
+}
 </style>
 
 <script>
@@ -17,6 +21,8 @@
         Alert,
         Confirm
     } from 'vmui';
+
+    console.log(Alert)
 
     export default{
         components: {

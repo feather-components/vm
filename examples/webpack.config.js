@@ -15,7 +15,8 @@ module.exports = {
         alias: {
             vue: 'vue/dist/vue.js',
             vmui: path.resolve(__dirname, '../src/index.js'),
-            type: 'type-of'
+            type: 'type-of',
+            ajax: 'component-ajax'
         },
         extensions: ['.js', '.vue']
     },
@@ -33,7 +34,6 @@ module.exports = {
                 test: /\.vue$/,
                 loader: 'vue-loader',
                 options: {
-                    // ...
                     postcss: [require('autoprefixer')()]
                 }
             },

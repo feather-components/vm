@@ -1,5 +1,5 @@
 import Alert from './alert';
-import Factory from '../factory';
+import {Util} from '../../helper';
 
 var override = (callback) => {
     return (...args) => {
@@ -14,7 +14,7 @@ var override = (callback) => {
 };
 
 var alert = override((content, options, callback, manualClose) => {
-    return Factory(Alert, {
+    return Util.factory(Alert, {
         content: content,
         extras: options.extras,
         buttons: options.buttons || {
@@ -30,7 +30,7 @@ var alert = override((content, options, callback, manualClose) => {
 });
 
 var confirm = override((content, options, callback, manualClose) => {
-    return Factory(Alert, {
+    return Util.factory(Alert, {
         content: content,
         extras: options.extras,
         buttons: options.buttons || {

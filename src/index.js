@@ -1,20 +1,20 @@
-import Shade from './shade/index.vue';
-import Scroll from './scroll/index.vue';
-import List from './list/index.vue';
-import Page from './page/index.vue';
-import Topbar from './topbar/index.vue';
-import Button from './button/index.vue';
-import {alert as Alert, confirm as Confirm} from './alert';
+import Scroll from './components/scroll';
+import List from './components/list';
+import Page from './components/page';
+import Topbar from './components/topbar';
+import Button from './components/button';
+import {alert as Alert, confirm as Confirm} from './components/alert';
+import Toast from './components/toast';
 
 export {
-    Shade,
     Scroll,
-    List,
     Page,
     Topbar,
+    List,
     Alert,
     Confirm,
-    Button
+    Button,
+    Toast
 };
 
 require('./rem');

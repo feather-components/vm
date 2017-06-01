@@ -2,7 +2,7 @@
     <page>
         <topbar :left-enabled="false">vmui使用文档</topbar>
 
-        <list :source="['components/alert']" class="navs">
+        <list :source="source" class="navs">
             <template slot="row" scope="props">
                 <a :href="'#/' + props.data">{{props.data}}</a>
             </template>
@@ -40,6 +40,7 @@
 <script>
     import {
         List,
+        Scroll,
         Page,
         Topbar
     } from 'vmui';
@@ -47,8 +48,22 @@
     export default{
         components: {
             List,
+            Scroll,
             Page,
             Topbar
+        },
+
+        data(){
+            return {
+                source: [
+                    'components/alert',
+                    'components/toast'
+                ]
+            }
+        },
+
+        mounted(){
+
         }
     }
 </script>

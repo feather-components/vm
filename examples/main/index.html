@@ -3,15 +3,35 @@
 <meta http-equiv="content-type" content="text/html;charset=utf-8">
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
 <style>
-*{
+body{
     padding: 0px;
     margin: 0px;
+    font-size: 0.14rem;
+}
+
+.router{
+    position: absolute;
+    transition: all .5s cubic-bezier(.55, 0, .1, 1);
+}
+
+.slide-left-enter, .slide-right-leave-active{
+    opacity: 0,
+    -webkit-transform: translate(100%, 0);
+    transform: translate(100%, 0);
+}
+
+.slide-left-leave-active, .slide-right-enter{
+    opacity: 0;
+    -webkit-transform: translate(-30%, 0);
+    transform: translate(-30%, 0);
 }
 </style>
 </head>
 <body>
     <div id="app">
-        <router-view></router-view>
+        <transition :name="transitionName">
+            <router-view class="router"></router-view>
+        </transition>
     </div>
 </body>
 </html>
