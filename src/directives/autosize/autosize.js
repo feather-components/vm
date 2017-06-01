@@ -1,14 +1,15 @@
 import {Event, Dom, Util} from '../../helper';
 
 class AutoSize{
-    constructor(element, fill = true){
+    constructor(element, options = {}){
         if(element.style.height){
             this.height = element.style.height;
         }
 
         element.$autosize = this;
         this.element = element;
-        this.fill = fill;
+        this.instance = options.instance;
+        this.fill = options.fill || true;
         this.resize();
         this.initEvent();
     }
@@ -17,12 +18,37 @@ class AutoSize{
         Event.on(window, 'resize', () => {
             this.resize();
         });
+        this.observer();
+    }
+
+    observer(){
+        this.mutation = Util.observer(this.instance.$root.$el, {
+            attributes: true,
+            subtree: true
+        }, (mutations) => {
+            var change = mutations.some((mutation) => {
+                return mutation.attributeName == 'style' && Dom.contains(mutation.target, this.element);
+            });
+
+            if(change){
+                this.unobserver();
+                this.resize();
+                this.observer();
+            }
+        });
+    }
+
+    unobserver(){
+        if(this.mutation){
+            this.mutation.disconnect();
+            this.mutation = null;
+        }
     }
 
     resize(){
         var self = this;
-        console.log(133);
-        if(self.height) return;
+
+        if(self.height || self.destroyed) return;
 
         var element = this.element;
         var parent = element.parentNode;
@@ -50,26 +76,28 @@ class AutoSize{
         element.style.height = height + 'px';
         Event.trigger(element, 'autosize');
     }
+
+    destroy(){
+        this.unobserver();
+        this.destroyed = true;
+    }
 }
 
-
-Util.observer(document.body, {
-    attributes: true,
-    subtree: true
-}, (mutations) => {
-    var mutation = mutations[0];
-    
-    mutations.forEach((mutation) => {
-        if(mutation.attributeName == 'style' && mutation.target.$autosize){
-            mutation.target.$autosize.resize();
-        }
-    });
-});
-
 export default{
-    bind(element, data){
+    bind(element, data, VNode){
         setTimeout(() => {
-            new AutoSize(element, data.value.fill);
+            console.log('bind')
+            new AutoSize(element, {
+                fill: data.value.fill,
+                instance: VNode.context
+            });
         });
-    }
+    },
+
+    unbind(element){
+        element.$autosize.destroy();
+    },
+
+    AutoSize,
+    name: 'autosize'
 }

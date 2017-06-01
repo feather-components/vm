@@ -379,7 +379,6 @@
                 self.isRefreshing && self.pulldown2refresh && this.$scroll.scrollTo(0, 300);
                 self.isLoading = false;
                 self.isRefreshing = false;
-                setTimeout(() => self.$scroll.refresh(), 0);
             }
         }
     }

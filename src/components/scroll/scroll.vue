@@ -1,5 +1,5 @@
 <template>
-    <div :class="'vmui-scroll vmui-scroll-' + axis">
+    <div :class="'vmui-scroll vmui-scroll-' + axis" v-autosize="{fill: fillSize}">
         <div ref="inner" class="vmui-scroll-inner" @drag:start="onDragStart" @draging="onDraging" @drag:end="onDragEnd">
             <div class="vmui-scroll-pulldown" ref="pulldown" v-if="axis == 'y'">
                 <slot name="pulldown"></slot>
@@ -113,36 +113,36 @@
                     return !!self.eSize;
                 }
             });
+
+            Util.observer(self.$refs.inner, {
+                childList: true,
+                subtree: true
+            }, () => {
+                self.refresh();
+            });
         },
 
         methods: {
-            _resize_(){
+            refresh(){
                 var self = this;
-
-                Resize.methods._resize_.call(self);
-
                 var method = self.axis == 'x' ? 'width' : 'height';
 
-                var s1 = self.eSize = _[method](self.$el);
-                var s2 = self.iSize = _[method](self.$refs.inner);
+                var s1 = self.eSize = Dom[method](self.$el);
+                var s2 = self.iSize = Dom[method](self.$refs.inner);
 
-                self.max = self.axis == 'y' ? _[method](self.$refs.pulldown) : 0;
+                self.max = self.axis == 'y' ? Dom[method](self.$refs.pulldown) : 0;
                 self.min = Math.min(0, s1 - s2);
                 
                 if(self.scrollbars && s1 && s2){
                     self.barPercent = s1 / Math.max(s1, s2);
-                    _.css(self.$refs.bar, method, 100 * self.barPercent + '%');
+                    Dom.css(self.$refs.bar, method, 100 * self.barPercent + '%');
                 }
-            },
-
-            refresh(){
-                this._resize_();
             },
 
             resetBase(){ 
                 var self = this;
                 self.baseTime = Date.now();
-                self.base = Draggable.getTransform(self.$refs.inner)[self.axis];
+                self.base = Draggable.Draggable.getTransform(self.$refs.inner)[self.axis];
             },
 
             onDragStart(event){
@@ -220,7 +220,7 @@
 
                 if(!duration){ 
                     self.pos = destination;
-                    _.css(self.$refs.inner, 'transform', 'translate' + this.axi + '(' + destination + 'px)');
+                    Dom.css(self.$refs.inner, 'transform', 'translate' + this.axi + '(' + destination + 'px)');
                 }else{
                     this.fx(self.$refs.inner, destination, duration);
                 }
@@ -240,7 +240,7 @@
                     
                     var translate = self.eSize * (destination / self.iSize) * -1;
 
-                    _.css(self.$refs.bar, {
+                    Dom.css(self.$refs.bar, {
                         'transform': 'translate' + this.axi + '(' + translate  + 'px)',
                         'transition-duration': duration
                     });
@@ -263,11 +263,11 @@
                         self.scrollEnd(); 
                     }else{
                         self.scrollTo(start + self.ease((now - startTime) / duration) * range);
-                        self.fxer = _.rfa(step);
+                        self.fxer = Util.rfa(step);
                     }
                 }
 
-                self.fxer = _.rfa(step);
+                self.fxer = Util.rfa(step);
             },
 
             scrollEnd(){
@@ -275,7 +275,7 @@
 
                 if(!self.fxer) return;
 
-                _.crfa(self.fxer);
+                Util.crfa(self.fxer);
                 self.fxer = false;
 
                 self.$emit('compare', 'scroll:end', self.pos);

@@ -41,7 +41,7 @@ class Draggable{
                 return false;
             }
 
-            e.prEventDefault();
+            e.preventDefault();
 
             var touch = e.touches[0];
             var {pageX, pageY} = self.touch;

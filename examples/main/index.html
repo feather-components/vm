@@ -30,7 +30,9 @@ body{
 <body>
     <div id="app">
         <transition :name="transitionName">
-            <router-view class="router"></router-view>
+            <keep-alive>
+                <router-view class="router"></router-view>
+            </keep-alive>
         </transition>
     </div>
 </body>

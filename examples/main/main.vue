@@ -2,7 +2,7 @@
     <page>
         <topbar :left-enabled="false">vmui使用文档</topbar>
 
-        <list :source="source" class="navs">
+        <list :source="source" class="navs" v-show="visible">
             <template slot="row" scope="props">
                 <a :href="'#/' + props.data">{{props.data}}</a>
             </template>
@@ -58,12 +58,44 @@
                 source: [
                     'components/alert',
                     'components/toast'
-                ]
+                ],
+                visible: true
             }
         },
 
         mounted(){
-
+            setTimeout(() => {
+                this.source = [
+                    'components/alert',
+                    'components/toast',
+                    'components/alert',
+                    'components/toast',
+                    'components/alert',
+                    'components/toast',
+                    'components/alert',
+                    'components/toast','components/alert',
+                    'components/toast','components/alert',
+                    'components/toast','components/alert',
+                    'components/toast','components/alert',
+                    'components/toast','components/alert',
+                    'components/toast','components/alert',
+                    'components/toast','components/alert',
+                    'components/toast','components/alert',
+                    'components/toast','components/alert',
+                    'components/toast','components/alert',
+                    'components/toast','components/alert',
+                    'components/toast','components/alert',
+                    'components/toast','components/alert',
+                    'components/toast','components/alert',
+                    'components/toast','components/alert',
+                    'components/toast','components/alert',
+                    'components/toast','components/alert',
+                    'components/toast','components/alert',
+                    'components/toast','components/alert',
+                    'components/toast','components/alert',
+                    'components/toast',
+                ]
+            }, 3000)
         }
-    }
+    }                    
 </script>
