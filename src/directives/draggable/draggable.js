@@ -16,15 +16,14 @@ class Draggable{
     }
 
     initEvent(){
-        var self = this, options = self.options;
+        var self = this, options = self.options, justStart = false, target;
 
         Event.on(self.dom, 'touchstart', (e) => {
-            var target = e.target;
+            target = e.target;
 
-            if(target && (
-                options.ignores && options.ignores.test(target.tagName) ||
-                Draggable.isOtherDraggable(target, self)
-            )){
+            justStart = true;
+
+            if(target && options.ignores && options.ignores.test(target.tagName)){
                 return false;
             }
 
@@ -70,6 +69,17 @@ class Draggable{
             if(!options.canDrag.call(self, {x, y, rx, ry})){
                 Event.trigger(self.dom, 'drag:reject', info);
                 return false;
+            }
+
+            if(justStart){
+                justStart = false;
+
+                //if other draggable, end
+                if(Draggable.isOtherDraggable(target, self, {x: rx, y: ry})){
+                    self.touch = null;
+                    Event.trigger(self.dom, 'drag:end');
+                    return false;
+                }
             }
 
             Dom.css(self.dom, 'transform', `translate3d(${x}px, ${y}px, 0)`);
@@ -122,10 +132,26 @@ Draggable.getTransform = (element) => {
     return { x: x, y: y };
 };
 
-Draggable.isOtherDraggable = (target, instance) => {
+Draggable.isOtherDraggable = (target, instance, info) => {
+    var $draggable;
+
     do{
-        if(target.$draggable){
-            return instance !== target.$draggable;
+        if($draggable = target.$draggable){
+            if($draggable === instance){
+                continue;
+            }
+
+            let axis = $draggable.options.axis;
+
+            if(axis !== instance.options.axis){
+                if(axis == 'x'){
+                    return Math.abs(info.x) > Math.abs(info.y);
+                }else{
+                    return Math.abs(info.y) >= Math.abs(info.x);
+                }
+            }
+
+            return true;
         }
     }while(target = target.parentNode);
 

@@ -18,7 +18,7 @@
     export default{
         mixins: [Overlay],
 
-        name: 'vm-mask',
+        name: 'mask',
 
         components: {
             Overlay

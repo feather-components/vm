@@ -11,7 +11,7 @@
     </div>
 </template>
 
-<style>
+<style lang="less">
     .vmui-scroll{
         position: relative;
         width: 100%;
@@ -53,6 +53,7 @@
 
         & > .vmui-scroll-inner{
             float: left;
+            white-space: nowrap;
         }
     }
 
@@ -70,7 +71,7 @@
     import {Dom, Util} from '../../helper';
 
     export default{
-        name: 'vm-scroll',
+        name: 'scroll',
 
         props: {
             scrollbars: {
@@ -132,7 +133,7 @@
 
                 self.max = self.axis == 'y' ? Dom[method](self.$refs.pulldown) : 0;
                 self.min = Math.min(0, s1 - s2);
-                
+
                 if(self.scrollbars && s1 && s2){
                     self.barPercent = s1 / Math.max(s1, s2);
                     Dom.css(self.$refs.bar, method, 100 * self.barPercent + '%');
@@ -149,6 +150,7 @@
                 var self = this;
 
                 self.scrollEnd();
+                self.refresh();
                 self.resetBase();
                 self.$emit('drag:start', event.data[self.axis]);
             },

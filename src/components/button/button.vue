@@ -17,6 +17,7 @@
         border: 0px;
         text-decoration: none;
         -webkit-tap-highlight-color: transparent;
+        outline: none;
     }
 
     .vmui-button-main:active{
@@ -84,7 +85,7 @@
 
 <script>
     export default{
-        name: 'vm-button',
+        name: 'button',
 
         props: {
             type: {

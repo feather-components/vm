@@ -6,8 +6,8 @@ module.exports = {
     watch: true,
 
     entry: {
-        main: './main',
-        vue: 'vue',
+        main: './main/index',
+        lib: ['vue', 'vue-router'],
         vmui: '../src'
     },
 
@@ -52,7 +52,7 @@ module.exports = {
 
     plugins: [
         new webpack.optimize.CommonsChunkPlugin({
-            name: ['vmui', 'vue'],
+            name: ['vmui', 'lib'],
         }),
         new HtmlWepackPlugin({
             template: './main/index.html'

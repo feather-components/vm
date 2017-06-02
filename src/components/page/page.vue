@@ -37,7 +37,7 @@
     import Overlay from '../overlay';
     
     export default{
-        name: 'vm-page',
+        name: 'page',
 
         mixins: [Overlay],
 

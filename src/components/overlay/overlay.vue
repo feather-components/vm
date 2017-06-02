@@ -7,8 +7,10 @@
 </template>
 
 <script>
+    import {Event} from '../../helper';
+
     export default{
-        name: 'vm-overlay',
+        name: 'overlay',
 
         props: {
             style: {
@@ -78,6 +80,20 @@
                 this.$nextTick(function(){
                     this.$emit('close');
                 });
+            },
+
+            destroy(fx = this.fx){
+                this.close();
+
+                if(fx){
+                    Event.on(this.$el, 'transitionend webkitTransitionEnd', () => {
+                        this.$el.parentNode.removeChild(this.$el);
+                        this.$emit('destroy');
+                    })
+                }else{
+                    this.$el.parentNode.removeChild(this.$el);
+                    this.$emit('destroy');
+                }
             }
         }
     }
@@ -131,27 +147,27 @@
     }
 
     .vmui-fx-enter, .vmui-fx-leave-active,
-    .vmui-fx-center-enter, .vmui-fx-center-leave-active,
+    .vmui-fx-center-enter, .vmui-fx-center-leave-active
     {
         opacity: 0;
     }
 
-    .vmui-fx-left-enter, .vmui-fx-left-leave-active,
+    .vmui-fx-left-enter, .vmui-fx-left-leave-active
     {
         transform: translateX(-100%);
     }
 
-    .vmui-fx-right-enter, .vmui-fx-right-leave-active,
+    .vmui-fx-right-enter, .vmui-fx-right-leave-active
     {
         transform: translateX(100%);
     }
 
-    .vmui-fx-bottom-enter, .vmui-fx-bottom-leave-active,
+    .vmui-fx-bottom-enter, .vmui-fx-bottom-leave-active
     {
         transform: translateY(100%);
     }
 
-    .vmui-fx-top-enter, .vmui-fx-top-leave-active,
+    .vmui-fx-top-enter, .vmui-fx-top-leave-active
     {
         transform: translateY(-100%);
     }

@@ -2,7 +2,7 @@
     <page>
         <topbar :left-enabled="false">vmui使用文档</topbar>
 
-        <list :source="source" class="navs" v-show="visible">
+        <list :source="source" class="navs">
             <template slot="row" scope="props">
                 <a :href="'#/' + props.data">{{props.data}}</a>
             </template>
@@ -40,7 +40,6 @@
 <script>
     import {
         List,
-        Scroll,
         Page,
         Topbar
     } from 'vmui';
@@ -48,7 +47,6 @@
     export default{
         components: {
             List,
-            Scroll,
             Page,
             Topbar
         },
@@ -57,45 +55,11 @@
             return {
                 source: [
                     'components/alert',
-                    'components/toast'
-                ],
-                visible: true
-            }
-        },
-
-        mounted(){
-            setTimeout(() => {
-                this.source = [
-                    'components/alert',
                     'components/toast',
-                    'components/alert',
-                    'components/toast',
-                    'components/alert',
-                    'components/toast',
-                    'components/alert',
-                    'components/toast','components/alert',
-                    'components/toast','components/alert',
-                    'components/toast','components/alert',
-                    'components/toast','components/alert',
-                    'components/toast','components/alert',
-                    'components/toast','components/alert',
-                    'components/toast','components/alert',
-                    'components/toast','components/alert',
-                    'components/toast','components/alert',
-                    'components/toast','components/alert',
-                    'components/toast','components/alert',
-                    'components/toast','components/alert',
-                    'components/toast','components/alert',
-                    'components/toast','components/alert',
-                    'components/toast','components/alert',
-                    'components/toast','components/alert',
-                    'components/toast','components/alert',
-                    'components/toast','components/alert',
-                    'components/toast','components/alert',
-                    'components/toast','components/alert',
-                    'components/toast',
+                    'components/scroll',
+                    'components/list'
                 ]
-            }, 3000)
+            }
         }
     }                    
 </script>

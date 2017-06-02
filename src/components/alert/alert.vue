@@ -42,7 +42,9 @@
     import Overlay from '../overlay';
     import Button from '../button';
 
-    export default{
+    export default {
+        mixins: [Overlay],
+
         props: {
             content: {
                 type: String,
@@ -70,12 +72,8 @@
 
         data(){
             return {
-                destroyed: false
+                visibility: true
             };
-        },
-
-        mounted(){
-            console.log(333)
         },
 
         methods: {
@@ -87,17 +85,13 @@
                 }else{
                     props.call(this);
                 }
-            },
-
-            destroy(){
-                this.destroyed = true;
             }
         }
     }
 </script>
 
 <template>
-    <vm-mask :visible="true" :fx="true" v-if="!destroyed">
+    <vm-mask :visible="visibility">
         <overlay :visible="true" class="vmui-alert" position="center">
             <div class="vmui-alert-content" v-html="content"></div>
             <div class="vmui-alert-extras" v-if="!!extras" v-text="extras"></div>

@@ -99,7 +99,7 @@
     import Ajax from 'ajax';
 
     export default{
-        name: 'vm-list',
+        name: 'list',
 
         props: {
             fillHeight: {

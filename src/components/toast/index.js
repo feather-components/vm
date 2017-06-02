@@ -24,7 +24,7 @@ Toast.destroy = () => {
     }
 
     if(instance){
-        instance.destroyed = true;
+        instance.destroy();
         instance = null;
     }
 };

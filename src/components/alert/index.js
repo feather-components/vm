@@ -22,7 +22,7 @@ var alert = override((content, options, callback, manualClose) => {
                 className: 'vmui-alert-sbtn',
                 callback: function(){
                     callback && callback();
-                    !manualClose && this.destroy();
+                    !manualClose && this.destroy(false);
                 }
             }
         }
@@ -38,15 +38,16 @@ var confirm = override((content, options, callback, manualClose) => {
                 props: {
                     border: true
                 },
+                
                 callback: function(){
-                    this.destroy();
+                    this.destroy(false);
                 }
             },
 
             '确定': {
                 callback: function(){
                     callback && callback();
-                    !manualClose && this.destroy();
+                    !manualClose && this.destroy(false);
                 }
             }
         }

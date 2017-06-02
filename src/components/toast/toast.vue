@@ -1,10 +1,8 @@
 <template>
-    <vm-mask v-if="mask && !destroyed" :visible="true">
-        <overlay :class="className" position="center" :visible="true" v-html="content">
-        </overlay>
+    <vm-mask v-if="mask" :visible="visibility">
+        <overlay :class="className" position="center" :visible="true" v-html="content"></overlay>
     </vm-mask>
-    <overlay v-else-if="!destroyed" :visible="true" :class="className" position="center" v-html="content">
-    </overlay>
+    <overlay v-else :visible="visibility" :class="className" position="center" v-html="content"></overlay>
 </template>
 
 <style>
@@ -43,6 +41,8 @@
     import Overlay from '../overlay';
 
     export default{
+        mixins: [Overlay],
+
         props: {
             content: {
                 type: String,
@@ -60,15 +60,15 @@
             }
         },
 
+        data(){
+            return {
+                visibility: true
+            }
+        },
+
         components: {
             Overlay,
             vmMask
-        },
-
-        data(){
-            return {
-                destroyed: false
-            };
         }
     };
 </script>

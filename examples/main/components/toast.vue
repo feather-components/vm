@@ -1,30 +1,33 @@
 <template>
     <page>
         <topbar>toast组件</topbar>
-        <a herf="javascript:" @click="show">无icon</a>
-        <a herf="javascript:" @click="success">有icon</a>
+        <p style="text-align: center;"><btn :small="true" @click="show()" style="width: 80%; margin-top: 20px;">提示</btn></p>
+        <p style="text-align: center;"><btn :small="true" @click="success()" style="width: 80%; margin-top: 20px;">成功</btn></p>
+        <p style="text-align: center;"><btn :small="true" @click="loading()" style="width: 80%; margin-top: 20px;">loading</btn></p>
     </page>
 </template>
 
 <style scoped>
-a{
-    font-size: 0.2rem;
-    margin: .2rem;
-    display: block;
-}
+    a{
+        font-size: 0.2rem;
+        margin: .2rem;
+        display: block;
+    }
 </style>
 
 <script>
     import {
         Page,
         Topbar,
-        Toast
+        Toast,
+        Button as Btn
     } from 'vmui';
 
     export default{
         components: {
             Page, 
-            Topbar
+            Topbar,
+            Btn
         },
 
         methods: {
@@ -34,6 +37,10 @@ a{
 
             success(){
                 Toast.success('操作成功');
+            },
+
+            loading(){
+                Toast.loading('加载中');
             }
         }
     }

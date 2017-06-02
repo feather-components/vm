@@ -1,8 +1,8 @@
 <template>
     <page>
         <topbar>alert组件</topbar>
-        <a herf="javascript:" @click="alert" class="alert">我是alert</a>
-        <a herf="javascript:" @click="confirm" class="confirm">我是confirm</a>
+        <p style="text-align: center;"><btn :small="true" @click="alert()" style="width: 80%; margin-top: 20px;">alert</btn></p>
+        <p style="text-align: center;"><btn :small="true" @click="confirm()" style="width: 80%; margin-top: 20px;">confirm</btn></p>
     </page>
 </template>
 
@@ -19,15 +19,15 @@ a{
         Page,
         Topbar,
         Alert,
-        Confirm
+        Confirm,
+        Button as Btn
     } from 'vmui';
-
-    console.log(Alert)
 
     export default{
         components: {
             Page, 
-            Topbar
+            Topbar,
+            Btn
         },
 
         methods: {
@@ -36,7 +36,9 @@ a{
             },
 
             confirm(){
-                Confirm('我是confirm，请点击确定');
+                Confirm('我是confirm，请点击确定', function(){
+                    Alert('刚刚点击了确定');
+                });
             }
         }
     }

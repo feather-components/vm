@@ -81,7 +81,12 @@ export default{
             if(install._installed) return;
 
             install._installed = true;
-            Vue[directive ? 'directive' : 'component'](obj.name, obj);
+
+            if(directive){
+                Vue.directive(obj.name, obj);
+            }else{
+                Vue.component(`vm-${obj.name}`, obj);
+            }
         }
 
         if(window.Vue){

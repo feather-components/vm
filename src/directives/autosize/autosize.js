@@ -9,7 +9,7 @@ class AutoSize{
         element.$autosize = this;
         this.element = element;
         this.instance = options.instance;
-        this.fill = options.fill || true;
+        this.fill = options.fill;
         this.resize();
         this.initEvent();
     }
@@ -86,7 +86,6 @@ class AutoSize{
 export default{
     bind(element, data, VNode){
         setTimeout(() => {
-            console.log('bind')
             new AutoSize(element, {
                 fill: data.value.fill,
                 instance: VNode.context
