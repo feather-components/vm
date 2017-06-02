@@ -1,18 +1,11 @@
 <template>
     <page>
         <topbar>alert组件</topbar>
-        <p style="text-align: center;"><btn :small="true" @click="alert()" style="width: 80%; margin-top: 20px;">alert</btn></p>
-        <p style="text-align: center;"><btn :small="true" @click="confirm()" style="width: 80%; margin-top: 20px;">confirm</btn></p>
+        <p style="text-align: center;"><btn @click="alert()" style="width: 80%; margin-top: 20px;">alert</btn></p>
+        <p style="text-align: center;"><btn @click="confirm()" style="width: 80%; margin-top: 20px;">confirm</btn></p>
     </page>
 </template>
 
-<style scoped>
-a{
-    font-size: 0.2rem;
-    margin: .2rem;
-    display: block;
-}
-</style>
 
 <script>
     import {

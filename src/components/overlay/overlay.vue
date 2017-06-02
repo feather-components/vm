@@ -43,7 +43,8 @@
 
         data(){
             return {
-                visibility: false
+                visibility: false,
+                destroyed: false
             }
         },
 
@@ -83,17 +84,23 @@
             },
 
             destroy(fx = this.fx){
+                if(this.destroyed) return;
+
                 this.close();
 
                 if(fx){
                     Event.on(this.$el, 'transitionend webkitTransitionEnd', () => {
-                        this.$el.parentNode.removeChild(this.$el);
-                        this.$emit('destroy');
+                        this._destroy();
                     })
                 }else{
-                    this.$el.parentNode.removeChild(this.$el);
-                    this.$emit('destroy');
+                    this._destroy();
                 }
+            },
+
+            _destroy(){
+                this.$el.parentNode.removeChild(this.$el);
+                this.$emit('destroy');
+                this.destroyed = true;
             }
         }
     }

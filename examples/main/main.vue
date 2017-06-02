@@ -54,10 +54,13 @@
         data(){
             return {
                 source: [
+                    'components/button',
                     'components/alert',
                     'components/toast',
                     'components/scroll',
-                    'components/list'
+                    'components/list',
+                    'components/actionsheet',
+                    'components/dropdown'
                 ]
             }
         }

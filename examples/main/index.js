@@ -8,12 +8,30 @@ import Alert from './components/alert.vue';
 import Toast from './components/toast.vue';
 import Scroll from './components/scroll.vue';
 import List from './components/list.vue';
+import Button from './components/button.vue';
+import ActionSheet from './components/actionsheet.vue';
+import Dropdown from './components/dropdown.vue';
 
 const router = new VueRouter({
     routes: [
         {
             path: '/',
             component: Main
+        },
+
+        {
+            path: '/components/button',
+            component: Button
+        },
+
+        {
+            path: '/components/dropdown',
+            component: Dropdown
+        },
+
+        {
+            path: '/components/actionsheet',
+            component: ActionSheet
         },
 
         {

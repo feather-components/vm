@@ -5,6 +5,8 @@ import Topbar from './components/topbar';
 import Button from './components/button';
 import {alert as Alert, confirm as Confirm} from './components/alert';
 import Toast from './components/toast';
+import ActionSheet from './components/actionsheet';
+import Dropdown from './components/dropdown';
 
 export {
     Scroll,
@@ -14,7 +16,9 @@ export {
     Alert,
     Confirm,
     Button,
-    Toast
+    Toast,
+    ActionSheet,
+    Dropdown
 };
 
 require('./rem');

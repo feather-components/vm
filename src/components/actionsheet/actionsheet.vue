@@ -7,7 +7,7 @@
                 </li>
             </ul>
            
-            <a href="javascript:" @click="close()" class="vmui-actionsheet-cancel">取消</a>
+            <a href="javascript:" @click="destroy()" class="vmui-actionsheet-cancel">取消</a>
         </overlay>
     </vm-mask>
 </template>
@@ -54,8 +54,6 @@
     import Overlay from '../overlay';
 
     export default{
-        name: 'actionsheet',
-
         mixins: [Overlay],
 
         props: {
@@ -72,6 +70,12 @@
             Overlay
         },
 
+        data(){
+            return {
+                visibility: true
+            };
+        },
+
         methods: {
             callAction(index){
                 var action = this.actions[index];
@@ -82,7 +86,7 @@
                     action.callback.call(this);
                 }
 
-                this.close();
+                this.destroy();
             }
         }
     }
