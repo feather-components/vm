@@ -11,12 +11,24 @@ import List from './components/list.vue';
 import Button from './components/button.vue';
 import ActionSheet from './components/actionsheet.vue';
 import Dropdown from './components/dropdown.vue';
+import Searchbar from './components/searchbar.vue';
+import Search from './components/search.vue';
 
 const router = new VueRouter({
     routes: [
         {
             path: '/',
             component: Main
+        },
+
+        {
+            path: '/components/search',
+            component: Search
+        },
+
+        {
+            path: '/components/searchbar',
+            component: Searchbar
         },
 
         {
@@ -67,7 +79,7 @@ new Vue({
     // watch $route 决定使用哪种过渡
     watch: {
         '$route'(to, from){
-            this.transitionName = to.path == '/' ? 'slide-right' : 'slide-left';
+            this.transitionName = to.path.split('/').length < from.path.split('/').length ? 'slide-right' : 'slide-left';
         }
     }
 });

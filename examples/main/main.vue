@@ -60,7 +60,9 @@
                     'components/scroll',
                     'components/list',
                     'components/actionsheet',
-                    'components/dropdown'
+                    'components/dropdown',
+                    'components/search',
+                    'components/searchbar'
                 ]
             }
         }

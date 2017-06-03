@@ -9,14 +9,16 @@ import ActionSheet from './components/actionsheet';
 import Dropdown from './components/dropdown';
 import Draggable from './directives/draggable';
 import Popover from './directives/popover';
+import {Search, Searchbar} from './components/search';
 
 export {
+    Search,
+    Searchbar,
     Scroll,
     Page,
     Topbar,
     List,
     Alert,
-    Confirm,
     Button,
     Toast,
     ActionSheet,
