@@ -13,7 +13,7 @@ var Toast = (content, time = 3000, mask, className = '') => {
     return instance = Util.factory(Component, {
         content: content,
         mask: mask,
-        className: 'vmui-toast ' + className
+        iconClass: className
     });
 };
 
@@ -31,8 +31,9 @@ Toast.destroy = () => {
 
 ['success', 'loading'].forEach((method) => {
     Toast[method] = (content, time, mask) => {
-        Toast('<i class="vmui-toast-icon"></i>' + content, time, mask, 'vmui-toast-' + method);
+        Toast(content, time, mask, 'vmui-toast-' + method);
     };
 });
 
+Toast.component = Util.register(Component);
 export default Toast;

@@ -54,6 +54,8 @@
     import Overlay from '../overlay';
 
     export default{
+        name: 'actionsheet',
+
         mixins: [Overlay],
 
         props: {

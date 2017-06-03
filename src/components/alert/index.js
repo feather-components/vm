@@ -1,4 +1,4 @@
-import Alert from './alert';
+import Component from './alert';
 import {Util} from '../../helper';
 
 var override = (callback) => {
@@ -13,8 +13,8 @@ var override = (callback) => {
     }
 };
 
-var alert = override((content, options, callback, manualClose) => {
-    return Util.factory(Alert, {
+var Alert = override((content, options, callback, manualClose) => {
+    return Util.factory(Component, {
         content: content,
         extras: options.extras,
         buttons: options.buttons || {
@@ -29,8 +29,8 @@ var alert = override((content, options, callback, manualClose) => {
     });
 });
 
-var confirm = override((content, options, callback, manualClose) => {
-    return Util.factory(Alert, {
+Alert.confirm = override((content, options, callback, manualClose) => {
+    return Util.factory(Component, {
         content: content,
         extras: options.extras,
         buttons: options.buttons || {
@@ -54,4 +54,5 @@ var confirm = override((content, options, callback, manualClose) => {
     });
 });
 
-export {alert, confirm};
+Alert.component = Util.register(Component);
+export default Alert;

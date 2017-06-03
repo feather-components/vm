@@ -1,8 +1,14 @@
 <template>
     <vm-mask v-if="mask" :visible="visibility">
-        <overlay :class="className" position="center" :visible="true" v-html="content"></overlay>
+        <overlay :class="'vmui-toast ' + className" position="center" :visible="true">
+            <i :class="'vmui-toast-icon ' + iconClass" v-if="iconClass"></i>
+            <slot>{{content}}</slot>
+        </overlay>
     </vm-mask>
-    <overlay v-else :visible="visibility" :class="className" position="center" v-html="content"></overlay>
+    <overlay v-else :visible="visibility" :class="'vmui-toast ' + className" position="center">
+        <i :class="'vmui-toast-icon ' + iconClass" v-if="iconClass"></i>
+        <slot>{{content}}</slot>
+    </overlay>
 </template>
 
 <style>
@@ -27,11 +33,11 @@
         background-position: center center;
     }
 
-    .vmui-toast-success .vmui-toast-icon{
+    .vmui-toast-success{
         background-image: url(./success@3x.png?__inline);
     }
 
-    .vmui-toast-loading .vmui-toast-icon{
+    .vmui-toast-loading{
         background-image: url(./loading.gif?__inline);
     }
 </style>
@@ -41,9 +47,16 @@
     import Overlay from '../overlay';
 
     export default{
+        name: 'toast',
+
         mixins: [Overlay],
 
         props: {
+            iconClass: {
+                type: String,
+                default: null
+            },
+
             content: {
                 type: String,
                 default: null
@@ -52,11 +65,6 @@
             mask: {
                 type: Boolean,
                 default: false
-            },
-
-            className: {
-                type: String,
-                default: ''
             }
         },
 

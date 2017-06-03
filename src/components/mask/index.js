@@ -1,7 +1,4 @@
 import Mask from './mask';
+import {Util} from '../../helper';
 
-Mask.install = (Vue) => {
-    Vue.component(Mask.name, Mask);
-};
-
-export default Mask;
+export default Util.register(Mask);

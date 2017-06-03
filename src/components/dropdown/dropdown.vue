@@ -1,6 +1,6 @@
 <template>
     <div :class="'vmui-dropdown' + (isOpen ? ' vmui-dropdown-open' : '')">
-        <a class="vmui-dropdown-label" v-html="label" ref="label" href="javascript:"></a>
+        <a class="vmui-dropdown-label" v-html="label" ref="label" href="javascript:" @click.stop="$emit('label:click')"></a>
 
         <dropbox ref="box">
             <div class="vmui-dropdown-inner">
@@ -47,6 +47,7 @@
 
 <script>
     import Dropbox from './box';
+    import {Event} from '../../helper';
 
     export default{
         name: 'dropdown',
@@ -73,7 +74,6 @@
                 var self = this;
                 var $box = self.$refs.box;
 
-                $box.setHandler(self.$refs.label);
                 $box.$on('open', () => {
                     self.isOpen = true;
                 });
@@ -81,6 +81,10 @@
                 $box.$on('close', () => {
                     self.isOpen = false;
                 })
+
+                Event.on(document, 'click', (e) => {
+                    self.close();
+                });
             });
         },
 

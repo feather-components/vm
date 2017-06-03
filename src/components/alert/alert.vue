@@ -43,6 +43,8 @@
     import Button from '../button';
 
     export default {
+        name: 'alert',
+
         mixins: [Overlay],
 
         props: {

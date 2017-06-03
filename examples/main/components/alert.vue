@@ -12,7 +12,6 @@
         Page,
         Topbar,
         Alert,
-        Confirm,
         Button as Btn
     } from 'vmui';
 
@@ -29,7 +28,7 @@
             },
 
             confirm(){
-                Confirm('我是confirm，请点击确定', function(){
+                Alert.confirm('我是confirm，请点击确定', function(){
                     Alert('刚刚点击了确定');
                 });
             }

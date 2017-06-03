@@ -1,11 +1,13 @@
-import ActionSheet from './actionsheet';
+import Component from './actionsheet';
 import {Util} from '../../helper';
 
 var instance;
-
-export default (actions) => {
+var ActionSheet = (actions) => {
     instance && instance.destroy();
-    instance = Util.factory(ActionSheet, {
+    return instance = Util.factory(Component, {
         actions
     });
-}
+};
+
+ActionSheet.component = Util.register(Component);
+export default ActionSheet;
