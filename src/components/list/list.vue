@@ -376,7 +376,7 @@
             afterRenderRows(){
                 var self = this;
 
-                self.isRefreshing && self.pulldown2refresh && this.$scroll.scrollTo(0, 300);
+                self.isRefreshing && self.pulldown2refresh && this.$scroll.scrollTo(0, 1000);
                 self.isLoading = false;
                 self.isRefreshing = false;
             }

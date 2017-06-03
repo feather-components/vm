@@ -195,7 +195,7 @@
                 }else if(translate > 0 && translate < self.max){
                     self.scrollTo(0, translate * 3);
                 }else if(translate <= self.min){ 
-                    self.scrollTo(self.min, 300);
+                    self.scrollTo(self.min, 1000);
                 }else if(duration < 300){
                     var distance = event.data[self.axis] - self.base;
                     var speed = Math.abs(distance) / duration, deceleration = 0.0006;

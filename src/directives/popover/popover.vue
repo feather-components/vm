@@ -1,5 +1,5 @@
 <template>
-    <dropbox class="vmui-actions" ref="box" :handler="handler" :offset="offset">
+    <dropbox class="vmui-actions" ref="box" :offset="offset" :handler="dom">
         <div class="vmui-actions-inner" ref="inner">
             <i class="vmui-actions-arrow" ref="arrow"></i>
             <a href="javascript:void(0);" :class="'vmui-actions-item' + (action.className || '')" v-for="(action, index) of actions" v-html="index" @click.stop="callAction(index)"></a>
@@ -60,7 +60,7 @@
 </style>
 
 <script>
-    import Dropbox from '../dropdown/box';
+    import Dropbox from '../../components/dropdown/box';
     import {Util, Event, Dom} from '../../helper';
 
     export default{
@@ -72,7 +72,10 @@
                 }
             },
 
-            handler: null,
+            dom: {
+                type: Object
+            },
+
             offset: {
                 type: Object,
                 default(){
@@ -85,23 +88,21 @@
         },
 
         components: {
-            Dropbox: Dropbox
+            Dropbox
         },
 
         mounted(){
             var self = this;
-
-            self.dom = _.$(self.handler);
 
             this.$refs.box.$on('open', () => {
                 setTimeout(() => {
                     var self = this;
                     var $inner = self.$refs.inner;
                     var x = self.offset.x;
-                    var {width, left} = _.rect(self.dom);
+                    var {width, left} = Dom.rect(self.dom);
 
-                    var {width: innerWidth, left: innerLeft} = _.rect($inner);
-                    var bodyWidth = _.width(document);
+                    var {width: innerWidth, left: innerLeft} = Dom.rect($inner);
+                    var bodyWidth = Dom.width(document);
 
                     var m = left + width/2;
                     var l = Math.min(
@@ -109,14 +110,14 @@
                         bodyWidth - innerWidth - x
                     );
 
-                    _.css($inner, {
+                    Dom.css($inner, {
                         left: l
                     });
 
-                    _.css(
+                    Dom.css(
                         self.$refs.arrow, 
                         'left', 
-                        innerWidth/2
+                        m - l
                     );
 
                     this.$emit('open');

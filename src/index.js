@@ -8,6 +8,7 @@ import Toast from './components/toast';
 import ActionSheet from './components/actionsheet';
 import Dropdown from './components/dropdown';
 import Draggable from './directives/draggable';
+import Popover from './directives/popover';
 
 export {
     Scroll,
@@ -20,7 +21,8 @@ export {
     Toast,
     ActionSheet,
     Dropdown,
-    Draggable
+    Draggable,
+    Popover
 };
 
 require('./rem');

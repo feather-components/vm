@@ -1,8 +1,8 @@
 <template>
     <div :class="'vmui-dropdown' + (isOpen ? ' vmui-dropdown-open' : '')">
-        <a class="vmui-dropdown-label" v-html="label" ref="label" href="javascript:" @click.stop="$emit('label:click')"></a>
+        <a class="vmui-dropdown-label" v-html="label" ref="label" href="javascript:"></a>
 
-        <dropbox ref="box">
+        <dropbox ref="box" :handler="boxHandler">
             <div class="vmui-dropdown-inner">
                 <slot></slot>
             </div>
@@ -65,7 +65,8 @@
 
         data(){
             return {
-                isOpen: false
+                isOpen: false,
+                boxHandler: null
             }
         },
 
@@ -85,6 +86,8 @@
                 Event.on(document, 'click', (e) => {
                     self.close();
                 });
+
+                this.boxHandler = self.$refs.label;
             });
         },
 

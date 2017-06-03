@@ -45,7 +45,13 @@
                 above: false
             };
         },
-        
+
+        watch: {
+            handler(v){
+                this.listenHandler(v);
+            }
+        },
+
         components: {
             Overlay,
             vmMask
@@ -54,7 +60,7 @@
         computed: {
             above(){
                 var bodyHeight = Dom.height(document);
-                var rect = Dom.rect(this.parent);
+                var rect = Dom.rect(this.handler);
 
                 return rect.top + rect.height > bodyHeight/2;
             }
@@ -63,24 +69,28 @@
         mounted(){
             var self = this;
 
-            self.parent = self.$parent.$el;
-            self.$parent.$on('label:click', () => {
-                this.toggle();
-            });
-
             Event.on(self.$refs.overlay.$el, 'click', (e) => {
                 e.stopPropagation();
             });
+
+            self.listenHandler();
         },
 
         methods: {
+            listenHandler(){
+                this.handler && Event.on(this.handler, 'click', (e) => {
+                    this.toggle();
+                    e.stopPropagation();
+                });
+            },
+
             toggle(){
                 this.visibility ? this.close() : this.open();
             },
 
             open(){
-                var self = this, bottom = Dom.rect(self.parent).bottom;
-
+                var self = this, bottom = Dom.rect(self.handler).bottom;
+                
                 if(Overlay.methods.open.call(self) !== false){
                     instance && instance.close();
                     instance = self;

@@ -1,6 +1,14 @@
 <template>
     <page>
-        <topbar>dropdown组件</topbar>
+        <topbar>
+            dropdown组件
+            <a slot="left" href="javascript:" v-popover="{
+                actions: {
+                    123: function(){},
+                    1234: ''
+                }
+            }">1</a>
+        </topbar>
         <div style="display: flex; flex: 1;">
             <dropdown label="区域" style="width: 50%;">
                 <scroll style="height: 300px;">
@@ -22,7 +30,8 @@
         Page,
         Topbar,
         Dropdown,
-        Scroll
+        Scroll,
+        Popover
     } from 'vmui';
 
     export default{
@@ -31,6 +40,8 @@
             Topbar,
             Dropdown,
             Scroll
-        }
+        },
+
+        directives: {Popover}
     }
 </script>
