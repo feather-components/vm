@@ -177,7 +177,7 @@
 
             closeAfterSelectHistory: {
                 type: Boolean,
-                default: false
+                default: true
             },
 
             closeCallback: {
