@@ -12,13 +12,21 @@
                 <template slot="row" scope="props">
                     <div class="row">
                         <a class="inner" :href="props.data.link">
-                            <template v-if="!props.data.title">
+                            <div :class="{
+                            content: true,
+                            active: active
+                            }"  v-draggable="{canDrag: canDrag, axis: 'x'}" @drag:end="dragEnd" @drag:start="dragStart"> 
+                                <template v-if="!props.data.title">
                                 <img class="ads" src="http://cms-bucket.nosdn.127.net/96d8cf0375f64c24a819d50ae190b51820170601175516.jpeg?imageView&thumbnail=690y230&quality=45&type=webp&interlace=1&enlarge=1" />
-                            </template>
-                            <template v-else>
-                                <img v-if="props.data.picInfo[0]" :src="props.data.picInfo[0].url"  />
-                                <span class="title">{{props.data.digest}}</span>
-                            </template>
+                                </template>
+                                <template v-else>
+                                    <img v-if="props.data.picInfo[0]" :src="props.data.picInfo[0].url"  />
+                                    <span class="title">{{props.data.digest}}</span>
+                                </template>
+                            </div>
+                            
+                            
+                            <a href="javascript:" class="comment">评论</a>
                         </a>
                     </div>
                 </template>
@@ -32,15 +40,37 @@
 }
 
 .inner{
-    padding: 10px 0px;
-    border-bottom: 1px solid #ccc;
     min-height: 0.7rem;
     display: block;
     text-decoration: none;
     color: #000;
+    position: relative;
 }
 
-.inner:after{
+.content{
+    background: #fff;
+    padding: 10px 0px;
+    border-bottom: 1px solid #ccc;
+}
+
+.active{
+    transition: transform .3s ease;
+}
+
+.comment{
+    position: absolute;
+    height: 100%;
+    width: 100px;
+    background: red;
+    color: #fff;
+    display: block;
+    right: 1px;
+    top: 1px;
+    z-index: -1;
+    text-align: center;
+}
+
+.content:after{
     content: ".";
     display: block;
     height: 0;
@@ -76,7 +106,8 @@ header{
     import {
         Page,
         Topbar,
-        List
+        List,
+        Draggable
     } from 'vmui';
 
     export default{
@@ -86,9 +117,31 @@ header{
             List
         },
 
+        data(){
+            return {
+                active: false
+            };
+        },
+
+        directives: {Draggable},
+
         methods: {
             formatter(data){
                 return data.list;
+            },
+
+            canDrag(info){
+                return info.x > -100 && info.x <= 0;
+            },
+
+            dragStart(){
+                this.active = false;
+            },
+
+            dragEnd(event){
+                var info = event.data;
+                this.active = true;
+                info.e.target.style.transform = `translate3d(${info.x < -50 ? -100 : 0}px, 0px, 0px)`;
             }
         }
     }

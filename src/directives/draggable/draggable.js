@@ -16,6 +16,7 @@ class Draggable{
     }
 
     initEvent(){
+        console.log(this.dom)
         var self = this, options = self.options, justStart = false, target;
 
         Event.on(self.dom, 'touchstart', (e) => {
