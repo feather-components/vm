@@ -62,7 +62,8 @@
                     'components/actionsheet',
                     'components/dropdown',
                     'components/search',
-                    'components/searchbar'
+                    'components/searchbar',
+                    'components/uploader'
                 ]
             }
         }

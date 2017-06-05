@@ -13,12 +13,18 @@ import ActionSheet from './components/actionsheet.vue';
 import Dropdown from './components/dropdown.vue';
 import Searchbar from './components/searchbar.vue';
 import Search from './components/search.vue';
+import Uploader from './components/uploader.vue';
 
 const router = new VueRouter({
     routes: [
         {
             path: '/',
             component: Main
+        },
+
+        {
+            path: '/components/uploader',
+            component: Uploader
         },
 
         {
