@@ -7,10 +7,11 @@ before_script:
   - npm install
 
 script:
- - webpack --config examples/webpack.config.js 
+ - cd examples
+ - webpack
 
 after_script:
-  - cd ./examples/_build_
+  - cd ./_build_
   - git init
   - git config user.name "travis"
   - git add -A
@@ -20,3 +21,4 @@ after_script:
 env:
  global:
    - GH_REF: github.com/vmui/vmui.github.io.git
+   - NODE_ENV: ci
