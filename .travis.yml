@@ -7,11 +7,10 @@ before_script:
   - npm install
 
 script:
- - cd examples
- - webpack 
+ - webpack --config examples/webpack 
 
 after_script:
-  - cd ./public
+  - cd ./examples/_build_
   - git init
   - git config user.name "travis"
   - git add -A
