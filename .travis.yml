@@ -1,6 +1,5 @@
 language: node_js
 node_js:
-  - "iojs"
   - "4"
 
 before_script:
@@ -8,4 +7,5 @@ before_script:
   - npm install
 
 script:
- - cd examples & webpack 
+ - cd examples
+ - webpack 
