@@ -3,7 +3,7 @@ var webpack = require('webpack');
 var HtmlWepackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-    watch: true,
+    watch: process.env.NODE_ENV != 'ci',
 
     entry: {
         main: './main/index',

@@ -9,3 +9,15 @@ before_script:
 script:
  - cd examples
  - webpack 
+
+after_script:
+  - cd ./public
+  - git init
+  - git config user.name "travis"
+  - git add -A
+  - git commit -m "Update docs"
+  - git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" master:master
+
+env:
+ global:
+   - GH_REF: github.com/vmui/vmui.github.io.git
