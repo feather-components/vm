@@ -55,10 +55,6 @@
         methods: {
             select(files){
                 this.src = files[0].url;
-            },
-
-            progress(files, event){
-                this.progress = (event.loaded/event.total).toFixed(4) * 100 + '%';
             }
         }
     }

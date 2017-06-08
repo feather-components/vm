@@ -28,12 +28,13 @@
     }
 
     .vmui-alert .vmui-button{
-        width: 45%;
+        
+        width: 90%;
         margin: 0px 4px 4px 4px;
     }
 
-    .vmui-alert-sbtn{
-        width: 90% !important;
+    .vmui-alert .vmui-alert-cbtn{
+        width: 45%;
     }
 </style>
 

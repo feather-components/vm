@@ -106,11 +106,6 @@
             border: {
                 type: Boolean,
                 default: false
-            },
-
-            class: {
-                type: String,
-                default: null
             }
         },
 

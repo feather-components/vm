@@ -1,6 +1,6 @@
 <template>
     <page>
-        <topbar :left-enabled="false">vmui使用文档</topbar>
+        <topbar :left-enabled="false">vmui</topbar>
 
         <list :source="source" class="navs">
             <template slot="row" scope="props">
@@ -63,7 +63,8 @@
                     'components/dropdown',
                     'components/search',
                     'components/searchbar',
-                    'components/uploader'
+                    'components/uploader',
+                    'components/popover'
                 ]
             }
         }

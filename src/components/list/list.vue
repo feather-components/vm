@@ -2,7 +2,6 @@
     <scroll 
         ref="scroll" 
         :scrollbars="true"
-        :style="style" 
         :fill-height="fillHeight" 
         class="vmui-list"
         @drag:limit="onDragLimit"
@@ -110,11 +109,6 @@
             autoRefresh: {
                 type: Boolean,
                 default: true
-            },
-
-            style: {
-                type: Object,
-                default: null
             },
 
             source: {

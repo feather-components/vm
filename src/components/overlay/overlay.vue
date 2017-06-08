@@ -1,6 +1,6 @@
 <template>
     <transition :name="transition || (fx ? 'vmui-fx-' + (position || 'center') : '')">
-        <div :class="className" v-show="visibility" :style="style" @click="$emit('click')">
+        <div :class="className" v-show="visibility" @click="$emit('click')">
             <slot></slot>
         </div>
     </transition>
@@ -13,13 +13,6 @@
         name: 'overlay',
 
         props: {
-            style: {
-                type: Object,
-                default(){
-                    return {};
-                }
-            },
-
             fx: {
                 type: Boolean,
                 default: true
@@ -56,7 +49,15 @@
 
         computed: {
             className(){
-                return ('vmui-overlay ' + (this.position ? 'vmui-overlay-' + this.position : '') + (this.class || '')).trim();
+                var c = ['vmui-overlay'];
+
+                if(this.position){
+                    c.push('vmui-overlay-' + this.position);
+                }
+
+                c.push(this.class || '');
+
+                return c;
             }
         },
 

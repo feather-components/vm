@@ -1,5 +1,5 @@
 <template>
-    <vm-mask ref="container" :visible="visibility" @click="close()">
+    <vm-mask ref="container" :visible="visibility">
         <overlay ref="overlay" :visible="visibility" :position="above ? 'bottom' : 'top'" :fx="true" class="vmui-dropbox">
             <slot></slot>
         </overlay>
@@ -27,8 +27,6 @@
         mixins: [Overlay],
 
         props: {
-            handler: null,
-
             offset: {
                 type: Object,
                 default(){
@@ -43,12 +41,6 @@
         data(){
             return {
                 above: false
-            };
-        },
-
-        watch: {
-            handler(v){
-                this.listenHandler(v);
             }
         },
 
@@ -57,47 +49,40 @@
             vmMask
         },
 
-        computed: {
-            above(){
-                var bodyHeight = Dom.height(document);
-                var rect = Dom.rect(this.handler);
-
-                return rect.top + rect.height > bodyHeight/2;
-            }
-        },
-
         mounted(){
             var self = this;
 
-            Event.on(self.$refs.overlay.$el, 'click', (e) => {
-                e.stopPropagation();
-            });
+            self.$nextTick(() => {
+                Event.on(self.$el.parentNode, 'click', (e) => {
+                    self.toggle();
+                });
 
-            self.listenHandler();
+                Event.on(self.$refs.overlay.$el, 'click', (e) => {
+                    e.stopPropagation();
+                });
+            });
         },
 
         methods: {
-            listenHandler(){
-                this.handler && Event.on(this.handler, 'click', (e) => {
-                    this.toggle();
-                    e.stopPropagation();
-                });
-            },
-
             toggle(){
                 this.visibility ? this.close() : this.open();
             },
 
             open(){
-                var self = this, bottom = Dom.rect(self.handler).bottom;
+                var self = this;
                 
                 if(Overlay.methods.open.call(self) !== false){
+                    var bodyHeight = Dom.height(document);
+                    var rect = Dom.rect(this.$el.parentNode);
+                    
+                    this.above = rect.top + rect.height > bodyHeight/2;
+
                     instance && instance.close();
                     instance = self;
 
                     Dom.css(self.$el, {
-                        top: bottom,
-                        height: Dom.height(document) - bottom
+                        top: rect.bottom,
+                        height: bodyHeight - rect.bottom
                     });
 
                     self.$emit('open');

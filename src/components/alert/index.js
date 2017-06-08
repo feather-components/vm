@@ -18,12 +18,9 @@ var Alert = override((content, options, callback, manualClose) => {
         content: content,
         extras: options.extras,
         buttons: options.buttons || {
-            '确定': {
-                className: 'vmui-alert-sbtn',
-                callback: function(){
-                    callback && callback();
-                    !manualClose && this.destroy(false);
-                }
+            '确定'(){
+                callback && callback();
+                !manualClose && this.destroy(false);
             }
         }
     });
@@ -35,17 +32,18 @@ Alert.confirm = override((content, options, callback, manualClose) => {
         extras: options.extras,
         buttons: options.buttons || {
             '取消': {
+                className: 'vmui-alert-cbtn',
                 props: {
                     border: true
                 },
-                
-                callback: function(){
+                callback(){
                     this.destroy(false);
                 }
             },
 
             '确定': {
-                callback: function(){
+                className: 'vmui-alert-cbtn',
+                callback(){
                     callback && callback();
                     !manualClose && this.destroy(false);
                 }

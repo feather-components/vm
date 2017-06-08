@@ -8,7 +8,7 @@ import Toast from './components/toast';
 import ActionSheet from './components/actionsheet';
 import Dropdown from './components/dropdown';
 import Draggable from './directives/draggable';
-import Popover from './directives/popover';
+import Popover from './components/popover';
 import {Search, Searchbar} from './components/search';
 import Uploader from './components/uploader';
 

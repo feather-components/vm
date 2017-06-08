@@ -37,7 +37,7 @@ module.exports = {
                     postcss: [require('autoprefixer')()]
                 }
             },
-
+            
             {
                 test: /\.(png|jpg|gif)$/,
                 loader: 'url-loader'
@@ -46,6 +46,11 @@ module.exports = {
             {
                 test: /\.css$/,
                 loader: 'style-loader!css-loader'
+            },
+
+            {
+                test: /\.(woff2?|eot|ttf|otf|svg)(\?.*)?$/,
+                loader: 'url-loader'
             }
         ]
     },

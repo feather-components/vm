@@ -280,7 +280,7 @@
                 Util.crfa(self.fxer);
                 self.fxer = false;
 
-                self.$emit('compare', 'scroll:end', self.pos);
+                self.$emit('scroll:end', self.pos);
 
                 if(self.pos >= self.max){
                     self.$emit('scroll:limit', self.pos, 1);

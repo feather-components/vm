@@ -2,7 +2,7 @@
     <div :class="'vmui-dropdown' + (isOpen ? ' vmui-dropdown-open' : '')">
         <a class="vmui-dropdown-label" v-html="label" ref="label" href="javascript:"></a>
 
-        <dropbox ref="box" :handler="boxHandler">
+        <dropbox ref="box">
             <div class="vmui-dropdown-inner">
                 <slot></slot>
             </div>
@@ -65,8 +65,7 @@
 
         data(){
             return {
-                isOpen: false,
-                boxHandler: null
+                isOpen: false
             }
         },
 
@@ -81,13 +80,7 @@
 
                 $box.$on('close', () => {
                     self.isOpen = false;
-                })
-
-                Event.on(document, 'click', (e) => {
-                    self.close();
                 });
-
-                this.boxHandler = self.$refs.label;
             });
         },
 

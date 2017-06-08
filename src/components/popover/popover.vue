@@ -1,36 +1,45 @@
 <template>
-    <dropbox class="vmui-actions" ref="box" :offset="offset" :handler="dom">
-        <div class="vmui-actions-inner" ref="inner">
-            <i class="vmui-actions-arrow" ref="arrow"></i>
-            <a href="javascript:void(0);" :class="'vmui-actions-item' + (action.className || '')" v-for="(action, index) of actions" v-html="index" @click.stop="callAction(index)"></a>
+    <dropbox class="vmui-popover" ref="box" :offset="offset">
+        <div class="vmui-popover-inner" ref="inner">
+            <i class="vmui-popover-arrow" ref="arrow"></i>
+            <a 
+                href="javascript:void(0);" 
+                :class="['vmui-popover-item', action.className]" 
+                v-for="(action, label) of actions" 
+                @click.stop="callAction(label)"
+            >
+                <i v-if="action.icon" :class="['icon', action.icon]"></i>
+                {{label}}
+            </a>
         </div>
     </dropbox>
 </template>
 
 <style lang="less">
-    .vmui-actions{
+    .vmui-popover{
         background: transparent;
+        line-height: normal;
 
         .vmui-overlay{
             background: transparent;
+            width: auto;
         }
     }
 
-    .vmui-actions-inner{
-        float: left;
-        position: relative;
-        border-radius: 5px;
+    .vmui-popover-inner{
+        border-radius: 3px;
         background: #28304E;
-        padding: 0px .12rem;
-        margin: .07rem 0px;
+        padding: 0px .08rem;
+        margin: .12rem 0px;
     }
 
-    .vmui-actions-item{
+    .vmui-popover-item{
         display: block;
         text-decoration: none;
         color: #fff;
-        padding: .12rem 0px;
+        padding: .08rem 0px;
         font-size: .12rem;
+        text-align: left;
         border-bottom: 1px solid #ddd;
 
         &:last-child{
@@ -38,7 +47,7 @@
         }
     }
 
-    .vmui-actions-arrow{
+    .vmui-popover-arrow{
         position: absolute;
         content: "";  
         border: 8px solid transparent;  
@@ -46,13 +55,12 @@
         width: 0px;
         display: inline-block;
         border-bottom-color: #28304E; 
-        top: -14px;
+        top: 0.06rem;
         left: 50%;
-        transform: translateX(-8px);
-        -webkit-transform: translateX(-8px);
+        transform: translate(-0.08rem, -50%);
     }
 
-    .vmui-actions-above .vmui-actions-arrow{
+    .vmui-popover-above .vmui-popover-arrow{
         border-bottom-color: transparent;
         border-top-color: #28304E; 
         top: 100%;
@@ -60,7 +68,7 @@
 </style>
 
 <script>
-    import Dropbox from '../../components/dropdown/box';
+    import Dropbox from '../dropdown/box';
     import {Util, Event, Dom} from '../../helper';
 
     export default{
@@ -70,10 +78,6 @@
                 default(){
                     return {};
                 }
-            },
-
-            dom: {
-                type: Object
             },
 
             offset: {
@@ -99,9 +103,8 @@
                     var self = this;
                     var $inner = self.$refs.inner;
                     var x = self.offset.x;
-                    var {width, left} = Dom.rect(self.dom);
-
-                    var {width: innerWidth, left: innerLeft} = Dom.rect($inner);
+                    var {width, left} = Dom.rect(self.$el.parentNode);
+                    var {width: innerWidth} = Dom.rect($inner);
                     var bodyWidth = Dom.width(document);
 
                     var m = left + width/2;
@@ -110,7 +113,7 @@
                         bodyWidth - innerWidth - x
                     );
 
-                    Dom.css($inner, {
+                    Dom.css(self.$refs.box.$refs.overlay.$el, {
                         left: l
                     });
 

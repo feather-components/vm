@@ -14,6 +14,7 @@ import Dropdown from './components/dropdown.vue';
 import Searchbar from './components/searchbar.vue';
 import Search from './components/search.vue';
 import Uploader from './components/uploader.vue';
+import Popover from './components/popover.vue';
 
 const router = new VueRouter({
     routes: [
@@ -25,6 +26,11 @@ const router = new VueRouter({
         {
             path: '/components/uploader',
             component: Uploader
+        },
+
+        {
+            path: '/components/popover',
+            component: Popover
         },
 
         {

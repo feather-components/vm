@@ -26,9 +26,13 @@
         min-width: @h;
         display: inline-block;
 
-        *{
+        > *{
             color: #fff;
             text-decoration: none;
+            display: inline-block;
+            width: 100%;
+            height: 100%;
+            text-align: center;
         }
     }
 
