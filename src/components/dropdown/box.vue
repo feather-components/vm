@@ -1,5 +1,5 @@
 <template>
-    <vm-mask ref="container" :visible="visibility">
+    <vm-mask ref="container" :visible="visibility" class="vmui-dropbox-container">
         <overlay ref="overlay" :visible="visibility" :position="above ? 'bottom' : 'top'" :fx="true" class="vmui-dropbox">
             <slot></slot>
         </overlay>
@@ -7,10 +7,6 @@
 </template>
 
 <style>
-    .vmui-dropbox-transparent{
-        background: transparent;
-    }
-
     .vmui-dropbox{
         position: absolute;
     }
@@ -74,9 +70,9 @@
                 if(Overlay.methods.open.call(self) !== false){
                     var bodyHeight = Dom.height(document);
                     var rect = Dom.rect(this.$el.parentNode);
+
                     
                     this.above = rect.top + rect.height > bodyHeight/2;
-
                     instance && instance.close();
                     instance = self;
 

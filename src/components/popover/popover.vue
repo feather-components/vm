@@ -17,7 +17,6 @@
 
 <style lang="less">
     .vmui-popover{
-        background: transparent;
         line-height: normal;
 
         .vmui-overlay{
@@ -37,13 +36,20 @@
         display: block;
         text-decoration: none;
         color: #fff;
-        padding: .08rem 0px;
+        padding: .06rem 0px;
         font-size: .12rem;
         text-align: left;
         border-bottom: 1px solid #ddd;
 
         &:last-child{
             border: 0px;
+        }
+
+        .icon{
+            float: left;
+            font-size: 0.17rem;
+            display: inline-block;
+            margin-right: .05rem;
         }
     }
 
@@ -60,10 +66,12 @@
         transform: translate(-0.08rem, -50%);
     }
 
-    .vmui-popover-above .vmui-popover-arrow{
-        border-bottom-color: transparent;
-        border-top-color: #28304E; 
-        top: 100%;
+    .vmui-popover-above{
+        .vmui-popover-arrow{
+            border-bottom-color: transparent;
+            border-top-color: #28304E; 
+            top: 100%;
+        }
     }
 </style>
 
