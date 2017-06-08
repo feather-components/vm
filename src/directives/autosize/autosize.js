@@ -73,7 +73,7 @@ class AutoSize{
             height -= otherHeight;
         }
 
-        element.style.height = height + 'px';
+        element.style.height = height - parseInt(Dom.css(element, 'margin-bottom') || 0) + 'px';
         Event.trigger(element, 'autosize');
     }
 

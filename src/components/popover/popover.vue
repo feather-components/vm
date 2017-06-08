@@ -1,5 +1,7 @@
 <template>
     <dropbox class="vmui-popover" ref="box" :offset="offset">
+        <vm-mask :visible="true" class="vmui-popover-mask" @click="$refs.box.close()" />
+
         <div class="vmui-popover-inner" ref="inner">
             <i class="vmui-popover-arrow" ref="arrow"></i>
             <a 
@@ -18,11 +20,29 @@
 <style lang="less">
     .vmui-popover{
         line-height: normal;
+        height: 100%;
+
+        &.vmui-mask{
+            background: transparent;
+        }
 
         .vmui-overlay{
             background: transparent;
             width: auto;
         }
+
+        .vmui-dropbox-bottom{
+            .vmui-popover-arrow{
+                border-bottom-color: transparent;
+                border-top-color: #28304E; 
+                top: 100%;
+                transform: translate(-0.08rem, -10%);
+            }
+        }
+    }
+
+    .vmui-popover-mask{
+        width: 100% !important;
     }
 
     .vmui-popover-inner{
@@ -30,6 +50,8 @@
         background: #28304E;
         padding: 0px .08rem;
         margin: .12rem 0px;
+        position: relative;
+        z-index: 100000;
     }
 
     .vmui-popover-item{
@@ -61,22 +83,14 @@
         width: 0px;
         display: inline-block;
         border-bottom-color: #28304E; 
-        top: 0.06rem;
         left: 50%;
-        transform: translate(-0.08rem, -50%);
-    }
-
-    .vmui-popover-above{
-        .vmui-popover-arrow{
-            border-bottom-color: transparent;
-            border-top-color: #28304E; 
-            top: 100%;
-        }
+        transform: translate(-0.08rem,-90%);
     }
 </style>
 
 <script>
     import Dropbox from '../dropdown/box';
+    import vmMask from '../mask';
     import {Util, Event, Dom} from '../../helper';
 
     export default{
@@ -100,7 +114,8 @@
         },
 
         components: {
-            Dropbox
+            Dropbox,
+            vmMask
         },
 
         mounted(){

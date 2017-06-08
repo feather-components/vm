@@ -5,7 +5,7 @@
                 <a v-for="(i, a) of 100">{{i}}</a>
             </scroll>
 
-            <scroll axis="y" :scrollbars="true" class="col">
+            <scroll axis="y" :scrollbars="true" class="col" style="margin-bottom: 30px;">
                 <a v-for="(i, a) of 100">scroll组件</a>
             </scroll>
     </page>

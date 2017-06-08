@@ -16,7 +16,6 @@ class Draggable{
     }
 
     initEvent(){
-        console.log(this.dom)
         var self = this, options = self.options, justStart = false, target;
 
         Event.on(self.dom, 'touchstart', (e) => {
@@ -78,7 +77,7 @@ class Draggable{
                 //if other draggable, end
                 if(Draggable.isOtherDraggable(target, self, {x: rx, y: ry})){
                     self.touch = null;
-                    Event.trigger(self.dom, 'drag:end');
+                    Event.trigger(self.dom, 'drag:other', info);
                     return false;
                 }
             }

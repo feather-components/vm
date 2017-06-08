@@ -1,6 +1,6 @@
 <template>
-    <vm-mask ref="container" :visible="visibility" class="vmui-dropbox-container">
-        <overlay ref="overlay" :visible="visibility" :position="above ? 'bottom' : 'top'" :fx="true" class="vmui-dropbox">
+    <vm-mask ref="mask" :visible="visibility">
+        <overlay ref="overlay" :visible="visibility" :position="pos" :fx="true" :class="['vmui-dropbox', 'vmui-dropbox-' + pos]">
             <slot></slot>
         </overlay>
     </vm-mask>
@@ -40,6 +40,12 @@
             }
         },
 
+        computed: {
+            pos(){
+                return this.above ? 'bottom' : 'top';
+            }
+        },
+
         components: {
             Overlay,
             vmMask
@@ -50,6 +56,7 @@
 
             self.$nextTick(() => {
                 Event.on(self.$el.parentNode, 'click', (e) => {
+                    console.log(1)
                     self.toggle();
                 });
 
@@ -71,15 +78,21 @@
                     var bodyHeight = Dom.height(document);
                     var rect = Dom.rect(this.$el.parentNode);
 
-                    
                     this.above = rect.top + rect.height > bodyHeight/2;
                     instance && instance.close();
                     instance = self;
 
-                    Dom.css(self.$el, {
-                        top: rect.bottom,
-                        height: bodyHeight - rect.bottom
-                    });
+                    if(this.above){
+                        Dom.css(self.$el, {
+                            bottom: bodyHeight - rect.top,
+                            height: rect.top
+                        });
+                    }else{
+                        Dom.css(self.$el, {
+                            top: rect.bottom,
+                            height: bodyHeight - rect.bottom
+                        });
+                    }
 
                     self.$emit('open');
                 }

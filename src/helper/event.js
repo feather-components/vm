@@ -11,7 +11,7 @@ export default{
 
     trigger(element, event, data = []){
         var evt = document.createEvent('HTMLEvents');
-        evt.initEvent(event, true, true);
+        evt.initEvent(event, false, true);
         evt.data = data;
         return !element.dispatchEvent(evt);
     }

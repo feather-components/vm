@@ -50,7 +50,7 @@
     .vmui-search-cancel{
         float: right;
         width: .32rem;
-        margin: 0px .16rem;
+        margin-right: 0.08rem;
         display: inline-block;
         text-decoration: none;
         color: #fff;

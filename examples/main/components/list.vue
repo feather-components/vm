@@ -141,6 +141,7 @@ header{
             dragEnd(event){
                 var info = event.data;
                 this.active = true;
+                console.log(info)
                 info.e.target.style.transform = `translate3d(${info.x < -50 ? -100 : 0}px, 0px, 0px)`;
             }
         }

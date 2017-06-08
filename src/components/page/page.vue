@@ -19,15 +19,9 @@
         background: #fff;
     }
 
-    .vmui-page-header{
-        position: relative;
-        top: 0px;
-        left: 0px;
-    }
-
     .vmui-page-footer{
         width: 100%;
-        position: absolute;
+        position: fixed;
         left: 0px;
         bottom: 0px;
     }

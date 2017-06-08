@@ -19,8 +19,8 @@
             </a>
         </topbar>
 
-        <a href="javascript:" style="display:inline-block; width: 50px; height: 30px; position: absolute; bottom: 10px;">
-            <i class="ion-ios-add icon"></i>
+        <a href="javascript:" style="display:inline-block; width: 50px; height: 30px; position: absolute; bottom: 40%; left: 45%;">
+            点击我
             <popover :actions="{
                     '扫一扫': {
                         icon: 'ion-ios-person-add',
