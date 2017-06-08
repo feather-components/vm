@@ -76,10 +76,6 @@ export default{
             this.$nextTick(function(){
                 this.$emit('close');
             });
-        },
-
-        destroy(){
-            this.$destroy(true);
         }
     }
 }

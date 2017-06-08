@@ -1,5 +1,5 @@
 <template>
-<Shade :visible="visibility" :fx="true">
+<Shade :visible="visibility" :fx="true" v-if="!destroyed">
     <Overlay :visible="true" :class="className" position="center">
         <section class="vmui-modal-header">
             <slot name="header"></slot>
@@ -50,9 +50,21 @@ export default{
         Shade
     },
 
+    data(){
+        return {
+            destroyed: false
+        };
+    },
+
     computed: {
         className(){
             return ('vmui-modal ' + (this.class || '')).trim()
+        }
+    },
+
+    methods: {
+        destroy(){
+            this.destroyed = true;
         }
     }
 }

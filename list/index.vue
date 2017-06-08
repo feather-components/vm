@@ -21,7 +21,7 @@
 
     <ul class="vmui-list-rows" ref="rows">
         <li v-for="(item, index) in rows" @click="$emit('row:click', item, index)" class="vmui-list-item">
-            <slot name="row" :data="item" v-html="item"></slot>
+            <slot name="row" :data="item">{{item}}</slot>
         </li>
     </ul>
 

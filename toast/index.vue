@@ -54,7 +54,7 @@ var Toast = module.exports = (content, time = 3000, useShade, className = '') =>
             className: 'vmui-toast ' + className,
             content: content,
             useShade: useShade,
-            visible: true
+            destroyed: false
         }
     })
 };
@@ -66,7 +66,7 @@ Toast.destroy = () => {
     }
 
     if(instance){
-        instance.visible = false;
+        instance.destroyed = true;
         instance = null;
     }
 };
@@ -79,8 +79,8 @@ Toast.destroy = () => {
 </script>
 
 <template>
-<Shade v-if="useShade && visible" :visible="true">
+<Shade v-if="useShade && !destroyed" :visible="true">
     <Overlay :class="className" position="center" :visible="true" v-html="content"><div v-html="content"></div></Overlay>
 </Shade>
-<Overlay v-else-if="visible" :visible="true" :class="className" position="center"><div v-html="content"></div></Overlay>
+<Overlay v-else-if="!destroyed" :visible="true" :class="className" position="center"><div v-html="content"></div></Overlay>
 </template>
