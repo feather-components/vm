@@ -35,7 +35,8 @@
             padding: 0px 0.32rem;
             outline: none;
             background: transparent;
-            transform: translateY(-1px);
+            -webkit-transform: translateY(-1px);
+            transform: translateY(0px);
 
             &:focus{
                 border: 0px;
