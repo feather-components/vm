@@ -55,19 +55,19 @@
 
     .vmui-searchbar-clear{
         position: absolute;
-        font-family: consolas;
         text-decoration: none;
         text-align: center;
         right: .07rem;
         top: .072rem;
         color: #666;
-        line-height: 0.14rem;
+        line-height: 0.16rem;
         width: 0.16rem;
         height: 0.16rem;
         display: inline-block;
         border: 1px solid #666;
         border-radius: 100px;
         font-size: 0.12rem;
+        font-family: arial;
     }
 
     .vmui-search-blue{
