@@ -25,7 +25,7 @@
         position: relative;
 
         input{
-            font-size: .12rem;
+            font-size: .14rem;
             box-sizing: border-box;
             width: 100%;
             height: 100%;
@@ -35,7 +35,7 @@
             padding: 0px 0.32rem;
             outline: none;
             background: transparent;
-            transform: translateY(-2px);
+            transform: translateY(-1px);
 
             &:focus{
                 border: 0px;
