@@ -35,7 +35,7 @@
             padding: 0px 0.32rem;
             outline: none;
             background: transparent;
-            transform: translateY(-1px);
+            transform: translateY(-2px);
 
             &:focus{
                 border: 0px;
@@ -58,7 +58,7 @@
         text-decoration: none;
         text-align: center;
         right: .07rem;
-        top: .072rem;
+        top: .06rem;
         color: #666;
         line-height: 0.16rem;
         width: 0.16rem;
