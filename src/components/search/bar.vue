@@ -35,8 +35,7 @@
             padding: 0px 0.32rem;
             outline: none;
             background: transparent;
-            -webkit-transform: translateY(-1px);
-            transform: translateY(0px);
+            transform: translateY(-1px);
 
             &:focus{
                 border: 0px;
@@ -62,13 +61,13 @@
         right: .07rem;
         top: .072rem;
         color: #666;
-        line-height: 0.16rem;
+        line-height: 0.14rem;
         width: 0.16rem;
         height: 0.16rem;
         display: inline-block;
         border: 1px solid #666;
         border-radius: 100px;
-        font-size: 16px;
+        font-size: 0.12rem;
     }
 
     .vmui-search-blue{
