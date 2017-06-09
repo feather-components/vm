@@ -122,10 +122,10 @@
                 type: Boolean,
                 default:true,
             },
-            height:{
-                type: Number,
-                default:0,
-            }
+            // height:{
+            //     type: Number,
+            //     default:0,
+            // }
         },
         data(){
             return {
@@ -144,6 +144,7 @@
                 index: 0,
                 busy: false,
                 timer: null,
+                height:0
             }
         },
 
@@ -153,6 +154,7 @@
         methods:{
             init(){
                 let h = _.height(this.$el);
+                this.height = h;
                 _.css(this.$refs.imgbox_content,{
                     height:h,
                 });
@@ -162,11 +164,17 @@
                 _.css(this.$refs.imgbox,{
                     width:this.width * this.size,
                 });
-                for(let index of this.$refs.imgbox.getElementsByTagName("img")){
-                    index.width = this.width;
-                    index.height = height;
-                }
+                
                 this.init_loop();
+                for(let index in this.$refs.imgbox.getElementsByTagName("img")){
+                    console.log(this.$refs.imgbox.getElementsByTagName("img")[index]);
+                    // this.$refs.imgbox.getElementsByTagName("img")[index].setAttribute("width",this.width + 'px');
+                    // this.$refs.imgbox.getElementsByTagName("img")[index].setAttribute("height",this.height + 'px');
+                    // this.$refs.imgbox.getElementsByTagName("img")[index].style.width = this.width + 'px';
+                    // this.$refs.imgbox.getElementsByTagName("img")[index].style.height = height + 'px';
+                    // index.width = this.width;
+                    // index.height = height;
+                }
                 this.auto_scroll();
             },
             //返回当前页数
@@ -181,6 +189,21 @@
                     self.go_index(self.index+1);
                 },self.auto_wait_time);
             },
+            setWidth(obj){
+                if(obj){
+                    for(let i=0; i<obj.length; i++){
+                        _.css(obj[i],{
+                            'width':this.width,
+                            'height':this.height
+                        });
+
+                        _.css(obj[i].childNodes[0].childNodes[0],{
+                            'width':this.width,
+                            'height':this.height
+                        })
+                    }
+                }
+            },
             /*
              初始化循环滚动,当一次性需要滚动多个子元素时，暂不支持循环滚动效果,
              如果想实现一次性滚动多个子元素效果，可以通过页面结构实现
@@ -192,6 +215,7 @@
                     this.now_left = -this.width;//设置初始位置信息
                     this.minleft = -this.width * this.size;//最小left值
                     this.maxleft = -this.width;
+                    // console.log(this.$refs.imgbox.childNodes[0]);
                     this.$refs.imgbox.insertBefore(this.$refs.imgbox.childNodes[this.size-1].cloneNode(true),this.$refs.imgbox.childNodes[0]);
                     this.$refs.imgbox.appendChild(this.$refs.imgbox.childNodes[1].cloneNode(true));
                     _.css(this.$refs.imgbox,this.get_style(2));
@@ -204,6 +228,7 @@
                         'width': this.width * this.size
                     });
                 }
+                this.setWidth(this.$refs.imgbox.childNodes);
             },
             touchstart(e){
                 let self = this;
