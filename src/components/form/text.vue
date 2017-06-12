@@ -18,11 +18,10 @@
                 ref="input" 
                 class="vmui-form-text" 
                 :contenteditable="!readonly" 
-                v-text="val" 
+                v-model="val"
                 @focus="$emit('focus')"
                 @blur="$emit('blur')"
                 @click="$emit('click')"
-                @input="_input"
             ></div>
             <span v-if="!val" class="vmui-form-text-placeholder" v-text="placeholder"></span>
         </template>
@@ -132,10 +131,6 @@
 
             blur(){
                 this.$refs.input.blur();
-            },
-
-            _input(){
-                this.val = this.$refs.input.innerText;
             },
 
             clear(){
