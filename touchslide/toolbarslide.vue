@@ -122,10 +122,6 @@
                 type: Boolean,
                 default:true,
             },
-            // height:{
-            //     type: Number,
-            //     default:0,
-            // }
         },
         data(){
             return {
@@ -166,15 +162,6 @@
                 });
                 
                 this.init_loop();
-                for(let index in this.$refs.imgbox.getElementsByTagName("img")){
-                    console.log(this.$refs.imgbox.getElementsByTagName("img")[index]);
-                    // this.$refs.imgbox.getElementsByTagName("img")[index].setAttribute("width",this.width + 'px');
-                    // this.$refs.imgbox.getElementsByTagName("img")[index].setAttribute("height",this.height + 'px');
-                    // this.$refs.imgbox.getElementsByTagName("img")[index].style.width = this.width + 'px';
-                    // this.$refs.imgbox.getElementsByTagName("img")[index].style.height = height + 'px';
-                    // index.width = this.width;
-                    // index.height = height;
-                }
                 this.auto_scroll();
             },
             //返回当前页数
