@@ -80,15 +80,16 @@
 
         methods: {
             callAction(index){
-                var action = this.actions[index];
+                var self;
+                var action = self.actions[index];
 
                 if(typeof action == 'function'){
-                    action.call(this);
+                    action.call(self);
                 }else{
-                    action.callback.call(this);
+                    action.callback.call(self);
                 }
 
-                this.destroy();
+                self.destroy();
             }
         }
     }

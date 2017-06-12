@@ -64,7 +64,9 @@
                     'components/search',
                     'components/searchbar',
                     'components/uploader',
-                    'components/popover'
+                    'components/popover',
+                    'components/grid',
+                    'components/form'
                 ]
             }
         }

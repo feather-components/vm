@@ -198,27 +198,35 @@
         },
 
         mounted(){
-            this._params = this.params;
-            this.setSource(this.source);    
-            this.$nextTick(() => this.init());
+            var self = this;
+
+            self._params = self.params;
+            self.setSource(self.source);    
+            self.$nextTick(() => self.init());
         },
 
         watch: {
             source(v){
-                this.setSource(v);
-                this.autoRefresh && this.refresh(this.pulldown2refresh, false);
+                var self = this;
+
+                self.setSource(v);
+                self.autoRefresh && self.refresh(self.pulldown2refresh, false);
             },
 
             params(v){
-                this.setParams(v);
-                this.autoRefresh && this.refresh(this.pulldown2refresh, false);
+                var self = this;
+
+                self.setParams(v);
+                self.autoRefresh && self.refresh(self.pulldown2refresh, false);
             }
         },
 
         methods: {
             init(){
-                this.$scroll = this.$refs.scroll;
-                this.autoRefresh && this.refresh(this.pulldown2refresh, false);
+                var self = this;
+
+                self.$scroll = self.$refs.scroll;
+                self.autoRefresh && self.refresh(self.pulldown2refresh, false);
             },
 
             onScrollLimit(translate, direction){
@@ -272,6 +280,7 @@
 
             refresh(pulldownFx = this.pulldown2refresh, clearData = true){
                 var self = this;
+                
                 self.page = 0;
                 self.isCompleted = false;
                 self.isLoading = false;

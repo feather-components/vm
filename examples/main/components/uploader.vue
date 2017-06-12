@@ -1,8 +1,8 @@
 <template>
     <page>
         <topbar>uploader组件</topbar>
-        <div class="uploader" style="height: 50%;">
-            <uploader @select="select" @upload:progress="progress" url="/index.html"></uploader>
+        <div class="uploader">
+            <uploader @select="select" @upload:progress="progress" url="/index.html"  style="height: 50%;"></uploader>
         </div>
 
         <div v-if="src" style="height: 50%;" class="box">

@@ -41,28 +41,30 @@
     </v-box>
 </template>
 
-<style>
+<style lang="less">
     .vmui-form-text-box{
         .vmui-form-box-icon{
             content: '';
             height: 0.28rem;
             width: 0.28rem;
             line-height: 0.28rem;
-            font-size: 0.28rem;
+            font-size: 0.22rem;
+            font-family: arial;
         }
     }
 
     .vmui-form-text{
         width: 100%;
         font-size: .16rem;
-        color: #222222;
+        color: #222;
         line-height: .28rem;
-        &::-webkit-input-placeholder,
-        &:-moz-placeholder,
-        &::-moz-placeholder,
-        &:-ms-input-placeholder {
-    　　     color: #E1E1E1;
-    　　}
+        border: 0px;
+        outline: none;
+        padding: 0px;
+
+        &::-webkit-input-placeholder{
+            color: #e1e1e1;
+        }
     }
 
     div.vmui-form-text{
@@ -89,55 +91,57 @@
 </style>
 
 <script>
-import vBox from './box';
-import {Single} from './abstract';
+    import vBox from './box';
+    import {Single} from './abstract';
 
-export default{
-    mixins: [vBox, Single],
+    export default{
+        name: 'text-input',
 
-    props: {
-        multiline: {
-            type: Boolean,
-            default: false
+        mixins: [vBox, Single],
+
+        props: {
+            multiline: {
+                type: Boolean,
+                default: false
+            },
+
+            placeholder: {
+                type: String,
+                default: null
+            },
+
+            readonly: {
+                type: Boolean,
+                default: false
+            },
+
+            clearable: {
+                type: Boolean,
+                default: true
+            }
         },
 
-        placeholder: {
-            type: String,
-            default: null
+        components: {
+            vBox
         },
 
-        readonly: {
-            type: Boolean,
-            default: false
-        },
+        methods:{
+            focus(){
+                this.$refs.input.focus();
+            },
 
-        clearable: {
-            type: Boolean,
-            default: true
-        }
-    },
+            blur(){
+                this.$refs.input.blur();
+            },
 
-    components: {
-        vBox
-    },
+            _input(){
+                this.val = this.$refs.input.innerText;
+            },
 
-    methods:{
-        focus(){
-            this.$refs.input.focus();
-        },
-
-        blur(){
-            this.$refs.input.blur();
-        },
-
-        _input(){
-            this.val = this.$refs.input.innerText;
-        },
-
-        clear(){
-            this.val = '';
-            this.$emit('clear');
+            clear(){
+                this.val = '';
+                this.$emit('clear');
+            }
         }
     }
-}
 </script>

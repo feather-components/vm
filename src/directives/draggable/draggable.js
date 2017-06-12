@@ -2,17 +2,19 @@ import {Dom, Event, Util} from '../../helper';
 
 class Draggable{
     constructor(element, options = {}){
-        this.dom = element;
-        this.dom.$draggable = this;
-        this.options = Util.assign({
+        var self = this;
+
+        self.dom = element;
+        self.dom.$draggable = self;
+        self.options = Util.assign({
             axis: 'xy',
             stackTimes: 1,
             ignores: null,
             canDrag(){return true}
         }, options);
 
-        this.stack(this.options.stackTimes);
-        this.initEvent();
+        self.stack(self.options.stackTimes);
+        self.initEvent();
     }
 
     initEvent(){

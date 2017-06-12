@@ -189,12 +189,14 @@
         },
 
         mounted(){
-            this.$search = this.$refs.search;
-            this.$list = this.$refs.list;
-            this.initEvents();
+            var self = this;
 
-            this.autofocus && setTimeout(() => {
-                this.$search.focus();
+            self.$search = self.$refs.search;
+            self.$list = self.$refs.list;
+            self.initEvents();
+
+            self.autofocus && setTimeout(() => {
+                self.$search.focus();
             }, 1000);
         },
 
@@ -254,24 +256,30 @@
             },
 
             open(){
-                this.$refs.page.open();
-                this.$emit('open');
+                var self = this;
+
+                self.$refs.page.open();
+                self.$emit('open');
                 setTimeout(() => {
-                    this.$refs.search.focus();
+                    self.$refs.search.focus();
                 }, 400);
             },
 
             close(){
-                this.$refs.page.close();
-                this.$refs.search.blur();
-                this.$emit('close');
+                var self = this;
+
+                self.$refs.page.close();
+                self.$refs.search.blur();
+                self.$emit('close');
             },
 
             submit(){
+                var self = this;
+                
                 if(this.closeAfterSelectHistory){
-                    this.cancel();
-                    this.addHistory();
-                    this.$emit('confirm', this.val);
+                    self.cancel();
+                    self.addHistory();
+                    self.$emit('confirm', self.val);
                 }
             },
 

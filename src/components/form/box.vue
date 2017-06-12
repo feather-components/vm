@@ -23,9 +23,14 @@
 <style>
     .vmui-form-box{
         background: #fff;
-        padding: 0 0.16rem 0;
+        margin: 0px 0.16rem;
+        padding: 0.12rem 0px 0.08rem 0px;
         overflow: hidden;
-        padding-bottom: 0.06rem;
+        border-top: 0px;
+    }
+
+    .vmui-form-box ~ .vmui-form-box{
+        border-top: 1px solid #eee;
     }
 
     .vmui-form-box-label{
@@ -34,7 +39,7 @@
         font-size: 0.14rem;
         color: #222222;
         line-height: 0.24rem;
-        padding: 0.1rem 0 0.08rem 0;
+        padding-bottom: 0.02rem;
     }
 
     .vmui-form-box-ml{
@@ -54,6 +59,7 @@
 
     .vmui-form-box-inner{
         position: relative;
+        min-height: 0.28rem;
     }
 
     .vmui-form-box-icon{
@@ -62,11 +68,15 @@
         bottom: 0rem;
         display: inline-block;
         text-align: right;
+        text-decoration: none;
+        color: #333;
     }
 </style>
 
 <script>
     export default{
+        name: 'box',
+
         props: {
             label: {
                 type: String,

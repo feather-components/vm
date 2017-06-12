@@ -70,8 +70,9 @@
         },
 
         mounted(){
-            this.$nextTick(() => {
-                var self = this;
+            var self = this;
+            
+            self.$nextTick(() => {
                 var $box = self.$refs.box;
 
                 $box.$on('open', () => {

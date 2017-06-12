@@ -81,12 +81,13 @@
 
         methods: {
             callButton(key){
-                var props = this.buttons[key];
+                var self = this;
+                var props = self.buttons[key];
 
                 if(props.callback){
-                    props.callback.call(this);
+                    props.callback.call(self);
                 }else{
-                    props.call(this);
+                    props.call(self);
                 }
             }
         }

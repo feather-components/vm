@@ -157,7 +157,7 @@
 
             onDraging(event){
                 var self = this;
-                console.log(1233);
+
                 self.isMoving = true;
 
                 var duration = Date.now() - self.baseTime, 

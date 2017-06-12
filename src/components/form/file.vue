@@ -1,42 +1,43 @@
 <template>
-    <v-box :label="label" class="vmui-file">
-        <grid :cols="size == -1 || size > 3 ? 3 : size" :source="val">
-            <template slot="cell" scope="props">
-                <div class="vmui-file-item">
-                    <slot :data="props.data" :index="props.index">
-                        <img :src="props.data" />
-                    </slot>
-                    <a href="javascript:" class="vmui-file-del" v-if="delEnabled" @click="del(props.index)">删除</a>
+    <v-box :label="label" class="vmui-form-file">
+        <grid>
+            <grid-item v-for="(item, index) of val" :style="{width: percent}">
+                :source="val"
+                <div class="vmui-form-file-item">
+                    <img :src="item" />
+                    <a href="javascript:" class="vmui-form-file-del" v-if="delEnabled" @click="del(index)">删除</a>
                 </div>
-            </template>
-            
-            <uploader 
-                v-if="rest" :url="uploader" :multiple="rest > 1" 
-                @upload:start="onUploadStart" 
-                @upload:complete="onUploadComplete"
-                @upload:error="onUploadError"
-                @upload:progress="onUploadProgress"
-            ></uploader>
+            </grid-item>
 
-            <template slot="msg-left">
-                <slot name="msg-left"></slot>
-            </template>    
-
-            <template slot="msg-right">
-                <slot name="msg-right"></slot>
-            </template>    
+            <grid-item v-if="rest" :style="{width: percent}">
+                <uploader 
+                    :url="uploader" :multiple="rest > 1" 
+                    @upload:start="onUploadStart" 
+                    @upload:complete="onUploadComplete"
+                    @upload:error="onUploadError"
+                    @upload:progress="onUploadProgress"
+                ></uploader>
+            </grid-item>
         </grid>
+
+        <template slot="msg-left">
+            <slot name="msg-left"></slot>
+        </template>    
+
+        <template slot="msg-right">
+            <slot name="msg-right"></slot>
+        </template>    
     </v-box>
 </template>
 
 <style>
-.vmui-file{
+.vmui-form-file{
     .vmui-grid{
         margin-top: 0px;
     }
 }
 
-.vmui-file-item{
+.vmui-form-file-item{
     display: -webkit-flex;
     display: flex;
     align-items: center;
@@ -47,12 +48,12 @@
     border-radius: 5px;
 }
 
-.vmui-file-item img{
+.vmui-form-file-item img{
     max-width: 100%;
     max-height: 100%;
 }
 
-.vmui-file-del{
+.vmui-form-file-del{
     position: absolute;
     right: 0px;
     top: 0px;
@@ -67,9 +68,9 @@
 
 <script>
 import vBox from "./box";
-import Grid from '../grid';
+import {Grid, GridItem} from '../grid';
 import Uploader from '../uploader';
-import _ from '../helper';
+import _ from '../../helper';
 import Toast from '../toast';
 import {Multiable} from './abstract';
 
@@ -98,12 +99,17 @@ export default{
     components: {
         vBox,
         Grid,
+        GridItem,
         Uploader
     },
 
     computed: {
         rest(){
             return this.size == -1 ? 1000000 : Math.max(this.size - this.val.length, 0)
+        },
+
+        percent(){
+            return 100 * (this.size == -1 || this.size >=3 ? 0.3333 : 1/this.size) + '%';
         }
     },
     

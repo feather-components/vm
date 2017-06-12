@@ -1,10 +1,12 @@
-import _ from '../helper';
+import {Dom} from '../../helper';
 require('./form.css');
 
-export const counter = {
+export const Counter = {
+    name: 'counter',
+
     bind(element, data, VNode){
         var limit = data.value.limit;
-        var ml = _.$('.vmui-form-box-ml', element);
+        var ml = Dom.$('.vmui-form-box-ml', element);
         var instance = VNode.componentInstance;
 
         instance.$on('input', msg);  
@@ -13,6 +15,6 @@ export const counter = {
             ml.innerHTML = `<span class="${v.length > limit ? 'vmui-form-error' : ''}">${v.length}</span>/${limit}`;
         }
 
-        msg(instance.val);
+        msg(instance.val || '');
     }
 };

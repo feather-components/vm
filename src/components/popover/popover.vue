@@ -121,9 +121,8 @@
         mounted(){
             var self = this;
 
-            this.$refs.box.$on('open', () => {
+            self.$refs.box.$on('open', () => {
                 setTimeout(() => {
-                    var self = this;
                     var $inner = self.$refs.inner;
                     var x = self.offset.x;
                     var {width, left} = Dom.rect(self.$el.parentNode);
@@ -146,22 +145,23 @@
                         m - l
                     );
 
-                    this.$emit('open');
+                    self.$emit('open');
                 });
             });
         },
 
         methods: {
             callAction(index){
-                var action = this.actions[index];
+                var self = this;
+                var action = self.actions[index];
 
                 if(typeof action == 'function'){
-                    action.call(this);
+                    action.call(self);
                 }else{
-                    action.callback.call(this);
+                    action.callback.call(self);
                 }
 
-                this.$refs.box.close();
+                self.$refs.box.close();
             }
         }
     }

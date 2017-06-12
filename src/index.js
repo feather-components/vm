@@ -11,6 +11,8 @@ import Draggable from './directives/draggable';
 import Popover from './components/popover';
 import {Search, Searchbar} from './components/search';
 import Uploader from './components/uploader';
+import {Grid, GridItem} from './components/grid';
+import {Box, Radios, Checkboxes, TextInput, Select, File, Counter} from './components/form';
 
 export {
     Search,
@@ -26,7 +28,16 @@ export {
     Dropdown,
     Draggable,
     Popover,
-    Uploader
+    Uploader,
+    Grid,
+    GridItem,
+    Box,
+    Radios,
+    Checkboxes,
+    TextInput,
+    Select,
+    File,
+    Counter
 };
 
 require('./rem');

@@ -78,11 +78,11 @@
                     var bodyHeight = Dom.height(document);
                     var rect = Dom.rect(this.$el.parentNode);
 
-                    this.above = rect.top + rect.height > bodyHeight/2;
+                    self.above = rect.top + rect.height > bodyHeight/2;
                     instance && instance.close();
                     instance = self;
 
-                    if(this.above){
+                    if(self.above){
                         Dom.css(self.$el, {
                             bottom: bodyHeight - rect.top,
                             height: rect.top

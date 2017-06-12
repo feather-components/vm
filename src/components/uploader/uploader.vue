@@ -10,7 +10,6 @@
         display: inline-block;
         width: 100%;
         min-height: 0.8rem;
-        height: 100%;
         position: relative;
         background: #f3f3f3;
         border-radius: 0.04rem;
@@ -92,26 +91,29 @@
 
         methods: {
             onSelect(){
-                var files = [].slice.call(this.$refs.uploader.files);
+                var self = this;
+                var files = [].slice.call(self.$refs.uploader.files);
 
                 Util.each(files, (file) => {
                     file.url = Uploader.getUrl(file);
                 });
 
-                this.$emit('select', files);
-                this.upload(files);
+                self.$emit('select', files);
+                self.upload(files);
             },
 
             upload(files = []){
-                files = this.beforeUploadProcessor(files);
+                var self = this;
+                
+                files = self.beforeUploadProcessor(files);
 
-                if(!this.canUpload(files)){
-                    this.$emit('reject', files);
+                if(!self.canUpload(files)){
+                    self.$emit('reject', files);
                     return false;
                 }
 
-                this.files = this.files.concat(files);
-                this._upload();
+                self.files = self.files.concat(files);
+                self._upload();
             },
 
             _upload(){
@@ -139,7 +141,7 @@
                 var xhr = self.xhr = new XMLHttpRequest;
                 xhr.onload = () => {
                     if(xhr.readyState == 4){
-                        if(xhr.status == 200){
+                        if(xhr.status == 200 || xhr.status == 304){
                             var data = {};
 
                             try{
@@ -147,12 +149,13 @@
                             }catch(e){};
 
                             self.$emit('upload:complete', files, data);
-                        }else{
-                            self.$emit('upload:error', files, xhr.status);
                         }
 
                         this._upload();
                     }  
+                };
+                xhr.onerror = () => {
+                    self.$emit('upload:error', files, xhr.status);
                 };
                 xhr.upload.onprogress = (event) => {
                     self.$emit('upload:progress', files, event);

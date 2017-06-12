@@ -1,4 +1,4 @@
-import _ from '../helper';
+import {Util} from '../../helper';
 
 export const Single = {
     props: {
@@ -35,7 +35,7 @@ export const Single = {
 };
 
 export const Multiable = {
-    props: _.assign(Single, {
+    props: Util.assign(Single, {
         size: {
             type: Number,
             default: -1
@@ -44,7 +44,7 @@ export const Multiable = {
 
     data(){
         return {
-            val: _.makeArray(this.value)
+            val: Util.makeArray(this.value)
         };
     },
 
@@ -54,13 +54,13 @@ export const Multiable = {
         },
 
         value(v){
-            this.val = _.makeArray(v);
+            this.val = Util.makeArray(v);
         }
     },
 
     methods: {
         save(v, merge = true){
-            v = _.makeArray(v);
+            v = Util.makeArray(v);
 
             if(this.size == 1){
                 merge = false;

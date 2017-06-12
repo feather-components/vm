@@ -49,13 +49,14 @@
 
         computed: {
             className(){
+                var self = this;
                 var c = ['vmui-overlay'];
 
-                if(this.position){
-                    c.push('vmui-overlay-' + this.position);
+                if(self.position){
+                    c.push('vmui-overlay-' + self.position);
                 }
 
-                c.push(this.class || '');
+                c.push(self.class || '');
 
                 return c;
             }
@@ -67,41 +68,49 @@
 
         methods: {
             open(){
-                if(this.visibility) return false;
+                var self = this;
 
-                this.visibility = true;
-                this.$nextTick(function(){
-                    this.$emit('open');
+                if(self.visibility) return false;
+
+                self.visibility = true;
+                self.$nextTick(function(){
+                    self.$emit('open');
                 });
             },
 
             close(){
-                if(!this.visibility) return false;
+                var self = this;
 
-                this.visibility = false;
-                this.$nextTick(function(){
-                    this.$emit('close');
+                if(!self.visibility) return false;
+
+                self.visibility = false;
+                self.$nextTick(function(){
+                    self.$emit('close');
                 });
             },
 
             destroy(fx = this.fx){
-                if(this.destroyed) return;
+                var self = this;
 
-                this.close();
+                if(self.destroyed) return;
+
+                self.close();
 
                 if(fx){
-                    Event.on(this.$el, 'transitionend webkitTransitionEnd', () => {
-                        this._destroy();
+                    Event.on(self.$el, 'transitionend webkitTransitionEnd', () => {
+                        self._destroy();
                     })
                 }else{
-                    this._destroy();
+                    self._destroy();
                 }
             },
 
             _destroy(){
-                this.$el.parentNode.removeChild(this.$el);
-                this.$emit('destroy');
-                this.destroyed = true;
+                var self = this;
+                
+                self.$el.parentNode.removeChild(self.$el);
+                self.$emit('destroy');
+                self.destroyed = true;
             }
         }
     }

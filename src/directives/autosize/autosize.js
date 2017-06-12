@@ -2,46 +2,53 @@ import {Event, Dom, Util} from '../../helper';
 
 class AutoSize{
     constructor(element, options = {}){
+        var self = this;
+
         if(element.style.height){
-            this.height = element.style.height;
+            self.height = element.style.height;
         }
 
-        element.$autosize = this;
-        this.element = element;
-        this.instance = options.instance;
-        this.fill = options.fill;
-        this.resize();
-        this.initEvent();
+        element.$autosize = self;
+        self.element = element;
+        self.instance = options.instance;
+        self.fill = options.fill;
+        self.resize();
+        self.initEvent();
     }
 
     initEvent(){
         Event.on(window, 'resize', () => {
             this.resize();
         });
+
         this.observer();
     }
 
     observer(){
-        this.mutation = Util.observer(this.instance.$root.$el, {
+        var self = this;
+
+        self.mutation = Util.observer(self.instance.$root.$el, {
             attributes: true,
             subtree: true
         }, (mutations) => {
             var change = mutations.some((mutation) => {
-                return mutation.attributeName == 'style' && Dom.contains(mutation.target, this.element);
+                return mutation.attributeName == 'style' && Dom.contains(mutation.target, self.element);
             });
 
             if(change){
-                this.unobserver();
-                this.resize();
-                this.observer();
+                self.unobserver();
+                self.resize();
+                self.observer();
             }
         });
     }
 
     unobserver(){
-        if(this.mutation){
-            this.mutation.disconnect();
-            this.mutation = null;
+        var self = this;
+
+        if(self.mutation){
+            self.mutation.disconnect();
+            self.mutation = null;
         }
     }
 
@@ -50,7 +57,7 @@ class AutoSize{
 
         if(self.height || self.destroyed) return;
 
-        var element = this.element;
+        var element = self.element;
         var parent = element.parentNode;
         var height, otherHeight = 0, selfTop = Dom.offset(element).top;
 

@@ -18,6 +18,7 @@
         text-decoration: none;
         -webkit-tap-highlight-color: transparent;
         outline: none;
+        margin: auto;
     }
 
     .vmui-button-main:active{
@@ -28,6 +29,10 @@
         background: #fff;
         color: rgb(249, 104, 84);
         border: 1px solid rgb(249, 104, 84);
+
+        &:active{
+            background:#FFA07A;
+        }
     }
 
     .vmui-button-success{
@@ -109,23 +114,21 @@
             }
         },
 
-        data(){
-            return {
-                className: this.class
+        computed: {
+            className(){
+                var self = this;
+
+                if(self.class) return self.class;
+
+                var {border, square, small} = self;
+                var className = ['vmui-button', 'vmui-button-' + self.type];
+
+                small && className.push('vmui-button-small');
+                border && className.push('vmui-button-border');
+                square && className.push('vmui-button-square');
+
+                return className;
             }
-        },
-
-        mounted(){
-            if(this.class) return ;
-
-            var {border, square, small} = this;
-            var className = ['vmui-button', 'vmui-button-' + this.type];
-
-            small && className.push('vmui-button-small');
-            border && className.push('vmui-button-border');
-            square && className.push('vmui-button-square');
-
-            this.className = className.join(' ');
         }
     }
 </script>
