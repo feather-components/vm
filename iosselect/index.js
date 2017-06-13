@@ -8,7 +8,7 @@ export default {
 		console.log(el, binding, 92929)
 		el.addEventListener('click', () => {
 			console.log(1312313)
-			let re = new SelectRender()
+			let re = new SelectRender(el, binding)
 			re.show()
 		})
 	}

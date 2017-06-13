@@ -3,12 +3,13 @@
         <overlay :visible="true" :class="className" position="bottom">
             <div class="vmui-select-body">
                 <header class="vmui-select-header">
-                    <p class="cancel">取消</p>
-                    <p class="sure">确定</p>
+                    <p class="cancel" @click="_hideSelect">取消</p>
+                    <p class="sure" @click="_showVal">确定</p>
                 </header>
                 <ul class="vmui-list">
                     <li v-for="(item, index) in selectList" :style="{width:width+'%'}">
-                        <scroll @scroll:end="scrollStop($event,index)" @drag:end="scrollStop($event,index)" :ref="'scroll' + index">
+                        <scroll @scroll:end="_scrollStop($event,index)"  @draging="_scrollStop($event,index)"
+                                @drag:end="_scrollStop($event,index)" @drag:normal="_scrolling" :ref="'scroll' + index">
                             <ul class='vmui-select-label-list'>
                                 <li v-for="(it, i) in item ">
                                     {{it.label}}
@@ -59,9 +60,10 @@
     }
     .vmui-select-label-list li{
         line-height:35px;
+        height:35px;
         text-align: center;
         font-size: 13px;
-        /*opacity: 0.1;*/
+        opacity: 0.3;
     }
 
 </style>
@@ -69,56 +71,29 @@
     import Scroll from '../scroll'
     import Overlay from '../overlay'
     const LINEHEIGHT = 35
+
+
     export default {
         mixins: [Overlay],
         props: {
             selectList: {
                 type: Array,
                 default() {
-                    return  [
-                        [
-                            {label: '1', value: 1},
-                            {label: '2', value: 2},
-                            {label: '3', value: 3},
-                            {label: '4', value: 4},
-                            {label: '5', value: 5},
-                            {label: '6', value: 6},
-                            {label: '7', value: 7},
-                            {label: '8', value: 8},
-                            {label: '9', value: 8},
-                            {label: '10', value: 10},
-                            {label: '11', value: 11},
-                            {label: '11', value: 11},
-                            {label: '11', value: 11},
-                            {label: '11', value: 11},
-                            {label: '11', value: 11},
-                            {label: '11', value: 11},
-                            {label: '11', value: 11},
-                            {label: '11', value: 11},
-                            {label: '11', value: 11},
-                            {label: '11', value: 11},
-                            {label: '11', value: 11},
-                            {label: '11', value: 11},
-                            {label: '11', value: 11},
-                            {label: '11', value: 11},
-                            {label: '11', value: 11},
-                            {label: '11', value: 11},
-                        ],
-                        [
-                            {label: '1', value: 1},
-                            {label: '2', value: 2},
-                            {label: '3', value: 3},
-                            {label: '4', value: 4},
-                            {label: '5', value: 5},
-                            {label: '6', value: 6},
-                            {label: '7', value: 7},
-                            {label: '8', value: 8},
-                            {label: '9', value: 8},
-                            {label: '10', value: 10},
-                            {label: '11', value: 11},
-                        ]
-                    ]
+                    return  []
                 }
+            },
+
+            bindEl: {
+                type: null
+            },
+
+            connect: {
+                type: String,
+                default: '/'
+            },
+
+            onSure: {
+                type: Function
             }
         },
 
@@ -129,8 +104,9 @@
 
         data () {
             return {
-                activeIndex: 0,
-                scrollIndex: 0
+                activeIndex: [],
+                scrollIndex: 0,
+                val: []
             }
         },
 
@@ -141,27 +117,108 @@
 
             width () {
                 return 100 / this.selectList.length
-            }
+            },
+
+//            val() {
+//                let [va, l] = [[], this.activeIndex.length]
+//                for (let i = 0; i < l; i++) {
+//                    va[i] = this.selectList[i][this.activeIndex]
+//                }
+//                console.log(va, 9898)
+////                va[this.scrollIndex] = this.selectList[this.scrollIndex][this.activeIndex]
+//                return va
+//            }
+        },
+
+        destroyed() {
+            document.body.removeChild(document.querySelector('[vmui-select]'))
         },
 
         mounted() {
             document.getElementsByTagName('body')[0].style.overflow = 'hidden'
+            let l = this.selectList.length
+            for (let i = 0; i < l; i++) {
+                this.activeIndex.push(2)
+            }
+
+            this._getVal()
+            setInterval(() => {
+                this._renderList()
+            }, 50)
+
         },
 
         methods: {
-            scrollStop(pos, index) {
-                console.log(pos)
+            _renderList() {
+                this.activeIndex.forEach((v1, k1) => {
+                    let $list = this.$refs['scroll' + k1]
+                    let $lis = $list[0].$el.querySelectorAll('li')
+
+                    $lis.forEach((v, k) => {
+                        if(v1 === k) {
+                            v.style.opacity = 1
+                        } else if(Math.abs(v1 - k) === 1){
+                            v.style.opacity = 0.6
+                        } else {
+                            v.style.opacity = 0.3
+                        }
+                    })
+                })
+            },
+
+            _getVal(){
+                let l = this.activeIndex.length
+                for (let i = 0; i < l; i++) {
+                    this.val[i] = this.selectList[i][this.activeIndex[i]]
+                }
+            },
+
+            _scrolling() {
+//                this._renderList()
+            },
+
+            _scrollStop(pos, index) {
                 let topi
+
                 if (Math.abs(pos) % LINEHEIGHT  > LINEHEIGHT / 2) {
                     topi = Math.ceil( Math.abs(pos) / LINEHEIGHT )
                 } else {
                     topi = Math.floor( Math.abs(pos) / LINEHEIGHT )
                 }
-                this.activeIndex = topi + 3
-                console.log(this.$refs['scroll' + index],index,this.activeIndex,topi * LINEHEIGHT, 9992)
+
+                this.activeIndex[index] = topi + 2
                 this.$refs['scroll' + index][0].scrollTo('-' + topi * LINEHEIGHT)
-//                Scroll.scrollTo(topi * LINEHEIGHT)
+
+                this._getVal()
+            },
+
+
+            _hideSelect() {
+                this.$destroy()
+            },
+
+            _showVal() {
+
+                let val = []
+
+                this.val.forEach((v, k) => {
+                    val.push(v.label)
+                })
+
+                if (this.bindEl.tagName === 'INPUT' ) {
+                    if (['number','text'].indexOf(this.bindEl.getAttribute('type')) > -1) {
+                        this.bindEl.setAttribute('value', val.join(this.connect))
+                    } else {
+                        return
+                    }
+                } else {
+                    this.bindEl.innerHTML = val.join(this.connect)
+                }
+
+                this.onSure(this.val)
+                this.$destroy()
             }
+
         }
     }
 </script>
