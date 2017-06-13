@@ -75,6 +75,8 @@ import Toast from '../toast';
 import {Multiable} from './abstract';
 
 export default{
+    name: 'file',
+
     mixins: [vBox, Multiable],
 
     props: {

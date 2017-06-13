@@ -13,10 +13,12 @@ import {Search, Searchbar} from './components/search';
 import Uploader from './components/uploader';
 import {Grid, GridItem} from './components/grid';
 import {Box, Radios, Checkboxes, TextInput, Select, File, Counter} from './components/form';
+import {Single} from './components/filter';
 
 export {
     Search,
     Searchbar,
+    Searchbar as SearchBar,
     Scroll,
     Page,
     Topbar,
@@ -37,7 +39,8 @@ export {
     TextInput,
     Select,
     File,
-    Counter
+    Counter,
+    Single as SingleFilter
 };
 
 require('./rem');

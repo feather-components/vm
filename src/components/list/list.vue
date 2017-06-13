@@ -2,7 +2,6 @@
     <scroll 
         ref="scroll" 
         :scrollbars="true"
-        :fill-height="fillHeight" 
         class="vmui-list"
         @drag:limit="onDragLimit"
         @drag:normal="onDragNormal"
@@ -101,11 +100,6 @@
         name: 'list',
 
         props: {
-            fillHeight: {
-                type: Boolean,
-                default: true
-            },
-
             autoRefresh: {
                 type: Boolean,
                 default: true

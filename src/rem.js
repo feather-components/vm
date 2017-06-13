@@ -1,8 +1,3 @@
-/**
- * Created by ex-pengzhiliang001 on 2017-03-29.
- */
-
-
 function adapt(designWidth, rem2px){
     var d = window.document.createElement('div');
     d.style.width = '1rem';

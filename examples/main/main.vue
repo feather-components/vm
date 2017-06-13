@@ -66,7 +66,8 @@
                     'components/uploader',
                     'components/popover',
                     'components/grid',
-                    'components/form'
+                    'components/form',
+                    'components/filter'
                 ]
             }
         }

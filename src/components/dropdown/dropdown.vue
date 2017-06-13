@@ -41,7 +41,7 @@
 
     .vmui-dropdown-inner{
         border-top: 1px solid #eee;
-        border-bottom: 1px solid #eee;
+        max-height: 3.5rem;
     }
 </style>
 

@@ -31,7 +31,7 @@
         border: 1px solid rgb(249, 104, 84);
 
         &:active{
-            background:#FFA07A;
+            background: #FFA07A;
         }
     }
 

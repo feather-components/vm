@@ -2,19 +2,19 @@
   "name": "vmui",
   "version": "0.2.0",
   "description": "基于vue2的ui组件库",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "ajax": "0.0.4",
     "component-ajax": "github:forbeslindesay/ajax",
-    "vue": "^2.3.3",
-    "webpack": "^2.6.1"
+    "type-of": "ForbesLindesay/type-of",
+    "vue": "^2.3.3"
   },
   "devDependencies": {
+    "webpack": "^2.6.1",
     "autoprefixer": "^7.1.1",
     "autoprefixer-loader": "^3.2.0",
     "babel-core": "^6.24.1",

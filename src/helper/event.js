@@ -1,5 +1,5 @@
 export default{
-    on(element, event, callback){
+    on(element, event, callback, options){
         event.split(' ').forEach((event) => {
             element.addEventListener(event, callback);
         });

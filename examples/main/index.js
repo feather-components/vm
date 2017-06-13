@@ -17,6 +17,7 @@ import Uploader from './components/uploader.vue';
 import Popover from './components/popover.vue';
 import Grid from './components/grid.vue';
 import Form from './components/form.vue';
+import Filter from './components/filter.vue';
 
 const router = new VueRouter({
     routes: [
@@ -28,6 +29,11 @@ const router = new VueRouter({
         {
             path: '/components/uploader',
             component: Uploader
+        },
+
+        {
+            path: '/components/filter',
+            component: Filter
         },
 
         {

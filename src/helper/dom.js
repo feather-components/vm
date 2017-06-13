@@ -57,13 +57,13 @@ export default{
                 css3name = Util.l2camel('-webkit-' + name);
             }
 
-            name = Util.l2camel(name);
+            var property = Util.l2camel(name);
 
             if(typeof value == 'undefined'){
-                return element.style[css3name || name] || window.getComputedStyle(element).getPropertyValue(css3name || name);
+                return element.style[css3name || property] || window.getComputedStyle(element).getPropertyValue(css3name || name);
             }else{
-                value += (typeof value == 'number' && !/^(?:opacity|zIndex)$/.test(name) ? 'px' : '');
-                element.style[name] = value;
+                value += (typeof value == 'number' && !/^(?:opacity|zIndex)$/.test(property) ? 'px' : '');
+                element.style[property] = value;
 
                 if(css3name){
                     element.style[css3name] = value; 

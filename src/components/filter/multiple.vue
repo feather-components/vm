@@ -1,7 +1,7 @@
 <template>
-<scroll ref="scroll" class="vmui-filter vmui-filter-multiple" :fill-height="fillHeight">
-    <a href="javascript:" v-for="(item, key) of data" v-html="itemFormatter(item)" @click="click(item)" :class="getItemClass(item)"></a>
-</scroll>
+    <scroll ref="scroll" class="vmui-filter vmui-filter-multiple" :fill-height="fillHeight">
+        <a href="javascript:" v-for="(item, key) of data" v-html="itemFormatter(item)" @click="click(item)" :class="getItemClass(item)"></a>
+    </scroll>
 </template>
 
 <style>

@@ -1,18 +1,16 @@
-const path = require('path');
+var path = require('path');
 var webpack = require('webpack');
-var HtmlWepackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-    watch: true,
-
     entry: {
-        vmui: './src',
-        vue: 'vue'
+        lib: ['vue'],
+        vmui: './src'
     },
 
     resolve: {
         alias: {
-            vue: 'vue/dist/vue.js'
+            type: 'type-of',
+            ajax: 'component-ajax'
         },
         extensions: ['.js', '.vue']
     },
@@ -28,21 +26,32 @@ module.exports = {
         rules: [
             {
                 test: /\.vue$/,
-                use: 'vue-loader'
+                loader: 'vue-loader',
+                options: {
+                    postcss: [require('autoprefixer')()]
+                }
+            },
+            
+            {
+                test: /\.(png|jpg|gif)$/,
+                loader: 'url-loader'
+            },
+
+            {
+                test: /\.css$/,
+                loader: 'style-loader!css-loader'
+            },
+
+            {
+                test: /\.(woff2?|eot|ttf|otf|svg)(\?.*)?$/,
+                loader: 'url-loader'
             }
         ]
     },
 
-    vue: {
-        loaders: {
-            css: 'style!css!autoprefixer'
-        }
-    },
-
     plugins: [
         new webpack.optimize.CommonsChunkPlugin({
-            name: ['vmui', 'vue'],
-        }),
-        new HtmlWepackPlugin()
+            name: ['vmui', 'lib'],
+        })
     ]
 };

@@ -50,6 +50,8 @@ import vBox from "./box";
 import {Single} from './abstract';
 
 export default{
+    name: 'select',
+
     mixins: [vBox, Single],
 
     props: {

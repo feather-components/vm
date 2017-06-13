@@ -80,7 +80,9 @@
         Button,
         Scroll,
         Toast,
-        Counter
+        Counter,
+        SearchBar,
+        Searchbar
     } from 'vmui';
 
     export default{

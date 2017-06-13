@@ -59,28 +59,38 @@ class AutoSize{
 
         var element = self.element;
         var parent = element.parentNode;
-        var height, otherHeight = 0, selfTop = Dom.offset(element).top;
 
         element.style.height = 'auto';
 
+        var parentHeight;
+        var parentMaxHeight = Dom.css(parent, 'max-height');
+
         if(parent.style.height){
-            height = Dom.height(parent);
+            parentHeight = Dom.height(parent);
         }else{
-            height = Dom.height(document.documentElement) - Dom.offset(parent).top;
+            parentHeight = Dom.height(document.documentElement) - Dom.offset(parent).top;
         }
 
-        if(Dom.css(parent, 'max-height')){
-            height = Math.min(height, parseFloat(parent.style.maxHeight));
-        }
+        var otherHeight = 0, selfTop = Dom.offset(element).top;
 
-        if(!this.fill){
-            height = Math.min(Dom.height(element), height);
+        Dom.siblings(element).forEach((child) => {
+            if(Dom.offset(child).top != selfTop){
+                otherHeight += Dom.height(child);
+            }
+        });
+
+        otherHeight += parseFloat(Dom.css(element, 'margin-bottom') || 0);
+
+        var height = Dom.height(element);
+
+        if(parentMaxHeight != 'none'){
+            parentHeight = Math.min(parentHeight, parseFloat(parentMaxHeight));
+            height = Math.min(parentHeight - otherHeight, height);
         }else{
-            Dom.siblings(element).forEach((child) => Dom.offset(child).top != selfTop && (otherHeight += Dom.height(child)));
-            height -= otherHeight;
+            height = parentHeight - otherHeight;
         }
 
-        element.style.height = height - parseInt(Dom.css(element, 'margin-bottom') || 0) + 'px';
+        element.style.height = height + 'px';
         Event.trigger(element, 'autosize');
     }
 

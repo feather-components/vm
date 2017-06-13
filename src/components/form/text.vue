@@ -94,7 +94,7 @@
     import {Single} from './abstract';
 
     export default{
-        name: 'text-input',
+        name: 'textinput',
 
         mixins: [vBox, Single],
 
