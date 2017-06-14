@@ -11,7 +11,6 @@ class AutoSize{
         element.$autosize = self;
         self.element = element;
         self.instance = options.instance;
-        self.fill = options.fill;
         self.resize();
         self.initEvent();
     }
@@ -102,9 +101,10 @@ class AutoSize{
 
 export default{
     bind(element, data, VNode){
+        if(!data.value.fill) return;
+
         setTimeout(() => {
             new AutoSize(element, {
-                fill: data.value.fill,
                 instance: VNode.context
             });
         });

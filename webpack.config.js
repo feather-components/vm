@@ -3,7 +3,7 @@ var webpack = require('webpack');
 
 module.exports = {
     entry: {
-        lib: ['vue'],
+        vue: ['vue'],
         vmui: './src'
     },
 
@@ -40,18 +40,13 @@ module.exports = {
             {
                 test: /\.css$/,
                 loader: 'style-loader!css-loader'
-            },
-
-            {
-                test: /\.(woff2?|eot|ttf|otf|svg)(\?.*)?$/,
-                loader: 'url-loader'
             }
         ]
     },
 
     plugins: [
         new webpack.optimize.CommonsChunkPlugin({
-            name: ['vmui', 'lib'],
+            name: ['vmui', 'vue'],
         })
     ]
 };
