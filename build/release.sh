@@ -10,6 +10,7 @@ then
 fi
 
 cat package.json > bower.json
+webpack
 git add -A 
 git commit -m "publish ${VERSION}"
 git tag -m -a "${VERSION}"
