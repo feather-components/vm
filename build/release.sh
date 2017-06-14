@@ -18,3 +18,4 @@ echo "complete!"
 git add -A 
 git commit -m "publish ${VERSION}"
 git tag -m -a "${VERSION}"
+git push origin --force $VERSION:$VERSION
