@@ -7,6 +7,8 @@ read VERSION
 if [[ "$VERSION" != "" ]]
 then
     sed -i "s/\"version\".*/\"version\": \"${VERSION}\",/" package.json
+else
+    VERSION=$currentVersion
 fi
 
 cat package.json > bower.json
