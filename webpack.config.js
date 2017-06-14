@@ -45,9 +45,9 @@ module.exports = {
     },
 
     plugins: [
-        new webpack.ProvidePlugin({
-            Vue: 'vue'
-        }),
+        // new webpack.ProvidePlugin({
+        //     Vue: 'vue'
+        // }),
 
         new webpack.optimize.CommonsChunkPlugin({
             name: ['vmui', 'vue'],
