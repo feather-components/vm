@@ -4,7 +4,7 @@ var webpack = require('webpack');
 module.exports = {
     entry: {
         vue: ['vue'],
-        vmui: './src'
+        vmui: './src/index'
     },
 
     resolve: {
