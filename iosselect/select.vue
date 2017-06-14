@@ -9,7 +9,7 @@
                 <ul class="vmui-list">
                     <li v-for="(item, index) in selectList" :style="{width:width+'%'}">
                         <scroll @scroll:end="_scrollStop($event,index)"  @draging="_scrollStop($event,index)"
-                                @drag:end="_scrollStop($event,index)" @drag:normal="_scrolling" :ref="'scroll' + index">
+                                @drag:end="_scrollStop($event,index)" :ref="'scroll' + index">
                             <ul class='vmui-select-label-list'>
                                 <li v-for="(it, i) in item ">
                                     {{it.label}}
@@ -94,6 +94,10 @@
 
             onSure: {
                 type: Function
+            },
+
+            loopEvent: {
+                type: Function
             }
         },
 
@@ -142,9 +146,8 @@
             }
 
             this._getVal()
-            setInterval(() => {
-                this._renderList()
-            }, 50)
+            this._renderList()
+            this._renderListVal()
 
         },
 
@@ -173,10 +176,6 @@
                 }
             },
 
-            _scrolling() {
-//                this._renderList()
-            },
-
             _scrollStop(pos, index) {
                 let topi
 
@@ -187,9 +186,10 @@
                 }
 
                 this.activeIndex[index] = topi + 2
-                this.$refs['scroll' + index][0].scrollTo('-' + topi * LINEHEIGHT)
+//                this.$refs['scroll' + index][0].scrollTo('-' + topi * LINEHEIGHT)
 
                 this._getVal()
+                this._renderList()
             },
 
 
@@ -217,6 +217,24 @@
 
                 this.onSure(this.val)
                 this.$destroy()
+            },
+
+            _renderListVal() {
+                // if (this._options.isLoopEvent) {
+                // setInterval(() => {
+                // 	console.log(this._options.selectList)
+                // }, 50)
+                // }
+                if (this.loopEvent){
+                    let count = 20
+                    let t = setInterval(() => {
+//                        this.$set(this.selectList,1, this.loopEvent(count))
+                         this.selectList[1] = this.loopEvent(count)
+                        this.$forceUpdate()
+                        count++
+//                        console.log(this.selectList, 64646)
+                    }, 5000)
+                }
             }
 
         }

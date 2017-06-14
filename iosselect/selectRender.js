@@ -12,16 +12,19 @@ export default class SelectRender {
 	}
 
 	show () {
-		console.log(this._options.selectList, 64646)
+		// if (this._options.loop) {
+		// 	setInterval(() => {
+		//
+		// 	}, 50)
+		// }
+
+
 		this._options.selectList = this._options.selectList.map((v, k) => {
-			console.log(v!='', 812312)
-			// return v != ''
 			v = v.filter((v1, k) => {
-				return v1 != ''
+				return Object.keys(v1).length != 0
 			})
 			return v
 		})
-		console.log(this._options.selectList, 1111)
 
 		let handleSelectList = () => {
 			this._options.selectList.forEach((v, k) => {
@@ -32,27 +35,29 @@ export default class SelectRender {
 
 		handleSelectList()
 
-		console.log(this._options.selectList, 88888)
-
 		if (!document.querySelector('[vmui-select]')) {
 			this.createElement('vmui-select')
 		}
 		let Select = Vue.extend(select)
-		new Select({
+		this._vm = new Select({
 			propsData:{
 				bindEl: this.el,
 				selectList: this._options.selectList || [],
 				onSure: this._options.onSure || () => {},
-				connect: this._options.connect || '/'
+				connect: this._options.connect || '/',
+				loopEvent: this._options.loopEvent || () => {}
 			}
 		}).$mount('[vmui-select]')
 
-		handleSelectList = null
+		// handleSelectList = null
 
+		return this
 	}
 
 	hide () {
 		this._options = null
+		console.log(this._options, 444)
+		clearInterval(this._options.interVal)
 		this._vm.$destroy()
 	}
 
@@ -61,6 +66,8 @@ export default class SelectRender {
 		$d.setAttribute(attr, '')
 		document.body.appendChild($d);
 	}
+
+
 
 
 }
