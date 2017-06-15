@@ -7,33 +7,27 @@ import select from './select'
 export default class SelectRender {
 	constructor(el, binding) {
 		this._vm = null
-		this.el = el
+		this._el = el
 		this._options = binding.value
 	}
 
 	show () {
-		// if (this._options.loop) {
-		// 	setInterval(() => {
+
+		// this._options.selectList = this._options.selectList.map((v, k) => {
+		// 	v = v.filter((v1, k) => {
+		// 		return Object.keys(v1).length != 0
+		// 	})
+		// 	return v
+		// })
 		//
-		// 	}, 50)
+		// let handleSelectList = () => {
+		// 	this._options.selectList.forEach((v, k) => {
+		// 		this._options.selectList[k].unshift({}, {})
+		// 		this._options.selectList[k].push({}, {})
+		// 	})
 		// }
 
-
-		this._options.selectList = this._options.selectList.map((v, k) => {
-			v = v.filter((v1, k) => {
-				return Object.keys(v1).length != 0
-			})
-			return v
-		})
-
-		let handleSelectList = () => {
-			this._options.selectList.forEach((v, k) => {
-				this._options.selectList[k].unshift({}, {})
-				this._options.selectList[k].push({}, {})
-			})
-		}
-
-		handleSelectList()
+		// handleSelectList()
 
 		if (!document.querySelector('[vmui-select]')) {
 			this.createElement('vmui-select')
@@ -41,7 +35,7 @@ export default class SelectRender {
 		let Select = Vue.extend(select)
 		this._vm = new Select({
 			propsData:{
-				bindEl: this.el,
+				bindEl: this._el,
 				selectList: this._options.selectList || [],
 				onSure: this._options.onSure || () => {},
 				connect: this._options.connect || '/',
@@ -55,10 +49,9 @@ export default class SelectRender {
 	}
 
 	hide () {
-		this._options = null
-		console.log(this._options, 444)
 		clearInterval(this._options.interVal)
 		this._vm.$destroy()
+		this.destroy()
 	}
 
 	createElement(attr, tag) {
@@ -67,7 +60,9 @@ export default class SelectRender {
 		document.body.appendChild($d);
 	}
 
-
-
-
+	destroy() {
+		this._options = null
+		this._vm  = null
+		this._el = null
+	}
 }

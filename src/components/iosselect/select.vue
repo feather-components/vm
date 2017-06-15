@@ -6,7 +6,7 @@
                     <p class="cancel" @click="_hideSelect">取消</p>
                     <p class="sure" @click="_showVal">确定</p>
                 </header>
-                <ul class="vmui-list">
+                <ul class="vmui-select-list">
                     <li v-for="(item, index) in selectList" :style="{width:width+'%'}">
                         <scroll @scroll:end="_scrollStop($event,index)"  @draging="_scrollStop($event,index)"
                                 @drag:end="_scrollStop($event,index)" :ref="'scroll' + index">
@@ -31,6 +31,14 @@
         height:100%;
         background: rgba(0,0,0,0.5);
         z-index:100
+    }
+    .vmui-select-list{
+        width:100%;
+        height: 175px;
+        overflow: hidden;
+    }
+    .vmui-select-list > li{
+        float: left;
     }
     .vmui-select{
         width:100%;
@@ -138,6 +146,10 @@
             document.body.removeChild(document.querySelector('[vmui-select]'))
         },
 
+        beforeMount() {
+            this._addNullForList()
+        },
+
         mounted() {
             document.getElementsByTagName('body')[0].style.overflow = 'hidden'
             let l = this.selectList.length
@@ -148,7 +160,6 @@
             this._getVal()
             this._renderList()
             this._renderListVal()
-
         },
 
         methods: {
@@ -166,6 +177,24 @@
                             v.style.opacity = 0.3
                         }
                     })
+                })
+            },
+
+            _removeNullForList() {
+                this.selectList = this.selectList.map((v, k) => {
+                    v = v.filter((v1, k) => {
+                        return Object.keys(v1).length != 0
+                    })
+                    return v
+                })
+            },
+
+            _addNullForList() {
+                this._removeNullForList()
+
+                this.selectList.forEach((v, k) => {
+                    this.selectList[k].unshift({}, {})
+                    this.selectList[k].push({}, {})
                 })
             },
 
@@ -220,20 +249,13 @@
             },
 
             _renderListVal() {
-                // if (this._options.isLoopEvent) {
-                // setInterval(() => {
-                // 	console.log(this._options.selectList)
-                // }, 50)
-                // }
                 if (this.loopEvent){
                     let count = 20
                     let t = setInterval(() => {
-//                        this.$set(this.selectList,1, this.loopEvent(count))
-                         this.selectList[1] = this.loopEvent(count)
-                        this.$forceUpdate()
+                        this.$set(this.selectList,1, this.loopEvent(count))
+                        this._addNullForList()
                         count++
-//                        console.log(this.selectList, 64646)
-                    }, 5000)
+                    }, 50)
                 }
             }
 
