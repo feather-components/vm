@@ -8,7 +8,7 @@
                 </header>
                 <ul class="vmui-select-list">
                     <li v-for="(item, index) in selectList" :style="{width:width+'%'}">
-                        <scroll @scroll:end="_scrollStop($event,index)"  @draging="_scrollStop($event,index)"
+                        <scroll @scroll:end="_scrollStop($event,index)"  @draging="_scrolling($event,index)"
                                 @drag:end="_scrollStop($event,index)" :ref="'scroll' + index">
                             <ul class='vmui-select-label-list'>
                                 <li v-for="(it, i) in item ">
@@ -104,8 +104,13 @@
                 type: Function
             },
 
-            loopEvent: {
-                type: Function
+            connectEvents: {
+                type: Array
+            },
+
+            autoFill: {
+                type: Boolean,
+                default: true
             }
         },
 
@@ -117,7 +122,7 @@
         data () {
             return {
                 activeIndex: [],
-                scrollIndex: 0,
+//                scrollIndex: 0,
                 val: []
             }
         },
@@ -158,8 +163,9 @@
             }
 
             this._getVal()
-            this._renderList()
             this._renderListVal()
+            this._renderList()
+
         },
 
         methods: {
@@ -205,7 +211,7 @@
                 }
             },
 
-            _scrollStop(pos, index) {
+            _scrolling(pos, index) {
                 let topi
 
                 if (Math.abs(pos) % LINEHEIGHT  > LINEHEIGHT / 2) {
@@ -215,10 +221,15 @@
                 }
 
                 this.activeIndex[index] = topi + 2
-//                this.$refs['scroll' + index][0].scrollTo('-' + topi * LINEHEIGHT)
+                this.$refs['scroll' + index][0].scrollTo('-' + topi * LINEHEIGHT)
 
                 this._getVal()
                 this._renderList()
+            },
+
+            _scrollStop(pos, index) {
+                this._scrolling(pos, index)
+                this._renderListVal(index)
             },
 
 
@@ -234,28 +245,38 @@
                     val.push(v.label)
                 })
 
-                if (this.bindEl.tagName === 'INPUT' ) {
-                    if (['number','text'].indexOf(this.bindEl.getAttribute('type')) > -1) {
-                        this.bindEl.setAttribute('value', val.join(this.connect))
+                if (this.autoFill) {
+                    if (this.bindEl.tagName === 'INPUT' ) {
+                        if (['number','text'].indexOf(this.bindEl.getAttribute('type')) > -1) {
+                            this.bindEl.setAttribute('value', val.join(this.connect))
+                        } else {
+                            return
+                        }
                     } else {
-                        return
+                        this.bindEl.innerHTML = val.join(this.connect)
                     }
-                } else {
-                    this.bindEl.innerHTML = val.join(this.connect)
                 }
 
                 this.onSure(this.val)
                 this.$destroy()
             },
 
-            _renderListVal() {
-                if (this.loopEvent){
-                    let count = 20
-                    let t = setInterval(() => {
-                        this.$set(this.selectList,1, this.loopEvent(count))
-                        this._addNullForList()
-                        count++
-                    }, 50)
+            _setList(list, i) {
+                this.$set(this.selectList, i, list)
+                this._addNullForList()
+            },
+
+            _renderListVal(index) {
+                if (this.connectEvents &&　this.connectEvents　instanceof Array){
+                    this.connectEvents.forEach((v, k) => {
+                        if (v.connectPrev == index) {
+                            try {
+                                v.callback(this.val, v.connectPrev, v.connectNext, this._setList)
+                            } catch (e) {
+                                return false
+                            }
+                        } else return
+                    })
                 }
             }
 

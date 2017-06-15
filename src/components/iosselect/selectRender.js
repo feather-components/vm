@@ -13,22 +13,6 @@ export default class SelectRender {
 
 	show () {
 
-		// this._options.selectList = this._options.selectList.map((v, k) => {
-		// 	v = v.filter((v1, k) => {
-		// 		return Object.keys(v1).length != 0
-		// 	})
-		// 	return v
-		// })
-		//
-		// let handleSelectList = () => {
-		// 	this._options.selectList.forEach((v, k) => {
-		// 		this._options.selectList[k].unshift({}, {})
-		// 		this._options.selectList[k].push({}, {})
-		// 	})
-		// }
-
-		// handleSelectList()
-
 		if (!document.querySelector('[vmui-select]')) {
 			this.createElement('vmui-select')
 		}
@@ -39,11 +23,10 @@ export default class SelectRender {
 				selectList: this._options.selectList || [],
 				onSure: this._options.onSure || () => {},
 				connect: this._options.connect || '/',
-				loopEvent: this._options.loopEvent || () => {}
+				connectEvents: this._options.connectEvents || null,
+				autoFill: this._options.autoFill
 			}
 		}).$mount('[vmui-select]')
-
-		// handleSelectList = null
 
 		return this
 	}
