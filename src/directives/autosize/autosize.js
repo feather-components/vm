@@ -9,6 +9,7 @@ class AutoSize{
         }
 
         element.$autosize = self;
+        self.fill = options.fill;
         self.element = element;
         self.instance = options.instance;
         self.initEvent();
@@ -32,15 +33,16 @@ class AutoSize{
             attributes: true,
             subtree: true
         }, (mutations) => {
-
             var change = mutations.some((mutation) => {
-                return mutation.attributeName == 'style' && Dom.contains(mutation.target, self.element);
+                return mutation.attributeName == 'style' && Dom.contains(mutation.target, self.element) && mutation.target !== self.element;
             });
 
             if(change){
                 self.unobserver();
                 self.resize();
-                self.observer();
+                setTimeout(() => {
+                    self.observer();
+                },0)
             }
         });
 
@@ -65,7 +67,6 @@ class AutoSize{
         var self = this;
 
         if(self.height || self.destroyed) return;
-        //return;
 
         var element = self.element;
 
@@ -81,7 +82,7 @@ class AutoSize{
             }
 
             if(Dom.css(parent, 'max-height') != 'none'){
-                maxHeight = Dom.css(parent, 'max-height');
+                maxHeight = Math.min(parseFloat(Dom.height(parent)), parseFloat(Dom.css(parent, 'max-height')));
                 break;
             }
 
@@ -93,9 +94,7 @@ class AutoSize{
 
         maxHeight = parseFloat(maxHeight);
 
-
-
-        if(top + Dom.height(element) > maxHeight){
+        if(top + Dom.height(element) > maxHeight || self.fill){
             var otherHeight = 0;
 
             Dom.siblings(element).forEach((child) => {
@@ -119,7 +118,8 @@ export default{
     bind(element, data, VNode){
         setTimeout(() => {
             new AutoSize(element, {
-                instance: VNode.context
+                instance: VNode.context,
+                fill: data.value.fill
             });
         });
     },

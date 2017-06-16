@@ -1,12 +1,11 @@
 <template>
-    <div class="vmui-filters vmui-filters-lm" v-if="filters.length" v-autosize>
+    <div class="vmui-filters vmui-filters-lm" v-if="filters.length" v-autosize="{fill: true}">
         <single :source="filters[0]" @item:click="click" :item-formatter="getItemFormatter()" ref="left" class="vmui-filter-lml"></single>
         <multiple :source="filters[1]" ref="right" selected-class-name="vmui-filter-tick" :size="perSize" @change="change" :can-select="canSelect" @reject="$emit('reject')"></multiple>
     </div>
 </template>
 
 <style>
-
     .vmui-filters-lm .vmui-filter-item{
         text-align: left;
     }

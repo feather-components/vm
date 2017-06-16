@@ -1,5 +1,5 @@
 <template>
-    <div :class="'vmui-scroll vmui-scroll-' + axis" v-autosize="{fill: fillSize}">
+    <div :class="'vmui-scroll vmui-scroll-' + axis" v-autosize="{fill: false}">
         <div ref="inner" class="vmui-scroll-inner" @drag:start="onDragStart" @draging="onDraging" @drag:end="onDragEnd">
             <div class="vmui-scroll-pulldown" ref="pulldown" v-if="axis == 'y'">
                 <slot name="pulldown"></slot>
