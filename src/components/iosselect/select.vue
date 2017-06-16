@@ -22,59 +22,7 @@
         </overlay>
     </div>
 </template>
-<style>
-    [vmui-select]{
-        position: fixed;
-        left: 0;
-        top:0;
-        width:100%;
-        height:100%;
-        background: rgba(0,0,0,0.5);
-        z-index:100
-    }
-    .vmui-select-list{
-        width:100%;
-        height: 175px;
-        overflow: hidden;
-    }
-    .vmui-select-list > li{
-        float: left;
-    }
-    .vmui-select{
-        width:100%;
-        background: #fff;
-    }
-    .vmui-select-header{
-        width:100%;
-        height:44px;
-    }
-    .vmui-select-header p{
-        display: inline-block;
-        padding:0 15px;
-        line-height: 44px;
-        font-size: 13px;
-    }
-    .vmui-select-header .cancel{
-        float: left;
-        color:#e1e1e1;
-    }
-    .vmui-select-header .sure{
-        float: right;
-        color: #ff8447
-    }
-    .vmui-list > li {
-        float: left;
-        height:175px;
-    }
-    .vmui-select-label-list li{
-        line-height:35px;
-        height:35px;
-        text-align: center;
-        font-size: 13px;
-        opacity: 0.3;
-    }
 
-</style>
 <script>
     import Scroll from '../scroll'
     import Overlay from '../overlay'
@@ -293,3 +241,57 @@
         }
     }
 </script>
+
+<style>
+    [vmui-select]{
+        position: fixed;
+        left: 0;
+        top:0;
+        width:100%;
+        height:100%;
+        background: rgba(0,0,0,0.5);
+        z-index:100
+    }
+    .vmui-select-list{
+        width:100%;
+        height: 175px;
+        overflow: hidden;
+    }
+    .vmui-select-list > li{
+        float: left;
+    }
+    .vmui-select{
+        width:100%;
+        background: #fff;
+    }
+    .vmui-select-header{
+        width:100%;
+        height:44px;
+        box-shadow: 0 2px 3px #ddd;
+    }
+    .vmui-select-header p{
+        display: inline-block;
+        padding:0 15px;
+        line-height: 44px;
+        font-size: 13px;
+    }
+    .vmui-select-header .cancel{
+        float: left;
+        color:#ddd;
+    }
+    .vmui-select-header .sure{
+        float: right;
+        color: #ff8447
+    }
+    .vmui-list > li {
+        float: left;
+        height:175px;
+    }
+    .vmui-select-label-list li{
+        line-height:35px;
+        height:35px;
+        text-align: center;
+        font-size: 13px;
+        opacity: 0.3;
+    }
+</style>

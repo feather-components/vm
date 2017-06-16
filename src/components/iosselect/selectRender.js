@@ -15,7 +15,7 @@ export default class SelectRender {
 		if (!document.querySelector('[vmui-select]')) {
 			this.createElement('vmui-select')
 		}
-		
+
 		let Select = Vue.extend(select)
 		this._vm = new Select({
 			propsData:{
