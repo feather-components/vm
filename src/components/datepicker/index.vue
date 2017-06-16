@@ -15,7 +15,7 @@
 </template>
 
 <script>
-    import iosselect from '../iosselect'
+    import iosselect from '../../directives/iosselect'
 
     let date = new Date();
     const [
