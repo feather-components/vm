@@ -11,7 +11,6 @@
                 <input type="text" class="vmui-datepicker" v-model="dateVal" :style="inputStyle"/>
             </slot>
         </div>
-
     </div>
 </template>
 
