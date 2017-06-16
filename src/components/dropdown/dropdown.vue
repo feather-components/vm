@@ -11,6 +11,11 @@
 </template>
 
 <style lang="less">
+    .vmui-dropdown{
+        border-bottom: 1px solid #eee;
+        flex: 1;
+    }
+
     .vmui-dropdown-label{
         font-size: .14rem;
         text-decoration: none;
@@ -40,7 +45,6 @@
     }
 
     .vmui-dropdown-inner{
-        border-top: 1px solid #eee;
         max-height: 3.5rem;
     }
 </style>

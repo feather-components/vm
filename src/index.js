@@ -13,7 +13,8 @@ import {Search, Searchbar} from './components/search';
 import Uploader from './components/uploader';
 import {Grid, GridItem} from './components/grid';
 import {Box, Radios, Checkboxes, TextInput, Select, File, Counter} from './components/form';
-import {Single} from './components/filter';
+import {Single, Multiple, Link, LinkMultiple} from './components/filter';
+import Autosize from './directives/autosize';
 
 export {
     Search,
@@ -40,7 +41,11 @@ export {
     Select,
     File,
     Counter,
-    Single as SingleFilter
+    Single as SingleFilter,
+    Multiple as MultipleFilter,
+    Link as LinkFilter,
+    LinkMultiple as LinkMultipleFilter,
+    Autosize
 };
 
 require('./rem');
