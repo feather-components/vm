@@ -12,10 +12,10 @@ export default class SelectRender {
 	}
 
 	show () {
-
 		if (!document.querySelector('[vmui-select]')) {
 			this.createElement('vmui-select')
 		}
+		
 		let Select = Vue.extend(select)
 		this._vm = new Select({
 			propsData:{
@@ -24,17 +24,13 @@ export default class SelectRender {
 				onSure: this._options.onSure || () => {},
 				connect: this._options.connect || '/',
 				connectEvents: this._options.connectEvents || null,
-				autoFill: this._options.autoFill
+				autoFill: this._options.autoFill,
+				initValue: this._options.val,
+				hideEvent:  this.destroy
 			}
 		}).$mount('[vmui-select]')
 
 		return this
-	}
-
-	hide () {
-		clearInterval(this._options.interVal)
-		this._vm.$destroy()
-		this.destroy()
 	}
 
 	createElement(attr, tag) {

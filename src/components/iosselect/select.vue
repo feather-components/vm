@@ -111,6 +111,14 @@
             autoFill: {
                 type: Boolean,
                 default: true
+            },
+
+            initValue: {
+                type: Array
+            },
+
+            hideEvent: {
+                type: Function
             }
         },
 
@@ -122,7 +130,6 @@
         data () {
             return {
                 activeIndex: [],
-//                scrollIndex: 0,
                 val: []
             }
         },
@@ -134,21 +141,12 @@
 
             width () {
                 return 100 / this.selectList.length
-            },
-
-//            val() {
-//                let [va, l] = [[], this.activeIndex.length]
-//                for (let i = 0; i < l; i++) {
-//                    va[i] = this.selectList[i][this.activeIndex]
-//                }
-//                console.log(va, 9898)
-////                va[this.scrollIndex] = this.selectList[this.scrollIndex][this.activeIndex]
-//                return va
-//            }
+            }
         },
 
         destroyed() {
             document.body.removeChild(document.querySelector('[vmui-select]'))
+            this.hideEvent()
         },
 
         beforeMount() {
@@ -162,10 +160,7 @@
                 this.activeIndex.push(2)
             }
 
-            this._getVal()
-            this._renderListVal()
-            this._renderList()
-
+            this._initValRender()._getVal()._renderListVal()._renderList()
         },
 
         methods: {
@@ -173,6 +168,7 @@
                 this.activeIndex.forEach((v1, k1) => {
                     let $list = this.$refs['scroll' + k1]
                     let $lis = $list[0].$el.querySelectorAll('li')
+                    $list[0].scrollTo('-' + (v1 - 2) * LINEHEIGHT)
 
                     $lis.forEach((v, k) => {
                         if(v1 === k) {
@@ -184,6 +180,21 @@
                         }
                     })
                 })
+                return this
+            },
+
+            _initValRender() {
+                let _self = this
+
+                _self.initValue.forEach((v, k) => {
+                    _self.selectList[k].forEach((v1, k1) => {
+                        if(v1.value == v) {
+                            _self.activeIndex[k] = k1
+                        }
+                    })
+                })
+
+                return _self
             },
 
             _removeNullForList() {
@@ -209,6 +220,7 @@
                 for (let i = 0; i < l; i++) {
                     this.val[i] = this.selectList[i][this.activeIndex[i]]
                 }
+                return this
             },
 
             _scrolling(pos, index) {
@@ -221,10 +233,8 @@
                 }
 
                 this.activeIndex[index] = topi + 2
-                this.$refs['scroll' + index][0].scrollTo('-' + topi * LINEHEIGHT)
 
-                this._getVal()
-                this._renderList()
+                this._getVal()._renderList()
             },
 
             _scrollStop(pos, index) {
@@ -238,7 +248,6 @@
             },
 
             _showVal() {
-
                 let val = []
 
                 this.val.forEach((v, k) => {
@@ -269,15 +278,16 @@
             _renderListVal(index) {
                 if (this.connectEvents &&　this.connectEvents　instanceof Array){
                     this.connectEvents.forEach((v, k) => {
-                        if (v.connectPrev == index) {
+                        if (v.connectDouble[0] == index) {
                             try {
-                                v.callback(this.val, v.connectPrev, v.connectNext, this._setList)
+                                v.callback(this.val, v.connectDouble, this._setList)
                             } catch (e) {
                                 return false
                             }
-                        } else return
+                        } else return this
                     })
                 }
+                return this
             }
 
         }

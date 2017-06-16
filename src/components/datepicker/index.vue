@@ -3,11 +3,12 @@
         <div  v-iosselect="{
         selectList:dateList,
         onSure:_onSure,
-        connectEvents:[{connectPrev:1,connectNext:2,callback:_setDays}],
-        autoFill: false
+        connectEvents:[{connectDouble:[1,2],callback:_setDays}],
+        autoFill: false,
+        val: selectVal
         }">
             <slot>
-                <input type="text" class="vmui-datepicker" v-model="dateVal"/>
+                <input type="text" class="vmui-datepicker" v-model="dateVal" :style="inputStyle"/>
             </slot>
         </div>
 
@@ -16,11 +17,20 @@
 
 <script>
     import iosselect from '../iosselect'
-    
-    const [CURRENT_YEAR, CURRENT_MONTH] = [new Date().getFullYear(), new Date().getMonth()+1]
+
+    let date = new Date();
+    const [
+        CURRENT_YEAR,
+        CURRENT_MONTH,
+        CURRENT_DAY
+    ] = [
+        date.getFullYear(),
+        date.getMonth()+1,
+        date.getDate()
+    ]
 
     let getYears = () => {
-        let years = [CURRENT_YEAR]
+        let years = [{label: CURRENT_YEAR, value: CURRENT_YEAR}]
 
         for (let i = 1; i <= 30; i++) {
             let [o1, o2] = [{
@@ -72,20 +82,22 @@
     }
 
     const [
-            YEARS,
-            MONTHS,
-            BIG_MONTHS,
-            SMALL_MONTHS,
+        YEARS,
+        MONTHS,
+        BIG_MONTHS,
+        SMALL_MONTHS,
     ] = [
-            getYears(),
-            getMonths(),
-            [1, 3, 5, 7, 8, 10, 12],
-            [4, 6, 9, 11]
+        getYears(),
+        getMonths(),
+        [1, 3, 5, 7, 8, 10, 12],
+        [4, 6, 9, 11]
     ], DAYS =  getDays(CURRENT_YEAR, CURRENT_MONTH)
 
     export default {
         props:{
-
+            inputStyle: {
+                type: Object
+            }
         },
 
         data() {
@@ -95,7 +107,8 @@
                     MONTHS,
                     DAYS
                 ],
-                dateVal: ''
+                dateVal: '',
+                selectVal: [CURRENT_YEAR, CURRENT_MONTH, CURRENT_DAY]
             }
         },
 
@@ -104,9 +117,9 @@
         },
 
         methods: {
-            _setDays(val, prev, next, done) {
+            _setDays(val,connectDouble, done) {
                 let days = getDays(val[0].value, val[1].value)
-                done(days, next)
+                done(days, connectDouble[1])
             },
 
             _onSure (val) {
@@ -124,7 +137,5 @@
 </script>
 
 <style>
-.vmui-datepicker{
-    border:1px solid #000000;
-}
+
 </style>
