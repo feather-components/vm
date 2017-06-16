@@ -139,21 +139,13 @@ Draggable.isOtherDraggable = (target, instance, info) => {
 
     do{
         if($draggable = target.$draggable){
-            if($draggable === instance){
-                continue;
-            }
-
             let axis = $draggable.options.axis;
 
             if(axis !== instance.options.axis){
-                if(axis == 'x'){
-                    return Math.abs(info.x) > Math.abs(info.y);
-                }else{
-                    return Math.abs(info.y) >= Math.abs(info.x);
-                }
+                return axis == 'x' ? Math.abs(info.x) > Math.abs(info.y) : Math.abs(info.y) >= Math.abs(info.x);
             }
 
-            return true;
+            return $draggable !== instance;
         }
     }while(target = target.parentNode);
 

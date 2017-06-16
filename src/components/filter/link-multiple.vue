@@ -1,155 +1,160 @@
 <template>
-<div class="vmui-filters vmui-filters-lm" v-if="filters.length">
-    <single :source="filters[0]" @item:click="click" :item-formatter="getItemFormatter()" ref="left" class="vmui-filter-lml" :fill-height="fillHeight"></single>
-    <multiple :source="filters[1]" ref="right" selected-class-name="vmui-filter-tick" :size="perSize" @change="change" :can-select="canSelect" @reject="$emit('reject')" :fill-height="fillHeight"></multiple>
-</div>
+    <div class="vmui-filters vmui-filters-lm" v-if="filters.length" v-autosize>
+        <single :source="filters[0]" @item:click="click" :item-formatter="getItemFormatter()" ref="left" class="vmui-filter-lml"></single>
+        <multiple :source="filters[1]" ref="right" selected-class-name="vmui-filter-tick" :size="perSize" @change="change" :can-select="canSelect" @reject="$emit('reject')"></multiple>
+    </div>
 </template>
 
 <style>
-.vmui-filters-lm .vmui-filter-item{
-    text-align: left;
-}
 
-.vmui-filters-lm .vmui-filters-ln{
-    float: right;
-}
+    .vmui-filters-lm .vmui-filter-item{
+        text-align: left;
+    }
 
-.vmui-filter-lml{
-    -webkit-box-flex: 2 !important;
-}
+    .vmui-filters-lm .vmui-filters-ln{
+        float: right;
+    }
+
+    .vmui-filter-lml{
+        -webkit-box-flex: 2 !important;
+    }
 </style>
 
 <script>
-import Single from './single';
-import Multiple from './multiple';
-import Link from './link';
+    import Single from './single';
+    import Multiple from './multiple';
+    import Link from './link';
+    import {Util} from '../../helper';
+    import Autosize from '../../directives/autosize';
 
-import _ from '../helper';
+    export default{
+        mixins: [Link],
 
-export default{
-    mixins: [Link],
-
-    components: {
-        Single,
-        Multiple
-    },
-
-    props: {
-        size: {
-            type: Number,
-            default: -1
+        components: {
+            Single,
+            Multiple
         },
 
-        perSize: {
-            type: Number,
-            default: -1
+        directives: {
+            Autosize
         },
 
-        onlyOneParent: {
-            type: Boolean,
-            default: false
-        },
+        props: {
+            size: {
+                type: Number,
+                default: -1
+            },
 
-        defaultValue: {
-            type: Object,
-            default(){
-                return {}
+            perSize: {
+                type: Number,
+                default: -1
+            },
+
+            onlyOneParent: {
+                type: Boolean,
+                default: false
+            },
+
+            defaultValue: {
+                type: Object,
+                default(){
+                    return {}
+                }
             }
-        }
-    },
-
-    data(){
-        return {
-            infinite: this.size < 0,
-            value: this.defaultValue,
-            parent: null,
-            count: 0,
-            labels: {}
-        };
-    },
-
-    computed: {
-        perInfinite(){
-            return this.perSize < 0;
         },
 
-        perMaxSize(){
-            return this.perInfinite ? 10000000 : this.perSize;
+        data(){
+            return {
+                infinite: this.size < 0,
+                value: this.defaultValue,
+                parent: null,
+                count: 0,
+                labels: {}
+            };
         },
 
-        maxSize(){
-            return this.infinite ? 10000000 : this.size;
-        }
-    },
+        computed: {
+            perInfinite(){
+                return this.perSize < 0;
+            },
 
-    methods: {
-        initEvent(){
-            var self = this;
+            perMaxSize(){
+                return this.perInfinite ? 10000000 : this.perSize;
+            },
 
-            self.$on('filter:render', (source, level) => {
-                if(level == 1){
-                    self.$refs.right.setValue(self.value[self.parent.value] || []);
+            maxSize(){
+                return this.infinite ? 10000000 : this.size;
+            }
+        },
+
+        methods: {
+            initEvent(){
+                var self = this;
+
+                self.$on('filter:render', (source, level) => {
+                    if(level == 1){
+                        self.$refs.right.setValue(self.value[self.parent.value] || []);
+                    }else{
+                        var lv = Util.firstKey(self.value);
+
+                        if(lv !== false){
+                            self.$refs.left.setValue(lv);
+                            self.click(Single.methods.getItemByValue(lv, source));
+                        }else{
+                            self.click(source[0]);
+                        }
+                    }
+                });
+            },
+
+            getItemFormatter(){
+                var self = this;
+
+                if(self.perInfinite || self.perMaxSize == 1){
+                    return (item) => {
+                        if(item.value in self.value){
+                            return `<span class="vmui-filter-tick">${item.label}</span>`;
+                        }else{
+                            return item.label;
+                        }
+                    }
                 }else{
-                    var lv = _.firstKey(self.value);
-
-                    if(lv !== false){
-                        self.$refs.left.setValue(lv);
-                        self.click(Single.methods.getItemByValue(lv, source));
-                    }else{
-                        self.click(source[0]);
+                    return (item) => {
+                        var len = (self.value[item.value] || []).length;
+                        return `${item.label}<span class="vmui-filters-ln">(${len}/${self.perMaxSize})</span>`;
                     }
                 }
-            });
-        },
+            },
 
-        getItemFormatter(){
-            var self = this;
+            change(val, labels, item){
+                var self = this, parent = self.parent.value, parentLabel = self.parent.label;
 
-            if(self.perInfinite || self.perMaxSize == 1){
-                return (item) => {
-                    if(item.value in self.value){
-                        return `<span class="vmui-filter-tick">${item.label}</span>`;
-                    }else{
-                        return item.label;
-                    }
+                if(!val.length && !self.value[parent]){
+                    return false;
                 }
-            }else{
-                return (item) => {
-                    var len = (self.value[item.value] || []).length;
-                    return `${item.label}<span class="vmui-filters-ln">(${len}/${self.perMaxSize})</span>`;
+
+                if(val.length){
+                    self.value[parent] = val;
+                    self.labels[parentLabel] = labels;
+                }else{
+                    delete self.value[parent];
+                    delete self.labels[parentLabel];
                 }
+
+                self.$refs.left.value = null;
+                self.$refs.left.setValue(parent);
+                self.$emit('change', self.value, self.labels, item);
+            },
+
+            canSelect(item){
+                var self = this, count = 0;
+
+                for(var i in self.value){
+                    count += self.value[i].length;
+                }
+
+                return count < self.maxSize && (!self.onlyOneParent || item.__parent == self.parent.value);
             }
-        },
-
-        change(val, labels, item){
-            var self = this, parent = self.parent.value, parentLabel = self.parent.label;
-
-            if(!val.length && !self.value[parent]){
-                return false;
-            }
-
-            if(val.length){
-                self.value[parent] = val;
-                self.labels[parentLabel] = labels;
-            }else{
-                delete self.value[parent];
-                delete self.labels[parentLabel];
-            }
-
-            self.$refs.left.value = null;
-            self.$refs.left.setValue(parent);
-            self.$emit('change', self.value, self.labels, item);
-        },
-
-        canSelect(item){
-            var self = this, count = 0;
-
-            for(var i in self.value){
-                count += self.value[i].length;
-            }
-
-            return count < self.maxSize && (!self.onlyOneParent || item.__parent == self.parent.value);
         }
     }
-}
 </script>

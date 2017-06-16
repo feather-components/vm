@@ -18,11 +18,7 @@
         border-bottom: 1px solid #eee;
         padding: 0px 15px;
     }
-
-    .vmui-filter-item:last-child{
-        border-bottom: 0px;
-    }
-
+    
     .vmui-filter-selected{
         color: #6281C2;
     }
@@ -79,6 +75,7 @@
         watch: {
             source(v){
                 this.render(v);
+                this.$refs.scroll.refresh();
             },
 
             val(v){
@@ -116,7 +113,13 @@
                 }
 
                 var item = self.getItemByValue(value);
-                self.$emit('change', self.val = value, item.label, item);
+                var label;
+
+                if(item){
+                    label = item.label;
+                }
+
+                self.$emit('change', self.val = value, label, item);
                 self.$emit('input', self.val);
             },
 
