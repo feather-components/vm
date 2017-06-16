@@ -3,11 +3,8 @@
   "version": "0.2.2",
   "description": "基于vue2的ui组件库",
   "main": "src/index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "release": "sh ./build/release.sh"
-  },
-  "author": "",
+  "clean": false,
+  "author": "jsyczhanghao@sina.com",
   "license": "ISC",
   "dependencies": {
     "component-ajax": "github:forbeslindesay/ajax",
