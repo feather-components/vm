@@ -1,8 +1,14 @@
 #!/usr/bin/env sh
 
 currentVersion=`grep '"version":' package.json | cut -d '"' -f 4`
-echo -n "Version: (${currentVersion}) "
-read VERSION
+
+if [[ $NODE_ENV == 'ci' ]]
+then
+    VERSION=$currentVersion
+else
+    echo -n "Version: (${currentVersion}) "
+    read VERSION
+fi
 
 if [[ "$VERSION" != "" ]]
 then
