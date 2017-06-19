@@ -14,7 +14,9 @@
         <slot name="pullleave-msg" v-if="!isRefreshing && intop">松手刷新数据</slot>
         <slot name="refresh-msg" v-if="isRefreshing"><i class="vmui-list-loading-icon"></i>正在刷新数据</slot>
     </div>
-
+    <div>
+        <slot name="content"></slot>
+    </div>
     <div class="vmui-list-header">
         <slot name="header"></slot>
     </div>
