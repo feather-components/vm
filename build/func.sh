@@ -9,7 +9,6 @@ function build(){
     fi
 
     VERSION=$1
-    sed -i "s/\"version\".*/\"version\": \"${VERSION}\",/" package.json
 
     cat package.json > bower.json
     echo "building...."
