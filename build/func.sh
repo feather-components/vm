@@ -10,7 +10,6 @@ function build(){
 
     VERSION=$1
 
-    cat package.json > bower.json
     echo "building...."
     webpack
     echo "complete!"
