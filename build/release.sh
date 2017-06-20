@@ -11,12 +11,12 @@ then
     read VERSION
 fi
 
-if [[ "$VERSION" != "" ]]
+if [[ "$VERSION" == "" ]]
 then
-    sed -i "s/\"version\".*/\"version\": \"${VERSION}\",/" package.json
-else
     VERSION=$nextVersion
 fi
+
+sed -i "s/\"version\".*/\"version\": \"${VERSION}\",/" package.json
 
 cat package.json > bower.json
 echo "building...."
