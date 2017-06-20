@@ -1,17 +1,18 @@
 import {Event, Dom, Util} from '../../helper';
 
 class AutoSize{
-    constructor(element, options = {}){
+    constructor(element, instance){
         var self = this;
+
+        console.log(element, element.style.height)
 
         if(element.style.height){
             self.height = element.style.height;
         }
 
         element.$autosize = self;
-        self.fill = options.fill;
         self.element = element;
-        self.instance = options.instance;
+        self.instance = instance;
         self.initEvent();
         setTimeout(() => {
             self.resize();
@@ -19,11 +20,20 @@ class AutoSize{
     }
 
     initEvent(){
+        var self = this;
+
         Event.on(window, 'resize', () => {
-            this.resize();
+            self.resize();
         });
 
-        this.observer();
+        self.observer();
+
+        Util.observer(self.element, {
+            childList: true,
+            subtree: true
+        }, (mutations) => {
+            self.resize();
+        });
     }
 
     observer(){
@@ -34,7 +44,7 @@ class AutoSize{
             subtree: true
         }, (mutations) => {
             var change = mutations.some((mutation) => {
-                return mutation.attributeName == 'style' && Dom.contains(mutation.target, self.element) && mutation.target !== self.element;
+                return mutation.attributeName == 'style' && Dom.contains(mutation.target, self.element, false);
             });
 
             if(change){
@@ -44,13 +54,6 @@ class AutoSize{
                     self.observer();
                 },0)
             }
-        });
-
-        Util.observer(self.element, {
-            childList: true,
-            subtree: true
-        }, () => {
-            self.resize();
         });
     }
 
@@ -73,7 +76,7 @@ class AutoSize{
         element.style.height = 'auto';
 
         var top = element.offsetTop;
-        var maxHeight, parent = element;
+        var maxHeight, parent = element, hasSetHeight = false;
 
         while(parent = parent.parentNode){
             if(parent === document.body){
@@ -82,11 +85,13 @@ class AutoSize{
             }
 
             if(Dom.css(parent, 'max-height') != 'none'){
+                hasSetHeight = true;
                 maxHeight = Math.min(parseFloat(Dom.height(parent)), parseFloat(Dom.css(parent, 'max-height')));
                 break;
             }
 
             if(parent.style.height){
+                hasSetHeight = true;
                 maxHeight = Dom.height(parent);
                 break;
             }
@@ -94,7 +99,7 @@ class AutoSize{
 
         maxHeight = parseFloat(maxHeight);
 
-        if(top + Dom.height(element) > maxHeight || self.fill){
+        if(!hasSetHeight || top + Dom.height(element.parentNode) > maxHeight){
             var otherHeight = 0;
 
             Dom.siblings(element).forEach((child) => {
@@ -117,10 +122,7 @@ class AutoSize{
 export default{
     bind(element, data, VNode){
         setTimeout(() => {
-            new AutoSize(element, {
-                instance: VNode.context,
-                fill: data.value.fill
-            });
+            new AutoSize(element, VNode.context);
         });
     },
 

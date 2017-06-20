@@ -1,7 +1,7 @@
 <template>
-    <scroll ref="scroll" class="vmui-filter vmui-filter-multiple">
+    <div class="vmui-filter vmui-filter-multiple">
         <a href="javascript:" v-for="(item, key) of data" v-html="itemFormatter(item)" @click="click(item)" :class="getItemClass(item)"></a>
-    </scroll>
+    </div>
 </template>
 
 <style>
@@ -22,7 +22,6 @@
 </style>
 
 <script>
-    import Scroll from '../scroll';
     import Single from './single';
 
     export default{

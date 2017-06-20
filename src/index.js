@@ -34,7 +34,7 @@ export {
     Uploader,
     Grid,
     GridItem,
-    Box,
+    Box as FormBox,
     Radios,
     Checkboxes,
     TextInput,

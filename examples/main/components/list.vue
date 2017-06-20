@@ -1,6 +1,6 @@
 <template>
     <page>
-        <topbar>list组件</topbar>
+        <topbar slot="header">list组件</topbar>
             <list 
                 source="https://3g.163.com/touch/jsonp/sy/recommend/10-10.html?hasad=1&miss=59&refresh=A&offset=0&size=10&callback=?" 
                 :max-count-per-page="10" 
@@ -35,71 +35,71 @@
 </template>
 
 <style scoped>
-.row{
-    padding: 0px 10px;
-}
+    .row{
+        padding: 0px 10px;
+    }
 
-.inner{
-    min-height: 0.7rem;
-    display: block;
-    text-decoration: none;
-    color: #000;
-    position: relative;
-}
+    .inner{
+        min-height: 0.7rem;
+        display: block;
+        text-decoration: none;
+        color: #000;
+        position: relative;
+    }
 
-.content{
-    background: #fff;
-    padding: 10px 0px;
-    border-bottom: 1px solid #ccc;
-}
+    .content{
+        background: #fff;
+        padding: 10px 0px;
+        border-bottom: 1px solid #ccc;
+    }
 
-.active{
-    transition: transform .3s ease;
-}
+    .active{
+        transition: transform .3s ease;
+    }
 
-.comment{
-    position: absolute;
-    height: 100%;
-    width: 100px;
-    background: red;
-    color: #fff;
-    display: block;
-    right: 1px;
-    top: 1px;
-    z-index: -1;
-    text-align: center;
-}
+    .comment{
+        position: absolute;
+        height: 100%;
+        width: 100px;
+        background: red;
+        color: #fff;
+        display: block;
+        right: 1px;
+        top: 1px;
+        z-index: -1;
+        text-align: center;
+    }
 
-.content:after{
-    content: ".";
-    display: block;
-    height: 0;
-    clear: both;
-    visibility: hidden
-}
+    .content:after{
+        content: ".";
+        display: block;
+        height: 0;
+        clear: both;
+        visibility: hidden
+    }
 
-.title{
-    font-size: 0.14rem;
-}
+    .title{
+        font-size: 0.14rem;
+    }
 
-img{
-    width: .90rem;
-    height: 0.7rem;
-    display: block;
-    float: left;
-    margin-right: 0.1rem;
-}
+    img{
+        width: .90rem;
+        height: 0.7rem;
+        display: block;
+        float: left;
+        margin-right: 0.1rem;
+    }
 
-.ads{
-    width: 100%;
-    float: none;
-    height: 1.15rem;
-}
+    .ads{
+        width: 100%;
+        float: none;
+        height: 1.15rem;
+    }
 
-header{
-    padding: 5px;
-    text-align: center;
-}
+    header{
+        padding: 5px;
+        text-align: center;
+    }
 </style>
 
 <script>

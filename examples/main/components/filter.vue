@@ -1,10 +1,10 @@
 <template>
     <page>
-        <topbar>filter组件</topbar>
+        <topbar slot="header">filter组件</topbar>
 
         <div style="display: flex;">
             <dropdown label="1级单选">
-                <single-filter :source="source" style="height: 100px;" v-model="val"></single-filter>
+                <single-filter :source="source" v-model="val"></single-filter>
                 <link-multiple-filter :source="source"></link-multiple-filter>
                 <div class="dropdown-footer" style="display: flex; height: 0.48rem; width: 100%;">
                     <btn type="drak" :square="true" style="width: 30%;" @click="val = ''">重置</btn>

@@ -1,6 +1,6 @@
 <template>
     <page>
-        <topbar>searchbar + list组件</topbar>
+        <topbar slot="header">searchbar + list组件</topbar>
         <searchbar v-model="wd" placeholder="请输入关键词，百度搜索" style="border-bottom: 1px solid #eee;"></searchbar>
         <list
             source="https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?json=1&cb=?"

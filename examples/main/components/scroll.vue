@@ -1,6 +1,6 @@
 <template>
     <page>
-        <topbar>scroll组件</topbar>
+        <topbar slot="header">scroll组件</topbar>
             <scroll axis="x" :scrollbars="true" class="row">
                 <a v-for="(i, a) of 100">{{i}}</a>
             </scroll>
@@ -16,17 +16,17 @@
 </template>
 
 <style scoped>
-.col a{
-    display: block;
-    font-size: 0.2rem;
-    padding: .1rem .2rem;
-}
+    .col a{
+        display: block;
+        font-size: 0.2rem;
+        padding: .1rem .2rem;
+    }
 
-.row a{
-    font-size: 0.2rem;
-    padding: .2rem;
-    display: inline-block;
-}
+    .row a{
+        font-size: 0.2rem;
+        padding: .2rem;
+        display: inline-block;
+    }
 </style>
 
 <script>

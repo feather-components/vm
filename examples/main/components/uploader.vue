@@ -1,6 +1,6 @@
 <template>
     <page>
-        <topbar>uploader组件</topbar>
+        <topbar slot="header">uploader组件</topbar>
         <div class="uploader">
             <uploader @select="select" @upload:progress="progress" url="/index.html"  style="height: 50%;"></uploader>
         </div>

@@ -1,6 +1,6 @@
 <template>
     <page>
-        <topbar>
+        <topbar slot="header">
             dropdown组件
         </topbar>
         <div style="display: flex; flex: 1;">

@@ -3,7 +3,7 @@
         <div class="vmui-page-header" ref="header">
             <slot name="header"></slot>
         </div>
-        
+
         <slot></slot>
 
         <div class="vmui-page-footer" ref="footer">
@@ -21,10 +21,10 @@
 
     .vmui-page-footer{
         width: 100%;
-        position: fixed;
-        left: 0px;
-        bottom: 0px;
         text-align: center;
+        position: absolute;
+        bottom: 0px;
+        left: 0px;
     }
 </style>
 

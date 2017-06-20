@@ -1,7 +1,7 @@
 <template>
-    <div :class="'vmui-scroll vmui-scroll-' + axis" v-autosize="{fill: false}">
+    <div :class="'vmui-scroll vmui-scroll-' + axis">
         <div ref="inner" class="vmui-scroll-inner" @drag:start="onDragStart" @draging="onDraging" @drag:end="onDragEnd">
-            <div class="vmui-scroll-pulldown" ref="pulldown" v-if="axis == 'y'">
+            <div class="vmui-scroll-pulldown" ref="pulldown" v-if="axis == 'y' && $slots.pulldown">
                 <slot name="pulldown"></slot>
             </div>
             <slot></slot>
@@ -115,10 +115,12 @@
                 }
             });
 
+            self.axis == 'y' && new Autosize.AutoSize(self.$el, self);
+
             Util.observer(self.$refs.inner, {
                 childList: true,
                 subtree: true
-            }, () => {
+            }, (mutations) => {
                 self.refresh();
             });
         },
@@ -131,13 +133,16 @@
                 var s1 = self.eSize = Dom[method](self.$el);
                 var s2 = self.iSize = Dom[method](self.$refs.inner);
 
-                self.max = self.axis == 'y' ? Dom[method](self.$refs.pulldown) : 0;
+                self.max = self.axis == 'y' && self.$refs.pulldown ? Dom[method](self.$refs.pulldown) : 0;
                 self.min = Math.min(0, s1 - s2);
 
                 if(self.scrollbars && s1 && s2){
                     self.barPercent = s1 / Math.max(s1, s2);
                     Dom.css(self.$refs.bar, method, 100 * self.barPercent + '%');
                 }
+
+                self.resetBase();
+                self.base < self.min && self.scrollTo(self.min, 300);
             },
 
             resetBase(){ 
@@ -151,7 +156,6 @@
 
                 self.scrollEnd();
                 self.refresh();
-                self.resetBase();
                 self.$emit('drag:start', event.data[self.axis]);
             },
 

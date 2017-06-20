@@ -1,6 +1,6 @@
 <template>
     <page>
-        <topbar>actionsheet组件</topbar>
+        <topbar slot="header">actionsheet组件</topbar>
         <p style="text-align: center;"><btn @click="action()" style="width: 80%; margin-top: 20px;">点击我</btn></p>
     </page>
 </template>

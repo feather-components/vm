@@ -1,7 +1,7 @@
 <template>
-    <scroll ref="scroll" class="vmui-filter">
+    <div class="vmui-filter">
         <a href="javascript:" v-for="(item, key) of data" v-html="itemFormatter(item)" @click="click(item)" :class="getItemClass(item)"></a>
-    </scroll>
+    </div>
 </template>
 
 <style>
@@ -17,6 +17,10 @@
         text-align: center;
         border-bottom: 1px solid #eee;
         padding: 0px 15px;
+    }
+
+    .vmui-filter-item:last-child{
+        border-bottom: 0px;
     }
     
     .vmui-filter-selected{
@@ -75,7 +79,6 @@
         watch: {
             source(v){
                 this.render(v);
-                this.$refs.scroll.refresh();
             },
 
             val(v){

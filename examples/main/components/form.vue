@@ -1,6 +1,6 @@
 <template>
     <page>
-        <topbar>form系列组件</topbar>
+        <topbar slot="header">form系列组件</topbar>
 
         <scroll>
             <text-input label="单行文本" placeholder="单行" v-model="postData.a" v-counter="{limit: 30}" />
@@ -58,6 +58,14 @@
             ]" v-model="postData.e" />
 
             <file label="上传图片" v-model="postData.f" :size="2" />
+
+            <form-box label="单选">
+                <single-filter :source="source" v-model="val"></single-filter>
+            </form-box>
+
+            <form-box label="2级多选">
+                <link-multiple-filter :source="source" style="height: 150px;"></link-multiple-filter>
+            </form-box>
         </scroll>
 
         <btn slot="footer" style="margin: 10px 0px; width: 90%;" type="drak" @click="submit">提交</btn>
@@ -81,21 +89,29 @@
         Scroll,
         Toast,
         Counter,
+        SingleFilter,
         SearchBar,
-        Searchbar
+        Searchbar,
+        FormBox,
+        LinkMultipleFilter
     } from 'vmui';
+
+    import Source from '../filter.json';
 
     export default{
         components: {
             Page, 
             Topbar,
             TextInput,
+            SingleFilter,
             Radios,
             Checkboxes,
             vmSelect: Select,
             File,
             Scroll,
-            Btn: Button
+            FormBox,
+            Btn: Button,
+            LinkMultipleFilter
         },
 
         directives: {
@@ -111,7 +127,9 @@
                     d: null,
                     e: null,
                     f: null
-                }
+                },
+
+                source: Source
             };
         },
 

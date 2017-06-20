@@ -77,7 +77,8 @@ class Draggable{
                 justStart = false;
 
                 //if other draggable, end
-                if(Draggable.isOtherDraggable(target, self, {x: rx, y: ry})){
+                if(self.isOtherDraggable(target, {x: rx, y: ry})){
+                    console.log('other')
                     self.touch = null;
                     Event.trigger(self.dom, 'drag:other', info);
                     return false;
@@ -106,6 +107,23 @@ class Draggable{
     stack(times = 1){
         this.options.stackTimes = times;
     }
+
+    isOtherDraggable(target, info){
+        var $draggable, self = this;
+        var isX = info.y == 0;
+
+        do{
+            if(target.$draggable){
+                $draggable = target.$draggable;
+
+                if(isX && $draggable.options.axis == 'x' || !isX){
+                    break;
+                }
+            }
+        }while(target = target.parentNode);
+
+        return $draggable !== self;
+    }
 }
 
 Draggable.getTransform = (element) => {
@@ -132,24 +150,6 @@ Draggable.getTransform = (element) => {
     }
 
     return { x: x, y: y };
-};
-
-Draggable.isOtherDraggable = (target, instance, info) => {
-    var $draggable;
-
-    do{
-        if($draggable = target.$draggable){
-            let axis = $draggable.options.axis;
-
-            if(axis !== instance.options.axis){
-                return axis == 'x' ? Math.abs(info.x) > Math.abs(info.y) : Math.abs(info.y) >= Math.abs(info.x);
-            }
-
-            return $draggable !== instance;
-        }
-    }while(target = target.parentNode);
-
-    return false;
 };
 
 export default{

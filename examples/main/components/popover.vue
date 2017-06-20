@@ -1,6 +1,6 @@
 <template>
     <page>
-        <topbar>
+        <topbar slot="header">
             popover组件
             <a href="javascript:" slot="right">
                 <i class="ion-ios-add icon"></i>
