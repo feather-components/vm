@@ -20,4 +20,4 @@ fi
 
 sed -i "s/\"version\".*/\"version\": \"${VERSION}\",/" package.json
 
-build VERSION
+build $VERSION
