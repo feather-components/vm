@@ -88,6 +88,7 @@
         height: 1.3rem;
         display: inline-block;
         margin-bottom: 0.1rem;
+        background-size: 100%;
     }
 </style>
 
