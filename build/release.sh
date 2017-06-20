@@ -20,4 +20,5 @@ fi
 
 sed -i "s/\"version\".*/\"version\": \"${VERSION}\",/" package.json
 
+export NODE_ENV=production
 build $VERSION
