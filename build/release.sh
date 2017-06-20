@@ -1,4 +1,6 @@
-#!/usr/bin/env sh
+#!/bin/sh
+
+. `dirname $0`/func.sh
 
 currentVersion=`grep '"version":' package.json | cut -d '"' -f 4`
 arr=(${currentVersion//./ }) 
@@ -16,13 +18,4 @@ then
     VERSION=$nextVersion
 fi
 
-sed -i "s/\"version\".*/\"version\": \"${VERSION}\",/" package.json
-
-cat package.json > bower.json
-echo "building...."
-webpack
-echo "complete!"
-git add -A 
-git commit -m "publish ${VERSION}"
-git tag -m -a "${VERSION}"
-git push origin --force $VERSION:$VERSION
+build VERSION
