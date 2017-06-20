@@ -4,8 +4,6 @@ class AutoSize{
     constructor(element, instance){
         var self = this;
 
-        console.log(element, element.style.height)
-
         if(element.style.height){
             self.height = element.style.height;
         }

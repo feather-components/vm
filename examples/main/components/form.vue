@@ -60,7 +60,7 @@
             <file label="上传图片" v-model="postData.f" :size="2" />
 
             <form-box label="单选">
-                <single-filter :source="source" v-model="val"></single-filter>
+                <single-filter :source="source"></single-filter>
             </form-box>
 
             <form-box label="2级多选">
@@ -71,10 +71,6 @@
         <btn slot="footer" style="margin: 10px 0px; width: 90%;" type="drak" @click="submit">提交</btn>
     </page>
 </template>
-
-<style scoped>
-
-</style>
 
 <script>
     import {
@@ -131,6 +127,12 @@
 
                 source: Source
             };
+        },
+
+        watch: {
+            postData(v){
+                console.log(v)
+            }
         },
 
         methods: {

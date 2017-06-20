@@ -18,7 +18,7 @@
                 ref="input" 
                 class="vmui-form-text" 
                 :contenteditable="!readonly" 
-                v-model="val"
+                @input="input"
                 @focus="$emit('focus')"
                 @blur="$emit('blur')"
                 @click="$emit('click')"
@@ -135,7 +135,12 @@
 
             clear(){
                 this.val = '';
+                this.$refs.input.textContent = '';
                 this.$emit('clear');
+            },
+
+            input(){
+                this.val = this.$refs.input.textContent;
             }
         }
     }

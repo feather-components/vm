@@ -4,7 +4,7 @@
     </div>
 </template>
 
-<style>
+<style lang="less">
     .vmui-filter-multiple .vmui-filter-item{
         text-align: left;
     }
@@ -85,6 +85,10 @@
                     }else{
                         vals.push(value);
                     }
+                }
+
+                if(vals.toString() == self.val.toString()){
+                    return;
                 }
 
                 self.$emit('change', self.val = vals, self.getLabels(vals), item);

@@ -11,7 +11,7 @@
 </template>
 
 <style>
-    .vmui-filters-lm .vmui-filter{
+    .vmui-filters-lm .vmui-filter .vmui-filter-item{
         text-align: left;
     }
 
@@ -57,20 +57,20 @@
                 default: false
             },
 
-            defaultValue: {
+            value: {
                 type: Object,
                 default(){
-                    return {}
+                    return {};
                 }
-            }
+            },
         },
 
         data(){
             return {
                 infinite: this.size < 0,
-                value: this.defaultValue,
                 parent: null,
                 count: 0,
+                val: this.value || {},
                 labels: {}
             };
         },
@@ -95,13 +95,14 @@
 
                 self.$on('filter:render', (source, level) => {
                     if(level == 1){
-                        self.$refs.right.setValue(self.value[self.parent.value] || []);
+                        self.$refs.right.setValue(self.val[self.parent.value] || []);
                     }else{
-                        var lv = Util.firstKey(self.value);
+                        var lv = Util.firstKey(self.val);
 
                         if(lv !== false){
                             self.$refs.left.setValue(lv);
-                            self.click(Single.methods.getItemByValue(lv, source));
+                            var parent = Single.methods.getItemByValue(lv, source);
+                            self.render(parent.children, 1);
                         }else{
                             self.click(source[0]);
                         }
@@ -114,7 +115,7 @@
 
                 if(self.perInfinite || self.perMaxSize == 1){
                     return (item) => {
-                        if(item.value in self.value){
+                        if(item.value in self.val){
                             return `<span class="vmui-filter-tick">${item.label}</span>`;
                         }else{
                             return item.label;
@@ -122,7 +123,7 @@
                     }
                 }else{
                     return (item) => {
-                        var len = (self.value[item.value] || []).length;
+                        var len = (self.val[item.value] || []).length;
                         return `${item.label}<span class="vmui-filters-ln">(${len}/${self.perMaxSize})</span>`;
                     }
                 }
@@ -131,28 +132,29 @@
             change(val, labels, item){
                 var self = this, parent = self.parent.value, parentLabel = self.parent.label;
 
-                if(!val.length && !self.value[parent]){
+                if(!val.length && !self.val[parent]){
                     return false;
                 }
 
+                var vals = Util.assign({}, self.val);
+
                 if(val.length){
-                    self.value[parent] = val;
+                    vals[parent] = val;
                     self.labels[parentLabel] = labels;
                 }else{
-                    delete self.value[parent];
+                    delete vals[parent];
                     delete self.labels[parentLabel];
                 }
 
-                self.$refs.left.value = null;
-                self.$refs.left.setValue(parent);
-                self.$emit('change', self.value, self.labels, item);
+                self.val = vals;
+                self.$emit('change', self.val, self.labels, item);
             },
 
             canSelect(item){
                 var self = this, count = 0;
 
-                for(var i in self.value){
-                    count += self.value[i].length;
+                for(var i in self.val){
+                    count += self.val[i].length;
                 }
 
                 return count < self.maxSize && (!self.onlyOneParent || item.__parent == self.parent.value);

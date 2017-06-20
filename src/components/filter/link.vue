@@ -76,7 +76,7 @@
                 }
             },
 
-            defaultValue: {
+            value: {
                 type: Array,
                 default(){
                     return [];
@@ -92,16 +92,26 @@
         data(){
             return {
                 filters: [],
-                value: this.defaultValue,
+                val: this.value || [],
                 paths: [],
                 parent: null
             };
         },
 
         watch: {
-            defaultValue(v){
-                this.value = v;
+            source(v){
+                this.render(v);
+            },
+
+            val(v){
+                this.$emit('input', v);
+            },
+
+            value(v){
+                if(v === this.val) return;
+
                 this.render(this.data);
+                this.val = v;
             }
         },
 
@@ -245,7 +255,7 @@
                         return item.value;
                     });
 
-                    vals.toString() !== self.value.toString() && self.$emit('change', self.value = vals, labels, objs, item);
+                    vals.toString() !== self.val.toString() && self.$emit('change', self.val = vals, labels, objs, item);
                 }
             },
 

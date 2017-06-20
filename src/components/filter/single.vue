@@ -29,8 +29,6 @@
 </style>
 
 <script>
-    import Scroll from '../scroll';
-
     export default{
         name: 'single-filter',
 
@@ -63,10 +61,6 @@
                     return item.label;
                 }
             }
-        },
-
-        components: {
-            Scroll: Scroll,
         },
 
         data(){
@@ -110,6 +104,10 @@
             setValue(value){
                 var self = this;
 
+                if(value === self.val){
+                    return;
+                }
+
                 if(self.disabled){
                     self.$emit('reject');
                     return false;
@@ -123,7 +121,6 @@
                 }
 
                 self.$emit('change', self.val = value, label, item);
-                self.$emit('input', self.val);
             },
 
             getItemClass(item){

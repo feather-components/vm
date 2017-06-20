@@ -110,13 +110,13 @@ class Draggable{
 
     isOtherDraggable(target, info){
         var $draggable, self = this;
-        var isX = info.y == 0;
+        var isX = Math.abs(info.x) > Math.abs(info.y);
 
         do{
             if(target.$draggable){
                 $draggable = target.$draggable;
 
-                if(isX && $draggable.options.axis == 'x' || !isX){
+                if(isX && $draggable.options.axis == 'x' || $draggable.options.axis != 'x'){
                     break;
                 }
             }

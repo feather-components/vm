@@ -56,7 +56,6 @@
 
             self.$nextTick(() => {
                 Event.on(self.$el.parentNode, 'click', (e) => {
-                    console.log(1)
                     self.toggle();
                 });
 
