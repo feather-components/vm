@@ -21,5 +21,4 @@ fi
 sed -i "s/\"version\".*/\"version\": \"${VERSION}\",/" package.json
 cat package.json > bower.json
 
-export NODE_ENV=production
 build $VERSION

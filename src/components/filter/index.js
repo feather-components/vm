@@ -5,7 +5,9 @@ import LinkMultiple from './link-multiple';
 
 import {Util} from '../../helper';
 Util.register(Single);
+Util.register(Multiple);
 Util.register(Link);
+Util.register(LinkMultiple);
 
 export {
     Single,

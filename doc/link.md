@@ -4,7 +4,7 @@ filter/link组件
 
 ### Example
 
-#### 远程数据源
+    #### 远程数据源
 
 ```html
 <div id="test">
@@ -13,23 +13,24 @@ filter/link组件
     -->
     <link-filter source="/ajax/filter.json" @change="print" :data-formatter="function(data){return data.data}" :level="3" :names="['province', 'city']"></link-filter>
 </div>
+```
 
-<script>
-require.async(['vue', 'vmui/filter'], function(Vue, Filter){
-    new Vue({
-        el: '#test',
-        components: {
-            LinkFilter: Filter.Link
-        },
+```js
+import {LinkFilter} from 'vmui';
+import Vue from 'vue';
 
-        methods: {
-            print: function(v){
-                console.log(v);
-            }
+new Vue({
+    el: '#test',
+    components: {
+        LinkFilter: Filter.Link
+    },
+
+    methods: {
+        print: function(v){
+            console.log(v);
         }
-    });
+    }
 });
-</script>
 ```
 
 ```js
@@ -104,7 +105,6 @@ require.async(['vue', 'vmui/filter'], function(Vue, Filter){
 * level: Number 共多少级
 * dataFormatter: Function 进行数据的格式化，如果通过ajax回来的数据中不存在value属性，可通过该函数格式化下
 * itemFormatter: Function 格式化输出的每一项的显示文字
-* default-value: Array 默认值，为数组，level为几，则传递几个数组项
 
 ```html
 <link-filter :source="[
@@ -124,7 +124,7 @@ require.async(['vue', 'vmui/filter'], function(Vue, Filter){
                 }
             ]
         }
-    ]" @change="print" :level="2" :default-value="[1, 3]"></link-filter>
+    ]" @change="print" :level="2" v-model="l_val"></link-filter>
 ```
 
 ### Events

@@ -14,3 +14,14 @@ Button
 ```html
 <btn type="disable" :small="true" :square="true">提交<btn>
 ```
+
+```js
+import {Button} from 'vmui';
+
+new Vue({
+    el: '#app',
+    components: {
+        Btn: Button
+    }
+});
+```

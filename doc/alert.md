@@ -31,20 +31,9 @@ Alert('abc', /*options参数, */ function(){
 
 ## Example
 
-```html
-<script>
-require.async('vmui/alert', function(Alert){
-    Alert('1233');
-});
-</script>
-```
+```js
+import {Alert} from 'vmui';
 
-## Confirm
-
-```html
-<script>
-require.async('vmui/alert', function(Alert){
-    Alert.confirm('12333');
-});
-</script>
+Alert('1233');
+Alert.confirm('123');
 ```

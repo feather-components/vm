@@ -1,5 +1,7 @@
 #!/bin/sh
 
+export NODE_ENV=production
+
 function build(){
     if [[ $1 == "" ]]
     then

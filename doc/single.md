@@ -6,23 +6,30 @@ filter/single组件
 
 ```html
 <div id="test">
-    <single-filter :source="[{label: '1', value: 1}, {label: '2', value: 2}]" @change="print"></single-filter>
+    <single-filter :source="[{label: '1', value: 1}, {label: '2', value: 2}]" @change="print" v-model="s_val"></single-filter>
 </div>
 
 <script>
-require.async(['vue', 'vmui/filter'], function(Vue, Filter){
-    new Vue({
-        el: '#test',
-        components: {
-            SingleFilter: Filter.Single
-        },
+import Vue from 'vue';
+import {SingleFilter} from 'vmui';
 
-        methods: {
-            print: function(v){
-                console.log(v);
-            }
+new Vue({
+    el: '#test',
+    components: {
+        SingleFilter: SingleFilter
+    },
+
+    data(){
+        return {
+            s_val: 1
         }
-    });
+    },
+
+    methods: {
+        print: function(v, label){
+            console.log(v, label);
+        }
+    }
 });
 </script>
 ```
@@ -31,7 +38,6 @@ require.async(['vue', 'vmui/filter'], function(Vue, Filter){
 
 * source: Array 数据源，数据源的要求必须是对象数组，且对象必须有value属性
 * itemFormatter: Function 格式化输出的每一项的显示文字
-* default-value: Number|String 默认值
 
 ```html
 <single-filter 
@@ -43,7 +49,6 @@ require.async(['vue', 'vmui/filter'], function(Vue, Filter){
 
 * disabled: Boolean 是否禁用
 * selectedClassName: String 选中后的class
-* fillHeight: Boolean 是否自动填充组件高度，默认为false
 
 
 ### Events
