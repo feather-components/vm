@@ -15,3 +15,10 @@ export {
     Link,
     LinkMultiple
 }
+
+export default {
+    Single,
+    Multiple,
+    Link,
+    LinkMultiple
+}
