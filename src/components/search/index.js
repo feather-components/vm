@@ -1,11 +1,4 @@
-import Searchbar from './bar';
-import Search from './search';
+import Searchbar from '../searchbar';
 import {Util} from '../../helper';
 
-Util.register(Search);
-Util.register(Searchbar);
-
-export {
-    Search,
-    Searchbar
-}
+export default Util.register(Search);

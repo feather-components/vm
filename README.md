@@ -1,7 +1,7 @@
 Vmui
 ================
-基于vue的组件库
-
+vmui是本团队在工作中总结出的一套基于vue的轻量级组件库，考虑团队和其他人使用的实际情况，实现的api调用和使用友好，form相关的都已实现双向
+，且大量使用slot，提供开发者足够的拓展空间
 
 ## 使用
 
@@ -31,6 +31,11 @@ feather.match('components/vmui/**.js', {
 });
 ```
 
+### webpack
+
+具体可见[webpack.config.js](./examples/webpack.config.js)
+
+
 ```js
 //index.js
 import {ActionSheet} from 'vmui';
@@ -38,8 +43,6 @@ ActionSheet({
     'xxx': function(){}
 });
 ```
-
-### webpack
 
 ## 组件列表
 
@@ -49,16 +52,16 @@ ActionSheet({
 * [page](./doc/page)
 * [scroll](./doc/scroll)
 * [search](./doc/search)
-    * [bar](./doc/search/bar.md)
+* [searchbar](./doc/searchbar.md)
 * [toast](./doc/toast)
 * [topbar](./doc/topbar)
-* [slider](./doc/slider)
-* [form](./doc/form)
-    * [text](./doc/form/text.md)
-    * [select](./doc/form/select.md)
-    * [tag](./doc/form/tag.md)
-    * [box](./doc/form/box.md)
-    * [file](./doc/form/file.md)
+* [form]
+    * [textinput](./doc/textinput.md)
+    * [select](./doc/select.md)
+    * [radios](./doc/radios.md)
+    * [box](./doc/formbox.md)
+    * [file](./doc/file.md)
+    * [checkboxes](./doc/checkboxes)
 * [datepicker](./doc/datepicker)
 * [filter](./doc/filter)
     * [single](./doc/filter/single.md)

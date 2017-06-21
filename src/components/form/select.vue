@@ -55,11 +55,6 @@ export default{
     mixins: [vBox, Single],
 
     props: {
-        native: {
-            type: Boolean,
-            default: false
-        },
-
         options: {
             type: Array,
             default(){
