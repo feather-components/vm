@@ -24,14 +24,14 @@ new Vue({
 ```
 
 ### Props
-    * multiline: Boolean 是否为多行文本，默认单行文本
-    * label: String text标题
-    * placeholder: String 
-    * readonly: Boolean 是否为多行文本，默认单行文本
-    * clearable: Boolean 是否启用清除内容icon
-    * value: String 可直接使用v-model对其进行双向绑定
+* multiline: Boolean 是否为多行文本，默认单行文本
+* label: String text标题
+* placeholder: String 
+* readonly: Boolean 是否为多行文本，默认单行文本
+* clearable: Boolean 是否启用清除内容icon
+* value: String 可直接使用v-model对其进行双向绑定
 
 ### Events
-    * focus: 当输入框聚焦时触发
-    * blur: 当输入框失焦时触发
-    * clear: 清除当前input内的内容
+* focus: 当输入框聚焦时触发
+* blur: 当输入框失焦时触发
+* clear: 清除当前input内的内容
