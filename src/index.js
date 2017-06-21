@@ -13,7 +13,7 @@ import Search from './components/search';
 import Searchbar from './components/searchbar';
 import Uploader from './components/uploader';
 import {Grid, GridItem} from './components/grid';
-import {Box, Radios, Checkboxes, TextInput, Select, File, Counter} from './components/form';
+import {Box, Radios, Checkboxes, TextInput, Select, Images, Counter} from './components/form';
 import {Single, Multiple, Link, LinkMultiple} from './components/filter';
 import Autosize from './directives/autosize';
 
@@ -40,7 +40,7 @@ export {
     Checkboxes,
     TextInput,
     Select,
-    File,
+    Images,
     Counter,
     Single as SingleFilter,
     Multiple as MultipleFilter,

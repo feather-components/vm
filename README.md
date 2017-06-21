@@ -46,8 +46,8 @@ ActionSheet({
 
 ## 组件列表
 
-* [actionsheet](./doc/actionsheet)
-* [alert](./doc/alert)
+* [actionsheet](./doc/actionsheet.md)
+* [alert](./doc/alert.md)
 * [list](./doc/list)
 * [page](./doc/page)
 * [scroll](./doc/scroll)
@@ -55,7 +55,7 @@ ActionSheet({
 * [searchbar](./doc/searchbar.md)
 * [toast](./doc/toast)
 * [topbar](./doc/topbar)
-* [form]
+* [form](./doc/form.md)
     * [textinput](./doc/textinput.md)
     * [select](./doc/select.md)
     * [radios](./doc/radios.md)

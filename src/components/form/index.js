@@ -2,7 +2,7 @@ import Radios from './radios';
 import Checkboxes from './checkboxes';
 import TextInput from './text';
 import Select from './select';
-import File from './file';
+import Images from './image';
 import Box from './box';
 import {Util} from '../../helper';
 import {Counter} from './directive';
@@ -11,7 +11,7 @@ Util.register(Radios);
 Util.register(Checkboxes);
 Util.register(TextInput);
 Util.register(Select);
-Util.register(File);
+Util.register(Images);
 Util.register(Box);
 Util.register(Counter);
 
@@ -20,7 +20,7 @@ export {
     Checkboxes,
     TextInput,
     Select,
-    File,
+    Images,
     Box,
     Counter
 };
