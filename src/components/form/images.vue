@@ -1,11 +1,11 @@
 <template>
-    <v-box :label="label" class="vmui-form-file">
+    <v-box :label="label" class="vmui-form-images">
         <grid>
             <grid-item v-for="(item, index) of val" :style="{width: percent}">
                 :source="val"
-                <div class="vmui-form-file-item">
+                <div class="vmui-form-images-item">
                     <img :src="item" />
-                    <a href="javascript:" class="vmui-form-file-del" v-if="delEnabled" @click="del(index)">删除</a>
+                    <a href="javascript:" class="vmui-form-images-del" v-if="delEnabled" @click="del(index)">删除</a>
                 </div>
             </grid-item>
 
@@ -31,13 +31,13 @@
 </template>
 
 <style>
-.vmui-form-file{
+.vmui-form-images{
     .vmui-grid{
         margin-top: 0px;
     }
 }
 
-.vmui-form-file-item{
+.vmui-form-images-item{
     display: -webkit-flex;
     display: flex;
     align-items: center;
@@ -48,12 +48,12 @@
     border-radius: 5px;
 }
 
-.vmui-form-file-item img{
+.vmui-form-images-item img{
     max-width: 100%;
     max-height: 100%;
 }
 
-.vmui-form-file-del{
+.vmui-form-images-del{
     position: absolute;
     right: 0px;
     top: 0px;
@@ -75,7 +75,7 @@ import Toast from '../toast';
 import {Multiable} from './abstract';
 
 export default{
-    name: 'file',
+    name: 'images',
 
     mixins: [vBox, Multiable],
 
@@ -87,7 +87,7 @@ export default{
 
         dataFormatter: {
             type: Function,
-            default(files, data){
+            default(imagess, data){
                 return data;
             }
         },
@@ -120,12 +120,12 @@ export default{
             Toast.loading('上传中', false, true);
         },
 
-        onUploadProgress(files, event){
+        onUploadProgress(imagess, event){
             Toast.loading('已上传' + (event.loaded/event.total).toFixed(2) * 100 + '%', false, true);
         },
 
-        onUploadComplete(files, data){
-            var data = this.dataFormatter(files, data);
+        onUploadComplete(imagess, data){
+            var data = this.dataFormatter(imagess, data);
 
             if(data){
                 this.save(data);
