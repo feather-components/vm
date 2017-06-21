@@ -19,6 +19,7 @@ then
 fi
 
 sed -i "s/\"version\".*/\"version\": \"${VERSION}\",/" package.json
+sed -i "s/\"version\".*/\"version\": \"${VERSION}\",/" bower.json
 cat package.json > bower.json
 
 build $VERSION

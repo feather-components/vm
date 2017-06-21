@@ -1,6 +1,6 @@
 {
   "name": "vmui",
-  "version": "0.2.11",
+  "version": "0.2.13",
   "description": "基于vue2的ui组件库",
   "main": "src/index.js",
   "scripts": {
