@@ -3,9 +3,9 @@ FormBox
 form相关组件的容器组件
 
 ```html
-<box label="字段标题">
+<form-box label="字段标题">
     <input type="text" placeholder="自定义input" />
-<box>
+<form-box>
 ```
 
 ### Slots

@@ -18,6 +18,7 @@ import Popover from './components/popover.vue';
 import Grid from './components/grid.vue';
 import Form from './components/form.vue';
 import Filter from './components/filter.vue';
+import Overlay from './components/overlay.vue';
 
 const router = new VueRouter({
     routes: [
@@ -29,6 +30,11 @@ const router = new VueRouter({
         {
             path: '/components/uploader',
             component: Uploader
+        },
+
+        {
+            path: '/components/overlay',
+            component: Overlay
         },
 
         {

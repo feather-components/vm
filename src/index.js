@@ -16,6 +16,45 @@ import {Grid, GridItem} from './components/grid';
 import {Box, Radios, Checkboxes, TextInput, Select, Images, Counter} from './components/form';
 import {Single, Multiple, Link, LinkMultiple} from './components/filter';
 import Autosize from './directives/autosize';
+import Mask from './components/mask';
+import Overlay from './components/overlay';
+
+import Vue from 'vue';
+
+var Components = [
+    Scroll,
+    List,
+    Page,
+    Topbar,
+    Button,
+    Alert,
+    Toast,
+    ActionSheet,
+    Dropdown,
+    Draggable,
+    Popover,
+    Searchbar,
+    Search,
+    Uploader,
+    GridItem,
+    Grid,
+    Box,
+    Radios,
+    Checkboxes,
+    TextInput,
+    Select,
+    Images,
+    Counter,
+    Autosize,
+    Mask,
+    Overlay
+];
+
+function install(Vue){
+    for(let Component of Components){
+        Vue.use(Component);
+    }
+}
 
 export {
     Search,
@@ -46,7 +85,11 @@ export {
     Multiple as MultipleFilter,
     Link as LinkFilter,
     LinkMultiple as LinkMultipleFilter,
-    Autosize
+    Autosize,
+    Mask,
+    Overlay
 };
+
+export default {install};
 
 require('./rem');

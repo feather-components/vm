@@ -2,7 +2,7 @@ import Radios from './radios';
 import Checkboxes from './checkboxes';
 import TextInput from './text';
 import Select from './select';
-import Images from './image';
+import Images from './images';
 import Box from './box';
 import {Util} from '../../helper';
 import {Counter} from './directive';

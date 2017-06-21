@@ -21,6 +21,8 @@ SearchBar
 </div>
 
 <script>
+import {SearchBar} from 'vmui';
+
 new Vue({
     el: '#search-bar',
     data: {

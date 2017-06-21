@@ -1,4 +1,4 @@
-filter/multiple组件
+LinkMultipleFilter
 ====================
 2级联动多选
 

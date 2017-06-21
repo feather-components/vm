@@ -52,5 +52,5 @@ Alert.confirm = override((content, options, callback, manualClose) => {
     });
 });
 
-Alert.component = Util.register(Component);
-export default Alert;
+Alert.Component = Component;
+export default Util.register(Alert);

@@ -77,22 +77,24 @@ export default{
     },
 
     register(obj, directive = false){
+        var Component = obj.Component || obj;
+
         function install(Vue){
             if(install._installed) return;
 
             install._installed = true;
 
             if(directive){
-                Vue.directive(obj.name, obj);
+                Vue.directive(Component.name, obj);
             }else{
-                Vue.component(`vm-${obj.name}`, obj);
+                Vue.component(`vm-${Component.name}`, obj);
             }
         }
 
         if(window.Vue){
             install(window.Vue);
         }else{
-            obj.install = install;
+            obj.install = Component.install = install;
         }
 
         return obj;

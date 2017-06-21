@@ -1,6 +1,6 @@
 <template>
     <v-box :label="label" class="vmui-form-select-box" @icon:click="$emit('click')">
-        <select v-if="!native" class="vmui-form-select" :name="name" v-model="val">
+        <select class="vmui-form-select" :name="name" v-model="val">
             <option v-for="(option, index) in options" :value="option.value" v-text="option.label"></option>
         </select> 
 

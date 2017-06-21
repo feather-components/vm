@@ -1,4 +1,4 @@
-filter/multiple组件
+MultipleFilter
 ======================
 1级多选
 

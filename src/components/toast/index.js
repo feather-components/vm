@@ -35,5 +35,5 @@ Toast.destroy = () => {
     };
 });
 
-Toast.component = Util.register(Component);
-export default Toast;
+Toast.Component = Component;
+export default Util.register(Toast);

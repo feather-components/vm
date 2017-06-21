@@ -5,7 +5,6 @@ scroll组件
 
 ## Props
 
-* fillHeight：Boolean 是否进行高度填充，默认为true
 * scrollbars: Boolean 是否显示滚动条
 * axis: String x|y可选，指定滚动方向
 

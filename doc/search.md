@@ -15,6 +15,8 @@ searchview组件
 * dataFormatter：Function，格式化数据，返回一个数组
 * params：Object 请求远程时额外参数设置
 * useHistory: Boolean 开启历史记录，注，历史记录只有在empty2load为false且关键词为空时才会显示出来
+* historyMark: String 历史记录的id标识，用于处理应用history区分的时候
+* closeAfterSelectHistory: Boolean 选择history时，是否关闭
 
 # Slots
 
@@ -22,17 +24,12 @@ searchview组件
 * desc：搜索结果的描述
 * default：搜索关键词为空时且empty2load为false时
 * nores：搜索结果为空时显示
-* history-row: 历史记录渲染行
 * row: 记录行渲染
 
 ```html
 <search-view ref="search" :visible="false" :fx="true" source="/list" @select="select" :data-formatter="function(data){return data.data}">
     <template slot="row" scope="props">
         <div>{{props.data.content}}</div>
-    </template>
-
-    <template slot="history-row" scope="props">
-        <h1 v-text="props.data.content"></h1>
     </template>
 </search-view>
 ```
@@ -41,4 +38,4 @@ searchview组件
 
 * open
 * close
-* clearHistorys 清空历史记录
+* clearHistory 清空历史记录

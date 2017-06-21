@@ -55,6 +55,7 @@
             return {
                 source: [
                     'components/button',
+                    'components/overlay',
                     'components/alert',
                     'components/toast',
                     'components/scroll',

@@ -44,41 +44,49 @@ ActionSheet({
 });
 ```
 
+## 注册全局，所有的组件以 vm- 开头， 指令除外
+
+```js
+import Vmui from 'vmui';
+import Vue from 'vue';
+
+Vue.use(Vmui);
+```
+
+```html
+<vm-scroll></vm-scroll>
+```
+
 ## 组件列表
 
-* [actionsheet](./doc/actionsheet.md)
-* [alert](./doc/alert.md)
-* [list](./doc/list)
-* [page](./doc/page)
-* [scroll](./doc/scroll)
-* [search](./doc/search)
-* [searchbar](./doc/searchbar.md)
-* [toast](./doc/toast)
-* [topbar](./doc/topbar)
-* [form](./doc/form.md)
-    * [textinput](./doc/textinput.md)
-    * [select](./doc/select.md)
-    * [radios](./doc/radios.md)
-    * [box](./doc/formbox.md)
-    * [file](./doc/file.md)
-    * [checkboxes](./doc/checkboxes)
-* [datepicker](./doc/datepicker)
-* [filter](./doc/filter)
-    * [single](./doc/filter/single.md)
-    * [multiple](./doc/filter/multiple.md)
-    * [link](./doc/filter/link.md)
-    * [link-multiple](./doc/filter/link-multiple.md)
-* [dropdown](./doc/dropdown)
-* [datepicker](./doc/datepicker)
-* [grid](./doc/grid)
-* [uploader](./doc/uploader)
-* [modal](./doc/modal)
-* [shade](./doc/shade)
-* [overlay](./doc/overlay)
-
+* [ActionSheet](./doc/actionsheet.md)
+* [Alert](./doc/alert.md)
+* [List](./doc/list.md)
+* [Page](./doc/page.md)
+* [Scroll](./doc/scroll.md)
+* [Search](./doc/search.md)
+* [SearchBar](./doc/searchbar.md)
+* [Toast](./doc/toast.md)
+* [Topbar](./doc/topbar.md)
+* [Form](./doc/form.md)
+    * [TextInput](./doc/textinput.md)
+    * [Select](./doc/select.md)
+    * [Radios](./doc/radios.md)
+    * [FormBox](./doc/formbox.md)
+    * [Images](./doc/images.md)
+    * [Checkboxes](./doc/checkboxes)
+* [Filter](./doc/filter.md)
+    * [SingleFilter](./doc/filter/single.md)
+    * [MultipleFilter](./doc/filter/multiple.md)
+    * [LinkFilter](./doc/filter/link.md)
+    * [LinkMultipleFilter](./doc/filter/link-multiple.md)
+* [Dropdown](./doc/dropdown)
+* [Grid](./doc/grid)
+* [Uploader](./doc/uploader)
+* [Mask](./doc/mask)
+* [Overlay](./doc/overlay)
+* [Popover](./doc/popover)
 
 ## 指令
 
-* [actions](./doc/actions)
-* [draggable](./doc/draggable.md)
-* [tabs](./doc/tabs)
+* [Draggable](./doc/draggable.md)

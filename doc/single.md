@@ -1,4 +1,4 @@
-filter/single组件
+SingleFilter
 ======================
 1级单选组件
 

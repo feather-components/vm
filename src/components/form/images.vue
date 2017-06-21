@@ -87,7 +87,7 @@ export default{
 
         dataFormatter: {
             type: Function,
-            default(imagess, data){
+            default(images, data){
                 return data;
             }
         },
@@ -124,8 +124,8 @@ export default{
             Toast.loading('已上传' + (event.loaded/event.total).toFixed(2) * 100 + '%', false, true);
         },
 
-        onUploadComplete(imagess, data){
-            var data = this.dataFormatter(imagess, data);
+        onUploadComplete(images, data){
+            var data = this.dataFormatter(images, data);
 
             if(data){
                 this.save(data);

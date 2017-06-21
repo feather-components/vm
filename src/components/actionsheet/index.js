@@ -9,5 +9,5 @@ var ActionSheet = (actions) => {
     });
 };
 
-ActionSheet.component = Util.register(Component);
-export default ActionSheet;
+ActionSheet.Component = Component;
+export default Util.register(ActionSheet);

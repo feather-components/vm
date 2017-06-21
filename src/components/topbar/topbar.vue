@@ -59,6 +59,8 @@
 
 <script>
     var TopBar = {
+        name: 'topbar',
+
         props: {
             leftEnabled: {
                 type: Boolean,

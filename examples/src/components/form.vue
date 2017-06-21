@@ -57,7 +57,7 @@
                 }
             ]" v-model="postData.e" />
 
-            <file label="上传图片" v-model="postData.f" :size="2" />
+            <images label="上传图片" v-model="postData.f" :size="2" />
 
             <form-box label="单选">
                 <single-filter :source="source"></single-filter>
@@ -80,7 +80,7 @@
         Radios,
         Checkboxes,
         Select,
-        File,
+        Images,
         Button,
         Scroll,
         Toast,
@@ -103,7 +103,7 @@
             Radios,
             Checkboxes,
             vmSelect: Select,
-            File,
+            Images,
             Scroll,
             FormBox,
             Btn: Button,
