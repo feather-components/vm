@@ -108,7 +108,7 @@
 <script>
     import Page from '../page';
     import Topbar from '../topbar';
-    import Searchbar from './bar';
+    import Searchbar from '../searchbar';
     import List from '../list';
 
     export default {

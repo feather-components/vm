@@ -6,7 +6,7 @@ module.exports = {
     watch: process.env.NODE_ENV != 'ci',
 
     entry: {
-        main: './main/index',
+        main: './src/index',
         lib: ['vue', 'vue-router'],
         vmui: '../src'
     },
@@ -60,7 +60,7 @@ module.exports = {
             name: ['vmui', 'lib'],
         }),
         new HtmlWepackPlugin({
-            template: './main/index.html'
+            template: './src/index.html'
         })
     ]
 };
