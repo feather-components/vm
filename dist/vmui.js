@@ -1318,7 +1318,7 @@ module.exports = Component.exports
 
     factory(options, data = {}){
         var instance = new __WEBPACK_IMPORTED_MODULE_0_vue__["default"](options);
-        this.assign(instance, data);
+        Object.assign(instance, data);
         instance.$mount();
         document.body.appendChild(instance.$el);
         return instance;

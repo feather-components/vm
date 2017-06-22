@@ -1,13 +1,13 @@
 {
   "name": "vmui",
-  "version": "0.2.15",
+  "version": "0.2.16",
   "description": "基于vue2的ui组件库",
   "main": "src/index.js",
   "author": "zhanghao <jsyczhanghao@sina.com>",
   "clean": false,
   "license": "ISC",
   "dependencies": {
-    "component-ajax": "github:forbeslindesay/ajax",
+    "ajax": "ForbesLindesay/ajax",
     "type-of": "ForbesLindesay/type-of",
     "vue": "^2.3.3"
   }
