@@ -73,10 +73,12 @@ class AutoSize{
 
         element.style.height = 'auto';
 
-        var top = element.offsetTop;
+        var top = element.offsetTop, chains = [element];
         var maxHeight, parent = element, hasSetHeight = false;
 
         while(parent = parent.parentNode){
+            chains.push(parent);
+
             if(parent === document.body){
                 maxHeight = Dom.height(document.documentElement);
                 break;
@@ -100,13 +102,18 @@ class AutoSize{
         if(!hasSetHeight || top + Dom.height(element.parentNode) > maxHeight){
             var otherHeight = 0;
 
-            Dom.siblings(element).forEach((child) => {
-                if(child.offsetTop != top){
-                    otherHeight += Dom.height(child);
-                }
+            chains.pop();
+            chains.forEach((ele) => {
+                Dom.nexts(ele).forEach((next) => {
+                    if(!/absolute|fixed/.test(Dom.css(next, 'position')) && next.offsetTop != ele.offsetTop){
+                        otherHeight += Dom.height(next);
+                    }
+                });
+
+                otherHeight += parseFloat(Dom.css(ele, 'margin-bottom') || 0);
             });
 
-            element.style.height = maxHeight - otherHeight - parseFloat(Dom.css(element, 'margin-bottom') || 0) + 'px';
+            element.style.height = maxHeight - (top - parent.offsetTop) - otherHeight + 'px';
             Event.trigger(element, 'autosize');
         }
     }

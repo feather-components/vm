@@ -21,6 +21,18 @@ export default{
         return [].filter.call(element.parentNode.children, (child) => child !== element);
     },
 
+    nexts(element){
+        var els = [];
+
+        while(element = element.nextSibling){
+            if(element.nodeType == 1){
+                els.push(element);
+            }
+        }
+
+        return els;
+    },
+
     height(element){
         return this.isDoc(element) ? document.documentElement.clientHeight : element.offsetHeight;
     },

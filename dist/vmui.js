@@ -4155,10 +4155,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
-/* harmony default export */ __webpack_exports__["default"] = ({
+var Page = {
     name: 'page',
 
     mixins: [__WEBPACK_IMPORTED_MODULE_0__overlay__["a" /* default */]],
@@ -4170,10 +4175,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
 
+    data() {
+        return {
+            top: Page.topFixed
+        };
+    },
+
     components: {
         Overlay: __WEBPACK_IMPORTED_MODULE_0__overlay__["a" /* default */]
     }
-});
+};
+
+Page.topFixed = '0px';
+/* harmony default export */ __webpack_exports__["default"] = (Page);
 
 /***/ }),
 /* 57 */
@@ -5777,7 +5791,7 @@ exports = module.exports = __webpack_require__(2)(undefined);
 
 
 // module
-exports.push([module.i, ".vmui-page{width:100%;height:100%;background:#fff}.vmui-page-footer{width:100%;text-align:center;position:absolute;bottom:0;left:0}", ""]);
+exports.push([module.i, ".vmui-page{width:100%;height:100%;background:#fff;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column}.vmui-page-content{-webkit-box-flex:1;-ms-flex:1;flex:1}.vmui-page-footer{width:100%;text-align:center}", ""]);
 
 // exports
 
@@ -7608,6 +7622,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _c('overlay', {
     ref: "overlay",
     staticClass: "vmui-page",
+    style: ({
+      paddingTop: _vm.top
+    }),
     attrs: {
       "visible": _vm.visibility,
       "fx": _vm.fx,
@@ -7616,10 +7633,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     ref: "header",
     staticClass: "vmui-page-header"
-  }, [_vm._t("header")], 2), _vm._v(" "), _vm._t("default"), _vm._v(" "), _c('div', {
+  }, [_vm._t("header")], 2), _vm._v(" "), _c('div', {
+    staticClass: "vmui-page-content"
+  }, [_vm._t("default")], 2), _vm._v(" "), _c('div', {
     ref: "footer",
     staticClass: "vmui-page-footer"
-  }, [_vm._t("footer")], 2)], 2)
+  }, [_vm._t("footer")], 2)])
 },staticRenderFns: []}
 
 /***/ }),
@@ -8484,10 +8503,12 @@ class AutoSize{
 
         element.style.height = 'auto';
 
-        var top = element.offsetTop;
+        var top = element.offsetTop, chains = [element];
         var maxHeight, parent = element, hasSetHeight = false;
 
         while(parent = parent.parentNode){
+            chains.push(parent);
+
             if(parent === document.body){
                 maxHeight = __WEBPACK_IMPORTED_MODULE_0__helper__["c" /* Dom */].height(document.documentElement);
                 break;
@@ -8511,13 +8532,18 @@ class AutoSize{
         if(!hasSetHeight || top + __WEBPACK_IMPORTED_MODULE_0__helper__["c" /* Dom */].height(element.parentNode) > maxHeight){
             var otherHeight = 0;
 
-            __WEBPACK_IMPORTED_MODULE_0__helper__["c" /* Dom */].siblings(element).forEach((child) => {
-                if(child.offsetTop != top){
-                    otherHeight += __WEBPACK_IMPORTED_MODULE_0__helper__["c" /* Dom */].height(child);
-                }
+            chains.pop();
+            chains.forEach((ele) => {
+                __WEBPACK_IMPORTED_MODULE_0__helper__["c" /* Dom */].nexts(ele).forEach((next) => {
+                    if(!/absolute|fixed/.test(__WEBPACK_IMPORTED_MODULE_0__helper__["c" /* Dom */].css(next, 'position')) && next.offsetTop != ele.offsetTop){
+                        otherHeight += __WEBPACK_IMPORTED_MODULE_0__helper__["c" /* Dom */].height(next);
+                    }
+                });
+
+                otherHeight += parseFloat(__WEBPACK_IMPORTED_MODULE_0__helper__["c" /* Dom */].css(ele, 'margin-bottom') || 0);
             });
 
-            element.style.height = maxHeight - otherHeight - parseFloat(__WEBPACK_IMPORTED_MODULE_0__helper__["c" /* Dom */].css(element, 'margin-bottom') || 0) + 'px';
+            element.style.height = maxHeight - (top - parent.offsetTop) - otherHeight + 'px';
             __WEBPACK_IMPORTED_MODULE_0__helper__["b" /* Event */].trigger(element, 'autosize');
         }
     }
@@ -8739,6 +8765,18 @@ var css3s = ['transform', 'transition'];
     
     siblings(element){
         return [].filter.call(element.parentNode.children, (child) => child !== element);
+    },
+
+    nexts(element){
+        var els = [];
+
+        while(element = element.nextSibling){
+            if(element.nodeType == 1){
+                els.push(element);
+            }
+        }
+
+        return els;
     },
 
     height(element){
