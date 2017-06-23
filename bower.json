@@ -1,6 +1,6 @@
 {
   "name": "vmui",
-  "version": "0.2.20",
+  "version": "0.2.21",
   "description": "基于vue2的ui组件库",
   "main": "src/index.js",
   "author": "zhanghao <jsyczhanghao@sina.com>",
@@ -8,7 +8,6 @@
   "license": "ISC",
   "dependencies": {
     "ajax": "ForbesLindesay/ajax",
-    "type-of": "ForbesLindesay/type-of",
     "vue": "feather-components/vue#production"
   }
 }
