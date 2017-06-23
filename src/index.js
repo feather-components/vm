@@ -18,6 +18,7 @@ import {Single, Multiple, Link, LinkMultiple} from './components/filter';
 import Autosize from './directives/autosize';
 import Mask from './components/mask';
 import Overlay from './components/overlay';
+import Helper from './helper';
 
 import Vue from 'vue';
 
@@ -87,9 +88,8 @@ export {
     LinkMultiple as LinkMultipleFilter,
     Autosize,
     Mask,
-    Overlay
+    Overlay,
+    Helper
 };
 
 export default {install};
-
-require('./rem');

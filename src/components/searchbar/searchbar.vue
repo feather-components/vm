@@ -1,5 +1,5 @@
 <template>
-    <form :class="'vmui-searchbar vmui-search-' + theme" @submit.prevent="submit()">
+    <form :class="'vmui-searchbar vmui-searchbar-' + theme" @submit.prevent="submit()">
         <div class="vmui-searchbar-inner">
             <i class="vmui-searchbar-icon"></i>
             <input :type="searchButtonEnabled ? 'search': 'text'" :placeholder="placeholder" :maxlength="maxlength" @input.trim="input" :value="val" ref="input" @focus="$emit('focus')"  @click="$emit('click')" :readonly="readonly" />
@@ -14,6 +14,10 @@
         padding: .06rem 0px;
         line-height: .32rem;
         margin-bottom: 0px;
+
+        ::-webkit-search-cancel-button{
+            -webkit-appearance: none;
+        }
     }
 
     .vmui-searchbar-inner{
@@ -71,7 +75,7 @@
         font-family: arial;
     }
 
-    .vmui-search-blue{
+    .vmui-searchbar-blue{
         background: #28304E;
 
         input{
@@ -85,10 +89,6 @@
 
         ::-webkit-input-placeholder{
             color: #ccc;
-        }
-
-        ::-webkit-search-cancel-button{
-            -webkit-appearance: none;
         }
 
         .vmui-searchbar-icon{

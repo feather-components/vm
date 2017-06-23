@@ -73,7 +73,7 @@ class AutoSize{
 
         element.style.height = 'auto';
 
-        var top = element.offsetTop, chains = [element];
+        var chains = [element];
         var maxHeight, parent = element, hasSetHeight = false;
 
         while(parent = parent.parentNode){
@@ -99,6 +99,8 @@ class AutoSize{
 
         maxHeight = parseFloat(maxHeight);
 
+        var top = Dom.offset(element).top;
+
         if(!hasSetHeight || top + Dom.height(element.parentNode) > maxHeight){
             var otherHeight = 0;
 
@@ -112,8 +114,8 @@ class AutoSize{
 
                 otherHeight += parseFloat(Dom.css(ele, 'margin-bottom') || 0);
             });
-
-            element.style.height = maxHeight - (top - parent.offsetTop) - otherHeight + 'px';
+            
+            element.style.height = maxHeight - (top - Dom.offset(parent).top) - otherHeight + 'px';
             Event.trigger(element, 'autosize');
         }
     }

@@ -1,4 +1,4 @@
-function adapt(designWidth, rem2px){
+(function(designWidth, rem2px){
     var d = window.document.createElement('div');
     d.style.width = '1rem';
     d.style.display = "none";
@@ -15,6 +15,4 @@ function adapt(designWidth, rem2px){
     st.innerHTML = portrait + landscape;
     head.appendChild(st);
     return defaultFontSize;
-}
-
-adapt(375, 100);
+})(375, 100);

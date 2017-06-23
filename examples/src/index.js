@@ -1,5 +1,6 @@
 import VueRouter from 'vue-router';
 import Vue from 'vue';
+require('../../rem.js');
 
 Vue.use(VueRouter);
 
