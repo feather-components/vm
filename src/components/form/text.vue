@@ -1,16 +1,26 @@
 <template>
-    <v-box :label="label" class="vmui-form-text-box" @icon:click="clear"> 
+    <v-box :label="label" :class="{
+        'vmui-form-text-box': true,
+        'vmui-form-text-multiline': multiline
+    }" @icon:click="clear" :vertical-layout="multiline"> 
+        <template slot="desc">
+            <slot name="desc"></slot>
+        </template>    
+
         <input v-if="!multiline" 
             ref="input" 
             type="text" 
             class="vmui-form-text" 
             :name="name" 
-            :placeholder="placeholder" 
             v-model="val" 
             @focus="$emit('focus')" 
             @blur="$emit('blur')" 
             @click="$emit('click')" 
+            :placeholder="placeholder"
             :readonly="readonly"
+            :style="{
+                width: width
+            }"
         /> 
 
         <template v-else>
@@ -23,40 +33,24 @@
                 @blur="$emit('blur')"
                 @click="$emit('click')"
             ></div>
-            <span v-if="!val" class="vmui-form-text-placeholder" v-text="placeholder"></span>
+
+            <span v-if="!val" class="vmui-form-text-placeholder">{{placeholder}}</span>
         </template>
 
-        <template slot="msg-left">
-            <slot name="msg-left"></slot>
-        </template>    
+        <a href="javascript:" class="vmui-form-text-ci" @click="clear" v-if="clearable && val">&times;</a>
 
-        <template slot="msg-right">
-            <slot name="msg-right"></slot>
-        </template>    
-
-        <template slot="icon" v-if="clearable && val">
-            &times;
-        </template>
+        <span class="vmui-form-text-unit" v-if="unit">{{unit}}</span>
     </v-box>
 </template>
 
 <style lang="less">
-    .vmui-form-text-box{
-        .vmui-form-box-icon{
-            content: '';
-            height: 0.28rem;
-            width: 0.28rem;
-            line-height: 0.28rem;
-            font-size: 0.22rem;
-            font-family: arial;
-        }
+    .vmui-form-text-box .vmui-form-box-inner{
+        position: relative;
     }
 
     .vmui-form-text{
-        width: 100%;
-        font-size: .16rem;
         color: #222;
-        line-height: .28rem;
+        line-height: .24rem;
         border: 0px;
         outline: none;
         padding: 0px;
@@ -66,8 +60,12 @@
         }
     }
 
+    input.vmui-form-text{
+        text-align: right;
+    }
+
     div.vmui-form-text{
-        min-height: .28rem;
+        min-height: .24rem;
         max-height: 1rem;
         height: auto;
         resize: none;
@@ -82,10 +80,28 @@
         position: absolute;
         left: 0rem;
         top: 0rem;
-        height: 0.28rem;
-        font-size: .16rem;
+        height: 0.24rem;
         color: #E1E1E1;
-        line-height: .28rem;
+        line-height: .24rem;
+    }
+
+    .vmui-form-text-unit{
+        height: 0.24rem;
+        display: inline-block;
+        margin-left: 5px;
+    }
+
+    .vmui-form-text-ci{
+        display: inline-block;
+        text-decoration: none;
+        color: #333;
+        margin-left: 5px;
+    }
+
+    .vmui-form-text-multiline .vmui-form-text-ci{
+        position: absolute;
+        bottom: 0px;
+        right: 0px;
     }
 </style>
 
@@ -117,6 +133,16 @@
             clearable: {
                 type: Boolean,
                 default: true
+            },
+
+            unit: {
+                type: String,
+                default: null
+            },
+
+            width: {
+                type: [Number, String],
+                default: null
             }
         },
 

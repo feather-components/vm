@@ -3,8 +3,8 @@
         <topbar slot="header">form系列组件</topbar>
 
         <scroll>
-            <text-input label="单行文本" placeholder="单行" v-model="postData.a" v-counter="{limit: 30}" />
-            <text-input label="多行文本" :multiline="true" placeholder="多行" v-model="postData.b" />
+            <text-input label="单行文本" placeholder="单行" v-model="postData.a"  />
+            <text-input label="多行文本" :multiline="true" placeholder="多行" v-model="postData.b" v-counter="{limit: 30}" />
 
             <radios label="单选" :options="[
                 {
@@ -37,10 +37,25 @@
                 {
                     label: '3',
                     value: 3
+                },
+
+                {
+                    label: '4',
+                    value: 4
+                },
+
+                {
+                    label: '5',
+                    value: 5
+                },
+
+                {
+                    label: '6',
+                    value: 6
                 }
             ]" v-model="postData.d" />
 
-            <vm-select label="下拉" placeholder="下拉选择"  :options="[
+            <vm-select label="下拉"  :options="[
                 {
                     label: '1',
                     value: 1
@@ -54,10 +69,25 @@
                 {
                     label: '3',
                     value: 3
+                },
+
+                {
+                    label: '4',
+                    value: 4
+                },
+
+                {
+                    label: '5',
+                    value: 5
+                },
+
+                {
+                    label: '6',
+                    value: 6
                 }
             ]" v-model="postData.e" />
 
-            <images label="上传图片" v-model="postData.f" :size="2" />
+            <images label="上传图片" v-model="postData.f" :size="10" />
 
             <form-box label="单选">
                 <single-filter :source="source"></single-filter>
@@ -121,8 +151,8 @@
                     b: null,
                     c: null,
                     d: null,
-                    e: null,
-                    f: null
+                    e: 2,
+                    f: ['https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=30837642,1835949245&fm=26&gp=0.jpg', 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=30837642,1835949245&fm=26&gp=0.jpg', 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=30837642,1835949245&fm=26&gp=0.jpg', 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=30837642,1835949245&fm=26&gp=0.jpg', 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=30837642,1835949245&fm=26&gp=0.jpg']
                 },
 
                 source: Source

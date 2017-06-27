@@ -39,6 +39,13 @@ export const Multiable = {
         size: {
             type: Number,
             default: -1
+        },
+
+        value: {
+            type: Array,
+            default(){
+                return [];
+            }
         }
     }),
 

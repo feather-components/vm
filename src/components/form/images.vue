@@ -2,10 +2,12 @@
     <v-box :label="label" class="vmui-form-images">
         <grid>
             <grid-item v-for="(item, index) of val" :style="{width: percent}">
-                :source="val"
                 <div class="vmui-form-images-item">
-                    <img :src="item" />
-                    <a href="javascript:" class="vmui-form-images-del" v-if="delEnabled" @click="del(index)">删除</a>
+                    <template name="item">
+                        <img :src="item" />
+                    </template>
+
+                    <a href="javascript:" class="vmui-form-images-del" v-if="delEnabled" @click="del(index)">&times;</a>
                 </div>
             </grid-item>
 
@@ -30,10 +32,11 @@
     </v-box>
 </template>
 
-<style>
+<style lang="less">
 .vmui-form-images{
     .vmui-grid{
-        margin-top: 0px;
+        margin-top: 0.12rem;
+        margin-bottom: 0.05rem;
     }
 }
 
@@ -43,9 +46,8 @@
     align-items: center;
     justify-content: center;
     position: relative;
-    height: 100%;
-    border: 1px dashed #eee;
     border-radius: 5px;
+    margin: .04rem;
 }
 
 .vmui-form-images-item img{
@@ -55,14 +57,19 @@
 
 .vmui-form-images-del{
     position: absolute;
-    right: 0px;
+    left: 0px;
     top: 0px;
+    transform: translate(-25%, -25%);
+    width: 0.2rem;
     height: 0.2rem;
     line-height: 0.2rem;
     display: block;
-    width: 30%;
-    background: rgba(48, 48, 48, 0.5);
     color: #fff;
+    border-radius: 100px;
+    text-decoration: none;
+    text-align: center;
+    background: #F96854;
+    font-size: 0.14rem;
 }
 </style>
 
@@ -114,7 +121,7 @@ export default{
             return 100 * (this.size == -1 || this.size >=3 ? 0.3333 : 1/this.size) + '%';
         }
     },
-    
+
     methods:{
         onUploadStart(){
             Toast.loading('上传中', false, true);

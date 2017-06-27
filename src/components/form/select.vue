@@ -1,47 +1,46 @@
 <template>
-    <v-box :label="label" class="vmui-form-select-box" @icon:click="$emit('click')">
-        <select class="vmui-form-select" :name="name" v-model="val">
-            <option v-for="(option, index) in options" :value="option.value" v-text="option.label"></option>
+    <v-box :label="label" class="vmui-form-select-box" @icon:click="$emit('click')" :vertical-layout="false">
+        <select class="vmui-form-select" :name="name" v-model="val" @click="$emit('click')">
+            <option v-for="(option, index) in options" :value="option.value" selected>{{option.label}}</option>
         </select> 
 
-        <span v-if="!val" class="vmui-form-select-placeholder" v-text="placeholder" @click="$emit('click')"></span> 
+        <span v-if="!val" class="vmui-form-select-placeholder">{{placeholder}}</span> 
 
-        <template slot="icon"></template>   
+        <i class="vmui-form-select-more"></i>   
     </v-box>
 </template>
 
-<style>
-    .vmui-form-select-box{
-        .vmui-form-box-icon{
-            height: 0.12rem;
-            width: 0.12rem;
-            box-shadow: 0.01rem 0.01rem #878787;
-            transform: rotate(-45deg);
-            -webkit-transform: rotate(-45deg);
-            right: 0.04rem;
-            bottom: 0.08rem;
-        }
+<style lang="less">
+    .vmui-form-select-box .vmui-form-box-inner{
+        position: relative;
+    }
+
+    .vmui-form-select-more{
+        background: url(./arrow_forward_gray.png?__inline);
+        background-size: 100%;
+        width: 0.2rem;
+        display: inline-block;
+        height: 0.2rem;
     }
 
     .vmui-form-select{
-        position: relative;
-        width: 100%;
-        height: 0.28rem;
-        font-size: .16rem;
+        height: 0.24rem;
         color: #222222;
-        line-height: .28rem;
         border: 0;
         -webkit-appearance: none;
+        direction: rtl;
+        background: transparent;
+        z-index: 1;
+        width: 80%;
     }
 
     .vmui-form-select-placeholder{
-        position: absolute;
-        left: 0rem;
+        right: 0.2rem;
         top: 0rem;
-        height: 0.28rem;
-        font-size: .16rem;
+        height: 0.24rem;
         color: #E1E1E1;
-        line-height: .28rem;
+        z-index: 0;
+        position: absolute;
     }
 </style>
 
@@ -64,7 +63,7 @@ export default{
 
         placeholder: {
             type: String,
-            default: null
+            default: '请选择'
         }
     },
 

@@ -1,5 +1,5 @@
 <template>
-    <v-box :label="label">
+    <v-box :label="label" class="vmui-form-radios">
         <span 
             @click="onClick(option.value)" 
             v-for="(option, index) in options" 
@@ -24,7 +24,7 @@
 <script>
     import vBox from "./box";
     import {Single} from './abstract';
-    require('./form.css');
+    require('./common.css');
 
     export default{
         name: 'radios',
