@@ -1,8 +1,8 @@
 <template>
     <page>
         <topbar slot="header">iosselect组件</topbar>
-        <input type="text" v-iosselect="{selectList:selectList,onSure:onSure,loopEvent:loopEvent}" style="border:1px solid #ddd;">
-
+        <input type="text" v-iosselect="{selectList:selectList,onSure:onSure,loopEvent:loopEvent}" placeholder="请选择"
+               style="width: 100%;border: 0;line-height: 44px">
     </page>
 </template>
 
