@@ -3422,6 +3422,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -6020,7 +6021,7 @@ exports = module.exports = __webpack_require__(2)(undefined);
 
 
 // module
-exports.push([module.i, ".vmui-form-switch input{display:none}.vmui-form-switch label{position:relative;display:block;border-radius:100px;height:.28rem;width:.48rem;-webkit-box-shadow:0 0 1px #333;box-shadow:0 0 1px #333;cursor:pointer}.vmui-form-switch label:before{display:block;height:100%;width:100%}.vmui-form-switch label:after,.vmui-form-switch label:before{content:\"\";border-radius:100px;-webkit-transition:all .3s ease;transition:all .3s ease}.vmui-form-switch label:after{position:absolute;top:0;left:0;height:.27rem;width:.27rem;background-color:#fff;-webkit-box-shadow:0 1px 0 1px #ccc;box-shadow:0 1px 0 1px #ccc}.vmui-form-switch input:checked~label:after{-webkit-transform:translateX(.2rem);transform:translateX(.2rem)}.vmui-form-switch input:checked~label:before{background-color:#6281c2}", ""]);
+exports.push([module.i, ".vmui-form-switch input{display:none}.vmui-form-switch label{position:relative;display:block;border-radius:100px;height:.28rem;width:.48rem;-webkit-box-shadow:0 0 1px #333;box-shadow:0 0 1px #333;cursor:pointer}.vmui-form-switch label:before{display:block;height:100%;width:100%}.vmui-form-switch label:after,.vmui-form-switch label:before{content:\"\";border-radius:100px;-webkit-transition:all .3s ease;transition:all .3s ease}.vmui-form-switch label:after{position:absolute;top:0;left:0;height:.27rem;width:.27rem;background-color:#fff;-webkit-box-shadow:0 1px 0 1px #ccc;box-shadow:0 1px 0 1px #ccc}.vmui-form-switch input:checked~label:after{-webkit-box-shadow:none;box-shadow:none;-webkit-transform:translate(.2rem,.005rem);transform:translate(.2rem,.005rem)}.vmui-form-switch input:checked~label:before{background-color:#6281c2}", ""]);
 
 // exports
 

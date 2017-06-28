@@ -46,7 +46,8 @@
         }
 
         input:checked ~ label:after{
-            transform: translateX(.2rem);
+            box-shadow: none;
+            transform: translate(.2rem, 0.005rem);
         }
 
         input:checked ~ label:before{
