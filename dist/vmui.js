@@ -2085,7 +2085,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 
 
@@ -6312,7 +6311,7 @@ exports = module.exports = __webpack_require__(2)(undefined);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -8522,8 +8521,13 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('input', {
+  return _c('div', [_c('div', [_c('input', {
     directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.dateVal),
+      expression: "dateVal"
+    }, {
       name: "iosselect",
       rawName: "v-iosselect",
       value: ({
@@ -8537,12 +8541,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         connect: _vm.connect,
         val: _vm.selectVal
       }),
-      expression: "{\n    selectList:dateList,\n    onSure:_onSure,\n    connectEvents:[{connectDouble:[1,2],callback:_setDays}],\n    autoFill: true,\n    connect: connect,\n    val: selectVal\n    }"
-    }, {
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.dateVal),
-      expression: "dateVal"
+      expression: "{\n                selectList:dateList,\n                onSure:_onSure,\n                connectEvents:[{connectDouble:[1,2],callback:_setDays}],\n                autoFill: true,\n                connect: connect,\n                val: selectVal\n                }"
     }],
     staticClass: "vmui-datepicker",
     style: (_vm.inputStyle),
@@ -8558,7 +8557,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.dateVal = $event.target.value
       }
     }
-  })])
+  })])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {

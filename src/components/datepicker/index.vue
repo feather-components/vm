@@ -1,7 +1,8 @@
 <template>
     <div>
         <div>
-            <input type="text" class="vmui-datepicker" v-model="dateVal" :style="inputStyle"
+            <input type="text" class="vmui-datepicker" v-model="dateVal" :style="inputStyle" readonly
+                   :placeholder="placeholder"
                    v-iosselect="{
                     selectList:dateList,
                     onSure:_onSure,
@@ -101,6 +102,11 @@
             connect: {
                 type: String,
                 default: '/'
+            },
+
+            placeholder: {
+                type: String,
+                default: '请选择时间'
             }
         },
 
