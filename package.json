@@ -1,6 +1,6 @@
 {
   "name": "vmui",
-  "version": "0.2.23",
+  "version": "0.2.24",
   "description": "基于vue2的ui组件库",
   "main": "src/index.js",
   "scripts": {
@@ -14,7 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "component-ajax": "github:forbeslindesay/ajax",
-    "type-of": "ForbesLindesay/type-of",
+    "type-of": "jsyczhanghao/type-of",
     "vue": "^2.3.3"
   },
   "devDependencies": {
