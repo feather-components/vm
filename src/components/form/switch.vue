@@ -1,91 +1,57 @@
 <template>
-    <v-box :label="label" class="vmui-form-text-box" @icon:click="clear"> 
-        <input v-if="!multiline" 
-            ref="input" 
-            type="text" 
-            class="vmui-form-text" 
-            :name="name" 
-            :placeholder="placeholder" 
-            v-model="val" 
-            @focus="$emit('focus')" 
-            @blur="$emit('blur')" 
-            @click="$emit('click')" 
-            :readonly="readonly"
-        /> 
-
-        <template v-else>
-            <div 
-                ref="input" 
-                class="vmui-form-text" 
-                :contenteditable="!readonly" 
-                @input="input"
-                @focus="$emit('focus')"
-                @blur="$emit('blur')"
-                @click="$emit('click')"
-            ></div>
-            <span v-if="!val" class="vmui-form-text-placeholder" v-text="placeholder"></span>
-        </template>
-
-        <template slot="msg-left">
-            <slot name="msg-left"></slot>
-        </template>    
-
-        <template slot="msg-right">
-            <slot name="msg-right"></slot>
-        </template>    
-
-        <template slot="icon" v-if="clearable && val">
-            &times;
-        </template>
+    <v-box :label="label" class="vmui-form-switch-box" :vertical-layout="false"> 
+        <span class="vmui-form-switch">
+            <input type="checkbox" :id="name" class="vmui-form-switch" v-model="val" />
+            <label :for="name"></label>
+        </span>
     </v-box>
 </template>
 
 <style lang="less">
-    .vmui-form-text-box{
-        .vmui-form-box-icon{
-            content: '';
+    .vmui-form-switch{
+        input{
+            display: none;
+        }
+
+        label{
+            position:relative;
+            display: block;
+            border-radius: 100px;
             height: 0.28rem;
-            width: 0.28rem;
-            line-height: 0.28rem;
-            font-size: 0.22rem;
-            font-family: arial;
+            width: 0.48rem;
+            box-shadow: 0px 0px 1px #333;
+            cursor: pointer;
+
+            &:before{
+                content: '';
+                display: block;
+                height: 100%;
+                width: 100%;
+                border-radius: 100px;
+                transition: all .3s ease;
+            }
+
+            &:after{
+                content: '';
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                height: 0.27rem;
+                width: .27rem;
+                border-radius: 100px;
+                background-color: white;
+                box-shadow: 0px 1px 0px 1px #ccc;
+                transition: all .3s ease;
+            }
         }
-    }
 
-    .vmui-form-text{
-        width: 100%;
-        font-size: .16rem;
-        color: #222;
-        line-height: .28rem;
-        border: 0px;
-        outline: none;
-        padding: 0px;
-
-        &::-webkit-input-placeholder{
-            color: #e1e1e1;
+        input:checked ~ label:after{
+            transform: translateX(.2rem);
         }
-    }
 
-    div.vmui-form-text{
-        min-height: .28rem;
-        max-height: 1rem;
-        height: auto;
-        resize: none;
-        overflow: auto;
-        &:focus {
-            border: 0;
-            outline: 0;
+        input:checked ~ label:before{
+            background-color: #6281C2;
         }
-    }
-
-    .vmui-form-text-placeholder{
-        position: absolute;
-        left: 0rem;
-        top: 0rem;
-        height: 0.28rem;
-        font-size: .16rem;
-        color: #E1E1E1;
-        line-height: .28rem;
     }
 </style>
 
@@ -94,7 +60,7 @@
     import {Single} from './abstract';
 
     export default{
-        name: 'textinput',
+        name: 'switch',
 
         mixins: [vBox, Single],
 

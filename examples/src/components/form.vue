@@ -6,6 +6,8 @@
             <text-input label="单行文本" placeholder="单行" v-model="postData.a"  />
             <text-input label="多行文本" :multiline="true" placeholder="多行" v-model="postData.b" v-counter="{limit: 30}" />
 
+            <vm-switch label="切换开关" v-model="postData.g" />
+
             <radios label="单选" :options="[
                 {
                     label: '1',
@@ -87,7 +89,9 @@
                 }
             ]" v-model="postData.e" />
 
-            <images label="上传图片" v-model="postData.f" :size="10" />
+            <images label="上传图片" v-model="postData.f" :size="10">
+                <template slot="msg">({{postData.f.length}}/10，至少上传1张)</template>
+            </images>
 
             <form-box label="单选">
                 <single-filter :source="source"></single-filter>
@@ -118,10 +122,11 @@
         SingleFilter,
         SearchBar,
         Searchbar,
+        Switch,
         FormBox,
         LinkMultipleFilter
     } from 'vmui';
-
+    
     import Source from '../filter.json';
 
     export default{
@@ -137,6 +142,7 @@
             Scroll,
             FormBox,
             Btn: Button,
+            vmSwitch: Switch,
             LinkMultipleFilter
         },
 
@@ -152,7 +158,8 @@
                     c: null,
                     d: null,
                     e: 2,
-                    f: ['https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=30837642,1835949245&fm=26&gp=0.jpg', 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=30837642,1835949245&fm=26&gp=0.jpg', 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=30837642,1835949245&fm=26&gp=0.jpg', 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=30837642,1835949245&fm=26&gp=0.jpg', 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=30837642,1835949245&fm=26&gp=0.jpg']
+                    f: ['https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=30837642,1835949245&fm=26&gp=0.jpg', 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=4152229571,503740049&fm=11&gp=0.jpg', 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=74474160,773507576&fm=26&gp=0.jpg', 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=30837642,1835949245&fm=26&gp=0.jpg', 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=30837642,1835949245&fm=26&gp=0.jpg'],
+                    g: true
                 },
 
                 source: Source

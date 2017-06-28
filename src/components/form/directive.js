@@ -6,7 +6,7 @@ export const Counter = {
 
     bind(element, data, VNode){
         var limit = data.value.limit;
-        var ml = Dom.$('.vmui-form-box-desc', element);
+        var ml = Dom.$('.vmui-form-box-msg', element);
         var instance = VNode.componentInstance;
 
         instance.$on('input', msg);  

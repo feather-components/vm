@@ -280,8 +280,7 @@ form组件集合中包含了4个组件：
     ```html
 
     <div id="test">
-        <v-image ref="qaz" label="选择框" v-model="photo_value" :images="photos" @select="selectFile">
-            </v-image>
+        <v-image ref="qaz" label="选择框" v-model="photo_value" :images="photos" @select="selectFile"></v-image>
     </div>
 
     <script>

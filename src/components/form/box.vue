@@ -6,8 +6,8 @@
     }">
         <label class="vmui-form-box-label" v-if="label">
             {{label}}
-            <span class="vmui-form-box-desc" v-if="verticalLayout">
-                <slot name="desc"></slot>
+            <span class="vmui-form-box-msg" v-if="verticalLayout">
+                <slot name="msg"></slot>
             </span>
         </label>
 
@@ -61,7 +61,7 @@
         width: 30%;
     }
 
-    .vmui-form-box-desc{
+    .vmui-form-box-msg{
         display: inline-block;
         font-size: .12rem;
         color: #878787;

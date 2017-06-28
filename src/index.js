@@ -13,7 +13,7 @@ import Search from './components/search';
 import Searchbar from './components/searchbar';
 import Uploader from './components/uploader';
 import {Grid, GridItem} from './components/grid';
-import {Box, Radios, Checkboxes, TextInput, Select, Images, Counter} from './components/form';
+import {Box, Radios, Checkboxes, TextInput, Select, Images, Counter, Switch} from './components/form';
 import {Single, Multiple, Link, LinkMultiple} from './components/filter';
 import Autosize from './directives/autosize';
 import Mask from './components/mask';
@@ -45,6 +45,7 @@ var Components = [
     TextInput,
     Select,
     Images,
+    Switch,
     Counter,
     Autosize,
     Mask,
@@ -80,6 +81,7 @@ export {
     Checkboxes,
     TextInput,
     Select,
+    Switch,
     Images,
     Counter,
     Single as SingleFilter,

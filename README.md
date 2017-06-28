@@ -76,19 +76,21 @@ Vue.use(Vmui);
     * [Radios](./doc/radios.md)
     * [FormBox](./doc/formbox.md)
     * [Images](./doc/images.md)
-    * [Checkboxes](./doc/checkboxes)
+    * [Checkboxes](./doc/checkboxes.md)
+    * [Switch](./doc/switch.md);
 * [Filter](./doc/filter.md)
     * [SingleFilter](./doc/filter/single.md)
     * [MultipleFilter](./doc/filter/multiple.md)
     * [LinkFilter](./doc/filter/link.md)
     * [LinkMultipleFilter](./doc/filter/link-multiple.md)
-* [Dropdown](./doc/dropdown)
-* [Grid](./doc/grid)
-* [Uploader](./doc/uploader)
-* [Mask](./doc/mask)
-* [Overlay](./doc/overlay)
-* [Popover](./doc/popover)
+* [Dropdown](./doc/dropdown.md)
+* [Grid](./doc/grid.md)
+* [Uploader](./doc/uploader.md)
+* [Mask](./doc/mask.md)
+* [Overlay](./doc/overlay.md)
+* [Popover](./doc/popover.md)
 
 ## 指令
 
 * [Draggable](./doc/draggable.md)
+* [Form/Counter](./doc/counter.md)

@@ -2,7 +2,7 @@
     <v-box :label="label" :class="{
         'vmui-form-text-box': true,
         'vmui-form-text-multiline': multiline
-    }" @icon:click="clear" :vertical-layout="multiline"> 
+    }" :vertical-layout="multiline"> 
         <template slot="desc">
             <slot name="desc"></slot>
         </template>    
@@ -40,6 +40,10 @@
         <a href="javascript:" class="vmui-form-text-ci" @click="clear" v-if="clearable && val">&times;</a>
 
         <span class="vmui-form-text-unit" v-if="unit">{{unit}}</span>
+
+        <template slot="msg">
+            <slot name="msg"></slot>
+        </template> 
     </v-box>
 </template>
 

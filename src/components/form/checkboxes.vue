@@ -11,12 +11,8 @@
         {{option.label}}
         </span>
 
-        <template slot="msg-left">
-            <slot name="msg-left"></slot>
-        </template>    
-
-        <template slot="msg-right">
-            <slot name="msg-right"></slot>
+        <template slot="msg">
+            <slot name="msg"></slot>
         </template>    
     </v-box>
 </template>

@@ -49,3 +49,7 @@ new Vue({
 * options: Array 选项数组
 * value: Array 可直接使用v-model对其进行双向绑定
 * size: Number 默认-1，表示可任意选择
+
+### Slots
+
+* msg

@@ -1,7 +1,7 @@
 <template>
     <v-box :label="label" class="vmui-form-images">
         <grid>
-            <grid-item v-for="(item, index) of val" :style="{width: percent}">
+            <grid-item v-for="(item, index) of val">
                 <div class="vmui-form-images-item">
                     <template name="item">
                         <img :src="item" />
@@ -11,7 +11,7 @@
                 </div>
             </grid-item>
 
-            <grid-item v-if="rest" :style="{width: percent}">
+            <grid-item v-if="rest">
                 <uploader 
                     :url="uploader" :multiple="rest > 1" 
                     @upload:start="onUploadStart" 
@@ -21,14 +21,10 @@
                 ></uploader>
             </grid-item>
         </grid>
-
-        <template slot="msg-left">
-            <slot name="msg-left"></slot>
-        </template>    
-
-        <template slot="msg-right">
-            <slot name="msg-right"></slot>
-        </template>    
+        
+        <template slot="msg">
+            <slot name="msg"></slot>
+        </template>   
     </v-box>
 </template>
 
@@ -38,16 +34,27 @@
         margin-top: 0.12rem;
         margin-bottom: 0.05rem;
     }
+
+    .vmui-grid-item{
+        width: 1.09rem;
+        height: 0.8rem;
+        margin-left: 0.08rem;
+        margin-bottom: 0.08rem;
+    }
+
+    .vmui-grid-item:nth-child(3n + 1){
+        margin-left: 0px;
+    }
 }
 
 .vmui-form-images-item{
-    display: -webkit-flex;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    background: rgba(0, 0, 0, 0.7);
     position: relative;
-    border-radius: 5px;
-    margin: .04rem;
+    width: 1.09rem;
+    height: 0.8rem;
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
 }
 
 .vmui-form-images-item img{
@@ -70,6 +77,7 @@
     text-align: center;
     background: #F96854;
     font-size: 0.14rem;
+    font-family: arial;
 }
 </style>
 
@@ -117,7 +125,7 @@ export default{
             return this.size == -1 ? 1000000 : Math.max(this.size - this.val.length, 0)
         },
 
-        percent(){
+        wh(){
             return 100 * (this.size == -1 || this.size >=3 ? 0.3333 : 1/this.size) + '%';
         }
     },

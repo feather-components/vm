@@ -44,7 +44,8 @@ new Vue({
 
 
 ### Props
-    * label: String 字段标题
-    * placeholder: String 
-    * options: Array 选项数组
-    * value: String 可直接使用v-model对其进行双向绑定
+
+* label: String 字段标题
+* placeholder: String 
+* options: Array 选项数组
+* value: String 可直接使用v-model对其进行双向绑定

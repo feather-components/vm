@@ -16,4 +16,4 @@ import {TextInput, Select, Radios, ...} from 'vmui/src/components/form';
 ```
 ### 指令
 
-* Counter
+* [Counter](./counter.md)
