@@ -18,7 +18,10 @@ import {Single, Multiple, Link, LinkMultiple} from './components/filter';
 import Autosize from './directives/autosize';
 import Mask from './components/mask';
 import Overlay from './components/overlay';
+import Iosselect from './directives/iosselect';
+import Datepicker from './components/datepicker';
 import Helper from './helper';
+
 
 import Vue from 'vue';
 
@@ -49,7 +52,8 @@ var Components = [
     Counter,
     Autosize,
     Mask,
-    Overlay
+    Overlay,
+    Datepicker
 ];
 
 function install(Vue){
@@ -57,7 +61,7 @@ function install(Vue){
         Vue.use(Component);
     }
 }
-
+Vue.directive('iosselect', Iosselect)
 export {
     Search,
     Searchbar,
@@ -91,7 +95,9 @@ export {
     Autosize,
     Mask,
     Overlay,
-    Helper
+    Helper,
+    Iosselect,
+    Datepicker
 };
 
 export default {install};

@@ -10,7 +10,7 @@
 })(this, function() {
 return webpackJsonpthis([1],{
 
-/***/ 187:
+/***/ 198:
 /***/ (function(module, exports) {
 
 var g;
@@ -38,7 +38,7 @@ module.exports = g;
 
 /***/ }),
 
-/***/ 195:
+/***/ 207:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(9);
@@ -52,7 +52,7 @@ module.exports = __webpack_require__(9);
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */(function(process, global) {/*!
- * Vue.js v2.3.3
+ * Vue.js v2.3.4
  * (c) 2014-2017 Evan You
  * Released under the MIT License.
  */
@@ -4475,7 +4475,7 @@ Object.defineProperty(Vue$3.prototype, '$ssrContext', {
   }
 });
 
-Vue$3.version = '2.3.3';
+Vue$3.version = '2.3.4';
 
 /*  */
 
@@ -4966,6 +4966,7 @@ function createPatchFunction (backend) {
   function initComponent (vnode, insertedVnodeQueue) {
     if (isDef(vnode.data.pendingInsert)) {
       insertedVnodeQueue.push.apply(insertedVnodeQueue, vnode.data.pendingInsert);
+      vnode.data.pendingInsert = null;
     }
     vnode.elm = vnode.componentInstance.$el;
     if (isPatchable(vnode)) {
@@ -7187,11 +7188,11 @@ setTimeout(function () {
 
 /* harmony default export */ __webpack_exports__["default"] = (Vue$3);
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(92), __webpack_require__(187)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(98), __webpack_require__(198)))
 
 /***/ }),
 
-/***/ 92:
+/***/ 98:
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -7382,5 +7383,5 @@ process.umask = function() { return 0; };
 
 /***/ })
 
-},[195]);
+},[207]);
 });
