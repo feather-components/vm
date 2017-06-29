@@ -9,8 +9,8 @@
                 <a v-for="(i, a) of 7">scroll组件</a>
             </scroll>
 
-            <scroll axis="y" :scrollbars="true" class="col" style="margin-bottom: 30px;">
-                <a v-for="(i, a) of 100">scroll组件</a>
+            <scroll axis="y" :scrollbars="true" class="col" style="margin-bottom: 30px;" ref='scroll' @scroll:end="_scrollStop">
+                <a v-for="(i, a) of 50">scroll组件</a>
             </scroll>
     </page>
 </template>
@@ -41,6 +41,12 @@
             Page, 
             Topbar,
             Scroll
+        },
+
+        methods: {
+            _scrollStop() {
+//                this.$refs.scroll.scrollTo(-100)
+            }
         }
     }
 </script>

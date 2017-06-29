@@ -1,6 +1,6 @@
 <template>
-    <div vmui-select>
-        <overlay :visible="true" :class="className" position="bottom">
+    <vm-mask :visible="true">
+        <overlay :visible="true" class="vmui-select" position="bottom">
             <div class="vmui-select-body">
                 <header class="vmui-select-header">
                     <p class="cancel" @click="_hideSelect">取消</p>
@@ -8,8 +8,8 @@
                 </header>
                 <ul class="vmui-select-list">
                     <li v-for="(item, index) in selectList" :style="{width:width+'%'}">
-                        <scroll @scroll:end="_scrollStop($event,index)"  @draging="_scrolling($event,index)"
-                                @drag:end="_scrollStop($event,index)" :ref="'scroll' + index">
+                        <scroll @scroll:end="_scrollStop($event,index)" @drag:end="_dragStop($event,index)"
+                                @draging="_scrolling($event,index)" :ref="'scroll' + index">
                             <ul class='vmui-select-label-list'>
                                 <li v-for="(it, i) in item ">
                                     {{it.label}}
@@ -20,81 +20,56 @@
                 </ul>
             </div>
         </overlay>
-    </div>
+    </vm-mask>
 </template>
 
 <script>
     import Scroll from '../../components/scroll'
     import Overlay from '../../components/overlay'
+    import vmMask from '../mask';
     const LINEHEIGHT = 35
-
 
     export default {
         mixins: [Overlay],
+
         props: {
-            selectList: {
+            source: {
                 type: Array,
                 default() {
                     return  []
                 }
             },
 
-            bindEl: {
-                type: null
-            },
-
-            connect: {
-                type: String,
-                default: '/'
-            },
-
-            onSure: {
-                type: Function
-            },
-
             connectEvents: {
                 type: Array
             },
 
-            autoFill: {
-                type: Boolean,
-                default: true
-            },
-
-            initValue: {
-                type: Array
-            },
-
-            hideEvent: {
-                type: Function
+            value: {
+                type: Array,
+                default() {
+                    return []
+                }
             }
         },
 
         components: {
             Scroll,
-            Overlay
+            Overlay,
+            vmMask
         },
 
         data () {
             return {
                 activeIndex: [],
                 val: [],
+                selectList: this.source
             }
         },
 
         computed: {
-            className(){
-                return ('vmui-select ' + (this.class || '')).trim()
-            },
-
             width () {
                 return 100 / this.selectList.length
             }
-        },
-
-        destroyed() {
-            document.body.removeChild(document.querySelector('[vmui-select]'))
-            this.hideEvent()
         },
 
         beforeMount() {
@@ -102,33 +77,41 @@
         },
 
         mounted() {
-
-            document.getElementsByTagName('body')[0].style.overflow = 'hidden'
             let l = this.selectList.length
             for (let i = 0; i < l; i++) {
                 this.activeIndex.push(2)
             }
-            console.log(this.selectList);
 
-//            this._initValRender()._getVal()._renderListVal()._renderList()
+            this._initValRender()
+                    ._getVal()
+            this.$emit('change', {done:this._setList, val: this.val})
+
+            this.activeIndex.forEach((v1, k1) => {
+                this._renderList(true, k1)
+            })
         },
 
         methods: {
-            _renderList() {
-                this.activeIndex.forEach((v1, k1) => {
-                    let $list = this.$refs['scroll' + k1]
-                    let $lis = $list[0].$el.querySelectorAll('li')
-                    $list[0].scrollTo('-' + (v1 - 2) * LINEHEIGHT)
+            _renderList(stop, index, dragend) {
+                let $list = this.$refs['scroll' + index]
+                let $lis = $list[0].$el.querySelectorAll('li')
+                if (stop) {
+                    $list[0].scrollTo('-' + (this.activeIndex[index]  - 2) * LINEHEIGHT)
+                }
+                if (dragend) {
+                    setTimeout(() => {
+                        $list[0].scrollTo('-' + (this.activeIndex[index]  - 2) * LINEHEIGHT)
+                    }, 100)
+                }
 
-                    $lis.forEach((v, k) => {
-                        if(v1 === k) {
-                            v.style.opacity = 1
-                        } else if(Math.abs(v1 - k) === 1){
-                            v.style.opacity = 0.6
-                        } else {
-                            v.style.opacity = 0.3
-                        }
-                    })
+                $lis.forEach((v, k) => {
+                    if(this.activeIndex[index] === k) {
+                        v.style.opacity = 1
+                    } else if(Math.abs(this.activeIndex[index] - k) === 1){
+                        v.style.opacity = 0.6
+                    } else {
+                        v.style.opacity = 0.3
+                    }
                 })
                 return this
             },
@@ -136,7 +119,7 @@
             _initValRender() {
                 let _self = this
 
-                _self.initValue.forEach((v, k) => {
+                _self.value.forEach((v, k) => {
                     _self.selectList[k].forEach((v1, k1) => {
                         if(v1.value == v) {
                             _self.activeIndex[k] = k1
@@ -174,7 +157,7 @@
             },
 
             _scrolling(pos, index) {
-                let topi
+                let topi = 0
 
                 if (Math.abs(pos) % LINEHEIGHT  > LINEHEIGHT / 2) {
                     topi = Math.ceil( Math.abs(pos) / LINEHEIGHT )
@@ -184,14 +167,23 @@
 
                 this.activeIndex[index] = topi + 2
 
-                this._getVal()._renderList()
+                this._getVal()._renderList(false, index)
             },
 
             _scrollStop(pos, index) {
                 this._scrolling(pos, index)
-                this._renderListVal(index)
+                this.$emit('change', {done:this._setList, val: this.val})
+                this.$nextTick(() => {
+                    this._renderList(true, index)
+                })
             },
 
+            _dragStop(pos, index) {
+                this._scrolling(pos, index)
+                this.$nextTick(() => {
+                    this._renderList(false, index, true)
+                })
+            },
 
             _hideSelect() {
                 this.$destroy()
@@ -204,54 +196,25 @@
                     val.push(v.label)
                 })
 
-                if (this.autoFill) {
-                    if (this.bindEl.tagName === 'INPUT' ) {
-                        if (['number','text'].indexOf(this.bindEl.getAttribute('type')) > -1) {
-                            this.bindEl.setAttribute('value', val.join(this.connect))
-                        } else {
-                            return
-                        }
-                    } else {
-                        this.bindEl.innerHTML = val.join(this.connect)
-                    }
-                }
-
-//                this.onSure(this.val)
-                this.emit('sure', this.val)
+                this.$emit('confirm', this.val);
                 this.$destroy()
             },
 
             _setList(list, i) {
                 this.$set(this.selectList, i, list)
                 this._addNullForList()
-            },
-
-            _renderListVal(index) {
-                if (this.connectEvents &&　this.connectEvents　instanceof Array){
-                    this.connectEvents.forEach((v, k) => {
-                        if (v.connectDouble[0] == index) {
-                            try {
-                                v.callback(this.val, v.connectDouble, this._setList)
-                            } catch (e) {
-                                return false
-                            }
-                        } else return this
-                    })
-                }
-                return this
             }
-
         }
     }
 </script>
 
 <style>
-    [vmui-select]{
+    .vmui-select{
         position: fixed;
         left: 0;
-        top:0;
+        bottom:0;
         width:100%;
-        height:100%;
+        /*height: 219px;*/
         background: rgba(0,0,0,0.5);
         z-index:10001
     }
@@ -260,10 +223,12 @@
         height: 175px;
         overflow: hidden;
         padding-left:0;
+        background: #fff;
     }
     .vmui-select-list > li{
         float: left;
         list-style: none;
+        min-height: 175px;
     }
     .vmui-select{
         width:100%;
