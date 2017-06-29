@@ -191,15 +191,15 @@
                 if(!self.isMoving) return false;
                 self.isMoving = false;
 
-                var duration = Date.now() - self.baseTime,
+                var duration = Date.now() - self.baseTime, destination,
                     translate = self.pos = event.data[self.axis];
 
                 if(translate >= self.max){
-                    self.scrollTo(self.max, (translate - self.max) * 5);
+                    self.scrollTo(destination = self.max, duration = (translate - self.max) * 5);
                 }else if(translate > 0 && translate < self.max){
-                    self.scrollTo(0, translate * 3);
+                    self.scrollTo(destination = 0, duration = translate * 3);
                 }else if(translate <= self.min){ 
-                    self.scrollTo(self.min, (self.min - translate) * 5);
+                    self.scrollTo(destination = self.min, duration = (self.min - translate) * 5);
                 }else if(duration < 300){
                     var distance = event.data[self.axis] - self.base;
                     var speed = Math.abs(distance) / duration, deceleration = 0.0006;
@@ -215,7 +215,7 @@
                     duration > 300 && self.scrollTo(destination, duration);
                 }
 
-                self.$emit('drag:end', translate);
+                self.$emit('drag:end', translate, destination, duration);
                 self.baseTime = null;
                 self.distance = null;
                 self.base = null;
