@@ -18,7 +18,7 @@ new Vue({
         value: true
     },
     components:{
-        vSelect
+        vmSelect
     }
 });
 ```
