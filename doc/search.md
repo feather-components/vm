@@ -1,4 +1,4 @@
-SearchView
+Search
 ======================
 searchview组件
 
