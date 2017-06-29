@@ -18,8 +18,8 @@ new Vue({
         value: true
     },
     components:{
-        vmSelect
-    }
+        vmSwitch    
+    }
 });
 ```
 
