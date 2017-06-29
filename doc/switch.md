@@ -10,7 +10,7 @@ Switch
 
 ```js
 import Vue from 'vue';
-import {Select as vmSwitch} from 'vmui';
+import {Switch as vmSwitch} from 'vmui';
 
 new Vue({
     el: '#app',
