@@ -1,16 +1,16 @@
 <template>
     <vm-mask :visible="true">
-        <overlay :visible="true" class="vmui-select" position="bottom">
-            <div class="vmui-select-body">
-                <header class="vmui-select-header">
+        <overlay :visible="true" class="vmui-iosselect" position="bottom">
+            <div class="vmui-iosselect-body">
+                <header class="vmui-iosselect-header">
                     <p class="cancel" @click="_hide()">取消</p>
                     <p class="sure" @click="_showVal">确定</p>
                 </header>
-                <ul class="vmui-select-list">
+                <ul class="vmui-iosselect-list">
                     <li v-for="(item, index) in selectList" :style="{width:width+'%'}">
                         <scroll @scroll:end="_activeChange($event,index, true)" @drag:end="_dragStop($event,index)"
                                 @draging="_activeChange($event,index, false)" :ref="'scroll' + index">
-                            <ul class='vmui-select-label-list'>
+                            <ul class='vmui-iosselect-label-list'>
                                 <li v-for="(it, i) in item ">
                                     {{it.label}}
                                 </li>
@@ -209,7 +209,7 @@
 </script>
 
 <style>
-    .vmui-select{
+    .vmui-iosselect{
         position: fixed;
         left: 0;
         bottom:0;
@@ -218,39 +218,40 @@
         background: rgba(0,0,0,0.5);
         z-index:10001
     }
-    .vmui-select-list{
+    .vmui-iosselect-list{
         width:100%;
         height: 175px;
         overflow: hidden;
         padding-left:0;
         background: #fff;
     }
-    .vmui-select-list > li{
+    .vmui-iosselect-list > li{
         float: left;
         list-style: none;
         min-height: 175px;
+        max-height: 175px;
     }
-    .vmui-select{
+    .vmui-iosselect{
         width:100%;
         background: #fff;
     }
-    .vmui-select-header{
+    .vmui-iosselect-header{
         width:100%;
         height:44px;
         box-shadow: 0 2px 3px #ddd;
     }
-    .vmui-select-header p{
+    .vmui-iosselect-header p{
         display: inline-block;
         padding:0 15px;
         line-height: 44px;
         font-size: 13px;
         margin:0;
     }
-    .vmui-select-header .cancel{
+    .vmui-iosselect-header .cancel{
         float: left;
         color:#ddd;
     }
-    .vmui-select-header .sure{
+    .vmui-iosselect-header .sure{
         float: right;
         color: #ff8447
     }
@@ -258,10 +259,10 @@
         float: left;
         height:175px;
     }
-    .vmui-select-label-list{
+    .vmui-iosselect-label-list{
         padding-left: 0;
     }
-    .vmui-select-label-list li{
+    .vmui-iosselect-label-list li{
         line-height:35px;
         height:35px;
         text-align: center;
