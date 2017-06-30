@@ -6,7 +6,7 @@
         <input type="text" @click="showIosselect" v-model="val" style="width: 100%;border: 0;line-height: 44px" placeholder="请选择">
         <iosselect :source="selectList" @confirm="onSure"  @close="close" v-if="show"></iosselect>
 
-        <scroll axis="y" :scrollbars="true" class="col" style="margin-bottom: 30px;" ref='scroll' @scroll:end="_scrollStop">
+        <scroll axis="y" :scrollbars="true" class="col" style="margin-bottom: 30px;" ref='scroll'>
             <a v-for="(i, a) of 50">scroll组件</a>
         </scroll>
     </page>
