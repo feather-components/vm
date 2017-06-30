@@ -3,7 +3,8 @@
         <topbar slot="header">iosselect组件</topbar>
         <!--<input type="text" v-iosselect="{selectList:selectList,onSure:onSure,loopEvent:loopEvent}" placeholder="请选择"-->
                <!--style="width: 100%;border: 0;line-height: 44px">-->
-        <input type="text" @click="showIosselect" v-model="val">
+        <!--<input type="text" @click="showIosselect" v-model="val">-->
+        <text-input label="单行文本" placeholder="单行" v-model="val" @click="showIosselect" />
 
         <iosselect :source="selectList" @confirm="onSure" :visible="show" @close="close"></iosselect>
     </page>
@@ -14,7 +15,8 @@
     import {
             Page,
             Topbar,
-            Iosselect
+            Iosselect,
+            TextInput
     } from 'vmui';
 
     const selectList = [
@@ -70,26 +72,14 @@
             }
         },
 
-//        directives:{
-//            Iosselect
-//        },
-
         components: {
             Page,
             Topbar,
-            Iosselect
+            Iosselect,
+            TextInput
         },
 
         methods: {
-            loopEvent(count) {
-                var a = []
-                for (var i = 0;i < count; i++ ) {
-                    let obj = {label: i, value: i}
-                    a.push(obj)
-                }
-                return a
-            },
-
             showIosselect() {
                 this.show = true
             },

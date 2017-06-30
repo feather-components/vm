@@ -1,6 +1,6 @@
 <template>
     <page>
-        <topbar slot="header">iosselect组件</topbar>
+        <topbar slot="header">Datepicker组件</topbar>
         <div class="datepicker">
             <datepicker @confirm="onSure" :inputStyle="style" placeholder="请选择时间"
                         dateFormat="yy-mm-dd"></datepicker>
