@@ -173,7 +173,6 @@
             _activeChange(pos, index, status) {
                 this._scrolling(pos, index)
                 this.$emit('change', {done:this._setList, val: this.val})
-                console.log(1313123)
                 this.$nextTick(() => {
                     this._renderList(status, index)
                 })
