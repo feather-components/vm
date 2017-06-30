@@ -1,6 +1,6 @@
 <template>
-    <vm-mask :visible="visibility">
-        <overlay :visible="visibility" class="vmui-select" position="bottom">
+    <vm-mask :visible="true">
+        <overlay :visible="true" class="vmui-select" position="bottom">
             <div class="vmui-select-body">
                 <header class="vmui-select-header">
                     <p class="cancel" @click="close()">取消</p>
@@ -8,8 +8,8 @@
                 </header>
                 <ul class="vmui-select-list">
                     <li v-for="(item, index) in selectList" :style="{width:width+'%'}">
-                        <scroll @scroll:end="_scrollStop($event,index)" @drag:end="_dragStop($event,index)"
-                                @draging="_scrolling($event,index)" :ref="'scroll' + index">
+                        <scroll @scroll:end="_activeChange($event,index, true)" @drag:end="_dragStop($event,index)"
+                                @draging="_activeChange($event,index, false)" :ref="'scroll' + index">
                             <ul class='vmui-select-label-list'>
                                 <li v-for="(it, i) in item ">
                                     {{it.label}}
@@ -167,16 +167,18 @@
 
                 this.activeIndex[index] = topi + 2
 
-                this._getVal()._renderList(false, index)
+                this._getVal()
             },
 
-            _scrollStop(pos, index) {
+            _activeChange(pos, index, status) {
                 this._scrolling(pos, index)
                 this.$emit('change', {done:this._setList, val: this.val})
+                console.log(1313123)
                 this.$nextTick(() => {
-                    this._renderList(true, index)
+                    this._renderList(status, index)
                 })
             },
+
 
             _dragStop(pos, index) {
                 this._scrolling(pos, index)

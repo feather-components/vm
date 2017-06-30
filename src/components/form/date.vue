@@ -4,7 +4,7 @@
                :placeholder="placeholder" @click="_showDatepicker"
         />
         <iosselect :source="dateList" @confirm="_onSure" :value="selectVal"
-                   @change="_setDays($event, 2)" :visible="visibility" @close="_close"></iosselect>
+                   @change="_setDays($event, 2)" v-if="visibility" @close="_close"></iosselect>
     </div>
 </template>
 <script>

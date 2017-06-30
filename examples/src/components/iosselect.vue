@@ -3,10 +3,12 @@
         <topbar slot="header">iosselect组件</topbar>
         <!--<input type="text" v-iosselect="{selectList:selectList,onSure:onSure,loopEvent:loopEvent}" placeholder="请选择"-->
                <!--style="width: 100%;border: 0;line-height: 44px">-->
-        <input type="text" @click="showIosselect" v-model="val">
-        <!--<text-input label="单行文本" placeholder="单行" v-model="val" @click="showIosselect" />-->
+        <input type="text" @click="showIosselect" v-model="val" style="width: 100%;border: 0;line-height: 44px" placeholder="请选择">
+        <iosselect :source="selectList" @confirm="onSure"  @close="close" v-if="show"></iosselect>
 
-        <iosselect :source="selectList" @confirm="onSure" :visible="show" @close="close"></iosselect>
+        <scroll axis="y" :scrollbars="true" class="col" style="margin-bottom: 30px;" ref='scroll' @scroll:end="_scrollStop">
+            <a v-for="(i, a) of 50">scroll组件</a>
+        </scroll>
     </page>
 </template>
 
@@ -16,7 +18,7 @@
             Page,
             Topbar,
             Iosselect,
-            TextInput
+            Scroll
     } from 'vmui';
 
     const selectList = [
@@ -76,7 +78,7 @@
             Page,
             Topbar,
             Iosselect,
-            TextInput
+            Scroll
         },
 
         methods: {

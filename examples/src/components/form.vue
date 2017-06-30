@@ -6,9 +6,10 @@
             <text-input label="单行文本" placeholder="单行" v-model="postData.a"  />
             <text-input label="多行文本" :multiline="true" placeholder="多行" v-model="postData.b" v-counter="{limit: 30}" />
 
-            <text-input label="单行文本" placeholder="单行" v-model="val" @click="showIosselect" />
+            <!--<text-input label="单行文本" placeholder="单行" v-model="val" @click="showIosselect" />-->
+            <input type="text" @click="showIosselect" v-model="val" style="width: 100%;border: 0;line-height: 44px" placeholder="请选择">
 
-            <iosselect :source="selectList" @confirm="onSure" :visible="show" @close="close"></iosselect>
+            <iosselect :source="selectList" @confirm="onSure" v-if="show" @close="close"></iosselect>
 
             <vm-switch label="切换开关" v-model="postData.g" />
 
