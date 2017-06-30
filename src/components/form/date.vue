@@ -1,23 +1,12 @@
 <template>
     <div>
-        <div>
-            <input type="text" class="vmui-datepicker" v-model="dateVal" :style="inputStyle" readonly
-                   :placeholder="placeholder" @click="_showDatepicker"
-            />
-            <iosselect :source="dateList" @confirm="_onSure" v-if="show" :value="selectVal" @change="_setDays($event, 2)"></iosselect>
-        </div>
+        <input type="text" class="vmui-datepicker" v-model="dateVal" :style="inputStyle" readonly
+               :placeholder="placeholder" @click="_showDatepicker"
+        />
+        <iosselect :source="dateList" @confirm="_onSure" :value="selectVal"
+                   @change="_setDays($event, 2)" :visible="visibility" @close="_close"></iosselect>
     </div>
 </template>
-<!--
- v-iosselect="{
-                    selectList:dateList,
-                    onSure:_onSure,
-                    connectEvents:[{connectDouble:[1,2],callback:_setDays}],
-                    autoFill: true,
-                    connect: connect,
-                    val: selectVal
-                    }"
--->
 <script>
     import iosselect from '../iosselect'
 
@@ -122,7 +111,7 @@
                 ],
                 dateVal: '',
                 selectVal: [CURRENT_YEAR, CURRENT_MONTH, CURRENT_DAY],
-                show: false
+                visibility: false
             }
         },
 
@@ -161,13 +150,17 @@
                         this.dateVal = va.join('/')
                 }
 
-                this.show = false
+                this.visibility = false
                 this.$emit('confirm', val)
             },
 
             _showDatepicker() {
-                this.show = true
-            }
+                this.visibility = true
+            },
+
+            _close() {
+                this.visibility = false
+            },
         }
     }
 </script>

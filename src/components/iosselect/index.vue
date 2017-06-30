@@ -1,9 +1,9 @@
 <template>
-    <vm-mask :visible="true">
-        <overlay :visible="true" class="vmui-select" position="bottom">
+    <vm-mask :visible="visibility">
+        <overlay :visible="visibility" class="vmui-select" position="bottom">
             <div class="vmui-select-body">
                 <header class="vmui-select-header">
-                    <p class="cancel" @click="_hideSelect">取消</p>
+                    <p class="cancel" @click="close()">取消</p>
                     <p class="sure" @click="_showVal">确定</p>
                 </header>
                 <ul class="vmui-select-list">
@@ -185,10 +185,6 @@
                 })
             },
 
-            _hideSelect() {
-                this.$destroy()
-            },
-
             _showVal() {
                 let val = []
 
@@ -196,8 +192,7 @@
                     val.push(v.label)
                 })
 
-                this.$emit('confirm', this.val);
-                this.$destroy()
+                this.$emit('confirm', this.val)
             },
 
             _setList(list, i) {
