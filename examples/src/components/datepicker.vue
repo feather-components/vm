@@ -2,7 +2,7 @@
     <page>
         <topbar slot="header">iosselect组件</topbar>
         <div class="datepicker">
-            <datepicker @confirm="onSure" connect="-" :inputStyle="style" placeholder="请选择时间"
+            <datepicker @confirm="onSure" :inputStyle="style" placeholder="请选择时间"
                         dateFormat="yy-mm-dd"></datepicker>
         </div>
     </page>

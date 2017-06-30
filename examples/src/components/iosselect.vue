@@ -3,8 +3,9 @@
         <topbar slot="header">iosselect组件</topbar>
         <!--<input type="text" v-iosselect="{selectList:selectList,onSure:onSure,loopEvent:loopEvent}" placeholder="请选择"-->
                <!--style="width: 100%;border: 0;line-height: 44px">-->
+        <input type="text" @click="showIosselect" v-model="val">
 
-        <iosselect :source="selectList" @confirm="onSure" v-if="show"></iosselect>
+        <iosselect :source="selectList" @confirm="onSure" :visible="show" @close="close"></iosselect>
     </page>
 </template>
 
@@ -64,7 +65,8 @@
         data () {
             return {
                 selectList: selectList,
-                show: true
+                show: false,
+                val: ''
             }
         },
 
@@ -88,9 +90,17 @@
                 return a
             },
 
+            showIosselect() {
+                this.show = true
+            },
+            close() {
+                this.show = false
+            },
+
             onSure(val) {
                 console.log(val, '发发')
                 this.show = false
+                this.val = val[0].label + '-' + val[1].label
             }
         }
     }
