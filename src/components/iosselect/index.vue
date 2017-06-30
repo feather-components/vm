@@ -3,7 +3,7 @@
         <overlay :visible="true" class="vmui-select" position="bottom">
             <div class="vmui-select-body">
                 <header class="vmui-select-header">
-                    <p class="cancel" @click="close()">取消</p>
+                    <p class="cancel" @click="_hide()">取消</p>
                     <p class="sure" @click="_showVal">确定</p>
                 </header>
                 <ul class="vmui-select-list">
@@ -200,6 +200,10 @@
             _setList(list, i) {
                 this.$set(this.selectList, i, list)
                 this._addNullForList()
+            },
+
+            _hide() {
+                this.$emit('close')
             }
         }
     }
