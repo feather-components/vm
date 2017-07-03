@@ -1,17 +1,17 @@
 <template>
-    <vm-mask :visible="true">
-        <overlay :visible="true" class="vmui-iosselect" position="bottom">
+    <vm-mask :visible="visibility">
+        <overlay :visible="visibility" class="vmui-iosselect" position="bottom">
             <div class="vmui-iosselect-body">
                 <header class="vmui-iosselect-header">
-                    <p class="cancel" @click="_hide()">取消</p>
+                    <p class="cancel" @click="close()">取消</p>
                     <p class="sure" @click="_showVal">确定</p>
                 </header>
                 <ul class="vmui-iosselect-list">
-                    <li v-for="(item, index) in selectList" :style="{width:width+'%'}">
-                        <scroll @scroll:end="_activeChange($event,index, true)" @drag:end="_dragStop($event,index)"
-                                @draging="_activeChange($event,index, false)" :ref="'scroll' + index">
+                    <li v-for="(item, index) in selectList" :style="{width: width + '%'}">
+                        <scroll @scroll:end="_activeChange($event, index, true)" @drag:end="_dragStop($event, index)"
+                                @draging="_activeChange($event, index, false)" :ref="'scroll' + index">
                             <ul class='vmui-iosselect-label-list'>
-                                <li v-for="(it, i) in item ">
+                                <li v-for="(it, i) in item">
                                     {{it.label}}
                                 </li>
                             </ul>
@@ -24,10 +24,10 @@
 </template>
 
 <script>
-    import Scroll from '../../components/scroll'
-    import Overlay from '../../components/overlay'
+    import Scroll from '../scroll';
+    import Overlay from '../overlay';
     import vmMask from '../mask';
-    const LINEHEIGHT = 35
+    const LINEHEIGHT = 35;
 
     export default {
         mixins: [Overlay],
@@ -199,10 +199,6 @@
             _setList(list, i) {
                 this.$set(this.selectList, i, list)
                 this._addNullForList()
-            },
-
-            _hide() {
-                this.$emit('close')
             }
         }
     }
