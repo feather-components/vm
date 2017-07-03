@@ -114,9 +114,11 @@
                             dateFormat="yy-mm-dd"></datepicker>
             </form-box>
 
-        </scroll>
+            <form-box>
+                <btn style="margin: 10px 0px; width: 90%;" type="drak" @click="submit">提交</btn>
+            </form-box>
 
-        <btn slot="footer" style="margin: 10px 0px; width: 90%;" type="drak" @click="submit">提交</btn>
+        </scroll>
         <iosselect :source="selectList" @confirm="onSure"  @close="close" v-if="show"></iosselect>
     </page>
 </template>
