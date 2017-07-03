@@ -5,7 +5,9 @@
                <!--style="width: 100%;border: 0;line-height: 44px">-->
         <input type="text" @click="showIosselect" v-model="val" style="width: 100%;border: 0;line-height: 44px" placeholder="请选择">
         <iosselect :source="selectList" @confirm="onSure"  @close="close" v-if="show"></iosselect>
-
+        <form-box label="2级多选">
+        <text-input label="单行文本" placeholder="单行" v-model="val"  @click="showIosselect"/>
+        </form-box>
         <scroll axis="y" :scrollbars="true" class="col" style="margin-bottom: 30px;" ref='scroll'>
             <a v-for="(i, a) of 50">scroll组件</a>
         </scroll>
@@ -18,7 +20,10 @@
             Page,
             Topbar,
             Iosselect,
-            Scroll
+            Scroll,
+            TextInput,
+            FormBox,
+            Datepicker
     } from 'vmui';
 
     const selectList = [
@@ -63,7 +68,7 @@
             {label: '13', value: 13},
             {label: '14', value: 14}
         ]
-    ];
+    ]
 
     export default{
         data () {
@@ -78,7 +83,9 @@
             Page,
             Topbar,
             Iosselect,
-            Scroll
+            Scroll,
+            TextInput,
+            FormBox
         },
 
         methods: {

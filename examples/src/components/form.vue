@@ -6,11 +6,6 @@
             <text-input label="单行文本" placeholder="单行" v-model="postData.a"  />
             <text-input label="多行文本" :multiline="true" placeholder="多行" v-model="postData.b" v-counter="{limit: 30}" />
 
-            <!--<text-input label="单行文本" placeholder="单行" v-model="val" @click="showIosselect" />-->
-            <input type="text" @click="showIosselect" v-model="val" style="width: 100%;border: 0;line-height: 44px" placeholder="请选择">
-
-            <iosselect :source="selectList" @confirm="onSure" v-if="show" @close="close"></iosselect>
-
             <vm-switch label="切换开关" v-model="postData.g" />
 
             <radios label="单选" :options="[
@@ -105,9 +100,24 @@
             <form-box label="2级多选">
                 <link-multiple-filter :source="source" style="height: 150px;"></link-multiple-filter>
             </form-box>
+
+            <form-box label="iosselect">
+                <text-input label="单行文本" placeholder="单行" v-model="val"  @click="showIosselect"/>
+            </form-box>
+
+            <form-box label="iosselect">
+                <text-input label="单行文本" placeholder="单行" v-model="val"  @click="showIosselect"/>
+            </form-box>
+
+            <form-box label="datepicker">
+                <datepicker @confirm="sureDate" :inputStyle="style" placeholder="请选择时间"
+                            dateFormat="yy-mm-dd"></datepicker>
+            </form-box>
+
         </scroll>
 
         <btn slot="footer" style="margin: 10px 0px; width: 90%;" type="drak" @click="submit">提交</btn>
+        <iosselect :source="selectList" @confirm="onSure"  @close="close" v-if="show"></iosselect>
     </page>
 </template>
 
@@ -155,7 +165,13 @@
             {label: '13', value: 13},
             {label: '14', value: 14}
         ]
-    ];
+    ]
+
+    const style = {
+        width: '100%',
+        border: 0,
+        lineHeight: '44px'
+    }
 
     import {
         Page,
@@ -175,7 +191,8 @@
         Switch,
         FormBox,
         LinkMultipleFilter,
-            Iosselect
+        Iosselect,
+        Datepicker
     } from 'vmui';
     
     import Source from '../filter.json';
@@ -195,7 +212,8 @@
             Btn: Button,
             vmSwitch: Switch,
             LinkMultipleFilter,
-            Iosselect
+            Iosselect,
+            Datepicker
         },
 
         directives: {
@@ -218,7 +236,8 @@
 
                 selectList: selectList,
                 show: false,
-                val: ''
+                val: '',
+                style: style
             };
         },
 
@@ -244,6 +263,10 @@
                 console.log(val, '发发')
                 this.show = false
                 this.val = val[0].label + '-' + val[1].label
+            },
+
+            sureDate(val) {
+                console.log(val, '发发发')
             }
         }
     }
