@@ -2,6 +2,9 @@
     <page>
         <topbar slot="header">Datepicker组件</topbar>
         <div class="datepicker">
+            <!--<input type="text" class="vmui-datepicker" v-model="dateVal" :style="inputStyle" readonly-->
+            <!--:placeholder="placeholder" @click="_showDatepicker"-->
+            <!--/>-->
             <datepicker @confirm="onSure" :inputStyle="style" placeholder="请选择时间"
                         dateFormat="yy-mm-dd"></datepicker>
         </div>

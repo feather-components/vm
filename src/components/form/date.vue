@@ -1,14 +1,13 @@
 <template>
     <div>
-        <input type="text" class="vmui-datepicker" v-model="dateVal" :style="inputStyle" readonly
-               :placeholder="placeholder" @click="_showDatepicker"
-        />
+        <text-input :label="label" placeholder="请选择" v-model="dateVal"  @click="_showDatepicker" :readonly="true" :placeholder="placeholder"/>
         <iosselect :source="dateList" @confirm="_onSure" :value="selectVal"
                    @change="_setDays($event, 2)" v-if="visibility" @close="_close"></iosselect>
     </div>
 </template>
 <script>
     import iosselect from '../iosselect'
+    import TextInput from './text'
 
     let date = new Date();
     const [
@@ -87,6 +86,11 @@
 
     export default {
         props:{
+            label:{
+                type: String,
+                default: '时间'
+            },
+
             inputStyle: {
                 type: Object
             },
@@ -116,7 +120,8 @@
         },
 
         components: {
-            iosselect
+            iosselect,
+            TextInput
         },
 
         methods: {

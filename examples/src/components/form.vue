@@ -102,11 +102,7 @@
             </form-box>
 
             <form-box label="iosselect">
-                <text-input label="单行文本" placeholder="单行" v-model="val"  @click="showIosselect"/>
-            </form-box>
-
-            <form-box label="iosselect">
-                <text-input label="单行文本" placeholder="单行" v-model="val"  @click="showIosselect"/>
+                <text-input label="单行文本" placeholder="请选择" v-model="val"  @click="showIosselect" :readonly="true"/>
             </form-box>
 
             <form-box label="datepicker">
