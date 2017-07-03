@@ -8,10 +8,14 @@
                 </header>
                 <ul class="vmui-iosselect-list">
                     <li v-for="(item, index) in selectList" :style="{width:width+'%'}">
-                        <scroll @scroll:end="_activeChange($event,index, true)" @drag:end="_dragStop($event,index)"
-                                @draging="_activeChange($event,index, false)" :ref="'scroll' + index">
+                        <scroll
+                                @scroll:end="_activeChange($event,index, true)"
+                                @drag:end="_dragStop($event,index)"
+                                @draging="_activeChange($event,index, false)"
+                                :ref="'scroll' + index"
+                        >
                             <ul class='vmui-iosselect-label-list'>
-                                <li v-for="(it, i) in item ">
+                                <li v-for="(it, i) in item " @click="_scrollTo(index, i)">
                                     {{it.label}}
                                 </li>
                             </ul>
@@ -171,10 +175,21 @@
             },
 
             _activeChange(pos, index, status) {
+                console.log(7477465747657)
                 this._scrolling(pos, index)
                 this.$emit('change', {done:this._setList, val: this.val})
                 this.$nextTick(() => {
                     this._renderList(status, index)
+                })
+            },
+
+            _scrollTo(i, d) {
+                console.log(i, 88888888888)
+                this.activeIndex[i] = d
+
+                this.$refs['scroll' + i][0].scrollTo('-' + (d  - 2) * LINEHEIGHT)
+                this.$nextTick(() => {
+                    this._renderList(false, i)
                 })
             },
 
