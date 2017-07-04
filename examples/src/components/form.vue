@@ -102,7 +102,7 @@
             </form-box>
 
             <form-box label="iosselect">
-                <text-input label="单行文本" placeholder="请选择" v-model="val"  @click="showIosselect" :readonly="true"/>
+                <text-input label="单行文本" placeholder="请选择" v-model="postData.h"  @click="showIosselect" :readonly="true"/>
             </form-box>
 
             <form-box label="datepicker">
@@ -115,7 +115,7 @@
             </form-box>
 
         </scroll>
-        <iosselect :source="selectList" @confirm="onSure"  @close="close" v-if="show"></iosselect>
+        <iosselect :source="selectList" @confirm="onSure"  @close="close" :value='postData.h' v-if="show"></iosselect>
     </page>
 </template>
 
@@ -227,7 +227,8 @@
                     d: null,
                     e: 2,
                     f: ['https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=30837642,1835949245&fm=26&gp=0.jpg', 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=4152229571,503740049&fm=11&gp=0.jpg', 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=74474160,773507576&fm=26&gp=0.jpg', 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=30837642,1835949245&fm=26&gp=0.jpg', 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=30837642,1835949245&fm=26&gp=0.jpg'],
-                    g: true
+                    g: true,
+                    h: ''
                 },
 
                 source: Source,
@@ -237,6 +238,12 @@
                 val: '',
                 style: style
             };
+        },
+
+        mounted() {
+          setInterval(() => {
+              console.log(this.postData.a)
+          }, 1000)
         },
 
         watch: {

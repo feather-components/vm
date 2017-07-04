@@ -80,6 +80,14 @@
             this._addNullForList()
         },
 
+//        watch: {
+//          val (v) {
+//              if (v != this.val) {
+//                  this.value = v
+//              }
+//          }
+//        },
+
         mounted() {
             let l = this.selectList.length
             for (let i = 0; i < l; i++) {
@@ -175,7 +183,6 @@
             },
 
             _activeChange(pos, index, status) {
-                console.log(7477465747657)
                 this._scrolling(pos, index)
                 this.$emit('change', {done:this._setList, val: this.val})
                 this.$nextTick(() => {
@@ -186,8 +193,8 @@
             _scrollTo(i, d) {
                 console.log(i, 88888888888)
                 this.activeIndex[i] = d
-
                 this.$refs['scroll' + i][0].scrollTo('-' + (d  - 2) * LINEHEIGHT)
+                this._getVal()
                 this.$nextTick(() => {
                     this._renderList(false, i)
                 })
@@ -203,12 +210,14 @@
 
             _showVal() {
                 let val = []
+                let val2 = []
 
                 this.val.forEach((v, k) => {
                     val.push(v.label)
+                    val2.push(v.value)
                 })
 
-                this.$emit('confirm', this.val)
+                this.$emit('confirm', this.val, this.val2, this.val)
             },
 
             _setList(list, i) {
