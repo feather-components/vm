@@ -1,5 +1,5 @@
 <template>
-    <vm-mask :visible="true">
+    <vm-mask :visible="true" :value="value">
         <overlay :visible="true" class="vmui-iosselect" position="bottom">
             <div class="vmui-iosselect-body">
                 <header class="vmui-iosselect-header">
@@ -53,7 +53,11 @@
                 default() {
                     return []
                 }
-            }
+            },
+
+//            va: {
+//            	type: String
+//            }
         },
 
         components: {
@@ -80,15 +84,19 @@
             this._addNullForList()
         },
 
-//        watch: {
-//          val (v) {
-//              if (v != this.val) {
-//                  this.value = v
-//              }
-//          }
-//        },
+        watch: {
+            val (v) {
+                this.$emit('input', v)
+            },
+
+            value (v) {
+            	this.val = v
+            }
+
+        },
 
         mounted() {
+        	console.log(this.value, 777)
             let l = this.selectList.length
             for (let i = 0; i < l; i++) {
                 this.activeIndex.push(2)
