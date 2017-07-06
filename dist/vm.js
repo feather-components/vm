@@ -1636,10 +1636,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
 
-    mounted() {
-        console.log(this);
-    },
-
     methods: {
         callAction(index) {
             var self = this;

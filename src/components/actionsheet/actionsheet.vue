@@ -77,11 +77,7 @@
                 visibility: true
             };
         },
-
-        mounted(){
-            console.log(this)
-        },
-
+        
         methods: {
             callAction(index){
                 var self = this;
