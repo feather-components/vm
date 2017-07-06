@@ -48,16 +48,19 @@
                 type: Array
             },
 
-            value: {
+            initValue: {
                 type: Array,
                 default() {
                     return []
                 }
             },
 
-//            va: {
-//            	type: String
-//            }
+            value: {
+            	type: Array,
+				default() {
+					return []
+				}
+            }
         },
 
         components: {
@@ -86,6 +89,7 @@
 
         watch: {
             val (v) {
+            	console.log(v, 8333)
                 this.$emit('input', v)
             },
 
@@ -96,7 +100,7 @@
         },
 
         mounted() {
-        	console.log(this.value, 777)
+        	console.log(this.initValue, 777)
             let l = this.selectList.length
             for (let i = 0; i < l; i++) {
                 this.activeIndex.push(2)
@@ -139,7 +143,7 @@
             _initValRender() {
                 let _self = this
 
-                _self.value.forEach((v, k) => {
+                _self.initValue.forEach((v, k) => {
                     _self.selectList[k].forEach((v1, k1) => {
                         if(v1.value == v) {
                             _self.activeIndex[k] = k1
@@ -219,13 +223,21 @@
             _showVal() {
                 let val = []
                 let val2 = []
+                console.log(this.val, 99993993)
 
                 this.val.forEach((v, k) => {
                     val.push(v.label)
                     val2.push(v.value)
                 })
 
-                this.$emit('confirm', this.val, this.val2, this.val)
+//               这里处理数据绑定不上的问题
+				let t = this.val
+				this.val = []
+				this.val  = t
+
+//				this.val = [1,2]
+
+                this.$emit('confirm', val, val2, this.val)
             },
 
             _setList(list, i) {

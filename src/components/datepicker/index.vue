@@ -1,13 +1,12 @@
 <template>
-    <div>
-        <text-input :label="label" placeholder="请选择" v-model="dateVal"  @click="_showDatepicker" :readonly="true" :placeholder="placeholder"/>
-        <iosselect :source="dateList" @confirm="_onSure" :value="selectVal"
-                   @change="_setDays($event, 2)" v-if="visibility" @close="_close"></iosselect>
+    <div :value="value">
+        <iosselect :source="dateList" @confirm="_onSure" :initValue="selectVal"
+                   @change="_setDays($event, 2)"  @close="_close"></iosselect>
     </div>
 </template>
 <script>
     import iosselect from '../iosselect'
-    import TextInput from './text'
+    import TextInput from '../form/text'
 
     let date = new Date();
     const [
@@ -16,8 +15,8 @@
         CURRENT_DAY
     ] = [
         date.getFullYear(),
-        date.getMonth()+1,
-        date.getDate()
+		date.getMonth()+1,
+		date.getDate()
     ]
 
     let getYears = () => {
@@ -103,6 +102,16 @@
             placeholder: {
                 type: String,
                 default: '请选择时间'
+            },
+
+			visible: {
+            	type: Boolean,
+                default: false
+            },
+
+            value: {
+            	type: String,
+                default: ''
             }
         },
 
@@ -114,8 +123,19 @@
                     DAYS
                 ],
                 dateVal: '',
-                selectVal: [CURRENT_YEAR, CURRENT_MONTH, CURRENT_DAY],
-                visibility: false
+                selectVal: [CURRENT_YEAR, CURRENT_MONTH, CURRENT_DAY]
+//                visibility: false
+            }
+        },
+
+        watch: {
+			dateVal (v) {
+				this.$emit('input', v)
+
+            },
+
+            value (v) {
+				this.dateVal = v
             }
         },
 
@@ -132,10 +152,10 @@
                 }catch (e) { return }
             },
 
-            _onSure (val) {
+            _onSure (labels, vals, valObj) {
                 let va = []
 
-                val.forEach((v, k) => {
+				valObj.forEach((v, k) => {
                     va.push(v.label)
                 })
 
@@ -144,6 +164,7 @@
                         this.dateVal = va.join('-')
                         break;
                     case 'yy-mm-dd':
+                    	console.log(va[0])
                         va[0] = va[0].toString().substr(2)
                         this.dateVal = va.join('-')
                         break;
@@ -155,16 +176,17 @@
                         this.dateVal = va.join('/')
                 }
 
-                this.visibility = false
-                this.$emit('confirm', val)
+                this.visible = false
+                this.$emit('confirm', labels, vals, valObj)
             },
 
-            _showDatepicker() {
-                this.visibility = true
-            },
+//            _showDatepicker() {
+//                this.visibility = true
+//            },
 
             _close() {
-                this.visibility = false
+                this.visible = false
+                this.$emit('close')
             },
         }
     }

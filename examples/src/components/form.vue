@@ -106,14 +106,14 @@
             </form-box>
 
             <form-box label="datepicker">
-                <datepicker @confirm="sureDate" :inputStyle="style" placeholder="请选择时间"
-                            dateFormat="yy-mm-dd"></datepicker>
+                <text-input label="单行文本" placeholder="请选择日期" v-model="dateValue"  @click="showDatepicker" :readonly="true"/>
             </form-box>
 
 
         </scroll>
         <btn style="margin: 10px 0px; width: 90%;" type="drak" @click="submit" slot="footer">提交</btn>
         <iosselect :source="selectList" @confirm="onSure"  @close="close" v-if="show" v-model="val"></iosselect>
+        <datepicker @confirm="sureDate" dateFormat="yy-mm-dd" v-if="dateShow" @close="dateClose" v-model="dateValue"></datepicker>
     </page>
 </template>
 
@@ -233,8 +233,10 @@
 
                 selectList: selectList,
                 show: false,
-                val: [],
-                style: style
+                val: null,
+                style: style,
+				dateValue: '',
+				dateShow: false
             };
         },
 
@@ -264,13 +266,27 @@
 
             onSure(val) {
                 console.log(val, '发发')
-                this.show = false
+                this.$nextTick(() => {
+					this.show = false
+                })
+
 //                this.val = val[0].label + '-' + val[1].label
-                this.val = val
+//                this.val = val
+            },
+
+			showDatepicker() {
+				this.dateShow = true
             },
 
             sureDate(val) {
                 console.log(val, '发发发')
+                this.$nextTick(() => {
+					this.dateShow = false
+                })
+            },
+
+			dateClose() {
+            	this.dateShow = false
             }
         }
     }

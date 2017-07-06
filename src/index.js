@@ -19,7 +19,7 @@ import Autosize from './directives/autosize';
 import Mask from './components/mask';
 import Overlay from './components/overlay';
 import Iosselect from './components/iosselect';
-import Datepicker from './components/form/date';
+import Datepicker from './components/datepicker';
 import Helper from './helper';
 
 import Vue from 'vue';
