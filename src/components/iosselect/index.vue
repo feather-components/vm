@@ -89,7 +89,6 @@
 
         watch: {
             val (v) {
-            	console.log(v, 8333)
                 this.$emit('input', v)
             },
 
@@ -203,7 +202,7 @@
 
             _scrollTo(i, d) {
                 this.activeIndex[i] = d
-                this.$refs['scroll' + i][0].scrollTo('-' + (d  - 2) * LINEHEIGHT)
+                this.$refs['scroll' + i][0].scrollTo('-' + (d  - 2) * LINEHEIGHT, 1000)
                 this._getVal()
                 this.$nextTick(() => {
                     this._renderList(false, i)
