@@ -78,7 +78,6 @@ class Draggable{
 
                 //if other draggable, end
                 if(self.isOtherDraggable(target, {x: rx, y: ry})){
-                    console.log('other')
                     self.touch = null;
                     Event.trigger(self.dom, 'drag:other', info);
                     return false;
