@@ -3,7 +3,7 @@
 </template>
 
 <style lang="less">
-    .vmui-button{
+    .vm-button{
         min-width: 1rem;
         text-align: center;
         font-size: .16rem;
@@ -21,11 +21,11 @@
         margin: auto;
     }
 
-    .vmui-button-main:active{
+    .vm-button-main:active{
         background: rgb(199, 83, 67);
     }
 
-    .vmui-button-main.vmui-button-border{
+    .vm-button-main.vm-button-border{
         background: #fff;
         color: rgb(249, 104, 84);
         border: 1px solid rgb(249, 104, 84);
@@ -35,7 +35,7 @@
         }
     }
 
-    .vmui-button-success{
+    .vm-button-success{
         background: rgb(98, 129, 194);
 
         &:active{
@@ -43,7 +43,7 @@
         }
     }
 
-    .vmui-button-success.vmui-button-border{
+    .vm-button-success.vm-button-border{
         color: rgb(98, 129, 194);
         background: #fff;
         border: 1px solid rgb(98, 129, 194);
@@ -53,7 +53,7 @@
         }
     }
 
-    .vmui-button-drak{
+    .vm-button-drak{
         background: #3B4263;
 
         &:active{
@@ -61,7 +61,7 @@
         }
     }
 
-    .vmui-button-drak.vmui-button-border{
+    .vm-button-drak.vm-button-border{
         background: #fff;
         border: 1px solid rgb(180, 180, 180);  
         color: rgb(85, 85, 85);
@@ -71,19 +71,19 @@
         }
     }
 
-    .vmui-button-disable{
+    .vm-button-disable{
         border: 0 !important;
         color: #fff !important;
         background: #e1e1e1 !important;
     }
 
-    .vmui-button-small{
+    .vm-button-small{
         font-size: 0.14rem;
         height: 0.32rem;
         line-height: 0.32rem;
     }
 
-    .vmui-button-square{
+    .vm-button-square{
         border-radius: 0px;
     }
 </style>
@@ -121,11 +121,11 @@
                 if(self.class) return self.class;
 
                 var {border, square, small} = self;
-                var className = ['vmui-button', 'vmui-button-' + self.type];
+                var className = ['vm-button', 'vm-button-' + self.type];
 
-                small && className.push('vmui-button-small');
-                border && className.push('vmui-button-border');
-                square && className.push('vmui-button-square');
+                small && className.push('vm-button-small');
+                border && className.push('vm-button-border');
+                square && className.push('vm-button-square');
 
                 return className;
             }

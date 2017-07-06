@@ -1,8 +1,8 @@
-.vmui-form-error{
+.vm-form-error{
     color: red;
 }
 
-.vmui-form-tag{
+.vm-form-tag{
     display: inline-block;
     min-width: 1.09rem;
     height: .28rem;
@@ -17,15 +17,15 @@
     margin-bottom: 0.08rem;
 }
 
-.vmui-form-tag:nth-child(3n){
+.vm-form-tag:nth-child(3n){
     margin-right: 0px;
 }
 
-.vmui-form-tag-selected{
+.vm-form-tag-selected{
     color: #6281c2;
     border: 1px solid #6281c2;
 }
 
-.vmui-form-radios .vmui-form-box-inner, .vmui-form-checkboxes .vmui-form-box-inner{
+.vm-form-radios .vm-form-box-inner, .vm-form-checkboxes .vm-form-box-inner{
     margin-top: 0.12rem;
 }

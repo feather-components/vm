@@ -1,16 +1,16 @@
-Vmui
+VM
 ================
-vmui是本团队在工作中总结出的一套基于vue的轻量级组件库，考虑团队和其他人使用的实际情况，实现的api调用和使用友好，form相关的都已实现双向
+vm是本团队在工作中总结出的一套基于vue的轻量级组件库，考虑团队和其他人使用的实际情况，实现的api调用和使用友好，form相关的都已实现双向
 ，且大量使用slot，提供开发者足够的拓展空间
 
-### [例子演示](//vmui.github.io)， 请在chrome控制台下切换成手机模式进行演示
+### [例子演示](//vm.github.io)， 请在chrome控制台下切换成手机模式进行演示
 
 ## 使用
 
 ###  feather2
 
 ```sh
-feather2 install feather-components/vmui
+feather2 install feather-components/vm
 ```
 
 编译vue的单文件组件
@@ -24,11 +24,11 @@ conf/conf.js
 ```js
 feather.config.set('project.fileType.js', 'vue');
 
-feather.match('components/vmui/**.vue', {
+feather.match('components/vm/**.vue', {
     parser: ['vue', 'es6-babel']
 });
 
-feather.match('components/vmui/**.js', {
+feather.match('components/vm/**.js', {
     parser: 'es6-babel'
 });
 ```
@@ -40,7 +40,7 @@ feather.match('components/vmui/**.js', {
 
 ```js
 //index.js
-import {ActionSheet} from 'vmui';
+import {ActionSheet} from 'vm';
 ActionSheet({
     'xxx': function(){}
 });
@@ -49,7 +49,7 @@ ActionSheet({
 ## 注册全局，所有的组件以 vm- 开头， 指令除外
 
 ```js
-import Vmui from 'vmui';
+import Vm from 'vm';
 import Vue from 'vue';
 
 Vue.use(Vmui);

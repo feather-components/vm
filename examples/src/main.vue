@@ -1,6 +1,6 @@
 <template>
     <page>
-        <topbar :left-enabled="false">vmui</topbar>
+        <topbar :left-enabled="false">vm</topbar>
 
         <list :source="source" class="navs">
             <template slot="row" scope="props">
@@ -42,7 +42,7 @@
         List,
         Page,
         Topbar
-    } from 'vmui';
+    } from 'vm';
 
     export default{
         components: {

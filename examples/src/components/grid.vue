@@ -18,7 +18,7 @@
         Topbar,
         Grid,
         GridItem
-    } from 'vmui';
+    } from 'vm';
 
     export default{
         components: {

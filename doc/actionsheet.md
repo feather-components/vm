@@ -4,7 +4,7 @@ ActionSheet
 ## Example
 
 ```js
-import {ActionSheet} from 'vmui';
+import {ActionSheet} from 'vm';
 
 ActionSheet({
     '拨打电话 1234512345': function(){

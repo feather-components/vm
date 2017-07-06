@@ -10,7 +10,7 @@ Radios
 
 ```js
 import Vue from 'vue';
-import {Radios} from 'vmui';
+import {Radios} from 'vm';
 
 new Vue({
     el: '#app',

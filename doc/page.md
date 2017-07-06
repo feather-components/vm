@@ -15,7 +15,7 @@ PageView组件是overlay组件的一个派生，配合scroll和2个slot可很好
 ```
 
 ```js
-import {Page, Topbar, Scroll} from 'vmui';
+import {Page, Topbar, Scroll} from 'vm';
 
 
 new Vue({

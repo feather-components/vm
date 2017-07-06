@@ -1,12 +1,12 @@
 <template>
-    <dropbox class="vmui-popover" ref="box" :offset="offset">
-        <vm-mask :visible="true" class="vmui-popover-mask" @click="$refs.box.close()" />
+    <dropbox class="vm-popover" ref="box" :offset="offset">
+        <vm-mask :visible="true" class="vm-popover-mask" @click="$refs.box.close()" />
 
-        <div class="vmui-popover-inner" ref="inner">
-            <i class="vmui-popover-arrow" ref="arrow"></i>
+        <div class="vm-popover-inner" ref="inner">
+            <i class="vm-popover-arrow" ref="arrow"></i>
             <a 
                 href="javascript:void(0);" 
-                :class="['vmui-popover-item', action.className]" 
+                :class="['vm-popover-item', action.className]" 
                 v-for="(action, label) of actions" 
                 @click.stop="callAction(label)"
             >
@@ -18,21 +18,21 @@
 </template>
 
 <style lang="less">
-    .vmui-popover{
+    .vm-popover{
         line-height: normal;
         height: 100%;
 
-        &.vmui-mask{
+        &.vm-mask{
             background: transparent;
         }
 
-        .vmui-overlay{
+        .vm-overlay{
             background: transparent;
             width: auto;
         }
 
-        .vmui-dropbox-bottom{
-            .vmui-popover-arrow{
+        .vm-dropbox-bottom{
+            .vm-popover-arrow{
                 border-bottom-color: transparent;
                 border-top-color: #28304E; 
                 top: 100%;
@@ -41,11 +41,11 @@
         }
     }
 
-    .vmui-popover-mask{
+    .vm-popover-mask{
         width: 100% !important;
     }
 
-    .vmui-popover-inner{
+    .vm-popover-inner{
         border-radius: 3px;
         background: #28304E;
         padding: 0px .08rem;
@@ -54,7 +54,7 @@
         z-index: 100000;
     }
 
-    .vmui-popover-item{
+    .vm-popover-item{
         display: block;
         text-decoration: none;
         color: #fff;
@@ -75,7 +75,7 @@
         }
     }
 
-    .vmui-popover-arrow{
+    .vm-popover-arrow{
         position: absolute;
         content: "";  
         border: 8px solid transparent;  

@@ -51,7 +51,7 @@
         Topbar,
         Popover,
         Toast
-    } from 'vmui';
+    } from 'vm';
     import 'ionicons/dist/css/ionicons.css';
 
     export default{

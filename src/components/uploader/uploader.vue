@@ -1,12 +1,12 @@
 <template>
-    <a href="javascript:" class="vmui-uploader">
-        <slot><i class="vmui-uploader-icon"></i></slot>
-        <input type="file" class="vmui-uploader-input" @click="$emit('click')" @change="onSelect" ref="uploader" :multiple="multiple" />
+    <a href="javascript:" class="vm-uploader">
+        <slot><i class="vm-uploader-icon"></i></slot>
+        <input type="file" class="vm-uploader-input" @click="$emit('click')" @change="onSelect" ref="uploader" :multiple="multiple" />
     </a>
 </template>
 
 <style lang="less">
-    .vmui-uploader{
+    .vm-uploader{
         display: inline-block;
         width: 100%;
         min-height: 0.8rem;
@@ -36,7 +36,7 @@
         }
     }
 
-    .vmui-uploader-input{
+    .vm-uploader-input{
         display: block;
         opacity: 0;
         width: 100%;

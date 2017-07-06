@@ -125,7 +125,7 @@
         Switch,
         FormBox,
         LinkMultipleFilter
-    } from 'vmui';
+    } from 'vm';
     
     import Source from '../filter.json';
 

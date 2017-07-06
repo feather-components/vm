@@ -1,21 +1,21 @@
 <template>
-    <overlay :visible="visibility" :fx="fx" :position="position" ref="overlay" class="vmui-page" :style="{paddingTop: top}">
-        <div class="vmui-page-header" ref="header">
+    <overlay :visible="visibility" :fx="fx" :position="position" ref="overlay" class="vm-page" :style="{paddingTop: top}">
+        <div class="vm-page-header" ref="header">
             <slot name="header"></slot>
         </div>
 
-        <div class="vmui-page-content">
+        <div class="vm-page-content">
             <slot></slot>
         </div>
 
-        <div class="vmui-page-footer" ref="footer">
+        <div class="vm-page-footer" ref="footer">
             <slot name="footer"></slot>
         </div>
     </overlay>
 </template>
 
 <style>
-    .vmui-page{
+    .vm-page{
         width: 100%;
         height: 100%;
         background: #fff;
@@ -23,11 +23,11 @@
         flex-direction: column;
     }
 
-    .vmui-page-content{
+    .vm-page-content{
         flex: 1;
     }
 
-    .vmui-page-footer{
+    .vm-page-footer{
         width: 100%;
         text-align: center;
     }

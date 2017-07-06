@@ -14,7 +14,7 @@
         Topbar,
         Toast,
         Button as Btn
-    } from 'vmui';
+    } from 'vm';
 
     export default{
         components: {

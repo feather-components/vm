@@ -1,6 +1,6 @@
 {
-  "name": "vmui",
-  "version": "0.2.26",
+  "name": "vm",
+  "version": "1.0.0",
   "description": "基于vue2的ui组件库",
   "main": "src/index.js",
   "author": "zhanghao <jsyczhanghao@sina.com>",

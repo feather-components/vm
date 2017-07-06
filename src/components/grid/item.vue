@@ -1,11 +1,11 @@
 <template>
-    <li class="vmui-grid-item">
+    <li class="vm-grid-item">
         <slot></slot>
     </li>
 </template>
 
 <style>
-    .vmui-grid-item{
+    .vm-grid-item{
         word-break: break-all;
         box-sizing: border-box;
     }

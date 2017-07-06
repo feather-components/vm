@@ -44,7 +44,7 @@
         Searchbar,
         Search,
         List
-    } from 'vmui';
+    } from 'vm';
 
     export default{
         components: {

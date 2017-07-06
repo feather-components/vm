@@ -32,7 +32,7 @@
         Topbar,
         Search,
         Toast
-    } from 'vmui';
+    } from 'vm';
 
     export default{
         components: {

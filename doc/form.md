@@ -12,7 +12,7 @@ form相关组件都是基于FormBox组件进行的封装，且可以通过v-mode
 * [Box](./box.md)
 
 ```js
-import {TextInput, Select, Radios, ...} from 'vmui/src/components/form';
+import {TextInput, Select, Radios, ...} from 'vm/src/components/form';
 ```
 ### 指令
 

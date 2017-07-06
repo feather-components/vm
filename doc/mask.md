@@ -11,7 +11,7 @@ Mask
 ```
 
 ```js
-import {Mask, Overlay} from 'vmui';
+import {Mask, Overlay} from 'vm';
 import Vue from 'vue';
 
 Vue.use(Mask);

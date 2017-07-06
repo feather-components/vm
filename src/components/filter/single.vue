@@ -1,11 +1,11 @@
 <template>
-    <div class="vmui-filter">
+    <div class="vm-filter">
         <a href="javascript:" v-for="(item, key) of data" v-html="itemFormatter(item)" @click="click(item)" :class="getItemClass(item)"></a>
     </div>
 </template>
 
 <style>
-    .vmui-filter-item{
+    .vm-filter-item{
         height: .44rem;
         text-decoration: none;
         display: block;
@@ -19,11 +19,11 @@
         padding: 0px 15px;
     }
 
-    .vmui-filter-item:last-child{
+    .vm-filter-item:last-child{
         border-bottom: 0px;
     }
     
-    .vmui-filter-selected{
+    .vm-filter-selected{
         color: #6281C2;
     }
 </style>
@@ -47,7 +47,7 @@
 
             selectedClassName: {
                 type: String,
-                default: 'vmui-filter-selected'
+                default: 'vm-filter-selected'
             },
 
             value: {
@@ -125,10 +125,10 @@
 
             getItemClass(item){
                 var self = this;
-                var className = ['vmui-filter-item'];
+                var className = ['vm-filter-item'];
 
                 if(item.value == self.val){
-                    className.push('vmui-filter-selected');
+                    className.push('vm-filter-selected');
                     self.selectedClassName && className.push(self.selectedClassName);
                 }
 

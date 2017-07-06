@@ -1,7 +1,7 @@
 <style lang="less">
     @h: 0.44rem;
 
-    .vmui-topbar{
+    .vm-topbar{
         background: #28304E;
         width: 100%;
         height: @h;
@@ -12,14 +12,14 @@
         font-size: 0.16rem;
     }
 
-    .vmui-topbar-btn-back{
+    .vm-topbar-btn-back{
         background: url(./arrow_back_white@2x.png?__inline) no-repeat center center;
         width: @h;
         height: @h;
         display: inline-block;
     }
 
-    .vmui-topbar-left, .vmui-topbar-right{
+    .vm-topbar-left, .vm-topbar-right{
         position: absolute;
         bottom: 0px;
         height: @h;
@@ -36,24 +36,24 @@
         }
     }
 
-    .vmui-topbar-right{
+    .vm-topbar-right{
         right: 0px;
     }
 
-    .vmui-topbar-left{
+    .vm-topbar-left{
         left: 0px;
     }
 </style>
 
 <template>
-    <div class="vmui-topbar" :style="{paddingTop: top}">
-        <div class="vmui-topbar-left" v-if="leftEnabled">
+    <div class="vm-topbar" :style="{paddingTop: top}">
+        <div class="vm-topbar-left" v-if="leftEnabled">
             <slot name="left">
-                <a href="javascript:" class="vmui-topbar-btn-back" @click="leftCallback && leftCallback()"></a>
+                <a href="javascript:" class="vm-topbar-btn-back" @click="leftCallback && leftCallback()"></a>
             </slot>
         </div>
         <slot>无标题页面</slot>
-        <div class="vmui-topbar-right" v-if="rightEnabled"><slot name="right"></slot></div>
+        <div class="vm-topbar-right" v-if="rightEnabled"><slot name="right"></slot></div>
     </div>
 </template>
 

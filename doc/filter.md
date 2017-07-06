@@ -12,5 +12,5 @@ filter组件集合中包含了4个组件：
 ### 4个组件均以实现双向绑定，开发者可通过v-model进行数据绑定
 
 ```js
-import {Single, Link, Multiple, LinkMultiple} from 'vmui/src/components/filter';
+import {Single, Link, Multiple, LinkMultiple} from 'vm/src/components/filter';
 ```

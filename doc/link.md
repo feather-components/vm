@@ -16,7 +16,7 @@ LinkFilter
 ```
 
 ```js
-import {LinkFilter} from 'vmui';
+import {LinkFilter} from 'vm';
 import Vue from 'vue';
 
 new Vue({

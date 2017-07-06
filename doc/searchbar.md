@@ -21,7 +21,7 @@ SearchBar
 </div>
 
 <script>
-import {SearchBar} from 'vmui';
+import {SearchBar} from 'vm';
 
 new Vue({
     el: '#search-bar',

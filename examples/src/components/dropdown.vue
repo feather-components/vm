@@ -25,7 +25,7 @@
         Topbar,
         Dropdown,
         Scroll
-    } from 'vmui';
+    } from 'vm';
 
     export default{
         components: {

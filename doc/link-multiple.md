@@ -5,7 +5,7 @@ LinkMultipleFilter
 ### Example
 
 ```js
-import {LinkMultipleFilter} from 'vmui';
+import {LinkMultipleFilter} from 'vm';
 ```
 
 ### Props

@@ -1,13 +1,13 @@
 <template>
-    <v-box :label="label" class="vmui-form-images">
+    <v-box :label="label" class="vm-form-images">
         <grid>
             <grid-item v-for="(item, index) of val">
-                <div class="vmui-form-images-item">
+                <div class="vm-form-images-item">
                     <template name="item">
                         <img :src="item" />
                     </template>
 
-                    <a href="javascript:" class="vmui-form-images-del" v-if="delEnabled" @click="del(index)">&times;</a>
+                    <a href="javascript:" class="vm-form-images-del" v-if="delEnabled" @click="del(index)">&times;</a>
                 </div>
             </grid-item>
 
@@ -29,25 +29,25 @@
 </template>
 
 <style lang="less">
-.vmui-form-images{
-    .vmui-grid{
+.vm-form-images{
+    .vm-grid{
         margin-top: 0.12rem;
         margin-bottom: 0.05rem;
     }
 
-    .vmui-grid-item{
+    .vm-grid-item{
         width: 1.09rem;
         height: 0.8rem;
         margin-left: 0.08rem;
         margin-bottom: 0.08rem;
     }
 
-    .vmui-grid-item:nth-child(3n + 1){
+    .vm-grid-item:nth-child(3n + 1){
         margin-left: 0px;
     }
 }
 
-.vmui-form-images-item{
+.vm-form-images-item{
     background: rgba(0, 0, 0, 0.7);
     position: relative;
     width: 1.09rem;
@@ -57,12 +57,12 @@
     vertical-align: middle;
 }
 
-.vmui-form-images-item img{
+.vm-form-images-item img{
     max-width: 100%;
     max-height: 100%;
 }
 
-.vmui-form-images-del{
+.vm-form-images-del{
     position: absolute;
     left: 0px;
     top: 0px;

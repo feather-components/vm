@@ -1,5 +1,5 @@
 <template>
-    <transition :name="transition || (fx ? 'vmui-fx-' + (position || 'center') : '')">
+    <transition :name="transition || (fx ? 'vm-fx-' + (position || 'center') : '')">
         <div :class="className" v-show="visibility" @click="$emit('click')">
             <slot></slot>
         </div>
@@ -50,10 +50,10 @@
         computed: {
             className(){
                 var self = this;
-                var c = ['vmui-overlay'];
+                var c = ['vm-overlay'];
 
                 if(self.position){
-                    c.push('vmui-overlay-' + self.position);
+                    c.push('vm-overlay-' + self.position);
                 }
 
                 c.push(self.class || '');
@@ -97,9 +97,9 @@
                 self.close();
 
                 if(fx){
-                    Event.on(self.$el, 'transitionend webkitTransitionEnd', () => {
+                    Event.on(self.$el, 'webkitTransitionEnd', () => {
                         self._destroy();
-                    })
+                    });
                 }else{
                     self._destroy();
                 }
@@ -117,74 +117,74 @@
 </script>
 
 <style>
-    .vmui-overlay{
+    .vm-overlay{
         position: fixed;
         z-index: 10000;
         background: #fff;
         overflow: hidden;
     }
 
-    .vmui-overlay-center{
+    .vm-overlay-center{
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
     }
 
-    .vmui-overlay-left, .vmui-overlay-top{
+    .vm-overlay-left, .vm-overlay-top{
         left: 0px;
         top: 0px;
     }
 
-    .vmui-overlay-left, .vmui-overlay-right{
+    .vm-overlay-left, .vm-overlay-right{
         height: 100%;
     }
 
-    .vmui-overlay-top, .vmui-overlay-bottom{
+    .vm-overlay-top, .vm-overlay-bottom{
         width: 100%;
     }
 
-    .vmui-overlay-bottom{
+    .vm-overlay-bottom{
         bottom: 0px;
         left: 0px;
     }
 
-    .vmui-overlay-right{
+    .vm-overlay-right{
         right: 0px;
         top: 0px;
     }
 
-    .vmui-fx-enter-active, .vmui-fx-leave-active,
-    .vmui-fx-center-enter-active, .vmui-fx-center-leave-active,
-    .vmui-fx-left-enter-active, .vmui-fx-left-leave-active,
-    .vmui-fx-right-enter-active, .vmui-fx-right-leave-active,
-    .vmui-fx-bottom-enter-active, .vmui-fx-bottom-leave-active,
-    .vmui-fx-top-enter-active, .vmui-fx-top-leave-active
+    .vm-fx-enter-active, .vm-fx-leave-active,
+    .vm-fx-center-enter-active, .vm-fx-center-leave-active,
+    .vm-fx-left-enter-active, .vm-fx-left-leave-active,
+    .vm-fx-right-enter-active, .vm-fx-right-leave-active,
+    .vm-fx-bottom-enter-active, .vm-fx-bottom-leave-active,
+    .vm-fx-top-enter-active, .vm-fx-top-leave-active
     {
         transition: transform .3s ease, opacity .3s ease;
     }
 
-    .vmui-fx-enter, .vmui-fx-leave-active,
-    .vmui-fx-center-enter, .vmui-fx-center-leave-active
+    .vm-fx-enter, .vm-fx-leave-active,
+    .vm-fx-center-enter, .vm-fx-center-leave-active
     {
         opacity: 0;
     }
 
-    .vmui-fx-left-enter, .vmui-fx-left-leave-active
+    .vm-fx-left-enter, .vm-fx-left-leave-active
     {
         transform: translateX(-100%);
     }
 
-    .vmui-fx-right-enter, .vmui-fx-right-leave-active
+    .vm-fx-right-enter, .vm-fx-right-leave-active
     {
         transform: translateX(100%);
     }
 
-    .vmui-fx-bottom-enter, .vmui-fx-bottom-leave-active
+    .vm-fx-bottom-enter, .vm-fx-bottom-leave-active
     {
         transform: translateY(100%);
     }
 
-    .vmui-fx-top-enter, .vmui-fx-top-leave-active
+    .vm-fx-top-enter, .vm-fx-top-leave-active
     {
         transform: translateY(-100%);
     }

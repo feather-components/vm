@@ -35,7 +35,7 @@
         Topbar,
         Toast,
         Uploader
-    } from 'vmui';
+    } from 'vm';
 
     export default{
         components: {

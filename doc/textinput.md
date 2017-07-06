@@ -10,7 +10,7 @@ TextInput
 
 ```js
 import Vue from 'vue';
-import {TextInput} from 'vmui';
+import {TextInput} from 'vm';
 
 new Vue({
     el: '#app',

@@ -1,15 +1,15 @@
 <template>
-    <form :class="'vmui-searchbar vmui-searchbar-' + theme" @submit.prevent="submit()">
-        <div class="vmui-searchbar-inner">
-            <i class="vmui-searchbar-icon"></i>
+    <form :class="'vm-searchbar vm-searchbar-' + theme" @submit.prevent="submit()">
+        <div class="vm-searchbar-inner">
+            <i class="vm-searchbar-icon"></i>
             <input :type="searchButtonEnabled ? 'search': 'text'" :placeholder="placeholder" :maxlength="maxlength" @input.trim="input" :value="val" ref="input" @focus="$emit('focus')"  @click="$emit('click')" :readonly="readonly" />
-            <a href="javascript:" class="vmui-searchbar-clear" @click="clear()" v-show="val">&times;</a>
+            <a href="javascript:" class="vm-searchbar-clear" @click="clear()" v-show="val">&times;</a>
         </div>
     </form>
 </template>
 
 <style lang="less">
-    .vmui-searchbar{
+    .vm-searchbar{
         height: .32rem;
         padding: .06rem 0px;
         line-height: .32rem;
@@ -20,7 +20,7 @@
         }
     }
 
-    .vmui-searchbar-inner{
+    .vm-searchbar-inner{
         height: .32rem;
         border-radius: 100px;
         margin: 0px 0.16rem;
@@ -48,7 +48,7 @@
         }
     }
 
-    .vmui-searchbar-icon{
+    .vm-searchbar-icon{
         position: absolute;
         background: url(./search_blue@2x.png?__inline) center center no-repeat;
         background-size: 100%;
@@ -58,7 +58,7 @@
         display: inline-block;
     }
 
-    .vmui-searchbar-clear{
+    .vm-searchbar-clear{
         position: absolute;
         text-decoration: none;
         text-align: center;
@@ -75,14 +75,14 @@
         font-family: arial;
     }
 
-    .vmui-searchbar-blue{
+    .vm-searchbar-blue{
         background: #28304E;
 
         input{
             color: #fff;
         }
 
-        .vmui-searchbar-clear{
+        .vm-searchbar-clear{
             color: #fff;
             border: 1px solid #fff;
         }
@@ -91,7 +91,7 @@
             color: #ccc;
         }
 
-        .vmui-searchbar-icon{
+        .vm-searchbar-icon{
             background: url(./search_white@2x.png?__inline) center center no-repeat;
         }
     }

@@ -1,21 +1,21 @@
 <template>
-    <div class="vmui-filters vmui-filters-lm" v-if="filters.length" v-autosize>
-        <scroll class="vmui-filters-item vmui-filters-lml">
+    <div class="vm-filters vm-filters-lm" v-if="filters.length" v-autosize>
+        <scroll class="vm-filters-item vm-filters-lml">
             <single :source="filters[0]" @item:click="click" :item-formatter="getItemFormatter()" ref="left" />
         </scroll>
         
-        <scroll class="vmui-filters-item">
-            <multiple :source="filters[1]" ref="right" selected-class-name="vmui-filter-tick" :size="perSize" @change="change" :can-select="canSelect" @reject="$emit('reject')" />
+        <scroll class="vm-filters-item">
+            <multiple :source="filters[1]" ref="right" selected-class-name="vm-filter-tick" :size="perSize" @change="change" :can-select="canSelect" @reject="$emit('reject')" />
         </scroll>
     </div>
 </template>
 
 <style>
-    .vmui-filters-lm .vmui-filter .vmui-filter-item{
+    .vm-filters-lm .vm-filter .vm-filter-item{
         text-align: left;
     }
 
-    .vmui-filters-lml{
+    .vm-filters-lml{
         -webkit-box-flex: 2 !important;
     }
 </style>
@@ -116,7 +116,7 @@
                 if(self.perInfinite || self.perMaxSize == 1){
                     return (item) => {
                         if(item.value in self.val){
-                            return `<span class="vmui-filter-tick">${item.label}</span>`;
+                            return `<span class="vm-filter-tick">${item.label}</span>`;
                         }else{
                             return item.label;
                         }
@@ -124,7 +124,7 @@
                 }else{
                     return (item) => {
                         var len = (self.val[item.value] || []).length;
-                        return `${item.label}<span class="vmui-filters-ln">(${len}/${self.perMaxSize})</span>`;
+                        return `${item.label}<span class="vm-filters-ln">(${len}/${self.perMaxSize})</span>`;
                     }
                 }
             },

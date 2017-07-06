@@ -31,7 +31,7 @@ Alert('abc', /*options参数, */ function(){
 ## Example
 
 ```js
-import {Alert} from 'vmui';
+import {Alert} from 'vm';
 
 Alert('1233', () => {
     //2个按钮
@@ -54,7 +54,7 @@ Alert('1233', () => {
 ## Alert.confirm confirm模拟框
 
 ```js
-import {Alert} from 'vmui';
+import {Alert} from 'vm';
 
 Alert.confirm('123');
 ```

@@ -10,7 +10,7 @@ Select
 
 ```js
 import Vue from 'vue';
-import {Select as vSelect} from 'vmui';
+import {Select as vSelect} from 'vm';
 
 new Vue({
     el: '#app',

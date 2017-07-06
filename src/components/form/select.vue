@@ -1,21 +1,21 @@
 <template>
-    <v-box :label="label" class="vmui-form-select-box" @icon:click="$emit('click')" :vertical-layout="false">
-        <select class="vmui-form-select" :name="name" v-model="val" @click="$emit('click')">
+    <v-box :label="label" class="vm-form-select-box" @icon:click="$emit('click')" :vertical-layout="false">
+        <select class="vm-form-select" :name="name" v-model="val" @click="$emit('click')">
             <option v-for="(option, index) in options" :value="option.value" selected>{{option.label}}</option>
         </select> 
 
-        <span v-if="!val" class="vmui-form-select-placeholder">{{placeholder}}</span> 
+        <span v-if="!val" class="vm-form-select-placeholder">{{placeholder}}</span> 
 
-        <i class="vmui-form-select-more"></i>   
+        <i class="vm-form-select-more"></i>   
     </v-box>
 </template>
 
 <style lang="less">
-    .vmui-form-select-box .vmui-form-box-inner{
+    .vm-form-select-box .vm-form-box-inner{
         position: relative;
     }
 
-    .vmui-form-select-more{
+    .vm-form-select-more{
         background: url(./arrow_forward_gray.png?__inline);
         background-size: 100%;
         width: 0.2rem;
@@ -23,7 +23,7 @@
         height: 0.2rem;
     }
 
-    .vmui-form-select{
+    .vm-form-select{
         height: 0.24rem;
         color: #222222;
         border: 0;
@@ -34,7 +34,7 @@
         width: 80%;
     }
 
-    .vmui-form-select-placeholder{
+    .vm-form-select-placeholder{
         right: 0.2rem;
         top: 0rem;
         height: 0.24rem;

@@ -2,53 +2,53 @@
     <scroll 
         ref="scroll" 
         :scrollbars="true"
-        class="vmui-list"
+        class="vm-list"
         @drag:limit="onDragLimit"
         @drag:normal="onDragNormal"
         @scroll:limit="onScrollLimit"
     >
-        <div class="vmui-list-pull" v-if="pulldown2refresh" ref="pd" slot="pulldown">
+        <div class="vm-list-pull" v-if="pulldown2refresh" ref="pd" slot="pulldown">
             <slot name="pulldown-msg" v-if="!isRefreshing && !intop">下拉刷新数据</slot>
             <slot name="pullleave-msg" v-if="!isRefreshing && intop">松手刷新数据</slot>
-            <slot name="refresh-msg" v-if="isRefreshing"><i class="vmui-list-loading-icon"></i>正在刷新数据</slot>
+            <slot name="refresh-msg" v-if="isRefreshing"><i class="vm-list-loading-icon"></i>正在刷新数据</slot>
         </div>
 
-        <div class="vmui-list-header">
+        <div class="vm-list-header">
             <slot name="header"></slot>
         </div>
 
-        <ul class="vmui-list-rows" ref="rows">
-            <li v-for="(item, index) in rows" @click="$emit('row:click', item, index)" class="vmui-list-item">
+        <ul class="vm-list-rows" ref="rows">
+            <li v-for="(item, index) in rows" @click="$emit('row:click', item, index)" class="vm-list-item">
                 <slot name="row" :data="item">{{item}}</slot>
             </li>
         </ul>
 
-        <div class="vmui-list-loading" v-if="showLoadingStatus">
-            <slot name="loading"><i class="vmui-list-loading-icon"></i>正在加载中</slot>
+        <div class="vm-list-loading" v-if="showLoadingStatus">
+            <slot name="loading"><i class="vm-list-loading-icon"></i>正在加载中</slot>
         </div>
 
         <template v-if="showMsg">
-            <div class="vmui-list-error" v-if="showErrorStatus">
+            <div class="vm-list-error" v-if="showErrorStatus">
                 <slot name="error">网络异常，加载失败</slot>
             </div>
 
-            <div class="vmui-list-nomore" v-if="showNoMoreStatus" ref="nomore">
+            <div class="vm-list-nomore" v-if="showNoMoreStatus" ref="nomore">
                 <slot name="nomore">~没有更多了~</slot>
             </div>
 
-            <div class="vmui-list-empty" v-if="showEmptyStatus">
-                <slot name="nores"><i class="vmui-list-nores-icon"></i><br />没有任何结果~</slot>
+            <div class="vm-list-empty" v-if="showEmptyStatus">
+                <slot name="nores"><i class="vm-list-nores-icon"></i><br />没有任何结果~</slot>
             </div>
         </template>
     </scroll>
 </template>
 
 <style>
-    .vmui-list{
+    .vm-list{
         font-size: 0.16rem;
     }
 
-    .vmui-list-pull, .vmui-list-loading, .vmui-list-error, .vmui-list-nomore, .vmui-list-empty{
+    .vm-list-pull, .vm-list-loading, .vm-list-error, .vm-list-nomore, .vm-list-empty{
         text-align: center;
         padding: 0.05rem;
         color: #878787;
@@ -56,7 +56,7 @@
         font-size: 0.12rem;
     }
 
-    .vmui-list-loading-icon{
+    .vm-list-loading-icon{
         display: inline-block;
         width: 0.16rem;
         height: 0.16rem;
@@ -67,7 +67,7 @@
         -webkit-transform: translateY(0.03rem);
     }
 
-    .vmui-list-rows{
+    .vm-list-rows{
         padding: 0px;
         margin: 0px;
         list-style: none;
@@ -78,11 +78,11 @@
         }
     }
 
-    .vmui-list-nores{
+    .vm-list-nores{
         margin-top: 0.2rem;
     }
 
-    .vmui-list-nores-icon{
+    .vm-list-nores-icon{
         background: url(./empty.png?__inline);
         width: 1.3rem;
         height: 1.3rem;
