@@ -1618,9 +1618,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     props: {
         actions: {
-            type: Array,
+            type: [Object, Array],
             default() {
-                return [];
+                return {};
             }
         }
     },
@@ -1636,9 +1636,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
 
+    mounted() {
+        console.log(this);
+    },
+
     methods: {
         callAction(index) {
-            var self;
+            var self = this;
             var action = self.actions[index];
 
             if (typeof action == 'function') {

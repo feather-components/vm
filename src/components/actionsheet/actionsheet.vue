@@ -60,9 +60,9 @@
 
         props: {
             actions: {
-                type: Array,
+                type: [Object, Array],
                 default(){
-                    return []
+                    return {}
                 }
             }
         },
@@ -78,9 +78,13 @@
             };
         },
 
+        mounted(){
+            console.log(this)
+        },
+
         methods: {
             callAction(index){
-                var self;
+                var self = this;
                 var action = self.actions[index];
 
                 if(typeof action == 'function'){
