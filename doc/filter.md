@@ -13,4 +13,6 @@ filter组件集合中包含了4个组件：
 
 ```js
 import {Single, Link, Multiple, LinkMultiple} from 'vm/src/components/filter';
+//or
+import {SingleFilter, LinkFilter, MultipleFilter, LinkMultipleFilter} from 'vm';
 ```
