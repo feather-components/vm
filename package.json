@@ -1,6 +1,6 @@
 {
   "name": "vm",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "基于vue2的ui组件库",
   "main": "src/index.js",
   "scripts": {

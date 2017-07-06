@@ -4218,7 +4218,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             self.close();
 
             if (fx) {
-                __WEBPACK_IMPORTED_MODULE_0__helper__["c" /* Event */].on(self.$el, 'webkitTransitionEnd', () => {
+                __WEBPACK_IMPORTED_MODULE_0__helper__["c" /* Event */].on(self.$el, 'transitionend webkitTransitionEnd', () => {
                     self._destroy();
                 });
             } else {
@@ -4229,7 +4229,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         _destroy() {
             var self = this;
 
-            self.$el.parentNode.removeChild(self.$el);
+            self.$el.parentNode && self.$el.parentNode.removeChild(self.$el);
             self.$emit('destroy');
             self.destroyed = true;
         }

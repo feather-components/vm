@@ -97,7 +97,7 @@
                 self.close();
 
                 if(fx){
-                    Event.on(self.$el, 'webkitTransitionEnd', () => {
+                    Event.on(self.$el, 'transitionend webkitTransitionEnd', () => {
                         self._destroy();
                     });
                 }else{
@@ -107,8 +107,8 @@
 
             _destroy(){
                 var self = this;
-                
-                self.$el.parentNode.removeChild(self.$el);
+
+                self.$el.parentNode && self.$el.parentNode.removeChild(self.$el);
                 self.$emit('destroy');
                 self.destroyed = true;
             }
