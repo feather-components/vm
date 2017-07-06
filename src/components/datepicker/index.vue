@@ -104,11 +104,6 @@
                 default: '请选择时间'
             },
 
-			visible: {
-            	type: Boolean,
-                default: false
-            },
-
             value: {
             	type: String,
                 default: ''
@@ -124,7 +119,6 @@
                 ],
                 dateVal: '',
                 selectVal: [CURRENT_YEAR, CURRENT_MONTH, CURRENT_DAY]
-//                visibility: false
             }
         },
 
@@ -164,7 +158,6 @@
                         this.dateVal = va.join('-')
                         break;
                     case 'yy-mm-dd':
-                    	console.log(va[0])
                         va[0] = va[0].toString().substr(2)
                         this.dateVal = va.join('-')
                         break;
@@ -176,16 +169,10 @@
                         this.dateVal = va.join('/')
                 }
 
-                this.visible = false
                 this.$emit('confirm', labels, vals, valObj)
             },
 
-//            _showDatepicker() {
-//                this.visibility = true
-//            },
-
             _close() {
-                this.visible = false
                 this.$emit('close')
             },
         }

@@ -100,7 +100,6 @@
         },
 
         mounted() {
-        	console.log(this.initValue, 777)
             let l = this.selectList.length
             for (let i = 0; i < l; i++) {
                 this.activeIndex.push(2)
@@ -203,7 +202,6 @@
             },
 
             _scrollTo(i, d) {
-                console.log(i, 88888888888)
                 this.activeIndex[i] = d
                 this.$refs['scroll' + i][0].scrollTo('-' + (d  - 2) * LINEHEIGHT)
                 this._getVal()
@@ -223,19 +221,16 @@
             _showVal() {
                 let val = []
                 let val2 = []
-                console.log(this.val, 99993993)
 
                 this.val.forEach((v, k) => {
                     val.push(v.label)
                     val2.push(v.value)
                 })
 
-//               这里处理数据绑定不上的问题
+//               这里处理双向数据绑定不上的问题
 				let t = this.val
 				this.val = []
 				this.val  = t
-
-//				this.val = [1,2]
 
                 this.$emit('confirm', val, val2, this.val)
             },
