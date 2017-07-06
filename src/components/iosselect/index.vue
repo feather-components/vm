@@ -202,7 +202,7 @@
 
             _scrollTo(i, d) {
                 this.activeIndex[i] = d
-                this.$refs['scroll' + i][0].scrollTo('-' + (d  - 2) * LINEHEIGHT, 1000)
+                this.$refs['scroll' + i][0].scrollTo('-' + (d  - 2) * LINEHEIGHT, 300)
                 this._getVal()
                 this.$nextTick(() => {
                     this._renderList(false, i)

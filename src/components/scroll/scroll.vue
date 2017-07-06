@@ -268,7 +268,7 @@
                         self.scrollTo(end);
                         self.scrollEnd(); 
                     }else{
-                        self.scrollTo(start + self.ease((now - startTime) / duration) * range);
+                        self.scrollTo(parseInt(start) + self.ease((now - startTime) / duration) * range);
                         self.fxer = Util.rfa(step);
                     }
                 }
