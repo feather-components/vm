@@ -118,6 +118,29 @@
 </template>
 
 <script>
+	import {
+		Page,
+		Topbar,
+		TextInput,
+		Radios,
+		Checkboxes,
+		Select,
+		Images,
+		Button,
+		Scroll,
+		Toast,
+		Counter,
+		SingleFilter,
+		SearchBar,
+		Searchbar,
+		Switch,
+		FormBox,
+		LinkMultipleFilter,
+		Iosselect,
+		Datepicker
+	} from 'vmui';
+
+	import Source from '../filter.json';
 
     const selectList = [
         [
@@ -168,30 +191,6 @@
         border: 0,
         lineHeight: '44px'
     }
-
-    import {
-        Page,
-        Topbar,
-        TextInput,
-        Radios,
-        Checkboxes,
-        Select,
-        Images,
-        Button,
-        Scroll,
-        Toast,
-        Counter,
-        SingleFilter,
-        SearchBar,
-        Searchbar,
-        Switch,
-        FormBox,
-        LinkMultipleFilter,
-        Iosselect,
-        Datepicker
-    } from 'vmui';
-    
-    import Source from '../filter.json';
 
     export default{
         components: {

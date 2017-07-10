@@ -1,8 +1,5 @@
 import VueRouter from 'vue-router';
 import Vue from 'vue';
-require('../../rem.js');
-
-Vue.use(VueRouter);
 
 import Main from './main.vue';
 import Alert from './components/alert.vue';
@@ -22,6 +19,9 @@ import Filter from './components/filter.vue';
 import Overlay from './components/overlay.vue';
 import Iosselect from './components/iosselect.vue';
 import Datepicker from './components/datepicker.vue';
+require('../../rem.js');
+
+Vue.use(VueRouter);
 
 const router = new VueRouter({
     routes: [

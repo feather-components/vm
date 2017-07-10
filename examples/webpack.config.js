@@ -2,6 +2,10 @@ var path = require('path');
 var webpack = require('webpack');
 var HtmlWepackPlugin = require('html-webpack-plugin');
 
+function resolve (dir) {
+	return path.join(__dirname, '/', dir)
+}
+
 module.exports = {
     watch: process.env.NODE_ENV != 'ci',
 
@@ -30,6 +34,15 @@ module.exports = {
 
     module: {
         rules: [
+			{
+				test: /\.(js|vue)$/,
+				loader: 'eslint-loader',
+				enforce: 'pre',
+				include: [resolve('src'), resolve('../src')],
+				options: {
+					formatter: require('eslint-friendly-formatter')
+				}
+			},
             {
                 test: /\.vue$/,
                 loader: 'vue-loader',

@@ -20,7 +20,7 @@ export const Single = {
     data(){
         return {
             val: this.value
-        }
+        };
     },
 
     watch: {
