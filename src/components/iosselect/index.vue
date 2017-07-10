@@ -15,7 +15,7 @@
                                 :ref="'scroll' + index"
                         >
                             <ul class='vmui-iosselect-label-list'>
-                                <li v-for="(it, i) in item " @click="_scrollTo(index, i)">
+                                <li v-for="(it, i) in item " @click="_scrollTo(index, i, it)">
                                     {{it.label}}
                                 </li>
                             </ul>
@@ -122,7 +122,7 @@
                 }
                 if (dragend) {
                     setTimeout(() => {
-                        $list[0].scrollTo('-' + (this.activeIndex[index]  - 2) * LINEHEIGHT)
+                        $list[0].scrollTo('-' + (this.activeIndex[index]  - 2) * LINEHEIGHT, 200)
                     }, 100)
                 }
 
@@ -200,7 +200,10 @@
                 })
             },
 
-            _scrollTo(i, d) {
+            _scrollTo(i, d, o) {
+            	if (Object.keys(o).length == 0) {
+                    return
+                }
                 this.activeIndex[i] = d
                 this.$refs['scroll' + i][0].scrollTo('-' + (d  - 2) * LINEHEIGHT, 300)
                 this._getVal()
