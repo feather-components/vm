@@ -12,7 +12,6 @@
                                 @scroll:end="_activeChange($event, index)"
                                 @drag:end="_dragStop"
                                 @draging="_handleDraging($event, index)"
-                                @drag:start = "_handleDragStart"
                                 :ref="'scroll' + index"
                         >
                             <ul class='vmui-iosselect-label-list'>
@@ -75,8 +74,7 @@
                 activeIndex: [],
                 val: [],
                 selectList: this.source,
-				dragIndex: 0,
-                dragendTimer: null,
+				dragIndex: 0
             }
         },
 
@@ -129,6 +127,9 @@
 
             _renderList(index) {
                 let $list = this.$refs['scroll' + index]
+                if ($list[0] == undefined) {
+                	return
+                }
                 let $lis = $list[0].$el.querySelectorAll('li')
 
                 $lis.forEach((v, k) => {
@@ -181,63 +182,41 @@
                 return this
             },
 
-            _scrolling(pos, index) {
-                let topi = 0
-
-                if (Math.abs(pos) % LINEHEIGHT  > LINEHEIGHT / 2) {
-                    topi = Math.ceil( Math.abs(pos) / LINEHEIGHT )
-                } else {
-                    topi = Math.floor( Math.abs(pos) / LINEHEIGHT )
-                }
-
-                if (pos < 0) {
-					this.activeIndex[index] = topi + 2
-                }
-
-                this._getVal()
-            },
 
             _activeChange(pos, index) {
-                this._scrolling(pos, index)
                 this.$emit('change', {done:this._setList, val: this.val})
-                this.$nextTick(() => {
+				setTimeout(() => {
 					this._renderList(index)
-                })
+				}, 600)
             },
-
-			_handleDragStart() {
-				clearTimeout(this.dragendTimer)
-			},
 
 			_handleDraging(pos, i) {
 				this.dragIndex = i
                 this._activeChange(pos, i)
             },
 
-			_dragStop(pos, destination, duration) {
-				this.$nextTick(() => {
-                    if (destination != undefined) {
-						this.dragendTimer = setTimeout(() => {
-							clearTimeout(this.dragendTimer)
-                            let topi = 0
-							if (Math.abs(destination) % LINEHEIGHT  > LINEHEIGHT / 2) {
-								topi = Math.ceil( Math.abs(destination) / LINEHEIGHT )
-							} else {
-								topi = Math.floor( Math.abs(destination) / LINEHEIGHT )
-							}
+			_handleStop(des, status) {
+				let topi = 0
+				if (Math.abs(des) % LINEHEIGHT  > LINEHEIGHT / 2) {
+					topi = Math.ceil( Math.abs(des) / LINEHEIGHT )
+				} else {
+					topi = Math.floor( Math.abs(des) / LINEHEIGHT )
+				}
 
-							this.activeIndex[this.dragIndex] = topi + 2
-                            this._getVal()
-
-							this.$refs['scroll' + this.dragIndex][0].scrollTo('-' + topi * LINEHEIGHT, 200)
-						}, duration + 100)
-                    } else {
-						this.$refs['scroll' + this.dragIndex][0].scrollTo('-' + (this.activeIndex[this.dragIndex] - 2) * LINEHEIGHT, 200)
-                    }
-				})
+				this.activeIndex[this.dragIndex] = topi + 2
+				this._getVal()
+				this.$refs['scroll' + this.dragIndex][0].scrollTo('-' + topi * LINEHEIGHT, status = 1 ? 500 : 200)
 			},
 
-//               这里处理双向数据绑定不上的问题
+			_dragStop(pos, destination, duration) {
+                if (destination != undefined) {
+                    this._handleStop(destination, 1)
+                } else {
+                    this._handleStop(pos, 0)
+                }
+			},
+
+            // 这里处理双向数据绑定不上的问题
             _bindVal() {
 				let t = this.val
 				this.val = []
