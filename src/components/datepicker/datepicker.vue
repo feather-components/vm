@@ -6,7 +6,6 @@
 </template>
 <script>
     import iosselect from '../iosselect'
-    import TextInput from '../form/text'
 
     let date = new Date();
     const [
@@ -134,8 +133,7 @@
         },
 
         components: {
-            iosselect,
-            TextInput
+            iosselect
         },
 
         methods: {

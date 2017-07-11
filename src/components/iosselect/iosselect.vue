@@ -1,20 +1,20 @@
 <template>
     <vm-mask :visible="true" :value="value">
-        <overlay :visible="true" class="vmui-iosselect" position="bottom">
-            <div class="vmui-iosselect-body">
-                <header class="vmui-iosselect-header">
+        <overlay :visible="true" class="vm-iosselect" position="bottom">
+            <div class="vm-iosselect-body">
+                <header class="vm-iosselect-header">
                     <p class="cancel" @click="_hide()">取消</p>
                     <p class="sure" @click="_showVal">确定</p>
                 </header>
-                <ul class="vmui-iosselect-list">
-                    <li v-for="(item, index) in selectList" :style="{width:width+'%'}">
+                <ul class="vm-iosselect-list">
+                    <li v-for="(item, index) in selectList" :style="{width: width + '%'}">
                         <scroll
-                                @scroll:end="_activeChange($event, index)"
-                                @drag:end="_dragStop"
-                                @draging="_handleDraging($event, index)"
-                                :ref="'scroll' + index"
+                            @scroll:end="_activeChange($event, index)"
+                            @drag:end="_dragStop"
+                            @draging="_handleDraging($event, index)"
+                            :ref="'scroll' + index"
                         >
-                            <ul class='vmui-iosselect-label-list'>
+                            <ul class='vm-iosselect-label-list'>
                                 <li v-for="(it, i) in item " @click="_scrollTo(index, i, it)">
                                     {{it.label}}
                                 </li>
@@ -28,8 +28,8 @@
 </template>
 
 <script>
-    import Scroll from '../../components/scroll'
-    import Overlay from '../../components/overlay'
+    import Scroll from '../scroll'
+    import Overlay from '../overlay'
     import vmMask from '../mask';
     const LINEHEIGHT = 35
 
@@ -263,7 +263,7 @@
 </script>
 
 <style>
-    .vmui-iosselect{
+    .vm-iosselect{
         position: fixed;
         left: 0;
         bottom:0;
@@ -272,51 +272,51 @@
         background: rgba(0,0,0,0.5);
         z-index:10001
     }
-    .vmui-iosselect-list{
+    .vm-iosselect-list{
         width:100%;
         height: 175px;
         overflow: hidden;
         padding-left:0;
         background: #fff;
     }
-    .vmui-iosselect-list > li{
+    .vm-iosselect-list > li{
         float: left;
         list-style: none;
         min-height: 175px;
         max-height: 175px;
     }
-    .vmui-iosselect{
+    .vm-iosselect{
         width:100%;
         background: #fff;
     }
-    .vmui-iosselect-header{
+    .vm-iosselect-header{
         width:100%;
         height:44px;
         box-shadow: 0 2px 3px #ddd;
     }
-    .vmui-iosselect-header p{
+    .vm-iosselect-header p{
         display: inline-block;
         padding:0 15px;
         line-height: 44px;
         font-size: 13px;
         margin:0;
     }
-    .vmui-iosselect-header .cancel{
+    .vm-iosselect-header .cancel{
         float: left;
         color:#ddd;
     }
-    .vmui-iosselect-header .sure{
+    .vm-iosselect-header .sure{
         float: right;
         color: #ff8447
     }
-    .vmui-list > li {
+    .vm-list > li {
         float: left;
         height:175px;
     }
-    .vmui-iosselect-label-list{
+    .vm-iosselect-label-list{
         padding-left: 0;
     }
-    .vmui-iosselect-label-list li{
+    .vm-iosselect-label-list li{
         line-height:35px;
         height:35px;
         text-align: center;
