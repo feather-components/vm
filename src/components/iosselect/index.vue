@@ -9,9 +9,10 @@
                 <ul class="vmui-iosselect-list">
                     <li v-for="(item, index) in selectList" :style="{width:width+'%'}">
                         <scroll
-                                @scroll:end="_activeChange($event,index, true)"
-                                @drag:end="_dragStop($event,index)"
-                                @draging="_activeChange($event,index, false)"
+                                @scroll:end="_activeChange($event, index)"
+                                @drag:end="_dragStop"
+                                @draging="_handleDraging($event, index)"
+                                @drag:start = "_handleDragStart"
                                 :ref="'scroll' + index"
                         >
                             <ul class='vmui-iosselect-label-list'>
@@ -73,7 +74,9 @@
             return {
                 activeIndex: [],
                 val: [],
-                selectList: this.source
+                selectList: this.source,
+				dragIndex: 0,
+                dragendTimer: null,
             }
         },
 
@@ -109,22 +112,24 @@
             this.$emit('change', {done:this._setList, val: this.val})
 
             this.activeIndex.forEach((v1, k1) => {
-                this._renderList(true, k1)
+                this._renderList(k1)
+                this.$nextTick(() => {
+					this._initScrollTo(k1)
+                })
             })
+
         },
 
         methods: {
-            _renderList(stop, index, dragend) {
+        	_initScrollTo(index) {
+				let $list = this.$refs['scroll' + index]
+
+				$list[0].scrollTo('-' + (this.activeIndex[index] - 2) * LINEHEIGHT)
+            },
+
+            _renderList(index) {
                 let $list = this.$refs['scroll' + index]
                 let $lis = $list[0].$el.querySelectorAll('li')
-                if (stop) {
-                    $list[0].scrollTo('-' + (this.activeIndex[index]  - 2) * LINEHEIGHT)
-                }
-                if (dragend) {
-                    setTimeout(() => {
-                        $list[0].scrollTo('-' + (this.activeIndex[index]  - 2) * LINEHEIGHT, 200)
-                    }, 100)
-                }
 
                 $lis.forEach((v, k) => {
                     if(this.activeIndex[index] === k) {
@@ -140,7 +145,6 @@
 
             _initValRender() {
                 let _self = this
-
                 _self.initValue.forEach((v, k) => {
                     _self.selectList[k].forEach((v1, k1) => {
                         if(v1.value == v) {
@@ -163,7 +167,6 @@
 
             _addNullForList() {
                 this._removeNullForList()
-
                 this.selectList.forEach((v, k) => {
                     this.selectList[k].unshift({}, {})
                     this.selectList[k].push({}, {})
@@ -187,17 +190,58 @@
                     topi = Math.floor( Math.abs(pos) / LINEHEIGHT )
                 }
 
-                this.activeIndex[index] = topi + 2
+                if (pos < 0) {
+					this.activeIndex[index] = topi + 2
+                }
 
                 this._getVal()
             },
 
-            _activeChange(pos, index, status) {
+            _activeChange(pos, index) {
                 this._scrolling(pos, index)
                 this.$emit('change', {done:this._setList, val: this.val})
                 this.$nextTick(() => {
-                    this._renderList(status, index)
+					this._renderList(index)
                 })
+            },
+
+			_handleDragStart() {
+				clearTimeout(this.dragendTimer)
+			},
+
+			_handleDraging(pos, i) {
+				this.dragIndex = i
+                this._activeChange(pos, i)
+            },
+
+			_dragStop(pos, destination, duration) {
+				this.$nextTick(() => {
+                    if (destination != undefined) {
+						this.dragendTimer = setTimeout(() => {
+							clearTimeout(this.dragendTimer)
+                            let topi = 0
+							if (Math.abs(destination) % LINEHEIGHT  > LINEHEIGHT / 2) {
+								topi = Math.ceil( Math.abs(destination) / LINEHEIGHT )
+							} else {
+								topi = Math.floor( Math.abs(destination) / LINEHEIGHT )
+							}
+
+							this.activeIndex[this.dragIndex] = topi + 2
+                            this._getVal()
+
+							this.$refs['scroll' + this.dragIndex][0].scrollTo('-' + topi * LINEHEIGHT, 200)
+						}, duration + 100)
+                    } else {
+						this.$refs['scroll' + this.dragIndex][0].scrollTo('-' + (this.activeIndex[this.dragIndex] - 2) * LINEHEIGHT, 200)
+                    }
+				})
+			},
+
+//               这里处理双向数据绑定不上的问题
+            _bindVal() {
+				let t = this.val
+				this.val = []
+				this.val  = t
             },
 
             _scrollTo(i, d, o) {
@@ -205,19 +249,11 @@
                     return
                 }
                 this.activeIndex[i] = d
-                this.$refs['scroll' + i][0].scrollTo('-' + (d  - 2) * LINEHEIGHT, 300)
-                this._getVal()
+				this._getVal()
                 this.$nextTick(() => {
-                    this._renderList(false, i)
-                })
-            },
-
-
-            _dragStop(pos, index) {
-                this._scrolling(pos, index)
-                this.$nextTick(() => {
-                    this._renderList(false, index, true)
-                })
+                    this._renderList(i, 1)
+					this.$refs['scroll' + i][0].scrollTo('-' + (d  - 2) * LINEHEIGHT, 500)
+				})
             },
 
             _showVal() {
@@ -229,10 +265,8 @@
                     val2.push(v.value)
                 })
 
-//               这里处理双向数据绑定不上的问题
-				let t = this.val
-				this.val = []
-				this.val  = t
+
+				this._bindVal()
 
                 this.$emit('confirm', val, val2, this.val)
             },

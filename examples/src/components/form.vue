@@ -241,9 +241,9 @@
         },
 
         mounted() {
-          setInterval(() => {
-              console.log(this.val)
-          }, 1000)
+//          setInterval(() => {
+//          	  console.log(this.val)
+//          }, 1000)
         },
 
         watch: {
