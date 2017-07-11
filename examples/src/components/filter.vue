@@ -86,6 +86,12 @@
             lm_val(v){
                 Toast(v)
             }
+        },
+
+        mounted () {
+			setInterval(() => {
+				console.log(this.lm_val, 999)
+			}, 1000)
         }
 
         // methods: {

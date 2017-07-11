@@ -2,7 +2,7 @@ import Dom from './dom';
 import Util from './util';
 import Event from './event';
 
-export{
+export {
     Dom,
     Util,
     Event

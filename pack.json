@@ -1,0 +1,4 @@
+{
+    "./vm.js": "./src/**.{vue,js}",
+    "./vm.css": "./src/**.{less,css}"
+}

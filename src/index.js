@@ -13,12 +13,13 @@ import Search from './components/search';
 import Searchbar from './components/searchbar';
 import Uploader from './components/uploader';
 import {Grid, GridItem} from './components/grid';
-import {Box, Radios, Checkboxes, TextInput, Select, Images, Counter, Switch, Datepicker} from './components/form';
+import {Box, Radios, Checkboxes, TextInput, Select, Images, Counter, Switch} from './components/form';
 import {Single, Multiple, Link, LinkMultiple} from './components/filter';
 import Autosize from './directives/autosize';
 import Mask from './components/mask';
 import Overlay from './components/overlay';
 import Iosselect from './components/iosselect';
+import Datepicker from './components/datepicker';
 import Helper from './helper';
 
 import Vue from 'vue';
