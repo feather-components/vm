@@ -1,11 +1,11 @@
 <template>
-    <ul class="vmui-grid">
+    <ul class="vm-grid">
         <slot></slot>
     </ul>
 </template>
 
 <style>
-    .vmui-grid{
+    .vm-grid{
         padding: 0px;
         margin: 0px;
         display: -webkit-flex;

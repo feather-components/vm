@@ -10,7 +10,7 @@ Draggable
 <div id="draggable" v-draggable="{axis: 'xy'}" @drag:start="onDragStart" @draging="onDraging" @drag:end="onDragEnd"></div>
 
 <script>
-require.async(['vue', 'vmui/draggable'], function(Vue, Draggable){
+require.async(['vue', 'vm/draggable'], function(Vue, Draggable){
     new Vue({
         el: '#draggable',
         directives: {

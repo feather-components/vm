@@ -26,5 +26,5 @@ Overlay
 ```
 
 ```js
-import {Overlay} from 'vmui';
+import {Overlay} from 'vm';
 ```

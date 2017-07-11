@@ -11,7 +11,7 @@ SingleFilter
 
 <script>
 import Vue from 'vue';
-import {SingleFilter} from 'vmui';
+import {SingleFilter} from 'vm';
 
 new Vue({
     el: '#test',

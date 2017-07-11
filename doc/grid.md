@@ -13,9 +13,9 @@ Grid/GridItem
 ```
 
 ```js
-import {Grid, GridItem} from 'vmui';
+import {Grid, GridItem} from 'vm';
 ```
 
 ```js
-import {Grid, GridItem} from 'vmui/src/components/grid';
+import {Grid, GridItem} from 'vm/src/components/grid';
 ```

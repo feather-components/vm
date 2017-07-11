@@ -10,7 +10,7 @@ Images
 
 ```js
 import Vue from 'vue';
-import {Images, Counter} from 'vmui';
+import {Images, Counter} from 'vm';
 
 new Vue({
     el: '#app',

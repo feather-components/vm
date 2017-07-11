@@ -1,9 +1,9 @@
 <template>
-    <overlay :visible="visibility" class="vmui-mask" :fx="fx" @click="$emit('click')"><slot></slot></overlay>
+    <overlay :visible="visibility" class="vm-mask" :fx="fx" @click="$emit('click')"><slot></slot></overlay>
 </template>
 
 <style>
-    .vmui-mask{
+    .vm-mask{
         width: 100%;
         height: 100%;
         left: 0px;

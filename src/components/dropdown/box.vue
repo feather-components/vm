@@ -1,13 +1,13 @@
 <template>
     <vm-mask ref="mask" :visible="visibility">
-        <overlay ref="overlay" :visible="visibility" :position="pos" :fx="true" :class="['vmui-dropbox', 'vmui-dropbox-' + pos]">
+        <overlay ref="overlay" :visible="visibility" :position="pos" :fx="true" :class="['vm-dropbox', 'vm-dropbox-' + pos]">
             <slot></slot>
         </overlay>
     </vm-mask>
 </template>
 
 <style>
-    .vmui-dropbox{
+    .vm-dropbox{
         position: absolute;
     }
 </style>

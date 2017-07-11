@@ -16,7 +16,7 @@ Button
 ```
 
 ```js
-import {Button} from 'vmui';
+import {Button} from 'vm';
 
 new Vue({
     el: '#app',

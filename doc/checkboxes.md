@@ -10,7 +10,7 @@ Checkboxes
 
 ```js
 import Vue from 'vue';
-import {Checkboxes} from 'vmui';
+import {Checkboxes} from 'vm';
 
 new Vue({
     el: '#app',

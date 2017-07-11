@@ -10,7 +10,7 @@ Switch
 
 ```js
 import Vue from 'vue';
-import {Select as vmSwitch} from 'vmui';
+import {Switch as vmSwitch} from 'vm';
 
 new Vue({
     el: '#app',
@@ -18,8 +18,8 @@ new Vue({
         value: true
     },
     components:{
-        vSelect
-    }
+        vmSwitch    
+    }
 });
 ```
 

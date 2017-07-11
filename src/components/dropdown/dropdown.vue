@@ -1,9 +1,9 @@
 <template>
-    <div :class="'vmui-dropdown' + (isOpen ? ' vmui-dropdown-open' : '')">
-        <a class="vmui-dropdown-label" v-html="label" ref="label" href="javascript:"></a>
+    <div :class="'vm-dropdown' + (isOpen ? ' vm-dropdown-open' : '')">
+        <a class="vm-dropdown-label" v-html="label" ref="label" href="javascript:"></a>
 
         <dropbox ref="box">
-            <div class="vmui-dropdown-inner">
+            <div class="vm-dropdown-inner">
                 <slot></slot>
             </div>
         </dropbox>
@@ -11,12 +11,12 @@
 </template>
 
 <style lang="less">
-    .vmui-dropdown{
+    .vm-dropdown{
         border-bottom: 1px solid #eee;
         flex: 1;
     }
 
-    .vmui-dropdown-label{
+    .vm-dropdown-label{
         font-size: .14rem;
         text-decoration: none;
         color: #6281C2;
@@ -38,13 +38,13 @@
         }
     }
 
-    .vmui-dropdown-open{
-        .vmui-dropdown-label:after{
+    .vm-dropdown-open{
+        .vm-dropdown-label:after{
             background: url(./up@2x.png?__inline) no-repeat center center;
         }
     }
 
-    .vmui-dropdown-inner{
+    .vm-dropdown-inner{
         max-height: 3.5rem;
     }
 </style>

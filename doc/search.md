@@ -1,4 +1,4 @@
-SearchView
+Search
 ======================
 searchview组件
 
@@ -27,11 +27,11 @@ searchview组件
 * row: 记录行渲染
 
 ```html
-<search-view ref="search" :visible="false" :fx="true" source="/list" @select="select" :data-formatter="function(data){return data.data}">
+<search ref="search" :visible="false" :fx="true" source="/list" @select="select" :data-formatter="function(data){return data.data}">
     <template slot="row" scope="props">
         <div>{{props.data.content}}</div>
     </template>
-</search-view>
+</search>
 ```
 
 # Methods

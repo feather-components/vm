@@ -1,37 +1,37 @@
 <template>
-    <div :class="'vmui-scroll vmui-scroll-' + axis">
-        <div ref="inner" class="vmui-scroll-inner" @drag:start="onDragStart" @draging="onDraging" @drag:end="onDragEnd">
-            <div class="vmui-scroll-pulldown" ref="pulldown" v-if="axis == 'y' && $slots.pulldown">
+    <div :class="'vm-scroll vm-scroll-' + axis">
+        <div ref="inner" class="vm-scroll-inner" @drag:start="onDragStart" @draging="onDraging" @drag:end="onDragEnd">
+            <div class="vm-scroll-pulldown" ref="pulldown" v-if="axis == 'y' && $slots.pulldown">
                 <slot name="pulldown"></slot>
             </div>
             <slot></slot>
         </div>
 
-        <div class="vmui-scroll-bar" ref="bar" v-if="scrollbars" v-show="barVisible" :class="{'vmui-scroll-bar-transition': !!fxer}"></div>
+        <div class="vm-scroll-bar" ref="bar" v-if="scrollbars" v-show="barVisible" :class="{'vm-scroll-bar-transition': !!fxer}"></div>
     </div>
 </template>
 
 <style lang="less">
-    .vmui-scroll{
+    .vm-scroll{
         position: relative;
         width: 100%;
 
-        .vmui-scroll-bar-transition{
+        .vm-scroll-bar-transition{
             transition-property: transform;
             -webkit-transition-property: -webkit-transform;
         }
 
-        .vmui-scroll-bar{
+        .vm-scroll-bar{
             position: absolute;
             border-radius: 5px;
             background: #ccc;
         }
     }
 
-    .vmui-scroll-y{
+    .vm-scroll-y{
         overflow: hidden;
 
-        & > .vmui-scroll-bar{
+        & > .vm-scroll-bar{
             right: 0px;
             width: 2px;
             height: 0px;
@@ -39,25 +39,25 @@
         }
     }
 
-    .vmui-scroll-x{
+    .vm-scroll-x{
         overflow-x: hidden;
         overflow-y: auto;
         _height: 1%;
 
-        & > .vmui-scroll-bar{
+        & > .vm-scroll-bar{
             height: 2px;
             width: 0px;
             left: 0px;
             bottom: 0px;
         }
 
-        & > .vmui-scroll-inner{
+        & > .vm-scroll-inner{
             float: left;
             white-space: nowrap;
         }
     }
 
-    .vmui-scroll-pulldown{
+    .vm-scroll-pulldown{
         width: 100%;
         position: absolute;
         transform: translateY(-100%);

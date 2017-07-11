@@ -8,13 +8,13 @@ module.exports = {
     entry: {
         main: './src/index',
         lib: ['vue', 'vue-router'],
-        vmui: '../src'
+        vm: '../src'
     },
 
     resolve: {
         alias: {
             vue: 'vue/dist/vue.js',
-            vmui: path.resolve(__dirname, '../src/index.js'),
+            vm: path.resolve(__dirname, '../src/index.js'),
             type: 'type-of',
             ajax: 'component-ajax'
         },
@@ -57,7 +57,7 @@ module.exports = {
 
     plugins: [
         new webpack.optimize.CommonsChunkPlugin({
-            name: ['vmui', 'lib'],
+            name: ['vm', 'lib'],
         }),
         new HtmlWepackPlugin({
             template: './src/index.html'

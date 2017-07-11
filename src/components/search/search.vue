@@ -1,35 +1,35 @@
 <template>
-    <page position="right" :fx="fx" :visible="visibility" class="vmui-search" ref="page">
+    <page position="right" :fx="fx" :visible="visibility" class="vm-search" ref="page">
         <topbar :left-enabled="false">
             <searchbar :style="{
                 'margin-right': '2.5em'
             }" :placeholder="placeholder" :maxlength="maxlength" ref="search" :theme="theme"
                         :search-button-enabled="closeAfterSelectHistory" @submit="submit" v-model="val" />
-            <a href="javascript:" class="vmui-search-cancel" @touchstart="cancel" slot="right">取消</a>
+            <a href="javascript:" class="vm-search-cancel" @touchstart="cancel" slot="right">取消</a>
         </topbar>
 
-        <div class="vmui-search-inner">
-            <div class="vmui-search-header">
+        <div class="vm-search-inner">
+            <div class="vm-search-header">
                 <slot name="header"></slot>
             </div>
 
-            <div class="vmui-search-history-container" v-if="!empty2load && !val && historys.length">
-                <div class="vmui-search-history-header">
+            <div class="vm-search-history-container" v-if="!empty2load && !val && historys.length">
+                <div class="vm-search-history-header">
                     历史搜索
-                    <a href="javascript:" @click="clearHistory()" class="vmui-searcy-history-clear">清除</a>
+                    <a href="javascript:" @click="clearHistory()" class="vm-searcy-history-clear">清除</a>
                 </div>
-                <div class="vmui-search-historys">
-                    <a v-for="(item, index) of historys" class="vmui-search-history" href="javascript:" @click="clickHistory(item, index)">
+                <div class="vm-search-historys">
+                    <a v-for="(item, index) of historys" class="vm-search-history" href="javascript:" @click="clickHistory(item, index)">
                         <slot name="history-row" :data="item">{{item}}</slot>
                     </a>
                 </div>
             </div>
 
-            <div class="vmui-search-desc" v-if="!isEmpty">
+            <div class="vm-search-desc" v-if="!isEmpty">
                 <slot name="desc" v-if="!isEmpty">搜索结果</slot>
             </div>
 
-            <div class="vmui-search-default" v-if="!empty2load && !value">
+            <div class="vm-search-default" v-if="!empty2load && !value">
                 <slot name="default"></slot>
             </div>
 
@@ -47,7 +47,7 @@
 </template>
 
 <style lang="less">
-    .vmui-search-cancel{
+    .vm-search-cancel{
         float: right;
         width: .32rem;
         margin-right: 0.08rem;
@@ -57,38 +57,38 @@
         font-size: 0.14rem;
     }
 
-    .vmui-search{
-        .vmui-list{
+    .vm-search{
+        .vm-list{
             li{
                 border-bottom: 1px solid #E1E1E1;
             }
         }
 
-        .vmui-list-rows{
+        .vm-list-rows{
             margin-bottom: .3rem;
         }
     }
 
-    .vmui-search-inner{
+    .vm-search-inner{
         margin: 0 .16rem;
         margin-top: .08rem;
     }
 
-    .vmui-search-desc, .vmui-search-history-header{
+    .vm-search-desc, .vm-search-history-header{
         height: .28rem;
         line-height: .28rem;
     }
 
-    .vmui-search-history-container a{
+    .vm-search-history-container a{
         text-decoration: none;
         color: #333;
     }
 
-    .vmui-search-historys{
+    .vm-search-historys{
         margin: 0.08rem 0px;
     }
 
-    .vmui-search-history{
+    .vm-search-history{
         background: #eee;
         margin-bottom: .08rem;
         margin-right: 0.08rem;
@@ -99,7 +99,7 @@
         padding: 0px .10rem;
     }
 
-    .vmui-searcy-history-clear{
+    .vm-searcy-history-clear{
         float: right;
         color: #6281C2;
     }
@@ -204,7 +204,7 @@
             var historys = [];
 
             try{
-                historys = JSON.parse(localStorage.getItem('_vmui_history_stores_.' + this.historyMark)) || [];
+                historys = JSON.parse(localStorage.getItem('_vm_history_stores_.' + this.historyMark)) || [];
             }catch(e){};
 
             return {
@@ -294,7 +294,7 @@
             },
 
             storeHistory(){
-                localStorage.setItem('_vmui_history_stores_.' + this.historyMark, JSON.stringify(this.historys));
+                localStorage.setItem('_vm_history_stores_.' + this.historyMark, JSON.stringify(this.historys));
             },
 
             addHistory(val = this.val){

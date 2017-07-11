@@ -108,7 +108,7 @@
         Topbar,
         List,
         Draggable
-    } from 'vmui';
+    } from 'vm';
 
     export default{
         components: {

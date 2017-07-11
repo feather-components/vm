@@ -6,13 +6,13 @@ export const Counter = {
 
     bind(element, data, VNode){
         var limit = data.value.limit;
-        var ml = Dom.$('.vmui-form-box-msg', element);
+        var ml = Dom.$('.vm-form-box-msg', element);
         var instance = VNode.componentInstance;
 
         instance.$on('input', msg);  
 
         function msg(v){
-            ml.innerHTML = `<span class="${v.length > limit ? 'vmui-form-error' : ''}">${v.length}</span>/${limit}`;
+            ml.innerHTML = `<span class="${v.length > limit ? 'vm-form-error' : ''}">${v.length}</span>/${limit}`;
         }
 
         msg(instance.val || '');

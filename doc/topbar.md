@@ -17,7 +17,7 @@ Topbar
 该属性为静态属性，为控制ios和android屏幕top不一致问题
 
 ```js
-import {Topbar} from 'vmui';
+import {Topbar} from 'vm';
 
 if($.os.ios){
     //如果是苹果系统，则距离顶部10px

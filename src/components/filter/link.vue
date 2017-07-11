@@ -1,7 +1,7 @@
 <template>
-    <div class="vmui-filters" :class="'vmui-filters-' + filters.length">
+    <div class="vm-filters" :class="'vm-filters-' + filters.length">
         <template v-for="(filter, index) of filters">
-            <scroll class="vmui-filters-item">
+            <scroll class="vm-filters-item">
                 <single :source="filter" @item:click="click" :item-formatter="itemFormatter" ref="box" @reject="$emit('reject')" @change="change"></single>
             </scroll>
         </template>
@@ -9,22 +9,22 @@
 </template>
 
 <style>
-    .vmui-filters{
+    .vm-filters{
         display: -webkit-box;
         display: box;
     }
 
-    .vmui-filters .vmui-filters-item{
+    .vm-filters .vm-filters-item{
         -webkit-box-flex: 1;
         box-flex: 1;
         border-left: 1px solid #eee;
     }
 
-    .vmui-filters .vmui-filters-item:first-child{
+    .vm-filters .vm-filters-item:first-child{
         border-left: 0px;
     }
 
-    .vmui-filters-2 .vmui-filters-item:nth-child(1){
+    .vm-filters-2 .vm-filters-item:nth-child(1){
         -webkit-box-flex: 2;
     }
 </style>

@@ -1,24 +1,24 @@
 <template>
     <div :class="{
-        'vmui-form-box': true,
-        'vmui-form-box-vertical': verticalLayout,
-        'vmui-form-box-horizontal': !verticalLayout
+        'vm-form-box': true,
+        'vm-form-box-vertical': verticalLayout,
+        'vm-form-box-horizontal': !verticalLayout
     }">
-        <label class="vmui-form-box-label" v-if="label">
+        <label class="vm-form-box-label" v-if="label">
             {{label}}
-            <span class="vmui-form-box-msg" v-if="verticalLayout">
+            <span class="vm-form-box-msg" v-if="verticalLayout">
                 <slot name="msg"></slot>
             </span>
         </label>
 
-        <div class="vmui-form-box-inner">
+        <div class="vm-form-box-inner">
             <slot></slot>
         </div>
     </div>
 </template>
 
 <style lang="less">
-    .vmui-form-box{
+    .vm-form-box{
         background: #fff;
         margin: 0px 0.16rem;
         padding: 0.12rem 0px;
@@ -30,18 +30,18 @@
         }
     }
 
-    .vmui-form-box-vertical{
+    .vm-form-box-vertical{
         padding-bottom: 0.09rem;
 
-        .vmui-form-box-label{
+        .vm-form-box-label{
             width: 100%;
         }
     }
 
-    .vmui-form-box-horizontal{
+    .vm-form-box-horizontal{
         display: flex;
 
-        .vmui-form-box-inner{
+        .vm-form-box-inner{
             min-height: 0.24rem;
             flex: 1;
             display: flex;
@@ -50,18 +50,18 @@
         }
     }
 
-    .vmui-form-box ~ .vmui-form-box{
+    .vm-form-box ~ .vm-form-box{
         border-top: 1px solid #eee;
     }
 
-    .vmui-form-box-label{
+    .vm-form-box-label{
         display: block;
         height: 0.24rem;
         color: #555;
         width: 30%;
     }
 
-    .vmui-form-box-msg{
+    .vm-form-box-msg{
         display: inline-block;
         font-size: .12rem;
         color: #878787;

@@ -18,7 +18,7 @@ MultipleFilter
 ```
 
 ```js
-import {MultipleFilter} from 'vmui';
+import {MultipleFilter} from 'vm';
 //new vue
 ```
 

@@ -1,11 +1,11 @@
 <template>
-    <v-box :label="label" class="vmui-form-checkboxes">
+    <v-box :label="label" class="vm-form-checkboxes">
         <span 
             @click="onClick(option.value)" 
             v-for="(option, index) in options" 
             :class="{
-                'vmui-form-tag-selected': val.indexOf(option.value) > -1,
-                'vmui-form-tag': true
+                'vm-form-tag-selected': val.indexOf(option.value) > -1,
+                'vm-form-tag': true
             }"
         >
         {{option.label}}

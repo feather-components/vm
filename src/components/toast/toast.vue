@@ -1,18 +1,18 @@
 <template>
     <vm-mask v-if="mask" :visible="visibility">
-        <overlay :class="'vmui-toast ' + className" position="center" :visible="true">
-            <i :class="'vmui-toast-icon ' + iconClass" v-if="iconClass"></i>
+        <overlay :class="'vm-toast ' + className" position="center" :visible="true">
+            <i :class="'vm-toast-icon ' + iconClass" v-if="iconClass"></i>
             <slot>{{content}}</slot>
         </overlay>
     </vm-mask>
-    <overlay v-else :visible="visibility" :class="'vmui-toast ' + className" position="center">
-        <i :class="'vmui-toast-icon ' + iconClass" v-if="iconClass"></i>
+    <overlay v-else :visible="visibility" :class="'vm-toast ' + className" position="center">
+        <i :class="'vm-toast-icon ' + iconClass" v-if="iconClass"></i>
         <slot>{{content}}</slot>
     </overlay>
 </template>
 
 <style>
-    .vmui-toast{
+    .vm-toast{
         font-size: 0.16rem;
         color: #FFFFFF;
         line-height: 0.28rem;
@@ -23,7 +23,7 @@
         text-align: center;
     }
 
-    .vmui-toast-icon{
+    .vm-toast-icon{
         width: .36rem;
         height: .36rem;
         display: block;
@@ -33,11 +33,11 @@
         background-position: center center;
     }
 
-    .vmui-toast-success{
+    .vm-toast-success{
         background-image: url(./success@3x.png?__inline);
     }
 
-    .vmui-toast-loading{
+    .vm-toast-loading{
         background-image: url(./loading.gif?__inline);
     }
 </style>

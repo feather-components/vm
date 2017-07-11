@@ -34,7 +34,7 @@
         Page,
         Topbar,
         Scroll
-    } from 'vmui';
+    } from 'vm';
 
     export default{
         components: {

@@ -1,19 +1,19 @@
 <template>
     <vm-mask :visible="visibility">
-        <overlay :visible="visibility" class="vmui-actionsheet" position="bottom">
+        <overlay :visible="visibility" class="vm-actionsheet" position="bottom">
             <ul>
                 <li v-for="(action, index) of actions">
                     <a href="javascript:" v-text="index" @click="callAction(index)" :class="action.className"></a>
                 </li>
             </ul>
            
-            <a href="javascript:" @click="destroy()" class="vmui-actionsheet-cancel">取消</a>
+            <a href="javascript:" @click="destroy()" class="vm-actionsheet-cancel">取消</a>
         </overlay>
     </vm-mask>
 </template>
 
 <style lang="less">
-    .vmui-actionsheet{
+    .vm-actionsheet{
         width: 100%;
         text-align: center;
         background: transparent;
@@ -42,7 +42,7 @@
             color: #222222;
         }
 
-        .vmui-actionsheet-cancel{
+        .vm-actionsheet-cancel{
             margin: 16px 0px;
             font-weight: normal;
         }
@@ -60,9 +60,9 @@
 
         props: {
             actions: {
-                type: Array,
+                type: [Object, Array],
                 default(){
-                    return []
+                    return {}
                 }
             }
         },
@@ -77,10 +77,10 @@
                 visibility: true
             };
         },
-
+        
         methods: {
             callAction(index){
-                var self;
+                var self = this;
                 var action = self.actions[index];
 
                 if(typeof action == 'function'){

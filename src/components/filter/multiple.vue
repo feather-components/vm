@@ -1,15 +1,15 @@
 <template>
-    <div class="vmui-filter vmui-filter-multiple">
+    <div class="vm-filter vm-filter-multiple">
         <a href="javascript:" v-for="(item, key) of data" v-html="itemFormatter(item)" @click="click(item)" :class="getItemClass(item)"></a>
     </div>
 </template>
 
 <style lang="less">
-    .vmui-filter-multiple .vmui-filter-item{
+    .vm-filter-multiple .vm-filter-item{
         text-align: left;
     }
 
-    .vmui-filter-tick{
+    .vm-filter-tick{
         &:after{
             content: "";
             display: inline-block;
@@ -98,7 +98,7 @@
                 var className = Single.methods.getItemClass(item);
 
                 if(this.val.indexOf(item.value) > -1){
-                    className += ' vmui-filter-tick';
+                    className += ' vm-filter-tick';
                 }
 
                 return className;

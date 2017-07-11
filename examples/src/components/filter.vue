@@ -43,7 +43,7 @@
         Toast,
         Dropdown,
         Scroll
-    } from 'vmui';
+    } from 'vm';
 
     import Source from '../filter.json';
 

@@ -1,11 +1,11 @@
 <template>
-    <v-box :label="label" class="vmui-form-radios">
+    <v-box :label="label" class="vm-form-radios">
         <span 
             @click="onClick(option.value)" 
             v-for="(option, index) in options" 
             :class="{
-                'vmui-form-tag-selected': val == option.value,
-                'vmui-form-tag': true
+                'vm-form-tag-selected': val == option.value,
+                'vm-form-tag': true
             }"
         >
         {{option.label}}

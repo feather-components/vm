@@ -1,7 +1,7 @@
 <template>
     <v-box :label="label" :class="{
-        'vmui-form-text-box': true,
-        'vmui-form-text-multiline': multiline
+        'vm-form-text-box': true,
+        'vm-form-text-multiline': multiline
     }" :vertical-layout="multiline"> 
         <template slot="desc">
             <slot name="desc"></slot>
@@ -10,7 +10,7 @@
         <input v-if="!multiline" 
             ref="input" 
             type="text" 
-            class="vmui-form-text" 
+            class="vm-form-text" 
             :name="name" 
             v-model="val" 
             @focus="$emit('focus')" 
@@ -26,7 +26,7 @@
         <template v-else>
             <div 
                 ref="input" 
-                class="vmui-form-text" 
+                class="vm-form-text" 
                 :contenteditable="!readonly" 
                 @input="input"
                 @focus="$emit('focus')"
@@ -34,12 +34,12 @@
                 @click="$emit('click')"
             ></div>
 
-            <span v-if="!val" class="vmui-form-text-placeholder">{{placeholder}}</span>
+            <span v-if="!val" class="vm-form-text-placeholder">{{placeholder}}</span>
         </template>
 
-        <a href="javascript:" class="vmui-form-text-ci" @click="clear" v-if="clearable && val">&times;</a>
+        <a href="javascript:" class="vm-form-text-ci" @click="clear" v-if="clearable && val">&times;</a>
 
-        <span class="vmui-form-text-unit" v-if="unit">{{unit}}</span>
+        <span class="vm-form-text-unit" v-if="unit">{{unit}}</span>
 
         <template slot="msg">
             <slot name="msg"></slot>
@@ -48,11 +48,11 @@
 </template>
 
 <style lang="less">
-    .vmui-form-text-box .vmui-form-box-inner{
+    .vm-form-text-box .vm-form-box-inner{
         position: relative;
     }
 
-    .vmui-form-text{
+    .vm-form-text{
         color: #222;
         line-height: .24rem;
         border: 0px;
@@ -64,11 +64,11 @@
         }
     }
 
-    input.vmui-form-text{
+    input.vm-form-text{
         text-align: right;
     }
 
-    div.vmui-form-text{
+    div.vm-form-text{
         min-height: .24rem;
         max-height: 1rem;
         height: auto;
@@ -80,7 +80,7 @@
         }
     }
 
-    .vmui-form-text-placeholder{
+    .vm-form-text-placeholder{
         position: absolute;
         left: 0rem;
         top: 0rem;
@@ -89,20 +89,20 @@
         line-height: .24rem;
     }
 
-    .vmui-form-text-unit{
+    .vm-form-text-unit{
         height: 0.24rem;
         display: inline-block;
         margin-left: 5px;
     }
 
-    .vmui-form-text-ci{
+    .vm-form-text-ci{
         display: inline-block;
         text-decoration: none;
         color: #333;
         margin-left: 5px;
     }
 
-    .vmui-form-text-multiline .vmui-form-text-ci{
+    .vm-form-text-multiline .vm-form-text-ci{
         position: absolute;
         bottom: 0px;
         right: 0px;

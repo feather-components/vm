@@ -1,14 +1,14 @@
 <template>
-    <v-box :label="label" class="vmui-form-switch-box" :vertical-layout="false"> 
-        <span class="vmui-form-switch">
-            <input type="checkbox" :id="name" class="vmui-form-switch" v-model="val" />
+    <v-box :label="label" class="vm-form-switch-box" :vertical-layout="false"> 
+        <span class="vm-form-switch">
+            <input type="checkbox" :id="name" class="vm-form-switch" v-model="val" />
             <label :for="name"></label>
         </span>
     </v-box>
 </template>
 
 <style lang="less">
-    .vmui-form-switch{
+    .vm-form-switch{
         input{
             display: none;
         }

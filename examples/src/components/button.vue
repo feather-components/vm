@@ -24,7 +24,7 @@ p{
         Page,
         Topbar,
         Button as Btn
-    } from 'vmui';
+    } from 'vm';
 
     export default{
         components: {

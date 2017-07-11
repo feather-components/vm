@@ -26,7 +26,7 @@
         Mask,
         Overlay,
         Components,
-    } from 'vmui';
+    } from 'vm';
 
     export default{
         components: {

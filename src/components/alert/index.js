@@ -32,7 +32,7 @@ Alert.confirm = override((content, options, callback, manualClose) => {
         extras: options.extras,
         buttons: options.buttons || {
             '取消': {
-                className: 'vmui-alert-cbtn',
+                className: 'vm-alert-cbtn',
                 props: {
                     border: true
                 },
@@ -42,7 +42,7 @@ Alert.confirm = override((content, options, callback, manualClose) => {
             },
 
             '确定': {
-                className: 'vmui-alert-cbtn',
+                className: 'vm-alert-cbtn',
                 callback(){
                     callback && callback();
                     !manualClose && this.destroy(false);

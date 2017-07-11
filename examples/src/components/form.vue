@@ -189,7 +189,7 @@
         LinkMultipleFilter,
         Iosselect,
         Datepicker
-    } from 'vmui';
+    } from 'vm';
     
     import Source from '../filter.json';
 
