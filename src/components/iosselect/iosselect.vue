@@ -44,10 +44,6 @@
                 }
             },
 
-            connectEvents: {
-                type: Array
-            },
-
             initValue: {
                 type: Array,
                 default() {
@@ -247,7 +243,7 @@
 
 				this._bindVal()
 
-                this.$emit('confirm', val, val2, this.val)
+                this.$emit('confirm', val2, val, this.val)
             },
 
             _setList(list, i) {

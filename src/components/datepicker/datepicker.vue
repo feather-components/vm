@@ -84,23 +84,9 @@
 
     export default {
         props:{
-            label:{
-                type: String,
-                default: '时间'
-            },
-
-            inputStyle: {
-                type: Object
-            },
-
             dateFormat: {
                 type: String,
                 default: 'yyyy/mm/dd'
-            },
-
-            placeholder: {
-                type: String,
-                default: '请选择时间'
             },
 
             value: {
@@ -167,7 +153,7 @@
                         this.dateVal = va.join('/')
                 }
 
-                this.$emit('confirm', labels, vals, valObj)
+                this.$emit('confirm', vals, labels, valObj)
             },
 
             _close() {
