@@ -1,6 +1,6 @@
 <template>
     <div :value="value">
-        <iosselect :source="dateList" @confirm="_onSure" :initValue="selectVal"
+        <iosselect :source="dateList" @confirm="_onSure" :value="selectVal"
                    @change="_setDays($event, 2)"  @close="_close"></iosselect>
     </div>
 </template>
@@ -84,7 +84,7 @@
 
     export default {
         props:{
-            dateFormat: {
+            format: {
                 type: String,
                 default: 'yyyy/mm/dd'
             },

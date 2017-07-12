@@ -44,13 +44,6 @@
                 }
             },
 
-            initValue: {
-                type: Array,
-                default() {
-                    return []
-                }
-            },
-
             value: {
             	type: Array,
 				default() {
@@ -142,7 +135,11 @@
 
             _initValRender() {
                 let _self = this
-                _self.initValue.forEach((v, k) => {
+                if (Object.prototype.toString.call(_self.value) != '[object Array]') {
+					_self.value = []
+                }
+
+                _self.value.forEach((v, k) => {
                     _self.selectList[k].forEach((v1, k1) => {
                         if(v1.value == v) {
                             _self.activeIndex[k] = k1
