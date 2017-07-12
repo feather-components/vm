@@ -11,7 +11,7 @@ import {Iosselect} from 'vmui';
 ### Props
 
 * source: Array，选择对象，里面单个元素为{label: **, value: **}对象，
-* initValue：Array，初始值，映射source元素的value值，默认第一个选中。
+* value：Array，初始值，映射source元素的value值，默认第一个选中。
 
 ```html
 	<input type="text"
