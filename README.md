@@ -80,6 +80,8 @@ Vue.use(Vmui);
 * [SearchBar](./doc/searchbar.md)
 * [Toast](./doc/toast.md)
 * [Topbar](./doc/topbar.md)
+* [Iosselect](./doc/iosselect.md)
+* [Datepicker](./doc/datepicker.md)
 * [Form](./doc/form.md)
     * [TextInput](./doc/textinput.md)
     * [Select](./doc/select.md)
