@@ -233,7 +233,7 @@
 
                 selectList: selectList,
                 show: false,
-                val: [],
+                val: [2,3],
                 style: style,
 				dateValue: '',
 				dateShow: false
