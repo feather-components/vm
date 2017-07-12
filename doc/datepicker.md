@@ -1,5 +1,3 @@
-
-
 Datepicker
 ====================
 时间选择器
@@ -12,23 +10,27 @@ import {Datepicker} from 'vmui';
 
 ### Props
 
-* dateFormat: 日期格式，默认：yyyy/mm/dd，其他格式：‘yyyy-mm-dd
-’，‘yy-mm-dd’，‘yy/mm/dd'’
+* dateFormat: 日期格式，默认：yyyy/mm/dd，其他格式：‘yyyy-mm-dd’，‘yy-mm-dd’，‘yy/mm/dd'’
 
 ```html
 <template>
 ...
 	<input type="text" v-model="val"@click="showDatepicker">
 	 
-	 <Datepicker @confirm="sureDate" dateFormat="yy-mm-dd" v-if="show" @close="close" v-model="dateValue"
-	></Datepicker>
+	<datepicker 
+		@confirm="sureDate" 
+		format="yy-mm-dd" 
+		v-if="show" 
+		@close="close" 
+		v-model="dateValue"
+	></datepicker>
 ...
 </template>
 	 
 	 <script>
 	 ...
 	 methods:{
-	   showDatepicker() {
+	   	showDatepicker() {
 		    this.show = true
 		},
 		close() {
