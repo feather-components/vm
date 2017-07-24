@@ -20,6 +20,7 @@ import Grid from './components/grid.vue';
 import Form from './components/form.vue';
 import Filter from './components/filter.vue';
 import Overlay from './components/overlay.vue';
+import Slider from './components/slider.vue';
 
 const router = new VueRouter({
     routes: [
@@ -101,6 +102,11 @@ const router = new VueRouter({
         {
             path: '/components/list',
             component: List
+        },
+
+        {
+            path: '/components/slider',
+            component: Slider
         }
     ]
 });

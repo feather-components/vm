@@ -115,7 +115,7 @@ class Draggable{
             if(target.$draggable){
                 $draggable = target.$draggable;
 
-                if(isX && $draggable.options.axis == 'x' || $draggable.options.axis != 'x'){
+                if(isX && $draggable.options.axis == 'x' || !isX && $draggable.options.axis != 'x'){
                     break;
                 }
             }
@@ -157,5 +157,6 @@ export default{
     },
 
     Draggable,
+    Constructor: Draggable,
     name: 'draggable'
 };

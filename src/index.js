@@ -20,6 +20,7 @@ import Mask from './components/mask';
 import Overlay from './components/overlay';
 import Iosselect from './components/iosselect';
 import Datepicker from './components/datepicker';
+import {Slider, SliderItem} from './components/slider';
 import Helper from './helper';
 
 import Vue from 'vue';
@@ -53,7 +54,9 @@ var Components = [
     Mask,
     Overlay,
     Iosselect,
-    Datepicker
+    Datepicker,
+    Slider,
+    SliderItem
 ];
 
 function install(Vue){
@@ -97,7 +100,9 @@ export {
     Overlay,
     Helper,
     Iosselect,
-    Datepicker
+    Datepicker,
+    Slider,
+    SliderItem
 };
 
 export default {install};

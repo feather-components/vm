@@ -68,7 +68,8 @@
                     'components/popover',
                     'components/grid',
                     'components/form',
-                    'components/filter'
+                    'components/filter',
+                    'components/slider'
 //                    'components/iosselect',
 //                    'components/datepicker',
                 ]

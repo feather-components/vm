@@ -138,5 +138,6 @@ export default{
     },
 
     AutoSize,
+    Constructor: AutoSize,
     name: 'autosize'
 }
