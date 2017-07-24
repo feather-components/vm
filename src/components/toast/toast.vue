@@ -12,7 +12,7 @@
 </template>
 
 <style>
-    .vm-toast{
+    .vm-toast.vm-overlay{
         font-size: 0.16rem;
         color: #FFFFFF;
         line-height: 0.28rem;

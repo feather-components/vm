@@ -256,7 +256,7 @@
 </script>
 
 <style>
-    .vm-iosselect{
+    .vm-iosselect.vm-overlay{
         position: fixed;
         left: 0;
         bottom:0;
