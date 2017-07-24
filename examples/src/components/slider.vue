@@ -136,7 +136,7 @@
 
             slideTo(from, to){
                 if(to === 1){
-                    !this.isLoadedNews && this.$refs.list.refresh();
+                    this.$refs.list.refresh();
                     this.isLoadedNews = true;
                 }
             }

@@ -59,7 +59,7 @@ class Draggable{
             }
 
             var info = {
-                x, y, pageX: touch.pageX, pageY: touch.pageY, e
+                x, y, pageX: touch.pageX, pageY: touch.pageY, e, rx, ry
             };
 
             self.translates = {x, y};
