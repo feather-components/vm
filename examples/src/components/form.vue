@@ -113,7 +113,7 @@
         </scroll>
         <btn style="margin: 10px 0px; width: 90%;" type="drak" @click="submit" slot="footer">提交</btn>
         <iosselect :source="selectList" @confirm="onSure"  @close="close" v-if="show" v-model="val"></iosselect>
-        <datepicker @confirm="sureDate" format="yy-mm-dd" v-if="dateShow" @close="dateClose" v-model="dateValue"></datepicker>
+        <datepicker @confirm="sureDate" format="yy-mm-dd" v-if="dateShow" @close="dateClose" v-model="dateValue" :years="years"></datepicker>
     </page>
 </template>
 
@@ -236,7 +236,38 @@
                 val: [2,3],
                 style: style,
 				dateValue: '',
-				dateShow: false
+				dateShow: false,
+
+				years: [
+                    {
+                    	label: 2015,
+                        value: 2015
+                    },
+					{
+						label: 2016,
+						value: 2016
+					},
+					{
+						label: 2017,
+						value: 2017
+					},
+					{
+						label: 2018,
+						value: 2018
+					},
+					{
+						label: 2019,
+						value: 2019
+					},
+					{
+						label: 2020,
+						value: 2020
+					},
+					{
+						label: 2021,
+						value: 2021
+					},
+                ]
             };
         },
 
@@ -280,9 +311,7 @@
 
             sureDate(val) {
                 console.log(val, '发发发')
-                this.$nextTick(() => {
-					this.dateShow = false
-                })
+                this.dateShow = false
             },
 
 			dateClose() {

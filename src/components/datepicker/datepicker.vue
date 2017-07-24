@@ -70,6 +70,15 @@
         return days
     }
 
+    let isSetCurrentYears = (years, currentYear) => {
+    	for (let k in  years) {
+    		if (years[k].value === currentYear) {
+    			return true
+            }
+        }
+        return false
+    }
+
     const [
         YEARS,
         MONTHS,
@@ -92,19 +101,25 @@
             value: {
             	type: String,
                 default: ''
-            }
+            },
+
+			years: {
+				type: Array,
+				default: []
+			}
         },
 
         data() {
             return {
                 dateList:[
-                    YEARS,
+                    this.years.length === 0 ? YEARS : this.years,
                     MONTHS,
                     DAYS
                 ],
                 dateVal: '',
-                selectVal: [CURRENT_YEAR, CURRENT_MONTH, CURRENT_DAY]
-            }
+                selectVal: (isSetCurrentYears(this.years, CURRENT_YEAR) ||  this.years.length === 0) ?
+                    [CURRENT_YEAR, CURRENT_MONTH, CURRENT_DAY] : [this.years[0].value, 1, 1]
+		}
         },
 
         watch: {
@@ -152,8 +167,9 @@
                     default:
                         this.dateVal = va.join('/')
                 }
-
-                this.$emit('confirm', vals, labels, valObj)
+                this.$nextTick(() => {
+					this.$emit('confirm', vals, labels, valObj)
+				})
             },
 
             _close() {

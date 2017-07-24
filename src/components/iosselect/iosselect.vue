@@ -121,15 +121,25 @@
                 }
                 let $lis = $list[0].$el.querySelectorAll('li')
 
+                //处理选择最后一个，change不能再次出发渲染和获取值的处理
+				if (this.activeIndex[index] + 2 >= $lis.length) {
+					this.activeIndex[index] = $lis.length - 3
+                    this._getVal()
+                }
+
                 $lis.forEach((v, k) => {
                     if(this.activeIndex[index] === k) {
                         v.style.opacity = 1
+                        v.style.color = '#7792cb'
                     } else if(Math.abs(this.activeIndex[index] - k) === 1){
                         v.style.opacity = 0.6
+						v.style.color = '#000'
                     } else {
                         v.style.opacity = 0.3
+						v.style.color = '#000';
                     }
                 })
+
                 return this
             },
 
@@ -263,14 +273,15 @@
         width:100%;
         /*height: 219px;*/
         background: rgba(0,0,0,0.5);
-        z-index:10001
+        z-index:10001;
+        background: #f5f5f5;
     }
     .vm-iosselect-list{
         width:100%;
         height: 175px;
         overflow: hidden;
         padding-left:0;
-        background: #fff;
+        /*background: #fff;*/
     }
     .vm-iosselect-list > li{
         float: left;
@@ -278,14 +289,11 @@
         min-height: 175px;
         max-height: 175px;
     }
-    .vm-iosselect{
-        width:100%;
-        background: #fff;
-    }
     .vm-iosselect-header{
         width:100%;
         height:44px;
-        box-shadow: 0 2px 3px #ddd;
+        /*box-shadow: 0 2px 3px #ddd;*/
+        background: #fff;
     }
     .vm-iosselect-header p{
         display: inline-block;
@@ -300,7 +308,7 @@
     }
     .vm-iosselect-header .sure{
         float: right;
-        color: #ff8447
+        color: #7792cb
     }
     .vm-list > li {
         float: left;

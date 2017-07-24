@@ -11,6 +11,7 @@ import {Datepicker} from 'vmui';
 ### Props
 
 * dateFormat: 日期格式，默认：yyyy/mm/dd，其他格式：‘yyyy-mm-dd’，‘yy-mm-dd’，‘yy/mm/dd'’
+* years: 可以设置你想要的年限，但是如果没有当前的年限，则不会自动选择今天的日期，默认：[]
 
 ```html
 <template>
