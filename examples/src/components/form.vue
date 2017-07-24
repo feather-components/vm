@@ -113,7 +113,7 @@
         </scroll>
         <btn style="margin: 10px 0px; width: 90%;" type="drak" @click="submit" slot="footer">提交</btn>
         <iosselect :source="selectList" @confirm="onSure"  @close="close" v-if="show" v-model="val"></iosselect>
-        <datepicker @confirm="sureDate" format="yy-mm-dd" v-if="dateShow" @close="dateClose" v-model="dateValue" :years="years"></datepicker>
+        <datepicker @confirm="sureDate" format="yy-mm-dd" v-if="dateShow" @close="dateClose" v-model="dateValue" ></datepicker>
     </page>
 </template>
 
@@ -275,6 +275,8 @@
 //          setInterval(() => {
 //          	  console.log(this.val)
 //          }, 1000)
+
+			document.activeElement.blur()
         },
 
         watch: {
@@ -297,10 +299,8 @@
 
             onSure(val) {
                 console.log(val, '发发')
-                this.$nextTick(() => {
-					this.show = false
-                })
-
+                this.show = false
+				console.log(this.val, 8888)
 //                this.val = val[0].label + '-' + val[1].label
 //                this.val = val
             },

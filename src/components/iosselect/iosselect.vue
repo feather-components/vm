@@ -63,7 +63,8 @@
                 activeIndex: [],
                 val: [],
                 selectList: this.source,
-				dragIndex: 0
+				dragIndex: 0,
+                sed: false
             }
         },
 
@@ -96,7 +97,7 @@
 
             this._initValRender()
                     ._getVal()
-            this.$emit('change', {done:this._setList, val: this.val})
+            this.$emit('change', {done:this._setList, val: this.val, index: null})
 
             this.activeIndex.forEach((v1, k1) => {
                 this._renderList(k1)
@@ -114,7 +115,7 @@
 				$list[0].scrollTo('-' + (this.activeIndex[index] - 2) * LINEHEIGHT)
             },
 
-            _renderList(index) {
+            _renderList(index, stop) {
                 let $list = this.$refs['scroll' + index]
                 if ($list[0] == undefined) {
                 	return
@@ -139,6 +140,20 @@
 						v.style.color = '#000';
                     }
                 })
+
+                if (stop === 1) {
+					this.$emit('scrollEnd', index, this.val, (activeIndex, i) => {
+						if (this.sed) return
+						this.sed = true;
+						this.activeIndex[index] = activeIndex + 1
+                        this._getVal()
+						this.$refs['scroll' + (!!i ? i : index)][0].scrollTo('-' + parseInt(activeIndex - 1) * LINEHEIGHT, 200)
+                        this._renderList(index, 0)
+						setTimeout(() => {
+							this.sed = false
+						}, 600)
+					})
+                }
 
                 return this
             },
@@ -186,16 +201,16 @@
             },
 
 
-            _activeChange(pos, index) {
-                this.$emit('change', {done:this._setList, val: this.val})
+            _activeChange(pos, index, stop) {
+                this.$emit('change', {done:this._setList, val: this.val, index: index})
 				setTimeout(() => {
-					this._renderList(index)
-				}, 600)
+					stop != 0 && this._renderList(index, 1)
+				}, 100)
             },
 
 			_handleDraging(pos, i) {
 				this.dragIndex = i
-                this._activeChange(pos, i)
+                this._activeChange(pos, i, 0)
             },
 
 			_handleStop(des, status) {
@@ -233,8 +248,8 @@
                 this.activeIndex[i] = d
 				this._getVal()
                 this.$nextTick(() => {
-                    this._renderList(i, 1)
 					this.$refs['scroll' + i][0].scrollTo('-' + (d  - 2) * LINEHEIGHT, 500)
+					this._renderList(i, 1)
 				})
             },
 
@@ -242,15 +257,23 @@
                 let val = []
                 let val2 = []
 
+                if (this.val == []) {
+					this.source.forEach((v, k) => {
+						this.val.push(v[0])
+                    })
+                }
+
                 this.val.forEach((v, k) => {
                     val.push(v.label)
                     val2.push(v.value)
                 })
 
 
-				this._bindVal()
 
-                this.$emit('confirm', val2, val, this.val)
+				this._bindVal()
+                this.$nextTick(() => {
+					this.$emit('confirm', val2, val, this.val)
+				})
             },
 
             _setList(list, i) {
