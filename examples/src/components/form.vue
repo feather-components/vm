@@ -113,7 +113,7 @@
         </scroll>
         <btn style="margin: 10px 0px; width: 90%;" type="drak" @click="submit" slot="footer">提交</btn>
         <iosselect :source="selectList" @confirm="onSure"  @close="close" v-if="show" v-model="val"></iosselect>
-        <datepicker @confirm="sureDate" format="yy-mm-dd" v-if="dateShow" @close="dateClose" v-model="dateValue" ></datepicker>
+        <datepicker @confirm="sureDate" format="yy-mm-dd" v-if="dateShow" @close="dateClose" v-model="dateValue"></datepicker>
     </page>
 </template>
 
@@ -235,8 +235,9 @@
                 show: false,
                 val: [2,3],
                 style: style,
-				dateValue: '',
+				dateValue: '2018-1-1',
 				dateShow: false,
+//				initDate: [2018, 1, 1],
 
 				years: [
                     {

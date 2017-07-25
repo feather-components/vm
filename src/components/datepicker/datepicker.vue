@@ -162,12 +162,12 @@
 
 			minDate: {
                 type: String,
-                default: '2017-8-30'
+                default: '2010-1-1'
             },
 
 			maxDate: {
 				type: String,
-				default: '2020-10-1'
+				default: '2020-12-31'
 			}
         },
 
@@ -201,8 +201,8 @@
         },
 
         methods: {
+        	// 结束后判断是否超过选择日期范围
 			_scrollEnd(i, val, done) {
-				if (i == 0) return
 				let yearPre = getYearPre(this.format)
 
 				let minDateInt = new Date([yearPre + this.minDateArgs[0], this.minDateArgs[1], this.minDateArgs[2]].join("/")).getTime();
@@ -236,7 +236,6 @@
                 if (current > maxDateInt) {
 					done(maxIns, maxDates, maxDateObjs)
 				}
-
             },
 
             _setDays(e) {
