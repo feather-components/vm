@@ -64,7 +64,7 @@
                 val: [],
                 selectList: this.source,
 				dragIndex: 0,
-                sed: false
+                sed: []
             }
         },
 
@@ -92,8 +92,10 @@
         mounted() {
             let l = this.selectList.length
             for (let i = 0; i < l; i++) {
+            	this.sed.push(false)
                 this.activeIndex.push(2)
             }
+
 
             this._initValRender()
                     ._getVal()
@@ -142,18 +144,19 @@
                 })
 
                 if (stop === 1) {
-					this.$emit('scrollEnd', index, this.val, (activeIndex, i) => {
-						if (this.sed) return
-						this.sed = true;
-						this.activeIndex[index] = activeIndex + 1
-                        this._getVal()
-						this.$refs['scroll' + (!!i ? i : index)][0].scrollTo('-' + parseInt(activeIndex - 1) * LINEHEIGHT, 200)
-                        this._renderList(index, 0)
-						setTimeout(() => {
-							this.sed = false
-						}, 600)
+					this.$emit('scrollEnd', index, this.val, (i, d, o) => {
+						i.forEach((v, k) => {
+						    if (this.sed[v]) return
+
+						    this.sed[v] = true;
+
+							this._scrollTo(v, d[k], o[k])
+							setTimeout(() => {
+								this.sed[v] = false
+							}, 650)
+                        })
 					})
-                }
+				}
 
                 return this
             },

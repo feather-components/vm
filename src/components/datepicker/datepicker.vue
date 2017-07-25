@@ -202,23 +202,39 @@
 
         methods: {
 			_scrollEnd(i, val, done) {
+				if (i == 0) return
 				let yearPre = getYearPre(this.format)
 
 				let minDateInt = new Date([yearPre + this.minDateArgs[0], this.minDateArgs[1], this.minDateArgs[2]].join("/")).getTime();
 				let maxDateInt = new Date([yearPre + this.maxDateArgs[0], this.maxDateArgs[1], this.maxDateArgs[2]].join("/")).getTime();
 				let current = new Date(val.map((v, k) => {return v.value}).join("/")).getTime()
 
+                let minIns = [1, 2]
+                let minDates = [parseInt(this.minDateArgs[1]) + 1,parseInt(this.minDateArgs[2]) + 1]
+                let minDateObjs = [{
+					    label: parseInt(this.minDateArgs[1]),
+                        value: parseInt(this.minDateArgs[1])
+                    },{
+					    label: parseInt(this.minDateArgs[2]),
+                        value: parseInt(this.minDateArgs[2])
+				    }]
+
+				let maxIns = [1, 2]
+				let maxDates = [parseInt(this.maxDateArgs[1]) + 1,parseInt(this.maxDateArgs[2]) + 1]
+				let maxDateObjs = [{
+					label: parseInt(this.maxDateArgs[1]),
+					value: parseInt(this.maxDateArgs[1])
+				},{
+					label: parseInt(this.maxDateArgs[2]),
+					value: parseInt(this.maxDateArgs[2])
+				}]
+
                 if (current < minDateInt) {
-					done(parseInt(this.minDateArgs[i]))
+					done(minIns, minDates, minDateObjs)
                 }
+
                 if (current > maxDateInt) {
-					console.log(parseInt(this.minDateArgs[i]) - 1, 9999)
-					done(parseInt(this.maxDateArgs[i]))
-                    console.log(i, this.selectVal[2], this.maxDateArgs[2], 9999999)
-                    if (i == 1 && parseInt(this.selectVal[2]) > parseInt(this.maxDateArgs[2])) {
-						console.log(555)
-						done(parseInt(this.maxDateArgs[2]) - 1, 2)
-                    }
+					done(maxIns, maxDates, maxDateObjs)
 				}
 
             },
