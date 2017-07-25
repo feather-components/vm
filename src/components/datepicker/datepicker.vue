@@ -209,30 +209,16 @@
 
                 let minIns = [1, 2]
                 let minDates = [parseInt(this.minDateArgs[1]) + 1,parseInt(this.minDateArgs[2]) + 1]
-                let minDateObjs = [{
-					    label: parseInt(this.minDateArgs[1]),
-                        value: parseInt(this.minDateArgs[1])
-                    },{
-					    label: parseInt(this.minDateArgs[2]),
-                        value: parseInt(this.minDateArgs[2])
-				    }]
 
 				let maxIns = [1, 2]
 				let maxDates = [parseInt(this.maxDateArgs[1]) + 1,parseInt(this.maxDateArgs[2]) + 1]
-				let maxDateObjs = [{
-					label: parseInt(this.maxDateArgs[1]),
-					value: parseInt(this.maxDateArgs[1])
-				},{
-					label: parseInt(this.maxDateArgs[2]),
-					value: parseInt(this.maxDateArgs[2])
-				}]
 
                 if (current < minDateInt) {
-					done(minIns, minDates, minDateObjs)
+					done(minIns, minDates)
                 }
 
                 if (current > maxDateInt) {
-					done(maxIns, maxDates, maxDateObjs)
+					done(maxIns, maxDates)
 				}
             },
 

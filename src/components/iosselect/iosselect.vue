@@ -144,13 +144,13 @@
                 })
 
                 if (stop === 1) {
-					this.$emit('scrollEnd', index, this.val, (i, d, o) => {
+					this.$emit('scrollEnd', index, this.val, (i, d) => {
 						i.forEach((v, k) => {
 						    if (this.sed[v]) return
 
 						    this.sed[v] = true;
 
-							this._scrollTo(v, d[k], o[k])
+							this._scrollTo(v, d[k], {i: i})
 							setTimeout(() => {
 								this.sed[v] = false
 							}, 650)
