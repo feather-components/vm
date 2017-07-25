@@ -113,7 +113,7 @@
         </scroll>
         <btn style="margin: 10px 0px; width: 90%;" type="drak" @click="submit" slot="footer">提交</btn>
         <iosselect :source="selectList" @confirm="onSure"  @close="close" v-if="show" v-model="val"></iosselect>
-        <datepicker @confirm="sureDate" format="yy-mm-dd" v-if="dateShow" @close="dateClose" v-model="dateValue"></datepicker>
+        <datepicker @confirm="sureDate" v-if="dateShow" format="yy/mm/dd" min-date="17/8/1" max-date="19/8/1" @close="dateClose" v-model="dateValue"></datepicker>
     </page>
 </template>
 

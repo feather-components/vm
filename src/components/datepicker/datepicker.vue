@@ -71,11 +71,9 @@
                 break;
             case 'yy-mm-dd':
                 v = date.split('-')
-                v[0] = v[0].toString().substr(2)
                 break;
             case 'yy/mm/dd':
                 v = date.split('/')
-                v[0] = v[0].toString().substr(2)
                 break;
             default:
                 v = date.split('/')
@@ -162,12 +160,12 @@
 
 			minDate: {
                 type: String,
-                default: '2010-1-1'
+                default: '2010/1/1'
             },
 
 			maxDate: {
 				type: String,
-				default: '2020-12-31'
+				default: '2020/12/31'
 			}
         },
 
