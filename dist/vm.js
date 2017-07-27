@@ -1953,24 +1953,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 let date = new Date();
 const [CURRENT_YEAR, CURRENT_MONTH, CURRENT_DAY] = [date.getFullYear(), date.getMonth() + 1, date.getDate()];
 
-let getYears = () => {
-    let years = [{ label: CURRENT_YEAR, value: CURRENT_YEAR }];
-
-    for (let i = 1; i <= 30; i++) {
-        let [o1, o2] = [{
-            label: CURRENT_YEAR - i,
-            value: CURRENT_YEAR - i
-        }, {
-            label: CURRENT_YEAR + i,
-            value: CURRENT_YEAR + i
-        }];
-        years.unshift(o1);
-        years.push(o2);
-    }
-
-    return years;
-};
-
 let getMonths = () => {
     let months = [];
     for (let i = 1; i <= 12; i++) {
@@ -1982,6 +1964,8 @@ let getMonths = () => {
 
     return months;
 };
+
+const [MONTHS, BIG_MONTHS, SMALL_MONTHS] = [getMonths(), [1, 3, 5, 7, 8, 10, 12], [4, 6, 9, 11]];
 
 let getDays = (currentYear, currentMonth) => {
     let [end, days] = [0, []];
@@ -2005,8 +1989,95 @@ let getDays = (currentYear, currentMonth) => {
     return days;
 };
 
-const [YEARS, MONTHS, BIG_MONTHS, SMALL_MONTHS] = [getYears(), getMonths(), [1, 3, 5, 7, 8, 10, 12], [4, 6, 9, 11]],
-      DAYS = getDays(CURRENT_YEAR, CURRENT_MONTH);
+let getMinOrMax = (date, format) => {
+    let v = [];
+
+    switch (format) {
+        case 'yyyy-mm-dd':
+            v = date.split('-');
+            break;
+        case 'yy-mm-dd':
+            v = date.split('-');
+            break;
+        case 'yy/mm/dd':
+            v = date.split('/');
+            break;
+        default:
+            v = date.split('/');
+    }
+    return v;
+};
+
+let getYearPre = format => {
+    let yearPre = '';
+    if (['yy-mm-dd', 'yy/mm/dd'].indexOf(format) > -1) {
+        yearPre = '20';
+    }
+
+    return yearPre;
+};
+
+//获取默认选中的选项
+let currentDuringMinAndMax = (minDate, maxDate, format) => {
+    let year,
+        selectVal = [CURRENT_YEAR, CURRENT_MONTH, CURRENT_DAY],
+        minDateArgs = [],
+        maxDateArgs = [],
+        yearPre = getYearPre(format);
+
+    minDateArgs = getMinOrMax(minDate, format);
+
+    maxDateArgs = getMinOrMax(maxDate, format);
+
+    if (maxDateArgs.length > 0 && minDateArgs.length > 0 && maxDateArgs[0] < minDateArgs[0]) {
+        return;
+    }
+
+    if (['yy-mm-dd', 'yy/mm/dd'].indexOf(format) > -1) {
+        year = parseInt(CURRENT_YEAR.toString().substr(2));
+    } else {
+        year = parseInt(CURRENT_YEAR);
+    }
+
+    let mind = new Date([yearPre + year, minDateArgs[1], minDateArgs[2]].join("/")).getTime();
+    let current = new Date(selectVal.join("/")).getTime();
+
+    if (mind > current) {
+        selectVal = minDateArgs;
+        selectVal[0] = yearPre + selectVal[0];
+    }
+
+    return selectVal;
+};
+
+let getYears = (minDate, maxDate, format) => {
+    let years = [],
+        minYear,
+        maxYear,
+        yearPre = '';
+
+    if (['yy-mm-dd', 'yy/mm/dd'].indexOf(format) > -1) {
+        yearPre = '20';
+    }
+
+    minYear = { label: yearPre + getMinOrMax(minDate, format)[0], value: yearPre + getMinOrMax(minDate, format)[0] };
+    maxYear = { label: yearPre + getMinOrMax(maxDate, format)[0], value: yearPre + getMinOrMax(maxDate, format)[0] };
+
+    years.push(minYear);
+
+    let l = parseInt(maxYear.value) - parseInt(minYear.value);
+    for (let i = 1; i <= l; i++) {
+        let o = {
+            label: parseInt(minYear.value) + i,
+            value: parseInt(minYear.value) + i
+        };
+        years.push(o);
+    }
+
+    return years;
+};
+
+const DAYS = getDays(CURRENT_YEAR, CURRENT_MONTH);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: {
@@ -2018,14 +2089,26 @@ const [YEARS, MONTHS, BIG_MONTHS, SMALL_MONTHS] = [getYears(), getMonths(), [1, 
         value: {
             type: String,
             default: ''
+        },
+
+        minDate: {
+            type: String,
+            default: '2010/1/1'
+        },
+
+        maxDate: {
+            type: String,
+            default: '2020/12/31'
         }
     },
 
     data() {
         return {
-            dateList: [YEARS, MONTHS, DAYS],
+            dateList: [getYears(this.minDate, this.maxDate, this.format), MONTHS, DAYS],
             dateVal: '',
-            selectVal: [CURRENT_YEAR, CURRENT_MONTH, CURRENT_DAY]
+            selectVal: currentDuringMinAndMax(this.minDate, this.maxDate, this.format),
+            minDateArgs: getMinOrMax(this.minDate, this.format),
+            maxDateArgs: getMinOrMax(this.maxDate, this.format)
         };
     },
 
@@ -2044,7 +2127,32 @@ const [YEARS, MONTHS, BIG_MONTHS, SMALL_MONTHS] = [getYears(), getMonths(), [1, 
     },
 
     methods: {
-        _setDays(e, i) {
+        // 结束后判断是否超过选择日期范围
+        _scrollEnd(i, val, done) {
+            let yearPre = getYearPre(this.format);
+
+            let minDateInt = new Date([yearPre + this.minDateArgs[0], this.minDateArgs[1], this.minDateArgs[2]].join("/")).getTime();
+            let maxDateInt = new Date([yearPre + this.maxDateArgs[0], this.maxDateArgs[1], this.maxDateArgs[2]].join("/")).getTime();
+            let current = new Date(val.map((v, k) => {
+                return v.value;
+            }).join("/")).getTime();
+
+            let minIns = [1, 2];
+            let minDates = [parseInt(this.minDateArgs[1]) + 1, parseInt(this.minDateArgs[2]) + 1];
+
+            let maxIns = [1, 2];
+            let maxDates = [parseInt(this.maxDateArgs[1]) + 1, parseInt(this.maxDateArgs[2]) + 1];
+
+            if (current < minDateInt) {
+                done(minIns, minDates);
+            }
+
+            if (current > maxDateInt) {
+                done(maxIns, maxDates);
+            }
+        },
+
+        _setDays(e) {
             try {
                 let days = getDays(e.val[0].value, e.val[1].value);
                 e.done(days, 2);
@@ -2060,7 +2168,7 @@ const [YEARS, MONTHS, BIG_MONTHS, SMALL_MONTHS] = [getYears(), getMonths(), [1, 
                 va.push(v.label);
             });
 
-            switch (this.dateFormat) {
+            switch (this.format) {
                 case 'yyyy-mm-dd':
                     this.dateVal = va.join('-');
                     break;
@@ -2076,7 +2184,11 @@ const [YEARS, MONTHS, BIG_MONTHS, SMALL_MONTHS] = [getYears(), getMonths(), [1, 
                     this.dateVal = va.join('/');
             }
 
-            this.$emit('confirm', vals, labels, valObj);
+            this.selectVal = [valObj[0].value, valObj[1].value, valObj[2].value];
+
+            this.$nextTick(() => {
+                this.$emit('confirm', vals, labels, valObj);
+            });
         },
 
         _close() {
@@ -3954,7 +4066,8 @@ const LINEHEIGHT = 35;
             activeIndex: [],
             val: [],
             selectList: this.source,
-            dragIndex: 0
+            dragIndex: 0,
+            sed: []
         };
     },
 
@@ -3982,11 +4095,12 @@ const LINEHEIGHT = 35;
     mounted() {
         let l = this.selectList.length;
         for (let i = 0; i < l; i++) {
+            this.sed.push(false);
             this.activeIndex.push(2);
         }
 
         this._initValRender()._getVal();
-        this.$emit('change', { done: this._setList, val: this.val });
+        this.$emit('change', { done: this._setList, val: this.val, index: null });
 
         this.activeIndex.forEach((v1, k1) => {
             this._renderList(k1);
@@ -4003,22 +4117,47 @@ const LINEHEIGHT = 35;
             $list[0].scrollTo('-' + (this.activeIndex[index] - 2) * LINEHEIGHT);
         },
 
-        _renderList(index) {
+        _renderList(index, stop) {
             let $list = this.$refs['scroll' + index];
             if ($list[0] == undefined) {
                 return;
             }
             let $lis = $list[0].$el.querySelectorAll('li');
 
+            //处理选择最后一个，change不能再次出发渲染和获取值的处理
+            if (this.activeIndex[index] + 2 >= $lis.length) {
+                this.activeIndex[index] = $lis.length - 3;
+                this._getVal();
+            }
+
             $lis.forEach((v, k) => {
                 if (this.activeIndex[index] === k) {
                     v.style.opacity = 1;
+                    v.style.color = '#7792cb';
                 } else if (Math.abs(this.activeIndex[index] - k) === 1) {
                     v.style.opacity = 0.6;
+                    v.style.color = '#000';
                 } else {
                     v.style.opacity = 0.3;
+                    v.style.color = '#000';
                 }
             });
+
+            if (stop === 1) {
+                this.$emit('scrollEnd', index, this.val, (i, d) => {
+                    i.forEach((v, k) => {
+                        if (this.sed[v]) return;
+
+                        this.sed[v] = true;
+
+                        this._scrollTo(v, d[k], { i: i });
+                        setTimeout(() => {
+                            this.sed[v] = false;
+                        }, 650);
+                    });
+                });
+            }
+
             return this;
         },
 
@@ -4064,16 +4203,16 @@ const LINEHEIGHT = 35;
             return this;
         },
 
-        _activeChange(pos, index) {
-            this.$emit('change', { done: this._setList, val: this.val });
+        _activeChange(pos, index, stop) {
+            this.$emit('change', { done: this._setList, val: this.val, index: index });
             setTimeout(() => {
-                this._renderList(index);
-            }, 600);
+                stop != 0 && this._renderList(index, 1);
+            }, 100);
         },
 
         _handleDraging(pos, i) {
             this.dragIndex = i;
-            this._activeChange(pos, i);
+            this._activeChange(pos, i, 0);
         },
 
         _handleStop(des, status) {
@@ -4111,8 +4250,8 @@ const LINEHEIGHT = 35;
             this.activeIndex[i] = d;
             this._getVal();
             this.$nextTick(() => {
-                this._renderList(i, 1);
                 this.$refs['scroll' + i][0].scrollTo('-' + (d - 2) * LINEHEIGHT, 500);
+                this._renderList(i, 1);
             });
         },
 
@@ -4120,14 +4259,21 @@ const LINEHEIGHT = 35;
             let val = [];
             let val2 = [];
 
+            if (this.val == []) {
+                this.source.forEach((v, k) => {
+                    this.val.push(v[0]);
+                });
+            }
+
             this.val.forEach((v, k) => {
                 val.push(v.label);
                 val2.push(v.value);
             });
 
             this._bindVal();
-
-            this.$emit('confirm', val2, val, this.val);
+            this.$nextTick(() => {
+                this.$emit('confirm', val2, val, this.val);
+            });
         },
 
         _setList(list, i) {
@@ -6402,7 +6548,7 @@ exports = module.exports = __webpack_require__(2)(undefined);
 
 
 // module
-exports.push([module.i, ".vm-iosselect.vm-overlay{position:fixed;left:0;bottom:0;width:100%;z-index:10001}.vm-iosselect-list{width:100%;height:175px;overflow:hidden;padding-left:0;background:#fff}.vm-iosselect-list>li{float:left;list-style:none;min-height:175px;max-height:175px}.vm-iosselect{width:100%;background:#fff}.vm-iosselect-header{width:100%;height:44px;-webkit-box-shadow:0 2px 3px #ddd;box-shadow:0 2px 3px #ddd}.vm-iosselect-header p{display:inline-block;padding:0 15px;line-height:44px;font-size:13px;margin:0}.vm-iosselect-header .cancel{float:left;color:#ddd}.vm-iosselect-header .sure{float:right;color:#ff8447}.vm-list>li{float:left;height:175px}.vm-iosselect-label-list{padding-left:0}.vm-iosselect-label-list li{line-height:35px;height:35px;text-align:center;font-size:13px;opacity:.3;list-style:none}", ""]);
+exports.push([module.i, ".vm-iosselect.vm-overlay{position:fixed;left:0;bottom:0;width:100%;z-index:10001;background:#f5f5f5}.vm-iosselect-list{width:100%;height:175px;overflow:hidden;padding-left:0}.vm-iosselect-list>li{float:left;list-style:none;min-height:175px;max-height:175px}.vm-iosselect-header{width:100%;height:44px;background:#fff}.vm-iosselect-header p{display:inline-block;padding:0 15px;line-height:44px;font-size:13px;margin:0}.vm-iosselect-header .cancel{float:left;color:#ddd}.vm-iosselect-header .sure{float:right;color:#7792cb}.vm-list>li{float:left;height:175px}.vm-iosselect-label-list{padding-left:0}.vm-iosselect-label-list li{line-height:35px;height:35px;text-align:center;font-size:13px;opacity:.3;list-style:none}", ""]);
 
 // exports
 
@@ -7858,7 +8004,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "change": function($event) {
         _vm._setDays($event, 2)
       },
-      "close": _vm._close
+      "close": _vm._close,
+      "scrollEnd": _vm._scrollEnd
     }
   })], 1)
 },staticRenderFns: []}
