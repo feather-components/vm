@@ -12,7 +12,7 @@ import {Datepicker} from 'vmui';
 
 * format: 日期格式，默认：yyyy/mm/dd，其他格式：‘yyyy-mm-dd’，‘yy-mm-dd’，‘yy/mm/dd'’
 * minDate: 最小日期，格式必须与format匹配
-* maxDate: 最大日期，格式必须与format匹配，用于select范围，默认为2010-1-1到2010-12-31
+* maxDate: 最大日期，格式必须与format匹配，用于select范围，默认为2010-1-1到2020-12-31
 
 ```html
 <template>
