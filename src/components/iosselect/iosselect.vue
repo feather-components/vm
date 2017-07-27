@@ -63,7 +63,8 @@
                 activeIndex: [],
                 val: [],
                 selectList: this.source,
-				dragIndex: 0
+				dragIndex: 0,
+                sed: []
             }
         },
 
@@ -91,12 +92,14 @@
         mounted() {
             let l = this.selectList.length
             for (let i = 0; i < l; i++) {
+            	this.sed.push(false)
                 this.activeIndex.push(2)
             }
 
+
             this._initValRender()
                     ._getVal()
-            this.$emit('change', {done:this._setList, val: this.val})
+            this.$emit('change', {done:this._setList, val: this.val, index: null})
 
             this.activeIndex.forEach((v1, k1) => {
                 this._renderList(k1)
@@ -114,22 +117,47 @@
 				$list[0].scrollTo('-' + (this.activeIndex[index] - 2) * LINEHEIGHT)
             },
 
-            _renderList(index) {
+            _renderList(index, stop) {
                 let $list = this.$refs['scroll' + index]
                 if ($list[0] == undefined) {
                 	return
                 }
                 let $lis = $list[0].$el.querySelectorAll('li')
 
+                //处理选择最后一个，change不能再次出发渲染和获取值的处理
+				if (this.activeIndex[index] + 2 >= $lis.length) {
+					this.activeIndex[index] = $lis.length - 3
+                    this._getVal()
+                }
+
                 $lis.forEach((v, k) => {
                     if(this.activeIndex[index] === k) {
                         v.style.opacity = 1
+                        v.style.color = '#7792cb'
                     } else if(Math.abs(this.activeIndex[index] - k) === 1){
                         v.style.opacity = 0.6
+						v.style.color = '#000'
                     } else {
                         v.style.opacity = 0.3
+						v.style.color = '#000';
                     }
                 })
+
+                if (stop === 1) {
+					this.$emit('scrollEnd', index, this.val, (i, d) => {
+						i.forEach((v, k) => {
+						    if (this.sed[v]) return
+
+						    this.sed[v] = true;
+
+							this._scrollTo(v, d[k], {i: i})
+							setTimeout(() => {
+								this.sed[v] = false
+							}, 650)
+                        })
+					})
+				}
+
                 return this
             },
 
@@ -176,16 +204,16 @@
             },
 
 
-            _activeChange(pos, index) {
-                this.$emit('change', {done:this._setList, val: this.val})
+            _activeChange(pos, index, stop) {
+                this.$emit('change', {done:this._setList, val: this.val, index: index})
 				setTimeout(() => {
-					this._renderList(index)
-				}, 600)
+					stop != 0 && this._renderList(index, 1)
+				}, 100)
             },
 
 			_handleDraging(pos, i) {
 				this.dragIndex = i
-                this._activeChange(pos, i)
+                this._activeChange(pos, i, 0)
             },
 
 			_handleStop(des, status) {
@@ -223,8 +251,8 @@
                 this.activeIndex[i] = d
 				this._getVal()
                 this.$nextTick(() => {
-                    this._renderList(i, 1)
 					this.$refs['scroll' + i][0].scrollTo('-' + (d  - 2) * LINEHEIGHT, 500)
+					this._renderList(i, 1)
 				})
             },
 
@@ -232,15 +260,23 @@
                 let val = []
                 let val2 = []
 
+                if (this.val == []) {
+					this.source.forEach((v, k) => {
+						this.val.push(v[0])
+                    })
+                }
+
                 this.val.forEach((v, k) => {
                     val.push(v.label)
                     val2.push(v.value)
                 })
 
 
-				this._bindVal()
 
-                this.$emit('confirm', val2, val, this.val)
+				this._bindVal()
+                this.$nextTick(() => {
+					this.$emit('confirm', val2, val, this.val)
+				})
             },
 
             _setList(list, i) {
@@ -262,14 +298,15 @@
         bottom:0;
         width:100%;
         /*height: 219px;*/
-        z-index:10001
+        z-index:10001;
+        background: #f5f5f5;
     }
     .vm-iosselect-list{
         width:100%;
         height: 175px;
         overflow: hidden;
         padding-left:0;
-        background: #fff;
+        /*background: #fff;*/
     }
     .vm-iosselect-list > li{
         float: left;
@@ -277,14 +314,11 @@
         min-height: 175px;
         max-height: 175px;
     }
-    .vm-iosselect{
-        width:100%;
-        background: #fff;
-    }
     .vm-iosselect-header{
         width:100%;
         height:44px;
-        box-shadow: 0 2px 3px #ddd;
+        /*box-shadow: 0 2px 3px #ddd;*/
+        background: #fff;
     }
     .vm-iosselect-header p{
         display: inline-block;
@@ -299,7 +333,7 @@
     }
     .vm-iosselect-header .sure{
         float: right;
-        color: #ff8447
+        color: #7792cb
     }
     .vm-list > li {
         float: left;
