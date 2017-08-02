@@ -120,28 +120,33 @@
             _renderList(index, stop) {
                 let $list = this.$refs['scroll' + index]
                 if ($list[0] == undefined) {
-                	return
+                    return
                 }
+
                 let $lis = $list[0].$el.querySelectorAll('li')
 
                 //处理选择最后一个，change不能再次出发渲染和获取值的处理
-				if (this.activeIndex[index] + 2 >= $lis.length) {
-					this.activeIndex[index] = $lis.length - 3
+                if (this.activeIndex[index] + 2 >= $lis.length) {
+                    this.activeIndex[index] = $lis.length - 3
                     this._getVal()
                 }
 
-                $lis.forEach((v, k) => {
-                    if(this.activeIndex[index] === k) {
-                        v.style.opacity = 1
-                        v.style.color = '#7792cb'
-                    } else if(Math.abs(this.activeIndex[index] - k) === 1){
-                        v.style.opacity = 0.6
-						v.style.color = '#000'
-                    } else {
-                        v.style.opacity = 0.3
-						v.style.color = '#000';
+                for (let k2 in $lis) {
+                    if ($lis[k2].style == undefined) {
+                        continue;
                     }
-                })
+                    if(this.activeIndex[index] == parseInt(k2)) {
+                        $lis[k2].style.opacity = 1
+                        $lis[k2].style.color = '#7792cb'
+                    } else if(Math.abs(this.activeIndex[index] - k2) === 1){
+                        $lis[k2].style.opacity = 0.6
+                        $lis[k2].style.color = '#000'
+                    } else {
+                        $lis[k2].style.opacity = 0.3
+                        $lis[k2].style.color = '#000';
+                    }
+                }
+
 
                 if (stop === 1) {
 					this.$emit('scrollEnd', index, this.val, (i, d) => {
