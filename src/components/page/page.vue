@@ -15,7 +15,7 @@
 </template>
 
 <style>
-    .vm-page{
+    .vm-page.vm-overlay{
         width: 100%;
         height: 100%;
         background: #fff;

@@ -1,5 +1,5 @@
 <style>
-    .vm-alert{
+    .vm-alert.vm-overlay{
         border-radius: 4px;
         width: 60%;
         padding: 16px 10px;

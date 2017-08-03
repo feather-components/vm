@@ -62,7 +62,7 @@ ActionSheet({
 import Vm from 'vm';
 import Vue from 'vue';
 
-Vue.use(Vmui);
+Vue.use(Vm);
 ```
 
 ```html

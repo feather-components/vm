@@ -7,7 +7,7 @@
 </template>
 
 <style>
-    .vm-dropbox{
+    .vm-dropbox.vm-overlay{
         position: absolute;
     }
 </style>

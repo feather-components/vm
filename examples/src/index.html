@@ -15,16 +15,25 @@ body{
     transition: all .5s cubic-bezier(.55, 0, .1, 1);
 }
 
-.slide-left-enter, .slide-right-leave-active{
-    opacity: 0,
+.slide-left-enter{
     -webkit-transform: translate(100%, 0);
     transform: translate(100%, 0);
 }
 
-.slide-left-leave-active, .slide-right-enter{
-    opacity: 0;
+.slide-left-leave-active{
     -webkit-transform: translate(-30%, 0);
     transform: translate(-30%, 0);
+}
+
+.slide-right-enter{
+    -webkit-transform: translate(-30%, 0);
+    transform: translate(-30%, 0);
+}
+
+.slide-right-leave-active{
+    z-index: 1000000 !important;
+    -webkit-transform: translate(100%, 0);
+    transform: translate(100%, 0);
 }
 </style>
 </head>
