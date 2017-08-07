@@ -23,11 +23,11 @@
         height: 100%;
 
         &.vm-mask{
-            background: transparent;
+            background: transparent !important;
         }
 
         .vm-overlay{
-            background: transparent;
+            background: transparent !important;
             width: auto;
         }
 

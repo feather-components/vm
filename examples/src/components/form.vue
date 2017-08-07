@@ -113,7 +113,7 @@
         </scroll>
         <btn style="margin: 10px 0px; width: 90%;" type="drak" @click="submit" slot="footer">提交</btn>
         <iosselect :source="selectList" @confirm="onSure"  @close="close" v-if="show" v-model="val"></iosselect>
-        <datepicker @confirm="sureDate" format="yy-mm-dd" v-if="dateShow" @close="dateClose" v-model="dateValue"></datepicker>
+        <datepicker @confirm="sureDate" v-if="dateShow" format="yyyy-mm-dd" min-date="2017-8-1" max-date="2019-8-1" @close="dateClose" v-model="dateValue"></datepicker>
     </page>
 </template>
 
@@ -235,8 +235,40 @@
                 show: false,
                 val: [2,3],
                 style: style,
-				dateValue: '',
-				dateShow: false
+				dateValue: '2018-1-1',
+				dateShow: false,
+//				initDate: [2018, 1, 1],
+
+				years: [
+                    {
+                    	label: 2015,
+                        value: 2015
+                    },
+					{
+						label: 2016,
+						value: 2016
+					},
+					{
+						label: 2017,
+						value: 2017
+					},
+					{
+						label: 2018,
+						value: 2018
+					},
+					{
+						label: 2019,
+						value: 2019
+					},
+					{
+						label: 2020,
+						value: 2020
+					},
+					{
+						label: 2021,
+						value: 2021
+					},
+                ]
             };
         },
 
@@ -244,6 +276,8 @@
 //          setInterval(() => {
 //          	  console.log(this.val)
 //          }, 1000)
+
+			document.activeElement.blur()
         },
 
         watch: {
@@ -266,10 +300,8 @@
 
             onSure(val) {
                 console.log(val, '发发')
-                this.$nextTick(() => {
-					this.show = false
-                })
-
+                this.show = false
+				console.log(this.val, 8888)
 //                this.val = val[0].label + '-' + val[1].label
 //                this.val = val
             },
@@ -280,9 +312,7 @@
 
             sureDate(val) {
                 console.log(val, '发发发')
-                this.$nextTick(() => {
-					this.dateShow = false
-                })
+                this.dateShow = false
             },
 
 			dateClose() {
