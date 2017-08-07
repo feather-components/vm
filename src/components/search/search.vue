@@ -50,7 +50,6 @@
     .vm-search-cancel{
         float: right;
         width: .32rem;
-        margin-right: 0.08rem;
         display: inline-block;
         text-decoration: none;
         color: #fff;
@@ -66,6 +65,10 @@
 
         .vm-list-rows{
             margin-bottom: .3rem;
+        }
+
+        .vm-searchbar-inner{
+            margin: 0px;
         }
     }
 
