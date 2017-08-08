@@ -31,7 +31,7 @@ Toast.destroy = () => {
 
 ['success', 'loading'].forEach((method) => {
     Toast[method] = (content, time, mask) => {
-        Toast(content, time, mask, 'vm-toast-' + method);
+        return Toast(content, time, mask, 'vm-toast-' + method);
     };
 });
 

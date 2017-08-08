@@ -70,7 +70,7 @@
 
         data(){
             return {
-                cont: content,
+                cont: this.content,
                 visibility: true
             }
         },
