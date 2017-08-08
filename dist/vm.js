@@ -804,7 +804,7 @@ Toast.destroy = () => {
 
 ['success', 'loading'].forEach((method) => {
     Toast[method] = (content, time, mask) => {
-        Toast(content, time, mask, 'vm-toast-' + method);
+        return Toast(content, time, mask, 'vm-toast-' + method);
     };
 });
 
@@ -6197,7 +6197,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     data() {
         return {
-            cont: content,
+            cont: this.content,
             visibility: true
         };
     },
@@ -6351,6 +6351,7 @@ TopBar.topFixed = '0px';
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__helper__ = __webpack_require__(0);
+//
 //
 //
 //
@@ -6846,7 +6847,7 @@ exports = module.exports = __webpack_require__(2)(undefined);
 
 
 // module
-exports.push([module.i, ".vm-uploader{display:inline-block;width:100%;min-height:.8rem;position:relative;background:#f3f3f3;border-radius:.04rem}.vm-uploader:before{width:.32rem;height:.05rem}.vm-uploader:after{height:.32rem;width:.05rem}.vm-uploader:after,.vm-uploader:before{content:\"\";display:block;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);-webkit-transform:translate(-50%,-50%);background:#fff}.vm-uploader-input{display:block;opacity:0;width:100%;height:100%;position:absolute;top:0;left:0}", ""]);
+exports.push([module.i, ".vm-uploader{display:inline-block;width:100%;min-height:.8rem;position:relative;background:#f3f3f3;border-radius:.04rem}.vm-uploader:before{width:.32rem;height:.05rem}.vm-uploader:after{height:.32rem;width:.05rem}.vm-uploader:after,.vm-uploader:before{content:\"\";display:block;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);-webkit-transform:translate(-50%,-50%);background:#fff}.vm-uploader-input{display:block;opacity:0;width:100%;height:100%;position:absolute;top:0;left:0;z-index:1}", ""]);
 
 // exports
 
