@@ -100,9 +100,11 @@ Vue.use(Vm);
 * [Uploader](./doc/uploader.md)
 * [Mask](./doc/mask.md)
 * [Overlay](./doc/overlay.md)
+* [Slider](./doc/slider.md)
 * [Popover](./doc/popover.md)
 
 ## 指令
 
 * [Draggable](./doc/draggable.md)
 * [Form/Counter](./doc/counter.md)
+* [Lazyload](./doc/lazyload.md)

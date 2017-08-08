@@ -7,6 +7,7 @@
                 :data-formatter="formatter" 
                 :pullup2load="true"
                 :pulldown2refresh="true"
+                v-lazyload
             >   
                 <header slot="header">网易实时新闻</header>
                 <template slot="row" scope="props">
@@ -17,10 +18,10 @@
                             active: active
                             }"  v-draggable="{canDrag: canDrag, axis: 'x'}" @drag:end="dragEnd" @drag:start="dragStart"> 
                                 <template v-if="!props.data.title">
-                                <img class="ads" src="http://cms-bucket.nosdn.127.net/96d8cf0375f64c24a819d50ae190b51820170601175516.jpeg?imageView&thumbnail=690y230&quality=45&type=webp&interlace=1&enlarge=1" />
+                                <img class="ads" data-src="http://cms-bucket.nosdn.127.net/96d8cf0375f64c24a819d50ae190b51820170601175516.jpeg?imageView&thumbnail=690y230&quality=45&type=webp&interlace=1&enlarge=1" />
                                 </template>
                                 <template v-else>
-                                    <img v-if="props.data.picInfo[0]" :src="props.data.picInfo[0].url"  />
+                                    <img v-if="props.data.picInfo[0]" :data-src="props.data.picInfo[0].url"  />
                                     <span class="title">{{props.data.digest}}</span>
                                 </template>
                             </div>
@@ -107,7 +108,8 @@
         Page,
         Topbar,
         List,
-        Draggable
+        Draggable,
+        Lazyload,
     } from 'vm';
 
     export default{
@@ -123,7 +125,7 @@
             };
         },
 
-        directives: {Draggable},
+        directives: {Draggable, Lazyload},
 
         methods: {
             formatter(data){

@@ -132,16 +132,18 @@ export default{
 
     methods:{
         onUploadStart(){
-            Toast.loading('上传中', false, true);
+            this.$toast = Toast.loading('上传中', false, true);
         },
 
         onUploadProgress(imagess, event){
-            Toast.loading('已上传' + (event.loaded/event.total).toFixed(2) * 100 + '%', false, true);
+            this.$toast.setContent('已上传' + (event.loaded/event.total).toFixed(2) * 100 + '%');
         },
 
         onUploadComplete(images, data){
             var data = this.dataFormatter(images, data);
 
+            this.$toast = null;
+            
             if(data){
                 this.save(data);
                 Toast.success('上传成功');

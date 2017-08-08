@@ -32,6 +32,10 @@
                     </template>
                 </list>
             </slider-item>
+
+            <slider-item style="height: 300px;">
+                向左滑
+            </slider-item>
         </slider>   
     </page>
 </template>

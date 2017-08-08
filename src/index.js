@@ -22,6 +22,7 @@ import Iosselect from './components/iosselect';
 import Datepicker from './components/datepicker';
 import {Slider, SliderItem} from './components/slider';
 import Helper from './helper';
+import Lazyload from './directives/lazyload';
 
 import Vue from 'vue';
 
@@ -56,7 +57,8 @@ var Components = [
     Iosselect,
     Datepicker,
     Slider,
-    SliderItem
+    SliderItem,
+    Lazyload
 ];
 
 function install(Vue){
@@ -102,7 +104,8 @@ export {
     Iosselect,
     Datepicker,
     Slider,
-    SliderItem
+    SliderItem,
+    Lazyload
 };
 
 export default {install};

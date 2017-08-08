@@ -2,12 +2,12 @@
     <vm-mask v-if="mask" :visible="visibility">
         <overlay :class="'vm-toast ' + className" position="center" :visible="true">
             <i :class="'vm-toast-icon ' + iconClass" v-if="iconClass"></i>
-            <slot>{{content}}</slot>
+            <slot>{{cont}}</slot>
         </overlay>
     </vm-mask>
     <overlay v-else :visible="visibility" :class="'vm-toast ' + className" position="center">
         <i :class="'vm-toast-icon ' + iconClass" v-if="iconClass"></i>
-        <slot>{{content}}</slot>
+        <slot>{{cont}}</slot>
     </overlay>
 </template>
 
@@ -70,13 +70,26 @@
 
         data(){
             return {
+                cont: content,
                 visibility: true
+            }
+        },
+
+        watch: {
+            content(v){
+                this.setContent(v);
             }
         },
 
         components: {
             Overlay,
             vmMask
+        },
+
+        methods: {
+            setContent(content){
+                this.cont = content;
+            }
         }
     };
 </script>

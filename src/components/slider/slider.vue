@@ -55,10 +55,11 @@
             onDragStart(){
                 this.dragEnd = false;
                 this.min = -(this.$el.children.length - 1) * Dom.width(document);
+                this.$emit('drag:start');
             },
 
-            onDraging(){
-                console.log(arguments);
+            onDraging(event){
+                this.$emit('draging', event);
             },
 
             onDragEnd(event){
@@ -66,6 +67,8 @@
                 var left = Dom.offset(this.$el.children[index]).left;
 
                 Dom.css(this.$el, 'transform', `translateX(-${left}px)`);
+
+                this.$emit('drag:end');
 
                 if(index == this.index){
                     this.$emit('reject', this.index);
