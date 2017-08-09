@@ -3994,6 +3994,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         width: {
             type: [Number, String],
             default: null
+        },
+
+        type: {
+            type: String,
+            default: 'text'
         }
     },
 
@@ -8192,7 +8197,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       width: _vm.width
     }),
     attrs: {
-      "type": "text",
+      "type": _vm.type,
       "name": _vm.name,
       "placeholder": _vm.placeholder,
       "readonly": _vm.readonly
