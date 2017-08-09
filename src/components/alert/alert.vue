@@ -26,7 +26,9 @@
         text-align: center;
         margin-top: 0.1rem;
     }
-
+    .vm-alert-btncon{
+        display: inline-block;
+    }
     .vm-alert .vm-button{
         
         width: 90%;
@@ -101,8 +103,8 @@
             <div class="vm-alert-extras" v-if="!!extras" v-text="extras"></div>
            
             <section class="vm-alert-footer">
-                <btn 
-                    v-for="(button, key) of buttons" 
+               <div v-for="(button, key) of buttons" class="vm-alert-btncon">
+                    <btn 
                     :class="button.className || ''" 
                     @click="callButton(key)" 
                     v-text="key" 
@@ -110,6 +112,7 @@
                     :border="button.props ? button.props.border : null"
                     :type="button.props ? button.props.type : null"
                 ></btn>
+                </div>
             </section>
         </overlay>
     </vm-mask>
