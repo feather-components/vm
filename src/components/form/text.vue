@@ -9,7 +9,7 @@
 
         <input v-if="!multiline" 
             ref="input" 
-            type="text" 
+            :type="type" 
             class="vm-form-text" 
             :name="name" 
             v-model="val" 
@@ -147,6 +147,11 @@
             width: {
                 type: [Number, String],
                 default: null
+            },
+
+            type: {
+                type: String,
+                default: 'text'
             }
         },
 
