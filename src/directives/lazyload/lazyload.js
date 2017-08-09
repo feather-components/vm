@@ -64,7 +64,9 @@ class Lazyload{
 
 export default{
     bind(element, data){
-        new Lazyload(element, data.value);
+        setTimeout(() => {
+            new Lazyload(element, data.value);
+        }, 0);
     },
 
     Lazyload,

@@ -44,7 +44,7 @@ class AutoSize{
             var change = mutations.some((mutation) => {
                 return mutation.attributeName == 'style' && Dom.contains(mutation.target, self.element, false);
             });
-
+            
             if(change){
                 self.unobserver();
                 self.resize();

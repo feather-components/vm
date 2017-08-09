@@ -13,6 +13,8 @@
 <style>
     .vm-slider.vm-grid{
         flex-flow: row;
+        align-items: flex-start;
+        margin-top: 0px;
         width: 100000000000px;
     }
 
@@ -64,19 +66,22 @@
 
             onDragEnd(event){
                 var index = Math.round(Math.abs(event.data.x) / Dom.width(document));
+                
+                this.$emit('drag:end');                
+                this.dragEnd = true;
+                this.to(index);
+            },
+
+            to(index){
                 var left = Dom.offset(this.$el.children[index]).left;
 
                 Dom.css(this.$el, 'transform', `translateX(-${left}px)`);
 
-                this.$emit('drag:end');
-
                 if(index == this.index){
                     this.$emit('reject', this.index);
                 }else{    
-                    this.$emit('switch', this.index, this.index = index);
+                    this.$emit('switch', this.index = index, this.index);
                 }
-                
-                this.dragEnd = true;
             },
 
             canDrag(info){

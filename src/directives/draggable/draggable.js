@@ -30,7 +30,9 @@ class Draggable{
             }
 
             var {x, y} = self.translates = Draggable.getTransform(self.dom);
-            var {pageX, pageY} = self.touch = e.touches[0];
+            var {pageX, pageY} = e.touches[0];
+
+            self.touch = {pageX, pageY};
 
             Event.trigger(self.dom, 'drag:start', {
                 x, y, pageX, pageY, e
@@ -48,6 +50,7 @@ class Draggable{
             var {pageX, pageY} = self.touch;
             var axis = options.axis;
             var x = 0, y = 0;
+
             var rx = (touch.pageX - pageX)/options.stackTimes, ry = (touch.pageY - pageY)/options.stackTimes;
             
             if(/x/.test(axis)){

@@ -81,7 +81,7 @@ export const Multiable = {
         },
 
         del(index){
-            if(!index){
+            if(index == null){
                 this.val = [];
             }else{
                 this.val.splice(index, 1);

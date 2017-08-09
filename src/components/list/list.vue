@@ -280,10 +280,12 @@
                 self.isCompleted = false;
                 self.isLoading = false;
                 clearData && self.setData();
-                pulldownFx && self.$scroll.scrollTo(Dom.height(self.$refs.pd));
                 self.isRefreshing = true;
                 self.$emit('refresh');
-                self.load();
+                setTimeout(() => {
+                    pulldownFx && self.$scroll.scrollTo(Dom.height(self.$refs.pd));
+                    self.load();
+                }, 0);
             },
 
             load(){

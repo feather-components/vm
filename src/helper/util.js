@@ -53,7 +53,8 @@ export default{
 
         if(!container){
             container = document.createElement('div');
-            container.style.cssText = 'position: fixed; bottom: 0px; width: 100%; background: #ccc;';
+            container.id = '__log__';
+            container.style.cssText = 'position: fixed; bottom: 0px; width: 100%; background: #ccc; z-index: 10000;';
             document.body.appendChild(container);
         }
 

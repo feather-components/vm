@@ -3,9 +3,9 @@
         <grid>
             <grid-item v-for="(item, index) of val">
                 <div class="vm-form-images-item">
-                    <template name="item">
+                    <slot name="item" :data="item">
                         <img :src="item" />
-                    </template>
+                    </slot>
 
                     <a href="javascript:" class="vm-form-images-del" v-if="delEnabled" @click="del(index)">&times;</a>
                 </div>
@@ -48,7 +48,6 @@
 }
 
 .vm-form-images-item{
-    background: rgba(0, 0, 0, 0.7);
     position: relative;
     width: 1.09rem;
     height: 0.8rem;
@@ -60,6 +59,10 @@
 .vm-form-images-item img{
     max-width: 100%;
     max-height: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
 }
 
 .vm-form-images-del{
