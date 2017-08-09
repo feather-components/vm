@@ -571,7 +571,7 @@ const Multiable = {
         },
 
         del(index){
-            if(!index){
+            if(index == null){
                 this.val = [];
             }else{
                 this.val.splice(index, 1);
@@ -1344,7 +1344,8 @@ module.exports = Component.exports
 
         if(!container){
             container = document.createElement('div');
-            container.style.cssText = 'position: fixed; bottom: 0px; width: 100%; background: #ccc;';
+            container.id = '__log__';
+            container.style.cssText = 'position: fixed; bottom: 0px; width: 100%; background: #ccc; z-index: 10000;';
             document.body.appendChild(container);
         }
 
@@ -3522,6 +3523,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 
@@ -4664,10 +4668,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             self.isCompleted = false;
             self.isLoading = false;
             clearData && self.setData();
-            pulldownFx && self.$scroll.scrollTo(__WEBPACK_IMPORTED_MODULE_1__helper__["c" /* Dom */].height(self.$refs.pd));
             self.isRefreshing = true;
             self.$emit('refresh');
-            self.load();
+            setTimeout(() => {
+                pulldownFx && self.$scroll.scrollTo(__WEBPACK_IMPORTED_MODULE_1__helper__["c" /* Dom */].height(self.$refs.pd));
+                self.load();
+            }, 0);
         },
 
         load() {
@@ -6053,6 +6059,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 
@@ -6096,19 +6104,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         onDragEnd(event) {
             var index = Math.round(Math.abs(event.data.x) / __WEBPACK_IMPORTED_MODULE_2__helper__["c" /* Dom */].width(document));
+
+            this.$emit('drag:end');
+            this.dragEnd = true;
+            this.to(index);
+        },
+
+        to(index) {
             var left = __WEBPACK_IMPORTED_MODULE_2__helper__["c" /* Dom */].offset(this.$el.children[index]).left;
 
             __WEBPACK_IMPORTED_MODULE_2__helper__["c" /* Dom */].css(this.$el, 'transform', `translateX(-${left}px)`);
 
-            this.$emit('drag:end');
-
             if (index == this.index) {
                 this.$emit('reject', this.index);
             } else {
-                this.$emit('switch', this.index, this.index = index);
+                this.$emit('switch', this.index = index, this.index);
             }
-
-            this.dragEnd = true;
         },
 
         canDrag(info) {
@@ -6679,7 +6690,7 @@ exports = module.exports = __webpack_require__(2)(undefined);
 
 
 // module
-exports.push([module.i, ".vm-form-images .vm-grid{margin-top:.12rem;margin-bottom:.05rem}.vm-form-images .vm-grid-item{width:1.09rem;height:.8rem;margin-left:.08rem;margin-bottom:.08rem}.vm-form-images .vm-grid-item:nth-child(3n+1){margin-left:0}.vm-form-images-item{background:rgba(0,0,0,.7);position:relative;width:1.09rem;height:.8rem;text-align:center;display:table-cell;vertical-align:middle}.vm-form-images-item img{max-width:100%;max-height:100%}.vm-form-images-del{position:absolute;left:0;top:0;-webkit-transform:translate(-25%,-25%);transform:translate(-25%,-25%);width:.2rem;height:.2rem;line-height:.2rem;display:block;color:#fff;border-radius:100px;text-decoration:none;text-align:center;background:#f96854;font-size:.14rem;font-family:arial}", ""]);
+exports.push([module.i, ".vm-form-images .vm-grid{margin-top:.12rem;margin-bottom:.05rem}.vm-form-images .vm-grid-item{width:1.09rem;height:.8rem;margin-left:.08rem;margin-bottom:.08rem}.vm-form-images .vm-grid-item:nth-child(3n+1){margin-left:0}.vm-form-images-item{position:relative;width:1.09rem;height:.8rem;text-align:center;display:table-cell;vertical-align:middle}.vm-form-images-item img{max-width:100%;max-height:100%;position:absolute;top:50%;left:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%)}.vm-form-images-del{position:absolute;left:0;top:0;-webkit-transform:translate(-25%,-25%);transform:translate(-25%,-25%);width:.2rem;height:.2rem;line-height:.2rem;display:block;color:#fff;border-radius:100px;text-decoration:none;text-align:center;background:#f96854;font-size:.14rem;font-family:arial}", ""]);
 
 // exports
 
@@ -6861,7 +6872,7 @@ exports = module.exports = __webpack_require__(2)(undefined);
 
 
 // module
-exports.push([module.i, ".vm-slider.vm-grid{-webkit-box-orient:horizontal;-webkit-box-direction:normal;-ms-flex-flow:row;flex-flow:row;width:100000000000px}.vm-slider-transition{-webkit-transition:-webkit-transform .5s ease;transition:-webkit-transform .5s ease;transition:transform .5s ease;transition:transform .5s ease,-webkit-transform .5s ease}", ""]);
+exports.push([module.i, ".vm-slider.vm-grid{-webkit-box-orient:horizontal;-webkit-box-direction:normal;-ms-flex-flow:row;flex-flow:row;-webkit-box-align:start;-ms-flex-align:start;align-items:flex-start;margin-top:0;width:100000000000px}.vm-slider-transition{-webkit-transition:-webkit-transform .5s ease;transition:-webkit-transform .5s ease;transition:transform .5s ease;transition:transform .5s ease,-webkit-transform .5s ease}", ""]);
 
 // exports
 
@@ -8484,23 +8495,23 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('grid', [_vm._l((_vm.val), function(item, index) {
     return _c('grid-item', [_c('div', {
       staticClass: "vm-form-images-item"
-    }, [
-      [_c('img', {
-        attrs: {
-          "src": item
+    }, [_vm._t("item", [_c('img', {
+      attrs: {
+        "src": item
+      }
+    })], {
+      data: item
+    }), _vm._v(" "), (_vm.delEnabled) ? _c('a', {
+      staticClass: "vm-form-images-del",
+      attrs: {
+        "href": "javascript:"
+      },
+      on: {
+        "click": function($event) {
+          _vm.del(index)
         }
-      })], _vm._v(" "), (_vm.delEnabled) ? _c('a', {
-        staticClass: "vm-form-images-del",
-        attrs: {
-          "href": "javascript:"
-        },
-        on: {
-          "click": function($event) {
-            _vm.del(index)
-          }
-        }
-      }, [_vm._v("×")]) : _vm._e()
-    ], 2)])
+      }
+    }, [_vm._v("×")]) : _vm._e()], 2)])
   }), _vm._v(" "), (_vm.rest) ? _c('grid-item', [_c('uploader', {
     attrs: {
       "url": _vm.uploader,
@@ -9779,7 +9790,7 @@ class AutoSize{
             var change = mutations.some((mutation) => {
                 return mutation.attributeName == 'style' && __WEBPACK_IMPORTED_MODULE_0__helper__["c" /* Dom */].contains(mutation.target, self.element, false);
             });
-
+            
             if(change){
                 self.unobserver();
                 self.resize();
@@ -9915,7 +9926,9 @@ class Draggable{
             }
 
             var {x, y} = self.translates = Draggable.getTransform(self.dom);
-            var {pageX, pageY} = self.touch = e.touches[0];
+            var {pageX, pageY} = e.touches[0];
+
+            self.touch = {pageX, pageY};
 
             __WEBPACK_IMPORTED_MODULE_0__helper__["d" /* Event */].trigger(self.dom, 'drag:start', {
                 x, y, pageX, pageY, e
@@ -9933,6 +9946,7 @@ class Draggable{
             var {pageX, pageY} = self.touch;
             var axis = options.axis;
             var x = 0, y = 0;
+
             var rx = (touch.pageX - pageX)/options.stackTimes, ry = (touch.pageY - pageY)/options.stackTimes;
             
             if(/x/.test(axis)){
@@ -10119,7 +10133,9 @@ class Lazyload{
 
 /* harmony default export */ __webpack_exports__["a"] = ({
     bind(element, data){
-        new Lazyload(element, data.value);
+        setTimeout(() => {
+            new Lazyload(element, data.value);
+        }, 0);
     },
 
     Lazyload,
