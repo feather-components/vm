@@ -35,4 +35,5 @@ new Vue({
 
 ### Events
 
-switch(from, to): 每次正常执行滑动行为后执行
+switch(to, from): 每次正常执行滑动行为后执行
+switch:complete(to)：切换动画结束后

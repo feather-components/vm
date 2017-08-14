@@ -7,11 +7,12 @@ scroll组件
 
 * scrollbars: Boolean 是否显示滚动条
 * axis: String x|y可选，指定滚动方向
+* ignores: String|Function|RexExp 判断哪些元素点击后无法滚动，String时为一个selector，RexExp则匹配元素的tagName(注意大小写)
 
 ## Example
 
 ```html
-<scroll>
+<scroll ignores=".ignore-scroll">
     xxxx
 </scroll>
 ```
