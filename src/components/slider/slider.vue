@@ -37,6 +37,13 @@
             Draggable
         },
 
+        props: {
+            offset: {
+                type: Number,
+                default: 0.25
+            }
+        },
+
         data(){
             return {
                 dragEnd: true,
@@ -50,11 +57,14 @@
                 Event.on(this.$el, 'drag:start', this.onDragStart);
                 Event.on(this.$el, 'drag:end', this.onDragEnd);
                 Event.on(this.$el, 'draging', this.onDraging);
+                Event.on(this.$el, 'transitionend webkitTransitionEnd', () => {
+                    this.$emit('switch:complete', this.index);
+                });
             });
         },
 
         methods: {
-            onDragStart(){
+            onDragStart(event){
                 this.dragEnd = false;
                 this.min = -(this.$el.children.length - 1) * Dom.width(document);
                 this.$emit('drag:start');
@@ -65,8 +75,11 @@
             },
 
             onDragEnd(event){
-                var index = Math.round(Math.abs(event.data.x) / Dom.width(document));
-                
+                let start = -Dom.offset(this.$el.children[this.index]).left;
+                let end = event.data.x;
+                let moved = end - start;
+                let index = this.index + (Math.abs(moved)/Dom.width(document) < 0.33 ? 0 : moved > 0 ? -1 : 1);
+
                 this.$emit('drag:end');                
                 this.dragEnd = true;
                 this.to(index);

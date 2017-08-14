@@ -12,7 +12,8 @@
             :type="type" 
             class="vm-form-text" 
             :name="name" 
-            v-model="val" 
+            :value="val"
+            @input="input"
             @focus="$emit('focus')" 
             @blur="$emit('blur')" 
             @click="$emit('click')" 
@@ -175,7 +176,7 @@
             },
 
             input(){
-                this.val = this.$refs.input.textContent;
+                this.val = this.$refs.input.textContent || this.$refs.input.value;
             }
         }
     }

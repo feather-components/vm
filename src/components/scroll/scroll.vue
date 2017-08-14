@@ -1,5 +1,5 @@
 <template>
-    <div :class="'vm-scroll vm-scroll-' + axis">
+    <div :class="'vm-scroll vm-scroll-' + axis" @scroll="onScroll">
         <div ref="inner" class="vm-scroll-inner" @drag:start="onDragStart" @draging="onDraging" @drag:end="onDragEnd">
             <div class="vm-scroll-pulldown" ref="pulldown" v-if="axis == 'y' && $slots.pulldown">
                 <slot name="pulldown"></slot>
@@ -30,7 +30,6 @@
 
     .vm-scroll-y{
         overflow: hidden;
-
         & > .vm-scroll-bar{
             right: 0px;
             width: 2px;
@@ -68,7 +67,7 @@
 <script>
     import Autosize from '../../directives/autosize';
     import Draggable from '../../directives/draggable';
-    import {Dom, Util} from '../../helper';
+    import {Dom, Util, Event} from '../../helper';
 
     export default{
         name: 'scroll',
@@ -89,6 +88,11 @@
                 default(k){
                     return Math.sqrt(1 - (--k * k));
                 }
+            },
+
+            ignores: {
+                type: [RegExp, Function, String],
+                default: null
             }
         },
 
@@ -110,12 +114,13 @@
 
             self.$drag = new Draggable.Draggable(self.$refs.inner, {
                 axis: self.axis,
+                ignores: self.ignores,
                 canDrag: (info) => {
                     return !!self.eSize;
                 }
             });
 
-            self.axis == 'y' && new Autosize.AutoSize(self.$el, self);
+            self.axis == 'y' && (this.$autosize = new Autosize.AutoSize(self.$el, self));
 
             Util.observer(self.$refs.inner, {
                 childList: true,
@@ -123,9 +128,22 @@
             }, (mutations) => {
                 self.refresh();
             });
+
+            Event.on(window, 'resize', () => {
+                self.refresh();
+            });
         },
 
         methods: {
+            onScroll(){
+                var self = this;
+
+                if(self.$el.scrollTop){
+                    self.scrollTo(-self.$el.scrollTop);
+                    self.$el.scrollTop = 0;
+                }
+            },
+
             refresh(){
                 var self = this;
                 var method = self.axis == 'x' ? 'width' : 'height';
@@ -211,7 +229,7 @@
                         destination = 0;
                     }
 
-                    duration = speed / deceleration;
+                    duration = speed / deceleration / 2;
                     duration > 300 && self.scrollTo(destination, duration);
                 }
 
@@ -257,7 +275,6 @@
                 var self = this;
 
                 self.scrollEnd();
-
                 var startTime = Date.now(), endTime = startTime + duration;
                 var start = self.pos, range = end - start;
 
@@ -268,7 +285,9 @@
                         self.scrollTo(end);
                         self.scrollEnd(); 
                     }else{
-                        var target = parseInt(start) + self.ease((now - startTime) / duration) * range;
+
+                        var target = parseInt(parseInt(start) + self.ease((now - startTime) / duration) * range);
+                        //Util.log(target);
                         self.$emit('scrolling', target)
                         self.scrollTo(target);
                         self.fxer = Util.rfa(step);
@@ -281,7 +300,7 @@
             scrollEnd(){
                 var self = this;
 
-                if(!self.fxer) return;
+                if(!self.fxer || !this.$actived) return;
 
                 Util.crfa(self.fxer);
                 self.fxer = false;
@@ -294,6 +313,17 @@
                     self.$emit('scroll:limit', self.pos, -1);
                 }
             }
+        },
+
+        activated(){
+            this.$actived = true;
+            this.$autosize.resize();
+            this.$autosize.observer();
+        },
+
+        deactivated(){
+            this.$actived = false;
+            this.$autosize.unobserver();
         }
     }
 </script>

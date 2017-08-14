@@ -24,6 +24,7 @@
     }
 
     .vm-page-content{
+        overflow: hidden;
         flex: 1;
     }
 

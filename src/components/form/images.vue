@@ -14,6 +14,7 @@
             <grid-item v-if="rest">
                 <uploader 
                     :url="uploader" :multiple="rest > 1" 
+                    :beforeUploadProcessor="beforeUploadProcessor"
                     @upload:start="onUploadStart" 
                     @upload:complete="onUploadComplete"
                     @upload:error="onUploadError"
@@ -113,7 +114,9 @@ export default{
         delEnabled: {
             type: Boolean,
             default: true
-        }
+        },
+
+        beforeUploadProcessor: null
     },
 
     components: {
@@ -138,8 +141,8 @@ export default{
             this.$toast = Toast.loading('上传中', false, true);
         },
 
-        onUploadProgress(imagess, event){
-            this.$toast.setContent('已上传' + (event.loaded/event.total).toFixed(2) * 100 + '%');
+        onUploadProgress(images, event){
+            this.$toast.setContent('已上传' + parseInt((event.loaded/event.total) * 100) + '%');
         },
 
         onUploadComplete(images, data){

@@ -2,6 +2,10 @@ var css3s = ['transform', 'transition'];
 
 import Util from './util';
 
+if(!Element.prototype.matches){
+    Element.prototype.matches = Element.prototype.matchesSelector || Element.prototype.webkitMatchesSelector;
+}
+
 export default{
     offset(element){
         var top = 0, left = 0;
@@ -15,6 +19,10 @@ export default{
             left,
             top
         }
+    },
+
+    matches(target, selector){
+        return target.matches(selector);
     },
     
     siblings(element){

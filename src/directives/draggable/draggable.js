@@ -25,8 +25,20 @@ class Draggable{
 
             justStart = true;
 
-            if(target && options.ignores && options.ignores.test(target.tagName)){
-                return false;
+            if(target && options.ignores){
+                if(typeof options.ignores == 'function'){
+                    if(options.ignores.test(target)){
+                        return false;
+                    }
+                }else if(typeof options.ignores == 'string'){
+                    if(Dom.matches(target, options.ignores)){
+                        return false;
+                    }
+                }else{
+                    if(options.ignores.test(target.tagName)){
+                        return false;
+                    }
+                } 
             }
 
             var {x, y} = self.translates = Draggable.getTransform(self.dom);

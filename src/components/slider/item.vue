@@ -4,6 +4,12 @@
     </grid-item>
 </template>
 
+<style>
+    .vm-slider-item{
+        overflow: hidden;
+    }
+</style>
+
 <script>
     import GridItem from '../grid/item';
     import {Event, Dom} from '../../helper';

@@ -25,8 +25,27 @@ class AutoSize{
         });
 
         self.observer();
+    }
 
-        Util.observer(self.element, {
+    observer(){
+        var self = this;
+
+        if(self.mutationRoot) return;
+
+        self.mutationRoot = Util.observer(self.instance.$root.$el, {
+            attributes: true,
+            subtree: true
+        }, (mutations) => {
+            var change = mutations.some((mutation) => {
+                return mutation.attributeName == 'style' && Dom.contains(mutation.target, self.element);
+            });
+
+            if(change){
+                self.resize();
+            }
+        });
+
+        self.mutationSelf = Util.observer(self.element, {
             childList: true,
             subtree: true
         }, (mutations) => {
@@ -34,38 +53,31 @@ class AutoSize{
         });
     }
 
-    observer(){
-        var self = this;
-
-        self.mutation = Util.observer(self.instance.$root.$el, {
-            attributes: true,
-            subtree: true
-        }, (mutations) => {
-            var change = mutations.some((mutation) => {
-                return mutation.attributeName == 'style' && Dom.contains(mutation.target, self.element, false);
-            });
-            
-            if(change){
-                self.unobserver();
-                self.resize();
-                setTimeout(() => {
-                    self.observer();
-                },0)
-            }
-        });
-    }
-
     unobserver(){
         var self = this;
 
-        if(self.mutation){
-            self.mutation.disconnect();
-            self.mutation = null;
+        if(self.mutationRoot){
+            self.mutationRoot.disconnect();
+            self.mutationRoot = null;
+        }
+
+        if(self.mutationSelf){
+            self.mutationSelf.disconnect();
+            self.mutationSelf = null;
         }
     }
 
     resize(){
-        var self = this;
+        this.unobserver();
+        clearTimeout(this.$tid);
+        this.$tid = setTimeout(() => {
+            this._resize();
+            this.observer();
+        }, 300);
+    }
+
+    _resize(){
+        var self = this;        
 
         if(self.height || self.destroyed) return;
 
@@ -115,8 +127,11 @@ class AutoSize{
                 otherHeight += parseFloat(Dom.css(ele, 'margin-bottom') || 0);
             });
             
+            element.style.overflow = 'hidden';
             element.style.height = maxHeight - (top - Dom.offset(parent).top) - otherHeight + 'px';
             Event.trigger(element, 'autosize');
+        }else{
+            element.style.overflow = '';
         }
     }
 

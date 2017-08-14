@@ -18,6 +18,7 @@ class Lazyload{
             attributes: true,
             subtree: true
         }, (mutations) => {
+            if(mutations[0].target == 'img') return;
             self.load();
         });
     }
@@ -32,13 +33,28 @@ class Lazyload{
     }
 
     load(){
-        var self = this, {srcAttr, placeholder} = self.options;
+        clearTimeout(this.$tid);
+        this.$tid = setTimeout(() => {
+            this._load();
+        }, 200);
+    }
+
+    _load(){
+        var self = this;
+
+        if(!Dom.height(self.element)){
+            self.observer();
+            return;
+        }
+
+        var {srcAttr, placeholder} = self.options;
         var images = Dom.$$(`img[${srcAttr}]`, self.element);
         var maxTop = Dom.height(document), maxLeft = Dom.width(document);
-
+       
         self.unobserver();
 
-        for(var node of images){
+        for(var i = 0; i < images.length; i++){
+            var node = images[i];
             var rect = Dom.rect(node);
 
             if(rect.top > maxTop || rect.left > maxLeft){

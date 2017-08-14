@@ -72,8 +72,8 @@
 
             beforeUploadProcessor: {
                 type: Function,
-                default(files){
-                    return files;
+                default(files, next){
+                    return next(files);
                 }
             },
 
@@ -106,15 +106,15 @@
             upload(files = []){
                 var self = this;
                 
-                files = self.beforeUploadProcessor(files);
+                self.beforeUploadProcessor(files, function(files){
+                    if(!self.canUpload(files)){
+                        self.$emit('reject', files);
+                        return false;
+                    }
 
-                if(!self.canUpload(files)){
-                    self.$emit('reject', files);
-                    return false;
-                }
-
-                self.files = self.files.concat(files);
-                self._upload();
+                    self.files = self.files.concat(files);
+                    self._upload();
+                });
             },
 
             _upload(){

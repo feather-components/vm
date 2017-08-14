@@ -109,7 +109,6 @@
 
             value(v){
                 if(v === this.val) return;
-
                 this.render(this.data);
                 this.val = v;
             }
@@ -139,7 +138,9 @@
                         var item = items[0];
                         self.$refs.box[level].setValue(item.value);
                         self.click(item);
-                    } 
+                    }else{
+                        self.$refs.box[level].setValue(null);
+                    }
                 });
             },
 
@@ -241,8 +242,16 @@
                 return source;
             },
 
-            change(val, label, item){  
-                var self = this, level = item.__level;
+            change(val, label, item){
+                var self = this;
+
+                if(!item){
+                    self.$emit('paths:change', []);
+                    self.$emit('change', [], [], []);
+                    return false;
+                }
+
+                var level = item.__level;
 
                 self.paths = self.paths.slice(0, level).concat(item);
                 self.$emit('paths:change', self.paths);
