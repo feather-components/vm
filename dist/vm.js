@@ -5317,6 +5317,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         });
 
         self.axis == 'y' && (this.$autosize = new __WEBPACK_IMPORTED_MODULE_0__directives_autosize__["a" /* default */].AutoSize(self.$el, self));
+        self.$actived = true;
 
         __WEBPACK_IMPORTED_MODULE_2__helper__["b" /* Util */].observer(self.$refs.inner, {
             childList: true,
@@ -5334,7 +5335,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         onScroll() {
             var self = this;
 
-            if (self.$el.scrollTop) {
+            if (self.$el.scrollTop && self.axis == 'y') {
                 self.scrollTo(-self.$el.scrollTop);
                 self.$el.scrollTop = 0;
             }

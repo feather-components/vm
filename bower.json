@@ -1,6 +1,6 @@
 {
   "name": "vm",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "基于vue2的ui组件库",
   "main": "src/index.js",
   "author": "zhanghao <jsyczhanghao@sina.com>",
