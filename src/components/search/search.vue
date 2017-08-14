@@ -5,7 +5,7 @@
                 'margin-right': '2.5em'
             }" :placeholder="placeholder" :maxlength="maxlength" ref="search" :theme="theme"
                         :search-button-enabled="closeAfterSelectHistory" @submit="submit" v-model="val" />
-            <a href="javascript:" class="vm-search-cancel" @touchstart="cancel" slot="right">取消</a>
+            <a href="javascript:" class="vm-search-cancel" @touchend="cancel" slot="right">取消</a>
         </topbar>
 
         <div class="vm-search-inner">
@@ -213,7 +213,8 @@
             return {
                 caches: {},
                 isEmpty: true,
-                historys: historys
+                historys: historys,
+                timeout: "",
             };
         },
 
@@ -254,7 +255,13 @@
                     let param = {};
                     param[self.kw] =  self.val;
                     self.$list.setParams(param, true);
-                    self.$list.refresh(false, false);
+                    if(this.timeout){
+                        clearTimeout(this.timeout)
+                    }
+                    this.timeout = setTimeout(()=>{
+                        self.$list.refresh(false, false);
+                    },400)
+                    
                 }
             },
 
