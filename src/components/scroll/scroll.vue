@@ -121,6 +121,7 @@
             });
 
             self.axis == 'y' && (this.$autosize = new Autosize.AutoSize(self.$el, self));
+            self.$actived = true;
 
             Util.observer(self.$refs.inner, {
                 childList: true,
@@ -138,7 +139,7 @@
             onScroll(){
                 var self = this;
 
-                if(self.$el.scrollTop){
+                if(self.$el.scrollTop && self.axis == 'y'){
                     self.scrollTo(-self.$el.scrollTop);
                     self.$el.scrollTop = 0;
                 }
