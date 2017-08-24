@@ -103,8 +103,8 @@
             <div class="vm-alert-extras" v-if="!!extras" v-text="extras"></div>
            
             <section class="vm-alert-footer">
-               <div v-for="(button, key) of buttons" class="vm-alert-btncon">
-                    <btn 
+
+                <btn v-for="(button, key) of buttons" :key="key" class="vm-alert-btncon"
                     :class="button.className || ''" 
                     @click="callButton(key)" 
                     v-text="key" 
@@ -112,7 +112,6 @@
                     :border="button.props ? button.props.border : null"
                     :type="button.props ? button.props.type : null"
                 ></btn>
-                </div>
             </section>
         </overlay>
     </vm-mask>
