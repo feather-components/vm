@@ -81,10 +81,12 @@
 
                 $box.$on('open', () => {
                     self.isOpen = true;
+                    this.$emit('open');
                 });
 
                 $box.$on('close', () => {
                     self.isOpen = false;
+                    this.$emit('close');
                 });
             });
         },
@@ -92,12 +94,10 @@
         methods: {
             open(){
                 this.$refs.box.open();
-                this.$emit('open');
             },
 
             close(){
                 this.$refs.box.close();
-                this.$emit('close');
             }
         }
     }
