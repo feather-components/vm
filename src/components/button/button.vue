@@ -7,7 +7,6 @@
         min-width: 1rem;
         text-align: center;
         font-size: .16rem;
-        line-height: .48rem;
         height: .48rem;
         border-radius: 1rem;
         box-sizing: border-box;
@@ -80,7 +79,6 @@
     .vm-button-small{
         font-size: 0.14rem;
         height: 0.32rem;
-        line-height: 0.32rem;
     }
 
     .vm-button-square{
