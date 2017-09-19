@@ -1,5 +1,5 @@
 <template>
-    <form :class="'vm-searchbar vm-searchbar-' + theme" @submit.prevent="submit()">
+    <form :class="'vm-searchbar vm-searchbar-' + theme" @submit.prevent="submit()" action="javascript:;">
         <div class="vm-searchbar-inner">
             <i class="vm-searchbar-icon"></i>
             <input :type="searchButtonEnabled ? 'search': 'text'" :placeholder="placeholder" :maxlength="maxlength" @input.trim="input" :value="val" ref="input" @focus="$emit('focus')"  @click="$emit('click')" :readonly="readonly" />
