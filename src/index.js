@@ -23,7 +23,6 @@ import Datepicker from './components/datepicker';
 import {Slider, SliderItem} from './components/slider';
 import Helper from './helper';
 import Lazyload from './directives/lazyload';
-import {Floatslider, toolbarslider} from './components/imgslider';
 import {SlideBar, ItemBar} from './components/slidebar';
 
 import Vue from 'vue';
@@ -61,8 +60,6 @@ var Components = [
     Slider,
     SliderItem,
     Lazyload,
-    Floatslider,
-    toolbarslider,
     SlideBar,
     ItemBar
 ];
@@ -112,8 +109,6 @@ export {
     Slider,
     SliderItem,
     Lazyload,
-    Floatslider,
-    toolbarslider,
     SlideBar,
     ItemBar
 };
