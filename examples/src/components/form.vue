@@ -106,7 +106,7 @@
             </form-box>
 
             <form-box label="datepicker">
-                <text-input label="单行文本" placeholder="请选择日期" v-model="dateValue"  @click="showDatepicker" :readonly="true"/>
+                <text-input label="单行文本" placeholder="请选择日期" v-model="dateValue"  @click="showDatepicker" :readonly="true" />
             </form-box>
 
 

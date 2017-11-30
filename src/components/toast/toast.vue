@@ -53,7 +53,7 @@
     }
 
     .vm-toast-loading{
-        background-image: url(./loading.gif?__inline);
+        background-image: url(../../assets/loading.gif);
     }
 </style>
 

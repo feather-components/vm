@@ -30,7 +30,6 @@
         display: inline-block;
     }
     .vm-alert .vm-button{
-        
         width: 90%;
         margin: 0px 4px 4px 4px;
     }
@@ -103,15 +102,16 @@
             <div class="vm-alert-extras" v-if="!!extras" v-text="extras"></div>
            
             <section class="vm-alert-footer">
-
-                <btn v-for="(button, key) of buttons" :key="key" class="vm-alert-btncon"
-                    :class="button.className || ''" 
-                    @click="callButton(key)" 
-                    v-text="key" 
-                    :small="true"
-                    :border="button.props ? button.props.border : null"
-                    :type="button.props ? button.props.type : null"
-                ></btn>
+                <slot name="footer">
+                    <btn v-for="(button, key) of buttons" :key="key" class="vm-alert-btncon"
+                        :class="button.className || ''" 
+                        @click="callButton(key)" 
+                        v-text="key" 
+                        :small="true"
+                        :border="button.props ? button.props.border : null"
+                        :type="button.props ? button.props.type : null"
+                    ></btn>
+                </slot>
             </section>
         </overlay>
     </vm-mask>

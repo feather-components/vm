@@ -1,5 +1,5 @@
 <template>
-    <button href="javascript:" :class="className" :disable="type == 'disable'" @click="$emit('click')"><slot></slot></button>
+    <button :class="className" :disable="type == 'disable' || disable" @click="$emit('click')"><slot></slot></button>
 </template>
 
 <style lang="less">
@@ -107,6 +107,11 @@
             },
 
             border: {
+                type: Boolean,
+                default: false
+            },
+
+            disable: {
                 type: Boolean,
                 default: false
             }

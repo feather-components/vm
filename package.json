@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "release": "sh ./build/release.sh",
     "beta": "sh ./build/beta.sh",
-    "example": "npm install 2>&1 & cd examples & webpack"
+    "example": "cd examples & webpack"
   },
   "author": "zhanghao <jsyczhanghao@sina.com>",
   "clean": false,

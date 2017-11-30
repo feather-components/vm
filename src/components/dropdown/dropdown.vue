@@ -1,6 +1,6 @@
 <template>
     <div :class="'vm-dropdown' + (isOpen ? ' vm-dropdown-open' : '')">
-        <a class="vm-dropdown-label" v-html="label" ref="label" href="javascript:"></a>
+        <a class="vm-dropdown-label iconfont" v-html="label" ref="label" href="javascript:"></a>
 
         <dropbox ref="box">
             <div class="vm-dropdown-inner">
@@ -28,19 +28,18 @@
         line-height: .44rem;
 
         &:after{
-            content: "";
-            background: url(./down@2x.png?__inline) no-repeat center center;
-            height: .20rem;
+            content: '\e68a';
             display: inline-block;
             width: .20rem;
-            transform: translateY(.04rem);
-            -webkit-transform: translateY(.04rem);
+            color: #000;
         }
     }
 
     .vm-dropdown-open{
         .vm-dropdown-label:after{
-            background: url(./up@2x.png?__inline) no-repeat center center;
+            content: '\e68a';
+            color: inherit;
+            transform: rotate(180deg);
         }
     }
 
@@ -52,6 +51,7 @@
 <script>
     import Dropbox from './box';
     import {Event} from '../../helper';
+    import '../../assets/iconfont.css';
 
     export default{
         name: 'dropdown',

@@ -317,12 +317,20 @@
         },
 
         activated(){
+            if(!this.$autosize){
+                return false;
+            }
+
             this.$actived = true;
             this.$autosize.resize();
             this.$autosize.observer();
         },
 
         deactivated(){
+            if(!this.$autosize){
+                return false;
+            }
+            
             this.$actived = false;
             this.$autosize.unobserver();
         }
