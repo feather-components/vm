@@ -1,12 +1,18 @@
 <template>
     <vm-mask v-if="mask" :visible="visibility">
         <overlay :class="'vm-toast ' + className" position="center" :visible="true">
-            <i :class="'vm-toast-icon ' + iconClass" v-if="iconClass"></i>
+            <slot name="icon">
+                <i :class="['vm-toast-icon', iconClass]" v-if="iconClass"></i>
+            </slot>
+            
             <slot>{{cont}}</slot>
         </overlay>
     </vm-mask>
     <overlay v-else :visible="visibility" :class="'vm-toast ' + className" position="center">
-        <i :class="'vm-toast-icon ' + iconClass" v-if="iconClass"></i>
+        <slot name="icon">
+            <i :class="['vm-toast-icon', iconClass]" v-if="iconClass"></i>
+        </slot>
+
         <slot>{{cont}}</slot>
     </overlay>
 </template>
@@ -34,17 +40,27 @@
     }
 
     .vm-toast-success{
-        background-image: url(./success@3x.png?__inline);
+        font-family: "vm-iconfont" !important;
+        font-size: 0.36rem;
+        font-style: normal;
+        color: rgb(133, 205, 158);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    .vm-toast-success:before{ 
+        content: "\e68d"; 
     }
 
     .vm-toast-loading{
-        background-image: url(./loading.gif?__inline);
+        background-image: url(../../assets/loading.gif);
     }
 </style>
 
 <script>
     import vmMask from '../mask';
     import Overlay from '../overlay';
+    import '../icon/iconfont.css';
 
     export default{
         name: 'toast',

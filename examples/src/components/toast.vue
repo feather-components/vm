@@ -25,7 +25,7 @@
 
         methods: {
             show(){
-                Toast('操作成功');
+                Toast('操作成功', false);
             },
 
             success(){

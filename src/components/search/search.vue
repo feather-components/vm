@@ -3,7 +3,7 @@
         <topbar :left-enabled="false">
             <searchbar :style="{
                 'margin-right': '2.5em'
-            }" :placeholder="placeholder" :maxlength="maxlength" ref="search" :theme="theme"
+            }" :placeholder="placeholder" :maxlength="maxlength" ref="search" :input-bg-color="inputBgColor"
                         :search-button-enabled="closeAfterSelectHistory" @submit="submit" v-model="val" />
             <a href="javascript:" class="vm-search-cancel" @touchend="cancel" slot="right">取消</a>
         </topbar>
@@ -52,7 +52,7 @@
         width: .32rem;
         display: inline-block;
         text-decoration: none;
-        color: #fff;
+        color: inherit;
         font-size: 0.14rem;
     }
 
@@ -127,11 +127,6 @@
         },
 
         props: {
-            theme: {
-                type: String,
-                default: 'white'
-            },
-
             source: {
                 default(){
                     return [];
@@ -188,7 +183,9 @@
                 default(){
                     this.close()
                 }
-            }
+            },
+
+            inputBgColor: null
         },
 
         mounted(){

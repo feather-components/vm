@@ -1,13 +1,22 @@
 <template>
-    <vm-mask :visible="visibility">
+    <vm-mask :visible="visibility" @click="close">
         <overlay :visible="visibility" class="vm-actionsheet" position="bottom">
-            <ul>
-                <li v-for="(action, index) of actions">
-                    <a href="javascript:" v-text="index" @click="callAction(index)" :class="action.className"></a>
-                </li>
-            </ul>
-           
-            <a href="javascript:" @click="destroy()" class="vm-actionsheet-cancel">取消</a>
+            <div 
+                v-for="(action, index) of actions"
+                class="vm-action-sheet-item"
+                @click="callAction(index)"
+                :key="index" 
+            >
+                <slot name="item" :text="index">
+                    <div class="vm-actionsheet-item-inner">{{index}}</div>
+                </slot>
+            </div>
+            
+            <div @click="close" class="vm-actionsheet-cancel">
+                <slot name="cancel">
+                    <div class="vm-actionsheet-item-inner">取消</div>
+                </slot>
+            </div>
         </overlay>
     </vm-mask>
 </template>
@@ -17,34 +26,29 @@
         width: 100%;
         text-align: center;
         background: transparent;
-        
-        ul{
-            padding: 0px;
-            margin: 0px;
-        }
+    }
 
-        li{
-            padding: 0px;
-            list-style: none;
-            margin: 10px 0px 0px 0px;
-        }
+    .vm-actionsheet-item-inner{
+        margin-top: .1rem;
+        text-decoration: none;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 100px;
+        font-weight: bold;
+        height: 46px;
+        line-height: 46px;
+        display: inline-block;
+        width: 90%;
+        font-size: 16px;
+        color: #222222;
+    }
 
-        a{
-            text-decoration: none;
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 100px;
-            font-weight: bold;
-            height: 46px;
-            line-height: 46px;
-            display: inline-block;
-            width: 90%;
-            font-size: 16px;
-            color: #222222;
-        }
+    .vm-actionsheet-cancel{
+        font-weight: normal;
+        margin-top: .08rem;
 
-        .vm-actionsheet-cancel{
-            margin: 16px 0px;
-            font-weight: normal;
+        .vm-actionsheet-item-inner{
+            margin-top: .08rem;
+            margin-bottom: .16rem;
         }
     }
 </style>
@@ -55,6 +59,13 @@
 
     export default{
         name: 'actionsheet',
+
+        props: {
+            visible: {
+                type: Boolean,
+                default: false
+            }
+        },
 
         mixins: [Overlay],
 
@@ -74,22 +85,13 @@
 
         data(){
             return {
-                visibility: true
+                visibility: this.visible
             };
         },
         
         methods: {
             callAction(index){
-                var self = this;
-                var action = self.actions[index];
-
-                if(typeof action == 'function'){
-                    action.call(self);
-                }else{
-                    action.callback.call(self);
-                }
-
-                self.destroy();
+                this.actions[index].call(this);
             }
         }
     }
