@@ -2,10 +2,8 @@
     @h: 0.44rem;
 
     .vm-topbar{
-        background: #28304E;
         height: @h;
         line-height: @h;
-        color: #fff;
         text-align: center;
         font-size: 0.16rem;
         padding: 0px 0.16rem;
@@ -16,10 +14,15 @@
     }
 
     .vm-topbar-btn-back{
-        background: url(./arrow_back_white@2x.png?__inline) no-repeat 0px center;
         width: @h !important;
         height: @h;
         display: inline-block;
+
+        .vm-iconfont{
+            font-weight: bold;
+            display: inline-block;
+            transform: rotate(90deg);
+        }
     }
 
     .vm-topbar-left, .vm-topbar-right{
@@ -29,10 +32,10 @@
         display: inline-block;
 
         > *{
-            color: #fff;
             text-decoration: none;
             display: inline-block;
             width: 100%;
+            color: inherit;
         }
     }
 
@@ -48,11 +51,15 @@
 </style>
 
 <template>
-    <div class="vm-topbar" :style="{paddingTop: top}">
+    <div class="vm-topbar" :style="{paddingTop: top, background: bgColor, color: color, borderBottom: borderBottom}">
         <div class="vm-topbar-inner">
             <div class="vm-topbar-left" v-if="leftEnabled">
                 <slot name="left">
-                    <a href="javascript:" class="vm-topbar-btn-back" @click="leftCallback && leftCallback()"></a>
+                    <a href="javascript:" class="vm-topbar-btn-back" @click="leftCallback && leftCallback()" :style="{
+                        color: color
+                    }">
+                        <icon name="arrow" :size=".18" />
+                    </a>
                 </slot>
             </div>
             <slot>无标题页面</slot>
@@ -62,6 +69,8 @@
 </template>
 
 <script>
+    import Icon from '../icon';
+
     var TopBar = {
         name: 'topbar',
 
@@ -81,7 +90,32 @@
             rightEnabled: {
                 type: Boolean,
                 default: true
+            },
+
+            bgColor: {
+                type: String,
+                default(){
+                    return TopBar.bgColor;
+                }
+            },
+
+            color: {
+                type: String,
+                default(){
+                    return TopBar.color;
+                }
+            },
+
+            borderBottom: {
+                type: String,
+                default(){
+                    return TopBar.borderBottom;
+                }
             }
+        },
+
+        components: {
+            Icon
         },
 
         data(){
@@ -113,6 +147,9 @@
     }
 
     TopBar.topFixed = '0px';
+    TopBar.bgColor = '#28304E';
+    TopBar.color = '#fff';
+    TopBar.borderBottom = '';
 
     export default TopBar;
 </script>

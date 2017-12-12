@@ -22,6 +22,8 @@ import Filter from './components/filter.vue';
 import Overlay from './components/overlay.vue';
 import Slider from './components/slider.vue';
 
+import {Topbar} from 'vm';
+
 const router = new VueRouter({
     routes: [
         {

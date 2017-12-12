@@ -40,7 +40,7 @@
     }
 
     .vm-toast-success{
-        font-family: "iconfont" !important;
+        font-family: "vm-iconfont" !important;
         font-size: 0.36rem;
         font-style: normal;
         color: rgb(133, 205, 158);
@@ -60,7 +60,7 @@
 <script>
     import vmMask from '../mask';
     import Overlay from '../overlay';
-    import '../../assets/iconfont.css';
+    import '../icon/iconfont.css';
 
     export default{
         name: 'toast',

@@ -1,5 +1,5 @@
 <template>
-    <button :class="className" :disable="type == 'disable' || disable" @click="$emit('click')"><slot></slot></button>
+    <button :class="className" :disable="type == 'disable' || disable" @click="$emit('click')" :style="{'border-radius': (square ? '0' : radius) + 'px'}"><slot></slot></button>
 </template>
 
 <style lang="less">
@@ -8,7 +8,6 @@
         text-align: center;
         font-size: .16rem;
         height: .48rem;
-        border-radius: 1rem;
         box-sizing: border-box;
         color: #fff;
         background: rgb(249, 104, 84);
@@ -80,20 +79,23 @@
         font-size: 0.14rem;
         height: 0.32rem;
     }
-
-    .vm-button-square{
-        border-radius: 0px;
-    }
 </style>
 
 <script>
-    export default{
+    var Button = {
         name: 'button',
 
         props: {
             type: {
                 type: String,
                 default: 'main'
+            },
+
+            radius: {
+                type: Number,
+                default: () => {
+                    return Button.radius;
+                }
             },
 
             small: {
@@ -134,4 +136,7 @@
             }
         }
     }
+
+    Button.radius = 100;
+    export default Button;
 </script>

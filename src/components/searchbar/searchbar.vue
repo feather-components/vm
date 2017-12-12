@@ -1,9 +1,11 @@
 <template>
-    <form :class="'vm-searchbar vm-searchbar-' + theme" @submit.prevent="submit()">
-        <div class="vm-searchbar-inner">
-            <i class="vm-searchbar-icon"></i>
+    <form class="vm-searchbar" @submit.prevent="submit()">
+        <div class="vm-searchbar-inner" :style="{background: inputBgColor}">
+            <icon name="search" class="vm-searchbar-icon" />
             <input :type="searchButtonEnabled ? 'search': 'text'" :placeholder="placeholder" :maxlength="maxlength" @input.trim="input" :value="val" ref="input" @focus="$emit('focus')"  @click="$emit('click')" :readonly="readonly" />
-            <a href="javascript:" class="vm-searchbar-clear" @click="clear()" v-show="val">&times;</a>
+            <a href="javascript:" class="vm-searchbar-clear" @click="clear()" v-show="val">
+                <icon name="close" />
+            </a>
         </div>
     </form>
 </template>
@@ -18,21 +20,29 @@
         ::-webkit-search-cancel-button{
             -webkit-appearance: none;
         }
+
+        .vm-iconfont{
+            opacity: 0.6;
+        }
     }
 
     .vm-searchbar-inner{
         height: .32rem;
         border-radius: 100px;
         margin: 0px 0.16rem;
-        background: rgba(204, 204, 204, 0.2);
         overflow: hidden;
         position: relative;
+
+        * {
+            color: #000;
+        }
 
         input{
             font-size: .14rem;
             box-sizing: border-box;
             width: 100%;
-            height: 100%;
+            height: 0.32rem;
+            line-height: 0.32rem;
             float: left;
             display: block;
             border: 0px;
@@ -50,63 +60,34 @@
 
     .vm-searchbar-icon{
         position: absolute;
-        background: url(./search_blue@2x.png?__inline) center center no-repeat;
-        background-size: 100%;
-        left: .07rem;
+        left: .1rem;
         width: 0.2rem;
         height: .32rem;
+        font-weight: bold;
         display: inline-block;
     }
 
     .vm-searchbar-clear{
         position: absolute;
-        text-decoration: none;
         text-align: center;
         right: .07rem;
-        top: .06rem;
-        color: #666;
+        top: .07rem;
         line-height: 0.16rem;
         width: 0.16rem;
         height: 0.16rem;
+        color: inherit;
         display: inline-block;
-        border: 1px solid #666;
-        border-radius: 100px;
-        font-size: 0.12rem;
-        font-family: arial;
-    }
-
-    .vm-searchbar-blue{
-        background: #28304E;
-
-        input{
-            color: #fff;
-        }
-
-        .vm-searchbar-clear{
-            color: #fff;
-            border: 1px solid #fff;
-        }
-
-        ::-webkit-input-placeholder{
-            color: #ccc;
-        }
-
-        .vm-searchbar-icon{
-            background: url(./search_white@2x.png?__inline) center center no-repeat;
-        }
+        font-weight: bold;
     }
 </style>
 
 <script>
+    import Icon from '../icon';
+
     export default{
         name: 'searchbar',
 
         props: {
-            theme: {
-                type: String,
-                default: 'white'
-            },
-
             maxlength: {
                 type: Number,
                 default: 50
@@ -130,7 +111,16 @@
             value: {
                 type: String,
                 default: ''
+            },
+
+            inputBgColor: {
+                type: String,
+                default: 'rgba(204, 204, 204, 0.2)'
             }
+        },
+
+        components: {
+            Icon
         },
 
         data(){

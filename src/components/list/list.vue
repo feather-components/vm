@@ -60,7 +60,7 @@
         display: inline-block;
         width: 0.16rem;
         height: 0.16rem;
-        background-image: url(./loading.gif?__inline);
+        background-image: url(../../assets/loading.gif?__inline);
         background-size: 100%;
         margin-right: 0.05rem;
         transform: translateY(0.03rem);

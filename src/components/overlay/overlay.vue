@@ -128,6 +128,7 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+        -webkit-transform: translate(-50%, -50%);
     }
 
     .vm-overlay-left, .vm-overlay-top{
@@ -161,6 +162,7 @@
     .vm-fx-top-enter-active, .vm-fx-top-leave-active
     {
         transition: transform .3s ease, opacity .3s ease;
+        -webkit-transition: transform .3s ease, opacity .3s ease;
     }
 
     .vm-fx-enter, .vm-fx-leave-active,
@@ -172,20 +174,24 @@
     .vm-fx-left-enter, .vm-fx-left-leave-active
     {
         transform: translateX(-100%);
+        -webkit-transform: translateX(-100%);
     }
 
     .vm-fx-right-enter, .vm-fx-right-leave-active
     {
         transform: translateX(100%);
+        -webkit-transform: translateX(100%);
     }
 
     .vm-fx-bottom-enter, .vm-fx-bottom-leave-active
     {
         transform: translateY(100%);
+        -webkit-transform: translateY(100%);
     }
 
     .vm-fx-top-enter, .vm-fx-top-leave-active
     {
         transform: translateY(-100%);
+        -webkit-transform: translateY(-100%);
     }
 </style>

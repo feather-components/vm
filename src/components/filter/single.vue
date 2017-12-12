@@ -86,7 +86,7 @@
 
         mounted(){
             this.render();
-            this.value && this.setValue(this.value);
+            (this.value != undefined && this.value != null) && this.setValue(this.value);
         },
 
         methods: {

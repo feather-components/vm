@@ -1,6 +1,11 @@
 <template>
     <div :class="'vm-dropdown' + (isOpen ? ' vm-dropdown-open' : '')">
-        <a class="vm-dropdown-label iconfont" v-html="label" ref="label" href="javascript:"></a>
+        <a class="vm-dropdown-label" ref="label" href="javascript:" :style="{
+            color: !isOpen ? labelColor: labelHighColor
+        }">
+            {{label}}
+            <icon name="arrow" />
+        </a>
 
         <dropbox ref="box">
             <div class="vm-dropdown-inner">
@@ -19,28 +24,16 @@
     .vm-dropdown-label{
         font-size: .14rem;
         text-decoration: none;
-        color: #6281C2;
         display: inline-block;
         height: .44rem;
         margin: auto;
         width: 100%;
         text-align: center;
         line-height: .44rem;
-
-        &:after{
-            content: '\e68a';
-            display: inline-block;
-            width: .20rem;
-            color: #000;
-        }
     }
 
-    .vm-dropdown-open{
-        .vm-dropdown-label:after{
-            content: '\e68a';
-            color: inherit;
-            transform: rotate(180deg);
-        }
+    .vm-dropdown-open .vm-dropdown-label .vm-iconfont{
+        transform: rotate(180deg);
     }
 
     .vm-dropdown-inner{
@@ -51,20 +44,35 @@
 <script>
     import Dropbox from './box';
     import {Event} from '../../helper';
-    import '../../assets/iconfont.css';
+    import Icon from '../icon';
 
-    export default{
+    var DropDown = {
         name: 'dropdown',
 
         props: {
             label: {
                 type: String,
                 default: ''
+            },
+
+            labelColor: {
+                type: String,
+                default: () => {
+                    return DropDown.labelColor;
+                }
+            },
+
+            labelHighColor: {
+                type: String,
+                default: () => {
+                    return DropDown.labelHighColor;
+                }
             }
         },
         
         components: {
-            Dropbox
+            Dropbox,
+            Icon
         },
 
         data(){
@@ -101,4 +109,9 @@
             }
         }
     }
+
+    DropDown.labelColor = '#6281C2';
+    DropDown.labelHighColor = '#6281C2';
+
+    export default DropDown;
 </script>
