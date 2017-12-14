@@ -1,10 +1,9 @@
 <template>
     <div :class="'vm-scroll vm-scroll-' + axis" @scroll="onScroll">
         <div ref="inner" class="vm-scroll-inner" @drag:start="onDragStart" @draging="onDraging" @drag:end="onDragEnd">
-            <div class="vm-scroll-pulldown" ref="pulldown" v-if="axis == 'y' && $slots.pulldown">
-                <slot name="pulldown"></slot>
-            </div>
+            <slot name="header"></slot>
             <slot></slot>
+            <slot name="footer"></slot>
         </div>
 
         <div class="vm-scroll-bar" ref="bar" v-if="scrollbars" v-show="barVisible" :class="{'vm-scroll-bar-transition': !!fxer}"></div>
@@ -55,13 +54,6 @@
             white-space: nowrap;
         }
     }
-
-    .vm-scroll-pulldown{
-        width: 100%;
-        position: absolute;
-        transform: translateY(-100%);
-        -webkit-transform: translateY(-100%);
-    }
 </style>
 
 <script>
@@ -93,6 +85,16 @@
             ignores: {
                 type: [RegExp, Function, String],
                 default: null
+            },
+
+            maxPos: {
+                type: Number,
+                default: null
+            },
+
+            minPos: {
+                type: Number,
+                default: null
             }
         },
 
@@ -112,6 +114,7 @@
         mounted: function(){   
             var self = this;
 
+            self.pos = 0;
             self.$drag = new Draggable.Draggable(self.$refs.inner, {
                 axis: self.axis,
                 ignores: self.ignores,
@@ -152,8 +155,8 @@
                 var s1 = self.eSize = Dom[method](self.$el);
                 var s2 = self.iSize = Dom[method](self.$refs.inner);
 
-                self.max = self.axis == 'y' && self.$refs.pulldown ? Dom[method](self.$refs.pulldown) : 0;
-                self.min = Math.min(0, s1 - s2);
+                self.max = self.maxPos != null ? self.maxPos : 0;
+                self.min = self.minPos != null ? self.minPos : Math.min(0, s1 - s2);
 
                 if(self.scrollbars && s1 && s2){
                     self.barPercent = s1 / Math.max(s1, s2);
@@ -189,19 +192,8 @@
 
                 duration >= 300 && self.resetBase();
                 self.$emit('draging', translate); 
-
-                if(translate >= self.max){
-                    self.$emit('drag:limit', translate, 1);
-                    stack = 3;
-                }else if(translate <= self.min){
-                    self.$emit('drag:limit', translate, -1);
-                    stack = 3;
-                }else{
-                    self.$emit('drag:normal', translate);
-                }
-
-                self.scrollBarTo(translate);
-                self.$drag.stack(stack);
+                self.scrollTo(translate);
+                self.$drag.stack(translate >= self.max || translate <= self.min ? 3 : 1);
             },
 
             onDragEnd(event){
@@ -246,6 +238,7 @@
                 if(!duration){ 
                     self.pos = destination;
                     Dom.css(self.$refs.inner, 'transform', 'translate' + this.axi + '(' + destination + 'px)');
+                    self.$emit('scrolling', destination);
                 }else{
                     this.fx(self.$refs.inner, destination, duration);
                 }
@@ -286,10 +279,7 @@
                         self.scrollTo(end);
                         self.scrollEnd(); 
                     }else{
-
                         var target = parseInt(parseInt(start) + self.ease((now - startTime) / duration) * range);
-                        //Util.log(target);
-                        self.$emit('scrolling', target)
                         self.scrollTo(target);
                         self.fxer = Util.rfa(step);
                     }
@@ -307,13 +297,15 @@
                 self.fxer = false;
 
                 self.$emit('scroll:end', self.pos);
+            },
 
-                if(self.pos >= self.max){
-                    self.$emit('scroll:limit', self.pos, 1);
-                }else if(self.pos <= self.min){
-                    self.$emit('scroll:limit', self.pos, -1);
-                }
-            }
+            limitType(){
+                return this.pos >= this.max ? 1 : (this.pos <= this.min ? -1 : 0);
+            },
+
+            getPos(){
+                return this.pos;
+            },
         },
 
         activated(){

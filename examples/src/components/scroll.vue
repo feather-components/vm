@@ -9,9 +9,9 @@
                 <a v-for="(i, a) of 7">scroll组件</a>
             </scroll>
 
-            <scroll axis="y" :scrollbars="true" class="col" style="margin-bottom: 30px;" ref='scroll' @scroll:end="_scrollStop">
+            <pulldown2refresh axis="y" class="col" style="margin-bottom: 30px;" ref='scroll' @refresh="onRefresh">
                 <a v-for="(i, a) of 50">scroll组件</a>
-            </scroll>
+            </pulldown2refresh>
     </page>
 </template>
 
@@ -33,19 +33,27 @@
     import {
         Page,
         Topbar,
-        Scroll
+        Scroll,
+        Pulldown2refresh
     } from 'vm';
 
     export default{
         components: {
             Page, 
             Topbar,
-            Scroll
+            Scroll,
+            Pulldown2refresh
         },
 
         methods: {
             _scrollStop() {
 //                this.$refs.scroll.scrollTo(-100)
+            },
+
+            onRefresh(recover){
+                setTimeout(() => {
+                    recover();
+                }, 1000)
             }
         }
     }

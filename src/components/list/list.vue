@@ -1,27 +1,18 @@
 <template>
-    <scroll 
-        ref="scroll" 
-        :scrollbars="true"
-        class="vm-list"
-        @drag:limit="onDragLimit"
-        @drag:normal="onDragNormal"
-        @scroll:limit="onScrollLimit"
-    >
-        <div class="vm-list-pull" v-if="pulldown2refresh" ref="pd" slot="pulldown">
-            <slot name="pulldown-msg" v-if="!isRefreshing && !intop">下拉刷新数据</slot>
-            <slot name="pullleave-msg" v-if="!isRefreshing && intop">松手刷新数据</slot>
-            <slot name="refresh-msg" v-if="isRefreshing"><i class="vm-list-loading-icon"></i>正在刷新数据</slot>
-        </div>
-
+    <component ref="scroll" class="vm-list" @scrolling="onScrolling" :is="Component" @refresh="refresh">
         <div class="vm-list-header">
             <slot name="header"></slot>
         </div>
+
+        <div ref="headerMark"></div>
 
         <ul class="vm-list-rows" ref="rows">
             <li v-for="(item, index) in rows" @click="$emit('row:click', item, index)" class="vm-list-item">
                 <slot name="row" :data="item">{{item}}</slot>
             </li>
         </ul>
+
+        <div ref="footerMark"></div>
 
         <div class="vm-list-loading" v-if="showLoadingStatus">
             <slot name="loading"><i class="vm-list-loading-icon"></i>正在加载中</slot>
@@ -40,7 +31,7 @@
                 <slot name="nores"><i class="vm-list-nores-icon"></i><br />没有任何结果~</slot>
             </div>
         </template>
-    </scroll>
+    </component>
 </template>
 
 <style>
@@ -48,7 +39,7 @@
         font-size: 0.16rem;
     }
 
-    .vm-list-pull, .vm-list-loading, .vm-list-error, .vm-list-nomore, .vm-list-empty{
+    .vm-list-loading, .vm-list-error, .vm-list-nomore, .vm-list-empty{
         text-align: center;
         padding: 0.05rem;
         color: #878787;
@@ -93,7 +84,7 @@
 </style>
 
 <script>
-    import Scroll from '../scroll';
+    import {Pulldown2refresh, Scroll} from '../scroll';
     import {Dom, Util} from '../../helper';
     import Ajax from 'ajax';
 
@@ -155,17 +146,15 @@
 
         data(){
             return {
+                Component: !this.pulldown2refresh ? Scroll : Pulldown2refresh,
                 data: [],
                 rows: [],
                 _params: this.params,
                 isLoading: false,
-                isRefreshing: false,
                 isCompleted: false,
                 page: 0,
                 error: 0,
-                scrolling: false,
                 $scroll: null,
-                intop: false,
                 _source: ''
             }
         },
@@ -188,10 +177,6 @@
             }
         },
 
-        components: {
-            Scroll
-        },
-
         mounted(){
             var self = this;
 
@@ -205,14 +190,14 @@
                 var self = this;
 
                 self.setSource(v);
-                self.autoRefresh && self.refresh(self.pulldown2refresh, false);
+                self.autoRefresh && self.refresh(false);
             },
 
             params(v){
                 var self = this;
 
                 self.setParams(v);
-                self.autoRefresh && self.refresh(self.pulldown2refresh, false);
+                self.autoRefresh && self.refresh(false);
             }
         },
 
@@ -221,26 +206,11 @@
                 var self = this;
 
                 self.$scroll = self.$refs.scroll;
-                self.autoRefresh && self.refresh(self.pulldown2refresh, false);
+                self.autoRefresh && self.refresh(false);
             },
 
-            onScrollLimit(translate, direction){
-                var self = this;
-
-                if(self.pulldown2refresh && direction == 1){
-                    self.refresh(true);
-                }
-
-                self.pullup2load && direction == -1 && self.load();
-            },
-
-            onDragLimit(translate, direction){
-                this.intop = direction == 1;
-                direction == -1 && this.onScrollLimit(translate, -1);
-            },
-
-            onDragNormal(translate){
-                this.intop = false;
+            onScrolling(){
+                this.pullup2load && this.$scroll.limitType() == -1 && this.load();
             },
 
             setParams(params, append){
@@ -273,19 +243,15 @@
                 this.$emit('data:add', source);
             },
 
-            refresh(pulldownFx = this.pulldown2refresh, clearData = true){
+            refresh(clearData = true){
                 var self = this;
-                
+
                 self.page = 0;
                 self.isCompleted = false;
                 self.isLoading = false;
                 clearData && self.setData();
-                self.isRefreshing = true;
                 self.$emit('refresh');
-                setTimeout(() => {
-                    pulldownFx && self.$scroll.scrollTo(Dom.height(self.$refs.pd));
-                    self.load();
-                }, 0);
+                setTimeout(() => self.load(), 0);
             },
 
             load(){
@@ -307,7 +273,7 @@
                     && typeof self._source == 'string' 
                     && (
                         self.rows.length == self.data.length 
-                        || self.isRefreshing && !self.data.length
+                        || self.page == 0 && !self.data.length
                         )
                     ){
                     self.loadRemote();
@@ -329,14 +295,14 @@
                     }),
                     dataType: 'json',
                     success(data){
-                        self.isRefreshing ? self.setData(data) : self.addData(data);  
+                        self.addData(data);  
                         self.renderRows();
                         self.$emit('xhr:success', data);
                     },
                     error(data){
                         self.error = data;
                         self.$emit('xhr:error');
-                        self.afterRenderRows();
+                        this.isLoading = false;
                     },
                     complete(){
                         self.$http = null;
@@ -359,26 +325,16 @@
                     self.$emit('nomore');
                 }
 
-                if(self.isRefreshing){
+                if(page == 1){
                     self.rows = rows;
+                    self.$emit('refresh:success', rows);
+                    self.pulldown2refresh && self.$scroll.recover();
                 }else{
                     self.rows = self.rows.concat(rows);
                 }
 
-                self.$nextTick(() => {
-                    self.$emit('rows:render', rows);
-                });
-
-                self.isRefreshing && self.$emit('refresh:success', rows);
-                self.afterRenderRows();
-            },
-
-            afterRenderRows(){
-                var self = this;
-
-                self.isRefreshing && self.pulldown2refresh && this.$scroll.scrollTo(0, 500);
                 self.isLoading = false;
-                self.isRefreshing = false;
+                self.$emit('rows:render', rows);
             }
         }
     }

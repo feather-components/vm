@@ -1,4 +1,4 @@
-import Scroll from './components/scroll';
+import {Scroll, Pulldown2refresh} from './components/scroll';
 import List from './components/list';
 import Page from './components/page';
 import Topbar from './components/topbar';
@@ -28,6 +28,7 @@ import Vue from 'vue';
 
 var Components = [
     Scroll,
+    Pulldown2refresh,
     List,
     Page,
     Topbar,
@@ -72,6 +73,7 @@ export {
     Searchbar,
     Searchbar as SearchBar,
     Scroll,
+    Pulldown2refresh,
     Page,
     Topbar,
     List,
