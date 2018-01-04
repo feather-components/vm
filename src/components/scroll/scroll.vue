@@ -136,6 +136,8 @@
             Event.on(window, 'resize', () => {
                 self.refresh();
             });
+
+            self.refresh();
         },
 
         methods: {
@@ -232,8 +234,16 @@
                 self.base = null;
             },
 
-            scrollTo(destination, duration = 0){
+            scrollTo(destination, duration = 0, limitMaxOrMin = false){
                 var self = this;
+
+                if(limitMaxOrMin){
+                    if(destination >= self.max){
+                        destination = self.max;
+                    }else if(destination <= self.min){
+                        destination = self.min;
+                    }
+                }
 
                 if(!duration){ 
                     self.pos = destination;

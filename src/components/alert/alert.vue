@@ -1,8 +1,8 @@
-<style>
+<style lang="less">
     .vm-alert.vm-overlay{
         border-radius: 4px;
-        width: 60%;
-        padding: 16px 10px;
+        width: 65%;
+        padding: 0px .1rem;
     }
 
     .vm-alert-content{
@@ -11,11 +11,12 @@
         letter-spacing: 0;
         line-height: 28px;
         text-align: center;
+        margin-top: 0.16rem;
+        margin-bottom: 0.16rem;
     }
 
     .vm-alert-extras{
-        margin-top: 8px;
-        margin-bottom: 16px;
+        margin-top: 0.08rem;
         color: #555;
         font-size: 12px;
         line-height: 20px;
@@ -24,18 +25,22 @@
 
     .vm-alert-footer{
         text-align: center;
-        margin-top: 0.1rem;
-    }
-    .vm-alert-btncon{
-        display: inline-block;
-    }
-    .vm-alert .vm-button{
-        width: 90%;
-        margin: 0px 4px 4px 4px;
+        margin-bottom: 0.16rem;
     }
 
-    .vm-alert .vm-alert-cbtn{
-        width: 45%;
+    .vm-alert-flexfooter{
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .vm-alert-btn{
+        flex-grow: 1;
+        text-align: center;
+        margin-bottom: 4px;
+
+        .vm-button{
+            width: 90%;
+        }
     }
 </style>
 
@@ -58,6 +63,11 @@
             extras: {
                 type: String,
                 default: null
+            },
+
+            flex: {
+                type: Boolean,
+                default: false
             },
 
             buttons: {
@@ -98,21 +108,22 @@
 <template>
     <vm-mask :visible="visibility">
         <overlay :visible="true" class="vm-alert" position="center">
-            <div class="vm-alert-content" v-html="content"></div>
-            <div class="vm-alert-extras" v-if="!!extras" v-text="extras"></div>
-           
-            <section class="vm-alert-footer">
+            <div class="vm-alert-content">
+                <div v-html="content"></div>
+                <div class="vm-alert-extras" v-if="!!extras" v-text="extras"></div>
+            </div>
+            
+            <div :class="['vm-alert-footer', flex ? 'vm-alert-flexfooter': '']">
                 <slot name="footer">
-                    <btn v-for="(button, key) of buttons" :key="key" class="vm-alert-btncon"
-                        :class="button.className || ''" 
-                        @click="callButton(key)" 
-                        v-text="key" 
-                        :small="true"
-                        :border="button.props ? button.props.border : null"
-                        :type="button.props ? button.props.type : null"
-                    ></btn>
+                    <div v-for="(button, key) of buttons" class="vm-alert-btn">
+                        <btn :small="true" @click="callButton(key)" 
+                            :style="button.style"
+                            :border="button.border"
+                            :type="button.type || 'main'"
+                        >{{key}}</btn>
+                    </div>
                 </slot>
-            </section>
+            </div>
         </overlay>
     </vm-mask>
 </template>

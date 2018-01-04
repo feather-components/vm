@@ -131,7 +131,15 @@
 
                 self.$on('filter:render', (source, level) => {
                     var items = source.filter((item) => {
-                        return item.value == self.value[level];
+                        for(var i = level; i >=0; i--){
+                            if(item.value != self.value[i]){
+                                return false;
+                            }
+
+                            item = item.__parent;
+                        }
+                        
+                        return true;
                     });  
 
                     if(items.length){
@@ -231,7 +239,7 @@
 
                 source = source.map((item) => {
                     if(this.parent){
-                        item.__parent = this.parent.value;
+                        item.__parent = this.parent;
                     }
                     
                     item.__level = level;

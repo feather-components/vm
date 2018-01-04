@@ -190,14 +190,14 @@
                 var self = this;
 
                 self.setSource(v);
-                self.autoRefresh && self.refresh(false);
+                self.autoRefresh && self.refresh();
             },
 
             params(v){
                 var self = this;
 
                 self.setParams(v);
-                self.autoRefresh && self.refresh(false);
+                self.autoRefresh && self.refresh();
             }
         },
 
@@ -250,6 +250,7 @@
                 self.isCompleted = false;
                 self.isLoading = false;
                 clearData && self.setData();
+                self.$scroll.refresh(false);
                 self.$emit('refresh');
                 setTimeout(() => self.load(), 0);
             },

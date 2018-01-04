@@ -107,6 +107,19 @@ export default{
         instance.$mount();
         document.body.appendChild(instance.$el);
         return instance;
+    },
+
+    defineConfig(obj, _default = {}){
+        obj._config = _default;
+        obj.config = (name, value) => {
+            if(typeof name == 'object'){
+                this.assign(obj._config, name);
+            }else if(value == void 0){
+                return obj._config[name];
+            }else{
+                obj._config[name] = value;
+            }
+        }
     }
 }
 

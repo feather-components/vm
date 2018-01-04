@@ -6,11 +6,13 @@
         line-height: @h;
         text-align: center;
         font-size: 0.16rem;
-        padding: 0px 0.16rem;
+        padding: 0px 0.12rem;
     }
 
     .vm-topbar-inner{
         position: relative;
+        font-weight: bold;
+        height: @h;
     }
 
     .vm-topbar-btn-back{
@@ -23,6 +25,14 @@
             display: inline-block;
             transform: rotate(90deg);
         }
+    }
+
+    .vm-topbar-title{
+        line-height: @h;
+        height: @h;
+        width: 100%;
+        display: flex;
+        justify-content: center;
     }
 
     .vm-topbar-left, .vm-topbar-right{
@@ -58,11 +68,13 @@
                     <a href="javascript:" class="vm-topbar-btn-back" @click="leftCallback && leftCallback()" :style="{
                         color: color
                     }">
-                        <icon name="arrow" :size=".18" />
+                        <icon name="arrow" :size=".16" />
                     </a>
                 </slot>
             </div>
-            <slot>无标题页面</slot>
+            <div class="vm-topbar-title">
+                <slot>无标题页面</slot>
+            </div>
             <div class="vm-topbar-right" v-if="rightEnabled"><slot name="right"></slot></div>
         </div>
     </div>
@@ -70,6 +82,7 @@
 
 <script>
     import Icon from '../icon';
+    import {Util} from '../../helper';
 
     var TopBar = {
         name: 'topbar',
@@ -95,21 +108,21 @@
             bgColor: {
                 type: String,
                 default(){
-                    return TopBar.bgColor;
+                    return TopBar.config('bgColor');
                 }
             },
 
             color: {
                 type: String,
                 default(){
-                    return TopBar.color;
+                    return TopBar.config('color');
                 }
             },
 
             borderBottom: {
                 type: String,
                 default(){
-                    return TopBar.borderBottom;
+                    return TopBar.config('borderBottom');
                 }
             }
         },
@@ -120,7 +133,7 @@
 
         data(){
             return {
-                top: TopBar.topFixed,
+                top: TopBar.topFixed || TopBar.config('topFixed'),
                 visibleRight: false
             }
         },
@@ -146,10 +159,14 @@
         }
     }
 
-    TopBar.topFixed = '0px';
-    TopBar.bgColor = '#28304E';
-    TopBar.color = '#fff';
-    TopBar.borderBottom = '';
+    TopBar.topFixed = '';
+
+    Util.defineConfig(TopBar, {
+        topFixed: '0px',
+        bgColor: '#28304E',
+        color: '#fff',
+        borderBottom: ''
+    });
 
     export default TopBar;
 </script>

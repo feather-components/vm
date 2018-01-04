@@ -43,7 +43,7 @@
 
 <script>
     import Dropbox from './box';
-    import {Event} from '../../helper';
+    import {Event, Util} from '../../helper';
     import Icon from '../icon';
 
     var DropDown = {
@@ -58,14 +58,14 @@
             labelColor: {
                 type: String,
                 default: () => {
-                    return DropDown.labelColor;
+                    return DropDown.config('labelColor');
                 }
             },
 
             labelHighColor: {
                 type: String,
                 default: () => {
-                    return DropDown.labelHighColor;
+                    return DropDown.config('labelHighColor');
                 }
             }
         },
@@ -110,8 +110,10 @@
         }
     }
 
-    DropDown.labelColor = '#6281C2';
-    DropDown.labelHighColor = '#6281C2';
+    Util.defineConfig(DropDown, {
+        labelColor: '#6281C2',
+        labelHighColor: '#6281C2'
+    });
 
     export default DropDown;
 </script>

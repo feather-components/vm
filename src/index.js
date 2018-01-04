@@ -21,12 +21,16 @@ import Overlay from './components/overlay';
 import Iosselect from './components/iosselect';
 import Datepicker from './components/datepicker';
 import {Slider, SliderItem} from './components/slider';
+import {Box} from './components/layout';
+import Tabbar from './components/tabbar';
 import Helper from './helper';
 import Lazyload from './directives/lazyload';
 
 import Vue from 'vue';
 
 var Components = [
+    Box,
+    Tabbar,
     Scroll,
     Pulldown2refresh,
     List,
@@ -69,9 +73,12 @@ function install(Vue){
 }
 
 export {
+    Box,
     Search,
     Searchbar,
     Searchbar as SearchBar,
+    Tabbar as TabBar,
+    Tabbar,
     Scroll,
     Pulldown2refresh,
     Page,
@@ -110,4 +117,4 @@ export {
     Lazyload
 };
 
-export default {install};
+export default {install, Helper};

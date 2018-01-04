@@ -21,14 +21,24 @@ import Form from './components/form.vue';
 import Filter from './components/filter.vue';
 import Overlay from './components/overlay.vue';
 import Slider from './components/slider.vue';
+import Tabbar from './components/tabbar.vue';
+import Layout from './components/layout.vue';
 
 import {Topbar} from 'vm';
+import VM from 'vm';
+
+Vue.use(VM);
 
 const router = new VueRouter({
     routes: [
         {
             path: '/',
             component: Main
+        },
+
+        {
+            path: '/components/layout',
+            component: Layout
         },
 
         {
@@ -109,6 +119,11 @@ const router = new VueRouter({
         {
             path: '/components/slider',
             component: Slider
+        },
+
+        {
+            path: '/components/tabbar',
+            component: Tabbar
         }
     ]
 });

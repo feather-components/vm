@@ -1,9 +1,7 @@
 <template>
     <page position="right" :fx="fx" :visible="visibility" class="vm-search" ref="page">
         <topbar :left-enabled="false">
-            <searchbar :style="{
-                'margin-right': '2.5em'
-            }" :placeholder="placeholder" :maxlength="maxlength" ref="search" :input-bg-color="inputBgColor"
+            <searchbar :placeholder="placeholder" :maxlength="maxlength" ref="search" :input-bg-color="inputBgColor"
                         :search-button-enabled="closeAfterSelectHistory" @submit="submit" v-model="val" />
             <a href="javascript:" class="vm-search-cancel" @touchend="cancel" slot="right">取消</a>
         </topbar>
@@ -54,14 +52,11 @@
         text-decoration: none;
         color: inherit;
         font-size: 0.14rem;
+        font-weight: normal;
     }
 
     .vm-search{
-        .vm-list{
-            li{
-                border-bottom: 1px solid #E1E1E1;
-            }
-        }
+        font-weight: normal;
 
         .vm-list-rows{
             margin-bottom: .3rem;
@@ -69,6 +64,12 @@
 
         .vm-searchbar-inner{
             margin: 0px;
+        }
+
+        .vm-searchbar{
+            padding-right: 0.45rem;
+            box-sizing: border-box;
+            width: 100%;
         }
     }
 
@@ -256,7 +257,7 @@
                         clearTimeout(this.timeout)
                     }
                     this.timeout = setTimeout(()=>{
-                        self.$list.refresh(false, false);
+                        self.$list.refresh();
                     },400)
                     
                 }

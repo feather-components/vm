@@ -1,32 +1,41 @@
 <template>
     <vm-mask v-if="mask" :visible="visibility">
         <overlay :class="'vm-toast ' + className" position="center" :visible="true">
-            <slot name="icon">
-                <i :class="['vm-toast-icon', iconClass]" v-if="iconClass"></i>
-            </slot>
-            
-            <slot>{{cont}}</slot>
+            <span class="vm-toast-inner">
+                <slot name="icon">
+                    <i :class="['vm-toast-icon', iconClass]" v-if="iconClass"></i>
+                </slot>
+                
+                <slot>{{cont}}</slot>
+            </span>
         </overlay>
     </vm-mask>
     <overlay v-else :visible="visibility" :class="'vm-toast ' + className" position="center">
-        <slot name="icon">
-            <i :class="['vm-toast-icon', iconClass]" v-if="iconClass"></i>
-        </slot>
+        <span class="vm-toast-inner">
+            <slot name="icon">
+                <i :class="['vm-toast-icon', iconClass]" v-if="iconClass"></i>
+            </slot>
 
-        <slot>{{cont}}</slot>
+            <slot>{{cont}}</slot>
+        </span>
     </overlay>
 </template>
 
 <style>
     .vm-toast.vm-overlay{
+        text-align: center;
+        width: 90%;
+        background: transparent;
+    }
+
+    .vm-toast-inner{
+        display: inline-block;
         font-size: 0.16rem;
         color: #FFFFFF;
         line-height: 0.28rem;
-        padding: 0.08rem 0.2rem;
-        max-width: 90%;
+        padding: 0.08rem 0.15rem;
         background: rgba(0, 0, 0, 0.7);
         border-radius: 4px;
-        text-align: center;
     }
 
     .vm-toast-icon{

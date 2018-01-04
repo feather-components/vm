@@ -1,5 +1,5 @@
 <template>
-    <form class="vm-searchbar" @submit.prevent="submit()">
+    <form :class="['vm-searchbar', 'vm-searchbar-' + theme]" @submit.prevent="submit()">
         <div class="vm-searchbar-inner" :style="{background: inputBgColor}">
             <icon name="search" class="vm-searchbar-icon" />
             <input :type="searchButtonEnabled ? 'search': 'text'" :placeholder="placeholder" :maxlength="maxlength" @input.trim="input" :value="val" ref="input" @focus="$emit('focus')"  @click="$emit('click')" :readonly="readonly" />
@@ -24,6 +24,17 @@
         .vm-iconfont{
             opacity: 0.6;
         }
+
+        color: #000;
+    }
+
+    .vm-searchbar-blue{
+        background: #28304E;
+        color: #fff;
+
+        input{
+            color: #fff;
+        }
     }
 
     .vm-searchbar-inner{
@@ -32,10 +43,6 @@
         margin: 0px 0.16rem;
         overflow: hidden;
         position: relative;
-
-        * {
-            color: #000;
-        }
 
         input{
             font-size: .14rem;
@@ -71,10 +78,10 @@
         position: absolute;
         text-align: center;
         right: .07rem;
-        top: .07rem;
-        line-height: 0.16rem;
+        top: 0rem;
+        line-height: 0.32rem;
         width: 0.16rem;
-        height: 0.16rem;
+        height: 0.32rem;
         color: inherit;
         display: inline-block;
         font-weight: bold;
@@ -83,11 +90,17 @@
 
 <script>
     import Icon from '../icon';
+    import {Util} from '../../helper';
 
-    export default{
+    var Searchbar = {
         name: 'searchbar',
 
         props: {
+            theme: {
+                type: String,
+                default: 'white'
+            },
+
             maxlength: {
                 type: Number,
                 default: 50
@@ -115,7 +128,9 @@
 
             inputBgColor: {
                 type: String,
-                default: 'rgba(204, 204, 204, 0.2)'
+                default(){
+                    return Searchbar.config('inputBgColor');
+                }
             }
         },
 
@@ -162,5 +177,11 @@
                 this.$refs.input.blur();
             }
         }
-    }
+    };
+
+    Util.defineConfig(Searchbar, {
+        inputBgColor: 'rgba(204, 204, 204, 0.2)'
+    });
+
+    export default Searchbar;
 </script>

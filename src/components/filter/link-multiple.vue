@@ -157,7 +157,7 @@
                     count += self.val[i].length;
                 }
 
-                return count < self.maxSize && (!self.onlyOneParent || item.__parent == self.parent.value);
+                return count < self.maxSize && (!self.onlyOneParent || item.__parent == self.parent);
             }
         }
     }

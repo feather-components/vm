@@ -36,6 +36,7 @@
 
 <script>
     import Overlay from '../overlay';
+    import {Util} from '../../helper';
     
     var Page = {
         name: 'page',
@@ -51,7 +52,7 @@
 
         data(){
             return {
-                top: Page.topFixed
+                top: Page.topFixed || Page.config('topFixed')
             };
         },
 
@@ -60,6 +61,10 @@
         }
     }
 
-    Page.topFixed = '0px';
+    Page.topFixed = '';
+    Util.defineConfig(Page, {
+        topFixed: '0px'
+    });
+
     export default Page;
 </script>

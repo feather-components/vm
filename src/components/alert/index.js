@@ -14,41 +14,43 @@ var override = (callback) => {
 };
 
 var Alert = override((content, options, callback, manualClose) => {
+    var buttons = options.buttons;
+
+    if(!buttons){
+        buttons = {};
+        buttons[options.confirmButtonText || '确定'] = function(){
+            callback && callback();
+            !manualClose && this.destroy(false);
+        }
+    }
+
     return Util.factory(Component, {
         content: content,
         extras: options.extras,
-        buttons: options.buttons || {
-            '确定'(){
-                callback && callback();
-                !manualClose && this.destroy(false);
-            }
-        }
+        flex: options.flex,
+        buttons: buttons
     });
 });
 
 Alert.confirm = override((content, options, callback, manualClose) => {
+    var buttons = {};
+
+    buttons[options.cancelButtonText || '取消'] = {
+        border: true,
+        callback(){
+            this.destroy(false);
+        }
+    };
+    buttons[options.confirmButtonText || '确定'] = function(){
+        callback && callback();
+        !manualClose && this.destroy(false);
+    };
+
     return Util.factory(Component, {
         content: content,
         extras: options.extras,
-        buttons: options.buttons || {
-            '取消': {
-                className: 'vm-alert-cbtn',
-                props: {
-                    border: true
-                },
-                callback(){
-                    this.destroy(false);
-                }
-            },
-
-            '确定': {
-                className: 'vm-alert-cbtn',
-                callback(){
-                    callback && callback();
-                    !manualClose && this.destroy(false);
-                }
-            }
-        }
+        flex: options.flex !== false,
+        buttons: buttons
     });
 });
 

@@ -25,6 +25,7 @@
 
 <style lang="less">
     .vm-popover{
+        font-weight: normal;
         line-height: normal;
         height: 100%;
 
@@ -126,14 +127,14 @@
             color: {
                 type: String,
                 default: () => {
-                    return PopOver.color;
+                    return PopOver.config('color');
                 }
             },
 
             bgColor: {
                 type: String,
                 default: () => {
-                    return PopOver.bgColor;
+                    return PopOver.config('bgColor');
                 }
             }
         },
@@ -191,8 +192,10 @@
         }
     }
 
-    PopOver.color = '#fff';
-    PopOver.bgColor = '#28304E';
+    Util.defineConfig(PopOver, {
+        color: '#fff',
+        bgColor: '#28304E'
+    });
 
     export default PopOver;
 </script>

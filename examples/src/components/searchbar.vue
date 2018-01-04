@@ -56,7 +56,9 @@
         },
 
         data(){
-            return {wd: ''}
+            return {
+                wd: ''
+            };
         },
 
         methods: {

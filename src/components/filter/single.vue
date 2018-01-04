@@ -29,7 +29,9 @@
 </style>
 
 <script>
-    export default{
+    import {Util} from '../../helper';
+
+    var Single = {
         name: 'single-filter',
 
         props: {
@@ -47,7 +49,9 @@
 
             selectedClassName: {
                 type: String,
-                default: 'vm-filter-selected'
+                default: () => {
+                    return Single.config('selectedClassName');
+                }
             },
 
             value: {
@@ -142,4 +146,10 @@
             }
         }
     }
+
+    Util.defineConfig(Single, {
+        selectedClassName: 'vm-filter-selected'
+    });
+
+    export default Single;
 </script>

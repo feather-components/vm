@@ -11,18 +11,22 @@
 
     .vm-filter-tick{
         &:after{
-            content: "";
+            font-family: "vm-iconfont" !important;
+            font-style: normal;
+            content: "\e68c";
             display: inline-block;
             float: right;
+            font-size: 0.18rem;
             height: .44rem;
             width: .20rem;
-            background: url(./selected@2x.png?__inline) no-repeat center center;
         }
     }
 </style>
 
 <script>
     import Single from './single';
+    import {Util} from '../../helper';
+    import '../icon/iconfont.css';
 
     export default{
         mixins: [Single],
@@ -40,6 +44,11 @@
                 }
             },
 
+            unlimit: {
+                type: [Number, String, Array],
+                default: null
+            },
+
             value: {
                 type: Array,
                 default: null
@@ -49,7 +58,8 @@
         data(){
             return {
                 val: [],
-                infinite: this.size < 0
+                infinite: this.size < 0,
+                unlimts: Util.makeArray(this.unlimit)
             };
         },
 
@@ -66,6 +76,10 @@
                 if(self.disabled){
                     self.$emit('reject');
                     return false;
+                }
+
+                if(self.unlimts.indexOf(value) > -1){
+                    update = false;
                 }
 
                 var vals, item = self.getItemByValue(value);

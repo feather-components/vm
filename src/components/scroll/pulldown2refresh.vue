@@ -76,7 +76,7 @@
         },
 
         mounted(){
-            setTimeout(() => {
+            setTimeout(() => {   
                 this.$scroll = this.$refs.scroll;
                 this.maxPos = this.pulldownHeight;
             }, 0);
@@ -101,10 +101,10 @@
                 this.limitType() == 1 && this.refresh();
             },  
 
-            refresh(){
-                this.isRefreshing = true;
-                this.$emit('refresh', this.recover);
-                this.scrollTo(this.pulldownHeight);
+            refresh(trigger = true){
+                trigger && this.$emit('refresh', this.recover);
+                this.isRefreshing = true; 
+                setTimeout(() => this.scrollTo(this.pulldownHeight), 0);
             },
 
             recover(){

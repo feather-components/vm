@@ -54,6 +54,7 @@
         data(){
             return {
                 source: [
+                    'components/layout',
                     'components/button',
                     'components/overlay',
                     'components/alert',
@@ -66,10 +67,11 @@
                     'components/searchbar',
                     'components/uploader',
                     'components/popover',
-                    'components/grid',
+                   // 'components/grid',
                     'components/form',
                     'components/filter',
-                    'components/slider'
+                    'components/slider',
+                    'components/tabbar'
 //                    'components/iosselect',
 //                    'components/datepicker',
                 ]

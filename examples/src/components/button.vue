@@ -1,6 +1,6 @@
 <template>
     <page>
-        <topbar slot="header">button组件</topbar>
+        <topbar slot="header"><vm-button style="height: 0.3rem;">123</vm-button></topbar>
         <p><btn style="width: 1.5rem;">main</btn>&nbsp;&nbsp;<btn style="width: 1.5rem;" type="drak">drak</btn></p>
         <p><btn style="width: 1.5rem;" type="success">success</btn>&nbsp;&nbsp;<btn style="width: 1.5rem;" type="disable">disable</btn></p>
         <p><btn style="width: 1.5rem;" :small="true">main</btn>&nbsp;&nbsp;<btn style="width: 1.5rem;" type="drak" :small="true">drak</btn></p>
@@ -10,6 +10,7 @@
         <p><btn style="width: 1.5rem;" :square="true">main</btn>&nbsp;&nbsp;<btn style="width: 1.5rem;" type="drak" :square="true" >drak</btn></p>
         <p><btn style="width: 1.5rem;" type="success" :square="true">success</btn>&nbsp;&nbsp;<btn style="width: 1.5rem;" type="disable" :square="true">disable</btn></p>
         <p><btn style="width: 2rem; height: 0.3rem;" type="success">自定义尺寸</btn></p>
+        <p><btn type="success">默认尺寸</btn></p>
     </page>
 </template>
 
