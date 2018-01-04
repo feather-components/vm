@@ -1,5 +1,5 @@
 <template>
-    <button :disable="type == 'disable' || disable" @click="$emit('click')" :class="className" :style="style"><slot></slot></button>
+    <button :disabled="type == 'disable' || disable || disabled" @click="$emit('click')" :class="className" :style="style"><slot></slot></button>
 </template>
 
 <style lang="less">
@@ -24,7 +24,7 @@
         }
     }
 
-    .vm-button-disable{
+    .vm-button[disabled]{
         border: 0 !important;
         color: #fff !important;
         background: #e1e1e1 !important;
@@ -38,7 +38,6 @@
         min-width: 0px;
         font-size: 0.14rem;
         height: 0.32rem;
-        line-height: 0.32rem;
     }
 </style>
 
@@ -77,6 +76,11 @@
             },
 
             disable: {
+                type: Boolean,
+                default: false
+            },
+
+            disabled: {
                 type: Boolean,
                 default: false
             }
