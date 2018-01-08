@@ -2,10 +2,19 @@
     <vm-page>
         <vm-topbar slot="header">layout相关组件</vm-topbar>
 
-        <vm-box title="box label">
-        	<span slot="tips">前往下一个页面</span>
-        	
-        </vm-box>
+        <vm-block title="box label">
+        	<vm-row>1233</vm-row>
+            <vm-row>1233</vm-row>
+            <vm-row>1233</vm-row>
+        </vm-block>
+
+        <br />
+
+        <vm-block title="box label">
+            <vm-row>1233</vm-row>
+            <vm-row>1233</vm-row>
+            <vm-row>1233</vm-row>
+        </vm-block>
     </vm-page>
 </template>
 

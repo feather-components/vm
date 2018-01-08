@@ -22,12 +22,15 @@ import Iosselect from './components/iosselect';
 import Datepicker from './components/datepicker';
 import {Slider, SliderItem} from './components/slider';
 import Tabbar from './components/tabbar';
+import {Block, Row} from './components/layout';
 import Helper from './helper';
 import Lazyload from './directives/lazyload';
 
 import Vue from 'vue';
 
 var Components = [
+    Block,
+    Row,
     Tabbar,
     Scroll,
     Pulldown2refresh,
@@ -71,6 +74,8 @@ function install(Vue){
 }
 
 export {
+    Block,
+    Row,
     Search,
     Searchbar,
     Searchbar as SearchBar,
