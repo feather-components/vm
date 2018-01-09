@@ -34,9 +34,9 @@
     }
 
     .vm-alert-btn{
-        flex-grow: 1;
+        flex: 1;
         text-align: center;
-        margin-bottom: 4px;
+        margin-bottom: 6px;
 
         .vm-button{
             width: 90%;
@@ -96,9 +96,9 @@
                 var props = self.buttons[key];
 
                 if(props.callback){
-                    props.callback.call(self);
+                    return props.callback.call(self);
                 }else{
-                    props.call(self);
+                    return props.call(self);
                 }
             }
         }

@@ -56,6 +56,8 @@
                 source: [
                     'components/layout',
                     'components/button',
+                    'components/badge',
+                    'components/forward',
                     'components/overlay',
                     'components/alert',
                     'components/toast',

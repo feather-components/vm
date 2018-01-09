@@ -13,7 +13,7 @@ import Search from './components/search';
 import Searchbar from './components/searchbar';
 import Uploader from './components/uploader';
 import {Grid, GridItem} from './components/grid';
-import {Box, Radios, Checkboxes, TextInput, Select, Images, Counter, Switch} from './components/form';
+import {Radios, Checkboxes, TextInput, Select, Images, Counter, Switch} from './components/form';
 import {Single, Multiple, Link, LinkMultiple} from './components/filter';
 import Autosize from './directives/autosize';
 import Mask from './components/mask';
@@ -21,16 +21,20 @@ import Overlay from './components/overlay';
 import Iosselect from './components/iosselect';
 import Datepicker from './components/datepicker';
 import {Slider, SliderItem} from './components/slider';
+import Forward from './components/forward';
 import Tabbar from './components/tabbar';
-import {Block, Row} from './components/layout';
+import {Box, Row} from './components/layout';
+import Badge from './components/badge';
 import Helper from './helper';
 import Lazyload from './directives/lazyload';
 
 import Vue from 'vue';
 
 var Components = [
-    Block,
+    Box,
     Row,
+    Badge,
+    Forward,
     Tabbar,
     Scroll,
     Pulldown2refresh,
@@ -49,7 +53,6 @@ var Components = [
     Uploader,
     GridItem,
     Grid,
-    Box,
     Radios,
     Checkboxes,
     TextInput,
@@ -74,8 +77,10 @@ function install(Vue){
 }
 
 export {
-    Block,
+    Box,
     Row,
+    Forward,
+    Badge,
     Search,
     Searchbar,
     Searchbar as SearchBar,
@@ -96,7 +101,7 @@ export {
     Uploader,
     Grid,
     GridItem,
-    Box as FormBox,
+    //Box as FormBox,
     Radios,
     Checkboxes,
     TextInput,

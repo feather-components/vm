@@ -71,8 +71,6 @@
 
 <script>
     export default{
-        name: 'box',
-
         props: {
             label: {
                 type: String,

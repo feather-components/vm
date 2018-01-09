@@ -6,11 +6,11 @@
 
         <div ref="headerMark"></div>
 
-        <div class="vm-list-rows">
-            <row v-for="(item, index) in rows" @click="$emit('row:click', item, index)">
+        <ul class="vm-list-rows" ref="rows">
+            <li v-for="(item, index) in rows" @click="$emit('row:click', item, index)" class="vm-list-item">
                 <slot name="row" :data="item">{{item}}</slot>
-            </row>
-        </div>
+            </li>
+        </ul>
 
         <div ref="footerMark"></div>
 
@@ -58,6 +58,17 @@
         -webkit-transform: translateY(0.03rem);
     }
 
+    .vm-list-rows{
+        padding: 0px;
+        margin: 0px;
+        list-style: none;
+
+        *{
+            margin: 0px;
+            padding: 0px;
+        }
+    }
+
     .vm-list-nores{
         margin-top: 0.2rem;
     }
@@ -74,16 +85,11 @@
 
 <script>
     import {Pulldown2refresh, Scroll} from '../scroll';
-    import {Row} from '../layout';
     import {Dom, Util} from '../../helper';
     import Ajax from 'ajax';
 
     export default{
         name: 'list',
-
-        components: {
-            Row
-        },
 
         props: {
             autoRefresh: {

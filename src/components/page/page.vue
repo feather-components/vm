@@ -20,6 +20,7 @@
         height: 100%;
         background: #fff;
         display: flex;
+        font-size: .14rem;
         flex-direction: column;
     }
 

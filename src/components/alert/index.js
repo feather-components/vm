@@ -13,14 +13,14 @@ var override = (callback) => {
     }
 };
 
-var Alert = override((content, options, callback, manualClose) => {
+var Alert = override((content, options, callback) => {
     var buttons = options.buttons;
 
     if(!buttons){
         buttons = {};
         buttons[options.confirmButtonText || '确定'] = function(){
             callback && callback();
-            !manualClose && this.destroy(false);
+            this.destroy(false);
         }
     }
 
@@ -32,18 +32,19 @@ var Alert = override((content, options, callback, manualClose) => {
     });
 });
 
-Alert.confirm = override((content, options, callback, manualClose) => {
+Alert.confirm = override((content, options, callback, cancelCallback) => {
     var buttons = {};
 
     buttons[options.cancelButtonText || '取消'] = {
         border: true,
         callback(){
+            cancelCallback && cancelCallback();
             this.destroy(false);
         }
     };
     buttons[options.confirmButtonText || '确定'] = function(){
         callback && callback();
-        !manualClose && this.destroy(false);
+        this.destroy(false);
     };
 
     return Util.factory(Component, {

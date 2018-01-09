@@ -1,13 +1,11 @@
 import Box from './box';
-import Cell from './cell';
+import Row from './row';
 import {Util} from '../../helper';
 
 Util.register(Box);
-Util.register(Cell);
-
-export default Box;
+Util.register(Row);
 
 export {
 	Box,
-	Cell
+	Row
 }

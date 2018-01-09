@@ -23,6 +23,8 @@ import Overlay from './components/overlay.vue';
 import Slider from './components/slider.vue';
 import Tabbar from './components/tabbar.vue';
 import Layout from './components/layout.vue';
+import Forward from './components/forward.vue';
+import Badge from './components/badge.vue';
 
 import {Topbar} from 'vm';
 import VM from 'vm';
@@ -39,6 +41,16 @@ const router = new VueRouter({
         {
             path: '/components/layout',
             component: Layout
+        },
+
+        {
+            path: '/components/forward',
+            component: Forward
+        },
+
+        {
+            path: '/components/badge',
+            component: Badge
         },
 
         {
