@@ -2,11 +2,9 @@
     <page>
         <topbar :left-enabled="false">vm</topbar>
 
-        <list :source="source" class="navs">
-            <template slot="row" scope="props">
-                <a :href="'#/' + props.data">{{props.data}}</a>
-            </template>
-        </list>
+        <vm-scroll class="navs" >
+            <a :href="'#/' + item" v-for="item of source">{{item}}</a>
+        </vm-scroll>
     </page>
 </template>
 
@@ -74,9 +72,8 @@
                     'components/slider',
                     'components/tabbar',
                     'directives/badge',
+                    'directives/lazyload',
                     'directives/draggable'
-//                    'components/iosselect',
-//                    'components/datepicker',
                 ]
             }
         }

@@ -44,11 +44,6 @@
                 }
             },
 
-            unlimit: {
-                type: [Number, String, Array],
-                default: null
-            },
-
             value: {
                 type: Array,
                 default: null
@@ -58,8 +53,7 @@
         data(){
             return {
                 val: [],
-                infinite: this.size < 0,
-                unlimts: Util.makeArray(this.unlimit)
+                infinite: this.size < 0
             };
         },
 
@@ -76,10 +70,6 @@
                 if(self.disabled){
                     self.$emit('reject');
                     return false;
-                }
-
-                if(self.unlimts.indexOf(value) > -1){
-                    update = false;
                 }
 
                 var vals, item = self.getItemByValue(value);
@@ -112,7 +102,7 @@
                 var className = Single.methods.getItemClass(item);
 
                 if(this.val.indexOf(item.value) > -1){
-                    className += ' vm-filter-tick';
+                    className += ' vm-filter-tick ' + this.selectedClassName;
                 }
 
                 return className;

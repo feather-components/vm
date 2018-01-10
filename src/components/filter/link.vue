@@ -64,6 +64,21 @@
                 }
             },
 
+            unlimitLabel: {
+                type: String,
+                default: '不限'
+            },
+
+            unlimitValue: {
+                type: [Number, String],
+                default: undefined
+            },
+
+            unlimitStartGroup: {
+                type: Number,
+                default: 0
+            },
+
             level: {
                 type: Number,
                 default: 2
@@ -215,12 +230,15 @@
                 var self = this;
 
                 self.$emit('item:click', item);
-
+                
                 if(self.isMaxLevel(item.__level)){
                     return;
+                }else if(this.unlimitValue !== undefined && item.value === this.unlimitValue){
+                    self.parent = item;
+                    self.filters = self.filters.slice(0, item.__level + 1);
                 }else{
                     if(item === self.parent) return false;
-
+                    
                     self.parent = item;
                     self.render(item.children, item.__level + 1);
                 }
@@ -231,10 +249,19 @@
                     return source;
                 }
 
+                let arr = [];
+
+                if(this.unlimitValue !== undefined && level >= this.unlimitStartGroup){
+                    arr.push({
+                        label: this.unlimitLabel,
+                        value: this.unlimitValue
+                    });
+                }
+
                 try{
-                    source = this.dataFormatter(source, level, this.parent); 
+                    source = arr.concat(this.dataFormatter(source, level, this.parent));
                 }catch(e){
-                    source = [];
+                    source = arr;
                 }
 
                 source = source.map((item) => {
@@ -264,7 +291,7 @@
                 self.paths = self.paths.slice(0, level).concat(item);
                 self.$emit('paths:change', self.paths);
 
-                if(self.isMaxLevel(level)){
+                if(self.isMaxLevel(level) || self.unlimitValue !== undefined && val === this.unlimitValue){
                     var paths = self.paths.slice(0), labels = [], objs = {};
                     var vals = paths.map((item, level) => {
                         objs[self.names[level] || ('level' + level)] = item.value;

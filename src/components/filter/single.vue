@@ -131,11 +131,7 @@
                 var self = this;
                 var className = ['vm-filter-item'];
 
-                if(item.value == self.val){
-                    className.push('vm-filter-selected');
-                    self.selectedClassName && className.push(self.selectedClassName);
-                }
-
+                item.value == self.val && self.selectedClassName && className.push(self.selectedClassName);
                 return className.join(' ');
             },
 
