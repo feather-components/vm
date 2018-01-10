@@ -9,7 +9,6 @@
             :close-after-select-history="true"
             @select="select"
             @confirm="confirm"
-            input-bg-color="#fff"
         >
             <template scope="props" slot="row">
                 <div class="row">{{props.data.q}}</div>

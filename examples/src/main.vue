@@ -56,7 +56,6 @@
                 source: [
                     'components/layout',
                     'components/button',
-                    'components/badge',
                     'components/forward',
                     'components/overlay',
                     'components/alert',
@@ -73,7 +72,9 @@
                     'components/form',
                     'components/filter',
                     'components/slider',
-                    'components/tabbar'
+                    'components/tabbar',
+                    'directives/badge',
+                    'directives/draggable'
 //                    'components/iosselect',
 //                    'components/datepicker',
                 ]

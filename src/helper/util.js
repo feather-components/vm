@@ -78,8 +78,8 @@ export default{
     },
 
     register(obj, directive = false){
-        var Component = obj.Component || obj;
-
+        var Component = directive ? obj : (obj.Component || obj);
+        
         function install(Vue){
             if(install._installed) return;
 
@@ -101,11 +101,11 @@ export default{
         return obj;
     },
 
-    factory(options, data = {}){
+    factory(options, data = {}, container = document.body){
         var instance = new Vue(options);
         Object.assign(instance, data);
         instance.$mount();
-        document.body.appendChild(instance.$el);
+        container.appendChild(instance.$el);
         return instance;
     },
 

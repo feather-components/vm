@@ -2,8 +2,10 @@
     <vm-page style="background: #eee;">
         <vm-topbar slot="header">Forward 前进按钮</vm-topbar>
 
-        <div><vm-forward style="height: 32px;">查看更多</vm-forward></div>
-       	<div>123<vm-forward style="height: 32px;">查看更多</vm-forward></div>
+        <div>
+	        <vm-forward style="height: 32px; margin-left: 0.1rem;">自动左浮动</vm-forward>
+	        <vm-forward style="height: 32px;">自动右浮动</vm-forward>
+	    </div>
     </vm-page>
 </template>
 

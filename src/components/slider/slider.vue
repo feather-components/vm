@@ -29,6 +29,8 @@
     import {Event, Dom} from '../../helper';
 
     export default {
+        name: 'slider',
+
         components: {
             Grid
         },

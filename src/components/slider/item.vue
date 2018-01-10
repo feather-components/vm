@@ -15,6 +15,8 @@
     import {Event, Dom} from '../../helper';
 
     export default {
+        name: 'slider-item',
+
         components: {
             GridItem
         },

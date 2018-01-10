@@ -184,9 +184,7 @@
                 default(){
                     this.close()
                 }
-            },
-
-            inputBgColor: null
+            }
         },
 
         mounted(){

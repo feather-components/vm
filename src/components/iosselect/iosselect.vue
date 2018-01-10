@@ -34,6 +34,8 @@
     const LINEHEIGHT = 35
 
     export default {
+        name: 'iosselect',
+
         mixins: [Overlay],
 
         props: {

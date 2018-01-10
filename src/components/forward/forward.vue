@@ -40,18 +40,12 @@
 
 <script>
 	import Icon from '../icon';
+	import {Dom} from '../../helper';
 
 	export default {
 		name: 'forward',
 		components: {
 			Icon
-		},
-
-		props: {
-			left: {
-				type: Boolean,
-				default: null
-			}
 		},
 
 		data(){
@@ -61,7 +55,15 @@
 		},
 
 		mounted(){
-			this.leftLayout = this.$el.parentNode.childNodes[0] === this.$el;
+			let parentNode = this.$el.parentNode;
+
+			this.leftLayout = parentNode.childNodes[0] === this.$el;
+
+			let display = Dom.css(parentNode, 'display');
+
+			if(display == 'block'){
+				Dom.css(parentNode, 'display', 'flex');
+			}
 		}
 	}
 </script>

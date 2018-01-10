@@ -147,6 +147,8 @@
     const DAYS =  getDays(CURRENT_YEAR, CURRENT_MONTH)
 
     export default {
+        name: 'datepicker',
+
         props:{
             format: {
                 type: String,

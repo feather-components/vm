@@ -22,10 +22,8 @@
         }
 
         .vm-iconfont{
-            opacity: 0.6;
+            opacity: 0.8;
         }
-
-        color: #000;
     }
 
     .vm-searchbar-blue{
@@ -45,6 +43,7 @@
         position: relative;
 
         input{
+            color: inherit;
             font-size: .14rem;
             box-sizing: border-box;
             width: 100%;
@@ -62,6 +61,11 @@
             &:focus{
                 border: 0px;
             }
+        }
+
+        ::-webkit-input-placeholder{
+            color: inherit;
+            opacity: 0.5;
         }
     }
 

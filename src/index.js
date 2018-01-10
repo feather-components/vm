@@ -24,7 +24,8 @@ import {Slider, SliderItem} from './components/slider';
 import Forward from './components/forward';
 import Tabbar from './components/tabbar';
 import {Box, Row} from './components/layout';
-import Badge from './components/badge';
+import Badge from './directives/badge';
+import BadgeComponent from './components/badge';
 import Helper from './helper';
 import Lazyload from './directives/lazyload';
 
@@ -34,6 +35,7 @@ var Components = [
     Box,
     Row,
     Badge,
+    BadgeComponent,
     Forward,
     Tabbar,
     Scroll,

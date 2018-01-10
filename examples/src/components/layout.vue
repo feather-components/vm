@@ -1,7 +1,7 @@
 <template>
     <vm-page style="background: #eee;">
         <vm-topbar slot="header">Layout相关：box & row</vm-topbar>
-
+        
         <vm-scroll>
         <vm-box>
             <template slot="header">
@@ -76,7 +76,7 @@
     </vm-page>
 </template>
 
-<style scoped>
+<style scoped lang="less">
 	img{
         width: .2rem;
         height: .2rem;

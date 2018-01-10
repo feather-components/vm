@@ -106,6 +106,8 @@
     import {Util, Event, Dom} from '../../helper';
 
     var PopOver = {
+        name: 'popover',
+
         props: {
             actions: {
                 type: Object,

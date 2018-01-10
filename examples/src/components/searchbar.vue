@@ -1,12 +1,13 @@
 <template>
     <page>
         <topbar slot="header">searchbar + list组件</topbar>
-        <searchbar v-model="wd" placeholder="请输入关键词，百度搜索" style="border-bottom: 1px solid #eee;"></searchbar>
+        <searchbar v-model="wd" placeholder="请输入关键词，百度搜索"></searchbar>
         <list
             source="https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?json=1&cb=?"
             :params="{'wd': wd}"
             :auto-refresh="true"
             :data-formatter="formatter"
+
         >   
             <template slot="row" scope="props">
                 <div class="row">
