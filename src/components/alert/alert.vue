@@ -40,6 +40,7 @@
 
         .vm-button{
             width: 90%;
+            height: 0.4rem;
         }
     }
 </style>

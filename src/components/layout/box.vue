@@ -24,7 +24,7 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		padding: 0px 0.08rem;
+		padding: 0px 0.12rem;
 	}
 
 	.vm-box-inner{

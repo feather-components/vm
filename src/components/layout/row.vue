@@ -15,12 +15,12 @@
 		display: flex;
 		background: #fff;
 		align-items: center;
-		padding-left: 0.08rem;
+		padding-left: 0.12rem;
 	}
 
 	.vm-box-row-icon{
 		border-bottom: 1px solid transparent;
-		margin-right: 0.08rem;
+		margin-right: 0.12rem;
 	}
 
 	.vm-box-row-content{
@@ -29,7 +29,7 @@
 		display: flex;
 		align-items: center;
 		padding: 0.06rem 0px;
-		padding-right: 0.08rem;
+		padding-right: 0.12rem;
 		border-bottom: 1px solid #eee;
 	}
 

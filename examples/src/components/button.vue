@@ -11,6 +11,9 @@
         <p><btn style="width: 1.5rem;" type="success" :square="true">success</btn>&nbsp;&nbsp;<btn style="width: 1.5rem;" type="disable" :square="true">disable</btn></p>
         <p><btn style="width: 2rem; height: 0.3rem;" type="success">自定义尺寸</btn></p>
         <p><btn type="success">默认尺寸</btn></p>
+        <p>
+
+        </p>
     </page>
 </template>
 
