@@ -19,16 +19,10 @@
         width: @h !important;
         height: @h;
         display: inline-block;
-
-        .vm-iconfont{
-            font-weight: bold;
-            display: inline-block;
-            transform: rotate(90deg);
-        }
     }
 
     .vm-topbar-title{
-        line-height: @h;
+        align-items: center;
         height: @h;
         width: 100%;
         display: flex;
@@ -68,7 +62,7 @@
                     <a href="javascript:" class="vm-topbar-btn-back" @click="leftCallback && leftCallback()" :style="{
                         color: color
                     }">
-                        <icon name="arrow" :size=".16" />
+                        <icon name="left" :size=".16" />
                     </a>
                 </slot>
             </div>

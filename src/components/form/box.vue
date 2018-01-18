@@ -1,76 +1,62 @@
 <template>
-    <div :class="{
-        'vm-form-box': true,
-        'vm-form-box-vertical': verticalLayout,
-        'vm-form-box-horizontal': !verticalLayout
-    }">
-        <label class="vm-form-box-label" v-if="label">
-            {{label}}
-            <span class="vm-form-box-msg" v-if="verticalLayout">
-                <slot name="msg"></slot>
-            </span>
-        </label>
+    <row :class="['vm-form-row', flexLayout ? 'vm-form-flex' : '']" :flex="flexLayout">
+        <slot name="label">
+            <div class="vm-form-label" v-if="label"> 
+                {{label}}
+                <span v-if="tips || $slots.tips" class="vm-form-tips">
+                    <slot name="tips">{{tips}}</slot>
+                </span>
+            </div>
+        </slot>
 
-        <div class="vm-form-box-inner">
+        <div class="vm-form-field">
             <slot></slot>
         </div>
-    </div>
+    </row>
 </template>
 
 <style lang="less">
-    .vm-form-box{
-        background: #fff;
-        margin: 0px 0.16rem;
-        padding: 0.12rem 0px;
-        border-top: 0px;
-        line-height: 0.24rem;
-
-        > *{
-            font-size: 0.14rem;
-        }
-    }
-
-    .vm-form-box-vertical{
-        padding-bottom: 0.09rem;
-
-        .vm-form-box-label{
-            width: 100%;
-        }
-    }
-
-    .vm-form-box-horizontal{
-        display: flex;
-
-        .vm-form-box-inner{
-            min-height: 0.24rem;
-            flex: 1;
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-        }
-    }
-
-    .vm-form-box ~ .vm-form-box{
-        border-top: 1px solid #eee;
-    }
-
-    .vm-form-box-label{
-        display: block;
-        height: 0.24rem;
+    .vm-form-row{
         color: #555;
-        width: 30%;
     }
 
-    .vm-form-box-msg{
-        display: inline-block;
+    .vm-form-field{
+        min-height: .36rem; 
+        margin-bottom: 0.06rem;
+    }
+
+    .vm-form-flex{
+         .vm-form-field{
+            display: flex;
+            flex: 1;
+            align-items: center;
+            margin-bottom: 0px;
+        }
+    }
+
+    .vm-form-label{
+        display: flex;
+        justify-content: space-between;
+        height: 0.24rem;
+        line-height: 0.24rem;
+        margin-top: 0.06rem;
+        margin-bottom: 0.06rem;
+    }
+
+    .vm-form-tips{
+        color: #aaa;
         font-size: .12rem;
-        color: #878787;
-        margin-left: .025rem;
     }
 </style>
 
 <script>
+    import Row from '../layout/row';
+
     export default{
+        components: {
+            Row
+        },
+
         props: {
             label: {
                 type: String,
@@ -87,7 +73,18 @@
                 default(){
                     return String(Date.now());
                 }
+            },
+
+            tips: {
+                type: String,
+                default: null
             }
+        },
+
+        data(){
+            return {
+                flexLayout: !this.verticalLayout && !this.$slots.tips && !this.tips
+            };
         }
     }
 </script>

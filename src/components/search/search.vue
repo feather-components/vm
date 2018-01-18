@@ -18,7 +18,7 @@
                 </div>
                 <div class="vm-search-historys">
                     <a v-for="(item, index) of historys" class="vm-search-history" href="javascript:" @click="clickHistory(item, index)">
-                        <slot name="history-row" :data="item">{{item}}</slot>
+                        <slot name="history-row" :data="item">{{item.length > 20 ? item.substring(0, 20) + '..' : item}}</slot>
                     </a>
                 </div>
             </div>
@@ -67,6 +67,8 @@
         }
 
         .vm-searchbar{
+            padding-top: 0px;
+            padding-bottom: 0px;
             padding-right: 0.45rem;
             box-sizing: border-box;
             width: 100%;

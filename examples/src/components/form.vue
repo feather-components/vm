@@ -3,8 +3,9 @@
         <topbar slot="header">form系列组件</topbar>
 
         <scroll>
-            <text-input label="单行文本" placeholder="单行" v-model="postData.a"  />
-            <text-input label="多行文本" :multiline="true" placeholder="多行" v-model="postData.b" v-counter="{limit: 30}" />
+            <text-input label="单行文本" placeholder="单行" v-model="postData.a"><vm-forward :arrow-size="0.14" @click="alert(3)" /></text-input>
+
+            <vm-textarea label="多行文本" placeholder="333" tips="333" v-model="postData.b">fdsjkfdsj</vm-textarea>
 
             <vm-switch label="切换开关" v-model="postData.g" />
 
@@ -95,10 +96,6 @@
 
             <form-box label="单选">
                 <single-filter :source="source"></single-filter>
-            </form-box>
-
-            <form-box label="2级多选">
-                <link-multiple-filter :source="source" style="height: 150px;"></link-multiple-filter>
             </form-box>
 
             <form-box label="iosselect">

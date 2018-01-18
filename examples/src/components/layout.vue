@@ -68,7 +68,7 @@
                     商品名称
                     <div>商品价格</div>
                 </div>
-                <div><vm-forward>购物</vm-forward></div>
+                <vm-forward>购物</vm-forward>
             </vm-row>
             <vm-row><img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2981927988,4277275568&fm=27&gp=0.jpg" slot="icon" />啦啦啦</vm-row>
         </div>

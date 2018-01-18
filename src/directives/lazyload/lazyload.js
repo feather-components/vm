@@ -8,6 +8,17 @@ class Lazyload{
         }, options);
         this.element = element;
 
+        if(this.options.placeholder){
+            this.placeholderClassName = 'vm-lazyload-' + Date.now();
+            var el = Dom.create(`<style type="text/css">
+                .${this.placeholderClassName}{
+                    background: url(${this.options.placeholder}) center center no-repeat;
+                }
+                </style>
+            `);
+            document.getElementsByTagName('head')[0].appendChild(el);
+        }
+
         this.load();
     }
 
@@ -61,14 +72,14 @@ class Lazyload{
                 break;
             }else{
                 ((node) => {
-                    if(placeholder){
-                        node.style.background = `url(${placeholder}) no-repeat center center`;
+                    if(self.placeholderClassName){
+                        Dom.addClass(node, self.placeholderClassName);
                     }
-                    
+
                     node.src = node.getAttribute(srcAttr);
-                    node.onload = () => {
-                        node.style.background = 'none';
-                    };
+                    self.placeholderClassName && (node.onload = () => {
+                        Dom.removeClass(node, self.placeholderClassName); 
+                    });
                     node.removeAttribute(srcAttr);
                 })(node);
             }

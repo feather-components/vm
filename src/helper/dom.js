@@ -109,12 +109,18 @@ export default{
     },
 
     addClass(element, className){
-        if(this.hasClass(element, className)){
+        if(!this.hasClass(element, className)){
             element.className += ' ' + className;
         }
     },
 
     removeClass(element, className){
-        element.className = element.className.replace(new RegExp('(\\s+|^)' + className + '(\\s+|$)'));
+        element.className = element.className.replace(new RegExp('(\\s+|^)' + className + '(\\s+|$)'), '');
+    },
+
+    create(str){
+        var el = document.createElement('div');
+        el.innerHTML = str;
+        return el.childNodes[0];
     }
 }

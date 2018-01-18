@@ -29,6 +29,7 @@
     }
 
     .vm-toast-inner{
+        word-break: break-all;
         display: inline-block;
         font-size: 0.16rem;
         color: #FFFFFF;

@@ -2,13 +2,12 @@
     <page>
         <topbar slot="header">uploader组件</topbar>
         <div class="uploader">
-            <uploader @select="select" @upload:progress="progress" url="/index.html"  style="height: 50%;"></uploader>
+            <uploader @select="select" url="http://www.uploadify.com/uploadify/uploadify.php" style="height: 50%;"></uploader>
         </div>
 
-        <div v-if="src" style="height: 50%;" class="box">
-            <div class="progress"></div>
-            <img :src="src" height="100%" />
-        </div>
+        <vm-scroll v-if="src" class="box">
+            <img :src="src" width="100%" />
+        </vm-scroll>
     </page>
 </template>
 
@@ -47,8 +46,7 @@
 
         data(){
             return {
-                src: false,
-                progress: '0%'
+                src: false
             }
         },
 

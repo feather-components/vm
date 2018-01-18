@@ -3,7 +3,7 @@
 		<span class="vm-box-row-icon" v-if="$slots.icon">
 			<slot name="icon"></slot>
 		</span>
-		<div class="vm-box-row-content">
+		<div class="vm-box-row-content" :style="{display: flex ? 'flex' : 'block'}">
 			<slot></slot>
 		</div>
 	</div>
@@ -25,11 +25,10 @@
 
 	.vm-box-row-content{
 		flex: 1;
-		justify-content: space-between;
-		display: flex;
 		align-items: center;
 		padding: 0.06rem 0px;
 		padding-right: 0.12rem;
+		box-sizing: border-box;
 		border-bottom: 1px solid #eee;
 	}
 
@@ -42,6 +41,12 @@
 
 <script>
 	export default {
-		name: 'row'
+		name: 'row',
+		props: {
+			flex: {
+				type: Boolean,
+				default: true
+			}
+		}
 	}
 </script>

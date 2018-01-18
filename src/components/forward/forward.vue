@@ -1,8 +1,8 @@
 <template>
-	<span :class="['vm-forward-wraper', leftLayout ? 'vm-forward-ll' : '']">
+	<span :class="['vm-forward-wraper', leftLayout ? 'vm-forward-ll' : '']" @click="$emit('click')">
 		<a href="javascript:" class="vm-forward">
-			<span class="vm-forward-content"><slot></slot></span>
-			<icon name="arrow" :size="0.12" />
+			<span class="vm-forward-content" v-if="$slots.default"><slot></slot></span>
+			<icon name="right" :size="arrowSize" />
 		</a>
 	</span>
 </template>
@@ -10,10 +10,11 @@
 <style lang="less">
 	.vm-forward-wraper{
 		display: inline-flex;
-		flex: 1;
+		margin-start: auto;
+		-webkit-margin-start: auto;
 		justify-content: flex-end;
 		align-items: center;
-		color: #222;
+		color: #555;
 		font-size: .14rem;
 	}
 
@@ -22,6 +23,7 @@
 		text-decoration: none;
 		display: inline-flex;
 		color: inherit;
+		align-items: center;
 
 		.vm-forward-content{
 			margin-right: .06rem;
@@ -29,11 +31,12 @@
 
 		.vm-iconfont{
 			font-weight: bold;
-        	transform: rotate(-90deg);
     	}
 	}
 
 	.vm-forward-ll{
+		margin-start: initial;
+		-webkit-margin-start: initial;
 		justify-content: flex-start;
 	}
 </style>
@@ -46,6 +49,13 @@
 		name: 'forward',
 		components: {
 			Icon
+		},
+
+		props: {
+			arrowSize: {
+				type: Number,
+				default: .12
+			}
 		},
 
 		data(){

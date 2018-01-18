@@ -1,14 +1,20 @@
 <template>
-    <v-box :label="label" class="vm-form-switch-box" :vertical-layout="false"> 
+    <row :label="label" class="vm-form-switch-box" :vertical-layout="false"> 
         <span class="vm-form-switch">
-            <input type="checkbox" :id="name" class="vm-form-switch" v-model="val" />
-            <label :for="name"></label>
+            <input type="checkbox" :id="name" ref="checkbox" class="vm-form-switch" v-model="val" @change="onChange" />
+            <label :for="name">
+                <i :style="{background: bgColor}"></i>
+                <i></i>
+            </label>
         </span>
-    </v-box>
+    </row>
 </template>
 
 <style lang="less">
     .vm-form-switch{
+        margin-start: auto;
+        -webkit-margin-start: auto;
+
         input{
             display: none;
         }
@@ -19,11 +25,10 @@
             border-radius: 100px;
             height: 0.28rem;
             width: 0.48rem;
-            box-shadow: 0px 0px 1px #333;
+            box-shadow: 0px 0px 1px #ccc;
             cursor: pointer;
 
-            &:before{
-                content: '';
+            i:nth-child(1){
                 display: block;
                 height: 100%;
                 width: 100%;
@@ -31,55 +36,75 @@
                 transition: all .3s ease;
             }
 
-            &:after{
-                content: '';
+            i:nth-child(2){
                 position: absolute;
+                display: inline-block;
                 top: 0px;
                 left: 0px;
                 height: 0.27rem;
                 width: .27rem;
                 border-radius: 100px;
                 background-color: white;
-                box-shadow: 0px 1px 0px 1px #ccc;
+                box-shadow: 0px 1px 0px 1px #ddd;
                 transition: all .3s ease;
             }
         }
 
-        input:checked ~ label:after{
+        input:checked ~ label i:nth-child(2){
             box-shadow: none;
             transform: translate(.2rem, 0.005rem);
-        }
-
-        input:checked ~ label:before{
-            background-color: #6281C2;
         }
     }
 </style>
 
 <script>
-    import vBox from './box';
+    import Row from './box';
     import {Single} from './abstract';
+    import {Util} from '../../helper';
 
-    export default{
+    var Switch = {
         name: 'switch',
 
-        mixins: [vBox, Single],
+        mixins: [Row, Single],
 
         props: {
             disabled: {
                 type: Boolean,
                 default: false
+            },
+
+            color: {
+                type: String,
+                default(){
+                    return Switch.config('color');
+                }
             }
         },
 
         components: {
-            vBox
+            Row
         },
 
-        methods:{
-            input(){
-                this.val = this.$refs.input.textContent;
+        data(){
+            return {
+                bgColor: ''
+            };
+        },
+
+        mounted(){
+            this.onChange();
+        }, 
+
+        methods: {
+            onChange(){
+                this.bgColor = this.$refs.checkbox.checked ? this.color : '';
             }
         }
     }
+
+    Util.defineConfig(Switch, {
+        color: '#6281c2'
+    });
+
+    export default Switch;
 </script>

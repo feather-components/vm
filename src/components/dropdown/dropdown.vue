@@ -4,7 +4,7 @@
             color: !isOpen ? labelColor: labelHighColor
         }">
             {{label}}
-            <icon name="arrow" />
+            <icon :name="isOpen ? 'up' : 'down'" />
         </a>
 
         <dropbox ref="box">
@@ -30,10 +30,6 @@
         width: 100%;
         text-align: center;
         line-height: .44rem;
-    }
-
-    .vm-dropdown-open .vm-dropdown-label .vm-iconfont{
-        transform: rotate(180deg);
     }
 
     .vm-dropdown-inner{

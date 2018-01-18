@@ -54,6 +54,7 @@
                 source: [
                     'components/layout',
                     'components/button',
+                    'components/segment',
                     'components/forward',
                     'components/overlay',
                     'components/alert',

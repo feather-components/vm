@@ -27,6 +27,7 @@ import Forward from './components/forward.vue';
 import Badge from './directives/badge.vue';
 import Draggable from './directives/draggable.vue';
 import Lazyload from './directives/lazyload.vue';
+import Segment from './components/segment.vue';
 
 import {Topbar} from 'vm';
 import VM from 'vm';
@@ -43,6 +44,11 @@ const router = new VueRouter({
         {
             path: '/components/layout',
             component: Layout
+        },
+
+        {
+            path: '/components/segment',
+            component: Segment
         },
 
         {

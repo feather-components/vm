@@ -33,7 +33,7 @@
 
 <script>
 	import Scroll from '../scroll';
-	import {Dom} from '../../helper';
+	import {Dom, Util} from '../../helper';
 
 	export default {
 		name: 'tabbar',
@@ -53,9 +53,7 @@
 			defaultLabel: {
 				type: String,
 				default(){
-					for(var i in this.items){
-						return i;
-					}
+					return Util.firstKey(this.items);
 				}
 			}
 		},
@@ -72,8 +70,13 @@
 
 		methods: {
 			to(label = this.defaultLabel){
+				if(label == this.currentLabel){
+					return false;
+				}
+
 				let item = this.items[this.currentLabel = label];
-				this.$emit('to', item);	
+				this.$emit('to', item, label);
+				this.$emit('switch', item, label);	
 
 				setTimeout(() => {
 					let left = Dom.offset(Dom.$('.vm-tabbar-actived', this.$el)).left;

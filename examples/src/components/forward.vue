@@ -4,7 +4,7 @@
 
         <div>
 	        <vm-forward style="height: 32px; margin-left: 0.1rem;">自动左浮动</vm-forward>
-	        <vm-forward style="height: 32px;">自动右浮动</vm-forward>
+	        <vm-forward style="height: 32px; margin-right: 0.1rem;">自动右浮动</vm-forward>
 	    </div>
     </vm-page>
 </template>

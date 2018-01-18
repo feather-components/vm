@@ -13,7 +13,7 @@ import Search from './components/search';
 import Searchbar from './components/searchbar';
 import Uploader from './components/uploader';
 import {Grid, GridItem} from './components/grid';
-import {Radios, Checkboxes, TextInput, Select, Images, Counter, Switch} from './components/form';
+import {Radios, Checkboxes, TextInput, Select, Images, Counter, Switch, Textarea} from './components/form';
 import {Single, Multiple, Link, LinkMultiple} from './components/filter';
 import Autosize from './directives/autosize';
 import Mask from './components/mask';
@@ -25,6 +25,7 @@ import Forward from './components/forward';
 import Tabbar from './components/tabbar';
 import {Box, Row} from './components/layout';
 import Badge from './directives/badge';
+import Segment from './components/segment';
 import BadgeComponent from './components/badge';
 import Helper from './helper';
 import Lazyload from './directives/lazyload';
@@ -32,6 +33,7 @@ import Lazyload from './directives/lazyload';
 import Vue from 'vue';
 
 var Components = [
+    Segment,
     Box,
     Row,
     Badge,
@@ -58,6 +60,7 @@ var Components = [
     Radios,
     Checkboxes,
     TextInput,
+    Textarea,
     Select,
     Images,
     Switch,
@@ -80,6 +83,7 @@ function install(Vue){
 
 export {
     Box,
+    Segment,
     Row,
     Forward,
     Badge,
@@ -107,6 +111,8 @@ export {
     Radios,
     Checkboxes,
     TextInput,
+    TextInput as Textinput,
+    Textarea,
     Select,
     Switch,
     Images,

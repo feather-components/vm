@@ -1,6 +1,6 @@
 <template>
     <page>
-        <topbar slot="header"><vm-button style="height: 0.3rem;">123</vm-button></topbar>
+        <topbar slot="header">button</topbar>
         <p><btn style="width: 1.5rem;">main</btn>&nbsp;&nbsp;<btn style="width: 1.5rem;" type="drak">drak</btn></p>
         <p><btn style="width: 1.5rem;" type="success">success</btn>&nbsp;&nbsp;<btn style="width: 1.5rem;" type="disable">disable</btn></p>
         <p><btn style="width: 1.5rem;" :small="true">main</btn>&nbsp;&nbsp;<btn style="width: 1.5rem;" type="drak" :small="true">drak</btn></p>

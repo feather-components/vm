@@ -1,7 +1,7 @@
 <template>
     <a href="javascript:" class="vm-uploader">
         <slot><i class="vm-uploader-icon"></i></slot>
-        <input type="file" class="vm-uploader-input" @click="$emit('click')" @change="onSelect" ref="uploader" :multiple="multiple" />
+        <input type="file" class="vm-uploader-input" :accept="accept" @click="$emit('click')" @change="onSelect" ref="uploader" :multiple="multiple" />
     </a>
 </template>
 
@@ -50,6 +50,7 @@
 
 <script>
     import {Util} from '../../helper';
+    import Toast from '../toast';
 
     var Uploader = {
         name: 'uploader',
@@ -58,6 +59,11 @@
             multiple: {
                 type: Boolean,
                 default: false
+            },
+
+            accept: {
+                type: String,
+                default: '*'
             },
 
             usePack: {
