@@ -13,6 +13,7 @@
 		display: flex;
 
 		button{
+			margin: 0px;
 			padding: 0px .1rem;
 			flex-grow: 1;
 			background: transparent;

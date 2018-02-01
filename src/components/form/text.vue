@@ -10,7 +10,7 @@
             @blur="$emit('blur')" 
             @click="$emit('click')" 
             :placeholder="placeholder"
-            :readonly="readonly ? 'readonly' : ''"
+            :readonly="readonly"
             :style="{textAlign: align}"
         /> 
 
@@ -35,6 +35,10 @@
             font-weight: 300;
             color: #ccc;
         }
+    }
+
+    .vm-form-textinput [readonly="readonly"]{
+        user-select: none;
     }
 
     .vm-form-clear{

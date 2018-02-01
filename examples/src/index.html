@@ -12,8 +12,14 @@ body{
 </style>
 </head>
 <body>
+
     <div id="app">
         <app-transition />
     </div>
 </body>
+<script>
+document.ontouchmove = function(e){
+	e.preventDefault();
+};
+</script>
 </html>
