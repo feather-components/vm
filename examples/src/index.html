@@ -9,41 +9,11 @@ body{
     font-size: 0.14rem;
     font-family: 微软雅黑;
 }
-
-.router{
-    position: absolute;
-    transition: all .5s cubic-bezier(.55, 0, .1, 1);
-}
-
-.slide-left-enter{
-    -webkit-transform: translate(100%, 0);
-    transform: translate(100%, 0);
-}
-
-.slide-left-leave-active{
-    -webkit-transform: translate(-30%, 0);
-    transform: translate(-30%, 0);
-}
-
-.slide-right-enter{
-    -webkit-transform: translate(-30%, 0);
-    transform: translate(-30%, 0);
-}
-
-.slide-right-leave-active{
-    z-index: 1000000 !important;
-    -webkit-transform: translate(100%, 0);
-    transform: translate(100%, 0);
-}
 </style>
 </head>
 <body>
     <div id="app">
-        <transition :name="transitionName">
-            <keep-alive>
-                <router-view class="router"></router-view>
-            </keep-alive>
-        </transition>
+        <app-transition />
     </div>
 </body>
 </html>

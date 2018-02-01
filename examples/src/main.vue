@@ -3,7 +3,7 @@
         <topbar :left-enabled="false">vm</topbar>
 
         <vm-scroll class="navs" >
-            <a :href="'#/' + item" v-for="item of source">{{item}}</a>
+            <a href="javascript:" v-for="item of source" @click="go(item)">{{item}}</a>
         </vm-scroll>
     </page>
 </template>
@@ -67,7 +67,6 @@
                     'components/searchbar',
                     'components/uploader',
                     'components/popover',
-                   // 'components/grid',
                     'components/form',
                     'components/filter',
                     'components/slider',
@@ -76,6 +75,12 @@
                     'directives/lazyload',
                     'directives/draggable'
                 ]
+            }
+        },
+
+        methods: {
+            go(url){
+                this.$router.push(url);
             }
         }
     }                    

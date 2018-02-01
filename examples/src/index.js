@@ -1,7 +1,9 @@
 import VueRouter from 'vue-router';
+import AppTransition from 'app-transition';
 import Vue from 'vue';
 require('../../rem.js');
 
+Vue.use(AppTransition);
 Vue.use(VueRouter);
 
 import Main from './main.vue';
@@ -155,16 +157,5 @@ const router = new VueRouter({
 
 new Vue({
     el: '#app',
-    router: router,
-    data(){
-        return {
-            transitionName: 'fade'
-        };
-    },
-    // watch $route 决定使用哪种过渡
-    watch: {
-        '$route'(to, from){
-            this.transitionName = to.path.split('/').length < from.path.split('/').length ? 'slide-right' : 'slide-left';
-        }
-    }
+    router: router
 });
