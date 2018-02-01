@@ -6,7 +6,7 @@
 
         <input ref="input" :type="type" :name="name" :value="val"
             @input="onInput"
-            @focus="$emit('focus')" 
+            @focus="onFocus" 
             @blur="$emit('blur')" 
             @click="$emit('click')" 
             :placeholder="placeholder"
@@ -35,10 +35,6 @@
             font-weight: 300;
             color: #ccc;
         }
-    }
-
-    .vm-form-textinput [readonly="readonly"]{
-        user-select: none;
     }
 
     .vm-form-clear{
@@ -101,6 +97,14 @@
 
             onInput(){
                 this.val = this.$refs.input.value;
+            },
+
+            onFocus(){
+                if(this.readonly){
+                    this.$refs.input.blur();
+                }else{
+                    this.$emit('focus');
+                }
             }
         }
     }
