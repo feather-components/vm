@@ -12,8 +12,7 @@ import Popover from './components/popover';
 import Search from './components/search';
 import Searchbar from './components/searchbar';
 import Uploader from './components/uploader';
-import {Grid, GridItem} from './components/grid';
-import {Radios, Checkboxes, TextInput, Select, Images, Counter, Switch, Textarea} from './components/form';
+import {Radios, Checkboxes, TextInput, Select, Images, Switch, Textarea, FormCell, DateInput} from './components/form';
 import {Single, Multiple, Link, LinkMultiple} from './components/filter';
 import Autosize from './directives/autosize';
 import Mask from './components/mask';
@@ -29,6 +28,7 @@ import Segment from './components/segment';
 import BadgeComponent from './components/badge';
 import Helper from './helper';
 import Lazyload from './directives/lazyload';
+import Lightbox from './directives/lightbox';
 
 import Vue from 'vue';
 
@@ -55,16 +55,16 @@ var Components = [
     Searchbar,
     Search,
     Uploader,
-    GridItem,
-    Grid,
     Radios,
     Checkboxes,
     TextInput,
+    DateInput,
     Textarea,
     Select,
     Images,
+    FormCell,
     Switch,
-    Counter,
+    FormCell,
     Autosize,
     Mask,
     Overlay,
@@ -72,7 +72,8 @@ var Components = [
     Datepicker,
     Slider,
     SliderItem,
-    Lazyload
+    Lazyload,
+    Lightbox
 ];
 
 function install(Vue){
@@ -105,18 +106,17 @@ export {
     Draggable,
     Popover,
     Uploader,
-    Grid,
-    GridItem,
-    //Box as FormBox,
     Radios,
     Checkboxes,
     TextInput,
     TextInput as Textinput,
+    DateInput,
+    DateInput as Dateinput,
     Textarea,
     Select,
     Switch,
     Images,
-    Counter,
+    FormCell,
     Single as SingleFilter,
     Multiple as MultipleFilter,
     Link as LinkFilter,
@@ -129,7 +129,8 @@ export {
     Datepicker,
     Slider,
     SliderItem,
-    Lazyload
+    Lazyload,
+    Lightbox
 };
 
 export default {install, Helper};

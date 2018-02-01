@@ -1,35 +1,47 @@
 <template>
-    <v-box :label="label" class="vm-form-images">
-        <grid>
-            <grid-item v-for="(item, index) of val">
-                <div class="vm-form-images-item">
-                    <slot name="item" :data="item">
-                        <img :src="item" />
-                    </slot>
+    <cell :label="label" class="vm-form-images" :veritcal-layout="true" :field-flex-layout="true">
+        <template slot="label" v-if="$slots.label">
+            <slot name="label"></slot>
+        </template> 
 
-                    <a href="javascript:" class="vm-form-images-del" v-if="delEnabled" @click="del(index)">&times;</a>
-                </div>
-            </grid-item>
+        <template slot="tips" v-if="$slots.tips">
+            <slot name="tips"></slot>
+        </template> 
 
-            <grid-item v-if="rest">
-                <uploader 
-                    :url="uploader" :multiple="rest > 1" 
-                    :beforeUploadProcessor="beforeUploadProcessor"
-                    @upload:start="onUploadStart" 
-                    @upload:complete="onUploadComplete"
-                    @upload:error="onUploadError"
-                    @upload:progress="onUploadProgress"
-                ></uploader>
-            </grid-item>
-        </grid>
-        
-        <template slot="msg">
-            <slot name="msg"></slot>
-        </template>   
-    </v-box>
+        <div class="vm-form-images-inner">
+            <div class="vm-form-images-item" v-for="(item, index) of val">
+                <slot name="item" :data="item">
+                    <img :src="item" />
+                </slot>
+
+                <a href="javascript:" class="vm-form-images-del" v-if="delEnabled" @click="del(index)" >删除</a>
+            </div>
+
+            <div class="vm-form-images-item">
+                <slot name="uploader">
+                    <uploader 
+                        :url="uploader || url" 
+                        :multiple="rest > 1" 
+                        :beforeUploadProcessor="beforeUploadProcessor"
+                        :canUpload="canUpload"
+                        accept="image/*"
+                        @upload:start="onUploadStart" 
+                        @upload:complete="onUploadComplete"
+                        @upload:error="onUploadError"
+                        @upload:progress="onUploadProgress"
+                    ></uploader>
+                </slot>
+            </div>
+        </div>
+    </cell>
 </template>
 
 <style lang="less">
+.vm-form-images-inner{
+    display: flex;
+    flex-wrap: wrap;
+}
+
 .vm-form-images{
     .vm-grid{
         margin-top: 0.12rem;
@@ -52,42 +64,40 @@
     position: relative;
     width: 1.09rem;
     height: 0.8rem;
-    text-align: center;
-    display: table-cell;
-    vertical-align: middle;
+    margin-left: 0.12rem;
+    background: #fafafa;
+    margin-top: 0.08rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #eee;
+}
+
+.vm-form-images-item:nth-child(3n + 1){
+    margin-left: 0px;
 }
 
 .vm-form-images-item img{
     max-width: 100%;
     max-height: 100%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%);
 }
 
 .vm-form-images-del{
     position: absolute;
-    left: 0px;
     top: 0px;
-    transform: translate(-25%, -25%);
-    width: 0.2rem;
+    right: 0px;
+    background: rgba(0, 0, 0, 0.7);
+    width: 40%;
     height: 0.2rem;
     line-height: 0.2rem;
-    display: block;
-    color: #fff;
-    border-radius: 100px;
-    text-decoration: none;
     text-align: center;
-    background: #F96854;
-    font-size: 0.14rem;
-    font-family: arial;
+    text-decoration: none;
+    color: #fff;
 }
 </style>
 
 <script>
-import vBox from "./box";
-import {Grid, GridItem} from '../grid';
+import Cell from "./cell";
 import Uploader from '../uploader';
 import _ from '../../helper';
 import Toast from '../toast';
@@ -96,7 +106,7 @@ import {Multiable} from './abstract';
 export default{
     name: 'images',
 
-    mixins: [vBox, Multiable],
+    mixins: [Cell, Multiable],
 
     props: {
         uploader: {
@@ -116,27 +126,31 @@ export default{
             default: true
         },
 
+        url: null,
         beforeUploadProcessor: null
     },
 
     components: {
-        vBox,
-        Grid,
-        GridItem,
+        Cell,
         Uploader
     },
 
     computed: {
         rest(){
             return this.size == -1 ? 1000000 : Math.max(this.size - this.val.length, 0)
-        },
-
-        wh(){
-            return 100 * (this.size == -1 || this.size >=3 ? 0.3333 : 1/this.size) + '%';
         }
     },
 
     methods:{
+        canUpload(files){
+            if(files.length > this.rest){
+                this.$emit('limit', files, this.rest);
+                return false;
+            }
+
+            return true;
+        },
+
         onUploadStart(){
             this.$toast = Toast.loading('上传中', false, true);
         },

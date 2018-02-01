@@ -16,7 +16,6 @@ import Searchbar from './components/searchbar.vue';
 import Search from './components/search.vue';
 import Uploader from './components/uploader.vue';
 import Popover from './components/popover.vue';
-import Grid from './components/grid.vue';
 import Form from './components/form.vue';
 import Filter from './components/filter.vue';
 import Overlay from './components/overlay.vue';
@@ -86,10 +85,6 @@ const router = new VueRouter({
             component: Filter
         },
 
-        {
-            path: '/components/grid',
-            component: Grid
-        },
 
         {
             path: '/components/form',

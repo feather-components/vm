@@ -1,7 +1,7 @@
 <template>
-    <grid-item class="vm-slider-item">
+    <div class="vm-slider-item">
         <slot></slot>
-    </grid-item>
+    </div>
 </template>
 
 <style>
@@ -11,15 +11,10 @@
 </style>
 
 <script>
-    import GridItem from '../grid/item';
     import {Event, Dom} from '../../helper';
 
     export default {
         name: 'slider-item',
-
-        components: {
-            GridItem
-        },
 
         mounted(){
             this.$nextTick(() => {

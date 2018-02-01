@@ -74,7 +74,7 @@
                 default: undefined
             },
 
-            unlimitStartGroup: {
+            unlimitStartLevel: {
                 type: Number,
                 default: 0
             },
@@ -251,7 +251,7 @@
 
                 let arr = [];
 
-                if(this.unlimitValue !== undefined && level >= this.unlimitStartGroup){
+                if(this.unlimitValue !== undefined && level >= this.unlimitStartLevel){
                     arr.push({
                         label: this.unlimitLabel,
                         value: this.unlimitValue

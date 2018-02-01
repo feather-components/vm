@@ -1,18 +1,20 @@
 <template>
     <vm-mask :visible="visibility" @click="close">
         <overlay :visible="visibility" class="vm-actionsheet" position="bottom">
-            <div 
-                v-for="(action, index) of actions"
-                class="vm-action-sheet-item"
-                @click="callAction(index)"
-                :key="index" 
-            >
-                <slot name="item" :text="index">
-                    <div class="vm-actionsheet-item-inner">{{index}}</div>
-                </slot>
+            <div style="margin-bottom: 0.16rem;">
+                <div 
+                    v-for="(action, index) of actions"
+                    class="vm-action-sheet-item"
+                    @click="callAction(index)"
+                    :key="index" 
+                >
+                    <slot name="item" :text="index">
+                        <div class="vm-actionsheet-item-inner">{{index}}</div>
+                    </slot>
+                </div>
             </div>
             
-            <div @click="close" class="vm-actionsheet-cancel">
+            <div @click="close" class="vm-actionsheet-cancel" v-if="!cancelDisabled">
                 <slot name="cancel">
                     <div class="vm-actionsheet-item-inner">取消</div>
                 </slot>
@@ -44,10 +46,8 @@
 
     .vm-actionsheet-cancel{
         font-weight: normal;
-        margin-top: .08rem;
 
         .vm-actionsheet-item-inner{
-            margin-top: .08rem;
             margin-bottom: .16rem;
         }
     }
@@ -75,6 +75,11 @@
                 default(){
                     return {}
                 }
+            },
+
+            cancelDisabled: {
+                type: Boolean,
+                default: false
             }
         },
 

@@ -1,27 +1,25 @@
 <template>
-    <vm-mask :visible="true" :value="value">
-        <overlay :visible="true" class="vm-iosselect" position="bottom">
-            <div class="vm-iosselect-body">
-                <header class="vm-iosselect-header">
-                    <p class="cancel" @click="_hide()">取消</p>
-                    <p class="sure" @click="_showVal">确定</p>
-                </header>
-                <ul class="vm-iosselect-list">
-                    <li v-for="(item, index) in selectList" :style="{width: width + '%'}">
-                        <scroll
-                            @scroll:end="_activeChange($event, index)"
-                            @drag:end="_dragStop"
-                            @draging="_handleDraging($event, index)"
-                            :ref="'scroll' + index"
+    <vm-mask :visible="visibility" :value="value">
+        <overlay :visible="visibility" class="vm-iosselect" position="bottom">
+            <div class="vm-iosselect-header">
+                <a href="javascript:" class="vm-iosselect-cancel" @click="close">取消</a>
+                <a href="javascript:" class="vm-iosselect-confirm" @click="confirm">确定</a>
+            </div>
+
+            <div class="vm-iosselect-scroll-list">
+                <scroll class="vm-iosselect-scroll" v-for="(data, index) in dataList" style="height: 100%;" ref="scrolls"
+                    @hook:mounted="listen(index)"
+                >
+                    <div class="vm-iosselect-scroll-inner">
+                        <a href="javascript:" 
+                            v-for="(item, i) of data" 
+                            @click="select(item, i, index)"
+                            :class="{'vm-iosselect-selected': vals[index] && item.value === vals[index].value}"
                         >
-                            <ul class='vm-iosselect-label-list'>
-                                <li v-for="(it, i) in item " @click="_scrollTo(index, i, it)">
-                                    {{it.label}}
-                                </li>
-                            </ul>
-                        </scroll>
-                    </li>
-                </ul>
+                            {{item.label}}
+                        </a>
+                    </div>
+                </scroll>
             </div>
         </overlay>
     </vm-mask>
@@ -31,7 +29,17 @@
     import Scroll from '../scroll'
     import Overlay from '../overlay'
     import vmMask from '../mask';
-    const LINEHEIGHT = 35
+    import {Util, Dom} from '../../helper';
+    import Ajax from 'ajax';
+
+    let div = Dom.create('<div style="height: .35rem; position: absolute;top: -100px;">');
+    let HEIGHT;
+    document.body.appendChild(div);
+
+    setTimeout(() => {
+        HEIGHT = div.offsetHeight;
+        div.parentNode.removeChild(div);
+    }, 100);
 
     export default {
         name: 'iosselect',
@@ -40,17 +48,29 @@
 
         props: {
             source: {
-                type: Array,
-                default() {
-                    return  []
+                type: [Array, String],
+                default(){
+                    return [];
                 }
             },
 
             value: {
             	type: Array,
-				default() {
+				default(){
 					return []
 				}
+            },
+
+            dataFormatter: {
+                type: Function,
+                default(v){
+                    return v;
+                }
+            },
+
+            visible: {
+                type: Boolean,
+                default: true
             }
         },
 
@@ -60,301 +80,195 @@
             vmMask
         },
 
-        data () {
+        data(){
             return {
-                activeIndex: [],
-                val: [],
-                selectList: this.source,
-				dragIndex: 0,
-                sed: []
+                data: [],
+                dataList: [],
+                vals: [],
+                val: this.value
             }
-        },
-
-        computed: {
-            width () {
-                return 100 / this.selectList.length
-            }
-        },
-
-        beforeMount() {
-            this._addNullForList()
         },
 
         watch: {
-            val (v) {
-                this.$emit('input', v)
+            val(v){
+                this.$emit('input', v);
             },
 
-            value (v) {
-            	this.val = v
-            }
+            value(v){
+                v = Util.makeArray(v);
 
+                if(v.toString() === this.val.toString()){
+                    return false;
+                }
+
+            	this.val = v;
+            },
+
+            source(source){
+                this.render(source);
+            }
         },
 
-        mounted() {
-            let l = this.selectList.length
-            for (let i = 0; i < l; i++) {
-            	this.sed.push(false)
-                this.activeIndex.push(2)
-            }
-
-
-            this._initValRender()
-                    ._getVal()
-            this.$emit('change', {done:this._setList, val: this.val, index: null})
-
-            this.activeIndex.forEach((v1, k1) => {
-                this._renderList(k1)
-                this.$nextTick(() => {
-					this._initScrollTo(k1)
-                })
-            })
-
+        mounted(){
+            this.source.length > 1 && this.render();
         },
 
         methods: {
-        	_initScrollTo(index) {
-				let $list = this.$refs['scroll' + index]
+            render(source = this.source){
+                source = Util.makeArray(source);
 
-				$list[0].scrollTo('-' + (this.activeIndex[index] - 2) * LINEHEIGHT)
-            },
-
-            _renderList(index, stop) {
-                let $list = this.$refs['scroll' + index]
-                if ($list[0] == undefined) {
-                    return
+                if(!Array.isArray(source[0]) && typeof source[0] != 'string'){
+                    source = [source];
                 }
 
-                let $lis = $list[0].$el.querySelectorAll('li')
-
-                //处理选择最后一个，change不能再次出发渲染和获取值的处理
-                if (this.activeIndex[index] + 2 >= $lis.length) {
-                    this.activeIndex[index] = $lis.length - 3
-                    this._getVal()
-                }
-
-                for (let k2 in $lis) {
-                    if ($lis[k2].style == undefined) {
-                        continue;
+                let promises = source.map((item) => {
+                    if(typeof item == 'string'){
+                        return new Promise((resolve) => {
+                            Ajax.getJSON(item, resolve);
+                        });
+                    }else{
+                        return item;
                     }
-                    if(this.activeIndex[index] == parseInt(k2)) {
-                        $lis[k2].style.opacity = 1
-                        $lis[k2].style.color = '#7792cb'
-                    } else if(Math.abs(this.activeIndex[index] - k2) === 1){
-                        $lis[k2].style.opacity = 0.6
-                        $lis[k2].style.color = '#000'
-                    } else {
-                        $lis[k2].style.opacity = 0.3
-                        $lis[k2].style.color = '#000';
-                    }
-                }
+                });
 
+                Promise.all(promises).then((source) => {
+                    let data = source.map(this.dataFormatter);
+                    this.$emit('data:ready', data);
 
-                if (stop === 1) {
-					this.$emit('scrollEnd', index, this.val, (i, d) => {
-						i.forEach((v, k) => {
-						    if (this.sed[v]) return
+                    let i = 0, j = 0;
 
-						    this.sed[v] = true;
-
-							this._scrollTo(v, d[k], {i: i})
-							setTimeout(() => {
-								this.sed[v] = false
-							}, 650)
-                        })
-					})
-				}
-
-                return this
-            },
-
-            _initValRender() {
-                let _self = this
-                if (Object.prototype.toString.call(_self.value) != '[object Array]') {
-					_self.value = []
-                }
-
-                _self.value.forEach((v, k) => {
-                    _self.selectList[k].forEach((v1, k1) => {
-                        if(v1.value == v) {
-                            _self.activeIndex[k] = k1
+                    for(; i < data.length; i++){
+                        if(this.data[i] != data[i]){
+                            j = i;
+                            break;
                         }
-                    })
-                })
+                    }
 
-                return _self
+                    this.data = data;                    
+                    this.renderList(this.data[j], j);
+                });
             },
 
-            _removeNullForList() {
-                this.selectList = this.selectList.map((v, k) => {
-                    v = v.filter((v1, k) => {
-                        return Object.keys(v1).length != 0
-                    })
-                    return v
-                })
-            },
+            renderList(data, level){
+                this.dataList.splice(level, 1, data);
 
-            _addNullForList() {
-                this._removeNullForList()
-                this.selectList.forEach((v, k) => {
-                    this.selectList[k].unshift({}, {})
-                    this.selectList[k].push({}, {})
-                })
-            },
+                if(!data.length) return false;
 
-            _getVal(){
-                let l = this.activeIndex.length
-                for (let i = 0; i < l; i++) {
-                    this.val[i] = this.selectList[i][this.activeIndex[i]]
-                }
-                return this
-            },
+                let select = [data[0], 0, level];
 
-
-            _activeChange(pos, index, stop) {
-                this.$emit('change', {done:this._setList, val: this.val, index: index})
-				setTimeout(() => {
-					stop != 0 && this._renderList(index, 1)
-				}, 100)
-            },
-
-			_handleDraging(pos, i) {
-				this.dragIndex = i
-                this._activeChange(pos, i, 0)
-            },
-
-			_handleStop(des, status) {
-				let topi = 0
-				if (Math.abs(des) % LINEHEIGHT  > LINEHEIGHT / 2) {
-					topi = Math.ceil( Math.abs(des) / LINEHEIGHT )
-				} else {
-					topi = Math.floor( Math.abs(des) / LINEHEIGHT )
-				}
-
-				this.activeIndex[this.dragIndex] = topi + 2
-				this._getVal()
-				this.$refs['scroll' + this.dragIndex][0].scrollTo('-' + topi * LINEHEIGHT, status = 1 ? 500 : 200)
-			},
-
-			_dragStop(pos, destination, duration) {
-                if (destination != undefined) {
-                    this._handleStop(destination, 1)
-                } else {
-                    this._handleStop(pos, 0)
-                }
-			},
-
-            // 这里处理双向数据绑定不上的问题
-            _bindVal() {
-				let t = this.val
-				this.val = []
-				this.val  = t
-            },
-
-            _scrollTo(i, d, o) {
-            	if (Object.keys(o).length == 0) {
-                    return
-                }
-                this.activeIndex[i] = d
-				this._getVal()
-                this.$nextTick(() => {
-					this.$refs['scroll' + i][0].scrollTo('-' + (d  - 2) * LINEHEIGHT, 500)
-					this._renderList(i, 1)
-				})
-            },
-
-            _showVal() {
-                let val = []
-                let val2 = []
-
-                if (this.val == []) {
-					this.source.forEach((v, k) => {
-						this.val.push(v[0])
-                    })
+                for(let i = 0; i < data.length; i++){
+                    if(data[i].value == this.val[level]){
+                        select = [data[i], i, level];
+                        break;
+                    }
                 }
 
-                this.val.forEach((v, k) => {
-                    val.push(v.label)
-                    val2.push(v.value)
-                })
-
-
-
-				this._bindVal()
-                this.$nextTick(() => {
-					this.$emit('confirm', val2, val, this.val)
-				})
+                setTimeout(() => this.select(...select), 10);
             },
 
-            _setList(list, i) {
-                this.$set(this.selectList, i, list)
-                this._addNullForList()
+            select(data, index, level, duration){
+                let $scroll = this.$refs.scrolls[level];
+
+                $scroll.scrollTo(-HEIGHT * index, duration || 400);
+                this.vals.splice(level, 100000, data);
+                
+                if(data.children){
+                    this.renderList(data.children, level + 1);
+                }else if(level < this.data.length - 1){
+                    this.renderList(this.data[level + 1], level + 1);
+                }
+
+                this.$emit('select', this.vals);
             },
 
-            _hide() {
-                this.$emit('close')
+            listen(level){
+                let $scroll = this.$refs.scrolls[level];
+
+                $scroll.$on('drag:end', (pos, dest = pos, duration = 0) => {
+                    let dataList = this.dataList[level];
+                    let index = Math.min(dataList.length - 1, Math.round(Math.abs(Math.min(dest , pos)) / HEIGHT));
+                    this.select(dataList[index], index, level, duration);
+                });
+
+                level === this.data.length - 1 && setTimeout(() => this.$emit('scroll:ready'), 20);
+            },
+
+            confirm(){
+                let labels = this.getLabels();
+
+                this.val = this.vals.map((item) => {
+                    return item.value;
+                });
+
+                this.$emit('confirm', this.val, labels, this.vals);
+                this.close();
+            },
+
+            getLabels(){
+                return this.vals.map((item) => {
+                    return item.label;
+                });
             }
         }
     }
 </script>
 
-<style>
+<style lang="less">
     .vm-iosselect.vm-overlay{
-        position: fixed;
         left: 0;
-        bottom:0;
-        width:100%;
-        /*height: 219px;*/
-        z-index:10001;
+        bottom: 0;
+        width: 100%;
+        z-index: 10001;
         background: #f5f5f5;
     }
-    .vm-iosselect-list{
-        width:100%;
-        height: 175px;
-        overflow: hidden;
-        padding-left:0;
-        /*background: #fff;*/
-    }
-    .vm-iosselect-list > li{
-        float: left;
-        list-style: none;
-        min-height: 175px;
-        max-height: 175px;
-    }
+
     .vm-iosselect-header{
-        width:100%;
-        height:44px;
-        /*box-shadow: 0 2px 3px #ddd;*/
+        display: flex;
+        height: .44rem;
         background: #fff;
+        justify-content: space-between;
+
+        a{
+            display: inline-block;
+            height: .44rem;
+            text-decoration: none;
+            line-height: .44rem;
+            width: .5rem;
+            color: #ddd;
+            text-align: center;
+            font-size: .14rem;
+        }
+
+        .vm-iosselect-confirm{
+            color: #7792cb;
+        }
     }
-    .vm-iosselect-header p{
-        display: inline-block;
-        padding:0 15px;
-        line-height: 44px;
-        font-size: 13px;
-        margin:0;
+
+    .vm-iosselect-scroll-list{
+        width: 100%;
+        height: 1.75rem;
+        display: flex;
     }
-    .vm-iosselect-header .cancel{
-        float: left;
-        color:#ddd;
+
+    .vm-iosselect-scroll{
+        flex-grow: 1;
     }
-    .vm-iosselect-header .sure{
-        float: right;
-        color: #7792cb
-    }
-    .vm-list > li {
-        float: left;
-        height:175px;
-    }
-    .vm-iosselect-label-list{
-        padding-left: 0;
-    }
-    .vm-iosselect-label-list li{
-        line-height:35px;
-        height:35px;
-        text-align: center;
-        font-size: 13px;
-        opacity: 0.3;
-        list-style: none;
+
+    .vm-iosselect-scroll-inner{
+        padding: 0.7rem 0px;
+
+        a{
+            display: block;
+            height: .35rem;
+            line-height: .35rem;
+            text-align: center;
+            text-decoration: none;
+            opacity: 0.3;
+            font-size: 0.13rem;
+        }
+
+        .vm-iosselect-selected{
+            opacity: 1;
+        }
     }
 </style>

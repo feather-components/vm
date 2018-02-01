@@ -1,5 +1,9 @@
 <template>
-    <row :label="label" class="vm-form-textinput" :tips="tips" :vertical-layout="false"> 
+    <cell :label="label" class="vm-form-textinput" :tips="tips" :vertical-layout="false"> 
+        <template slot="label" v-if="$slots.label">
+            <slot name="label"></slot>
+        </template> 
+
         <input ref="input" :type="type" :name="name" :value="val"
             @input="onInput"
             @focus="$emit('focus')" 
@@ -11,13 +15,8 @@
         /> 
 
         <icon name="close" v-if="clearable && val" @click.native="clear" class="vm-form-clear" :size=".14"/>
-
-        <span v-if="$slots.default" class="vm-form-textinput-other"><slot></slot></span>
-
-        <template slot="tips" v-if="$slots.tips">
-            <slot name="tips"></slot>
-        </template> 
-    </row>
+        <span v-if="$slots.default" class="vm-form-textinput-other"><slot></slot></span>        
+    </cell>
 </template>
 
 <style lang="less">
@@ -49,14 +48,14 @@
 </style>
 
 <script>
-    import Row from './box';
+    import Cell from './cell';
     import Icon from '../icon';
     import {Single} from './abstract';
 
     export default{
         name: 'textinput',
 
-        mixins: [Row, Single],
+        mixins: [Cell, Single],
 
         props: {
             placeholder: {
@@ -86,7 +85,7 @@
         },
 
         components: {
-            Row,
+            Cell,
             Icon
         },
 

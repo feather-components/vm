@@ -1,5 +1,13 @@
 <template>
-    <row :label="label" class="vm-form-textarea" :tips="tips"> 
+    <cell :label="label" class="vm-form-textarea" :tips="tips"> 
+        <template slot="label" v-if="$slots.label">
+            <slot name="label"></slot>
+        </template> 
+
+        <template slot="tips" v-if="$slots.tips">
+            <slot name="tips"></slot>
+        </template> 
+
         <div class="vm-form-textarea-inner">
             <div ref="area" 
                 class="vm-form-textarea" 
@@ -14,11 +22,7 @@
         </div>
 
         <div v-if="$slots.default" class="vm-form-textarea-other"><slot></slot></div>
-
-        <template slot="tips" v-if="$slots.tips">
-            <slot name="tips"></slot>
-        </template> 
-    </row>
+    </cell>
 </template>
 
 <style lang="less">
@@ -39,75 +43,23 @@
         word-break: break-all;
     }
 
-    .vm-form-text{
-        color: #222;
-        line-height: .24rem;
-        border: 0px;
-        outline: none;
-        padding: 0px;
-
-        &::-webkit-input-placeholder{
-            color: #e1e1e1;
-        }
-    }
-
-    input.vm-form-text{
-        text-align: right;
-    }
-
-    div.vm-form-text{
-        min-height: .24rem;
-        max-height: 1rem;
-        height: auto;
-        resize: none;
-        overflow: auto;
-        &:focus {
-            border: 0;
-            outline: 0;
-        }
-    }
-
-    .vm-form-text-placeholder{
-        position: absolute;
-        left: 0rem;
-        top: 0rem;
-        height: 0.24rem;
-        color: #E1E1E1;
-        line-height: .24rem;
-    }
-
-    .vm-form-text-unit{
-        height: 0.24rem;
-        display: inline-block;
-        margin-left: 5px;
-    }
-
-    .vm-form-text-ci{
-        display: inline-block;
-        text-decoration: none;
-        color: #333;
-        margin-left: 5px;
-    }
-
-    .vm-form-text-multiline .vm-form-text-ci{
-        position: absolute;
-        bottom: 0px;
-        right: 0px;
+    .vm-form-textarea-other{
+        margin-top: 0.06rem;
     }
 </style>
 
 <script>
-    import Row from './box';
+    import Cell from './cell';
     import Text from './text';
     import {Single} from './abstract';
 
     export default{
         name: 'textarea',
 
-        mixins: [Row, Text, Single],
+        mixins: [Cell, Text, Single],
 
         components: {
-            Row
+            Cell
         },
 
         methods:{

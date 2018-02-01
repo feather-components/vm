@@ -1,17 +1,18 @@
 <template>
-    <grid 
+    <div 
         :class="{
             'vm-slider': true,
-            'vm-slider-transition': dragEnd
+            'vm-slider-transition': transition
         }" 
         v-draggable="{axis: 'x', canDrag: canDrag}"
     >
         <slot></slot>
-    </grid>
+    </div>
 </template>
 
 <style>
-    .vm-slider.vm-grid{
+    .vm-slider{
+        display: flex;
         flex-flow: row;
         align-items: flex-start;
         margin-top: 0px;
@@ -24,16 +25,11 @@
 </style>
 
 <script>
-    import Grid from '../grid/grid';
     import Draggable from '../../directives/draggable';
     import {Event, Dom} from '../../helper';
 
     export default {
         name: 'slider',
-
-        components: {
-            Grid
-        },
 
         directives: {
             Draggable
@@ -48,7 +44,7 @@
 
         data(){
             return {
-                dragEnd: true,
+                transition: false,
                 min: 0,
                 index: 0
             };
@@ -60,14 +56,13 @@
                 Event.on(this.$el, 'drag:end', this.onDragEnd);
                 Event.on(this.$el, 'draging', this.onDraging);
                 Event.on(this.$el, 'transitionend webkitTransitionEnd', () => {
-                    this.$emit('switch:complete', this.index);
+                    this.complete();
                 });
             });
         },
 
         methods: {
             onDragStart(event){
-                this.dragEnd = false;
                 this.min = -(this.$el.children.length - 1) * Dom.width(document);
                 this.$emit('drag:start');
             },
@@ -77,19 +72,19 @@
             },
 
             onDragEnd(event){
-                let start = -Dom.offset(this.$el.children[this.index]).left;
+                let start = -this.$el.children[this.index].offsetLeft;
                 let end = event.data.x;
                 let moved = end - start;
                 let index = this.index + (Math.abs(moved)/Dom.width(document) < 0.33 ? 0 : moved > 0 ? -1 : 1);
 
                 this.$emit('drag:end');                
-                this.dragEnd = true;
                 this.to(index);
             },
 
-            to(index){
-                var left = Dom.offset(this.$el.children[index]).left;
+            to(index, transition = true){
+                var left = this.$el.children[index].offsetLeft;
 
+                this.transition = transition;
                 Dom.css(this.$el, 'transform', `translateX(-${left}px)`);
 
                 if(index == this.index){
@@ -97,6 +92,13 @@
                 }else{    
                     this.$emit('switch', this.index = index, this.index);
                 }
+
+                !transition && this.complete();
+            },
+
+            complete(){
+                this.transition = false;
+                this.$emit('switch:complete', this.index);
             },
 
             canDrag(info){

@@ -51,13 +51,14 @@ export const Multiable = {
 
     data(){
         return {
-            val: Util.makeArray(this.value)
+            val: Util.makeArray(this.value),
+            multiable: this.size != 1
         };
     },
 
     watch: {
         val(v){
-            this.$emit('input', this.size == 1 ? v[0] : v);
+            this.$emit('input', !this.multiable ? v[0] : v);
         },
 
         value(v){

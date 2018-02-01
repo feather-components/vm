@@ -70,6 +70,8 @@ class Lazyload{
 
             if(rect.top > maxTop || rect.left > maxLeft){
                 break;
+            }else if(rect.bottom < 0 || rect.right < 0){
+                continue;
             }else{
                 ((node) => {
                     if(self.placeholderClassName){
@@ -77,6 +79,7 @@ class Lazyload{
                     }
 
                     node.src = node.getAttribute(srcAttr);
+
                     self.placeholderClassName && (node.onload = () => {
                         Dom.removeClass(node, self.placeholderClassName); 
                     });

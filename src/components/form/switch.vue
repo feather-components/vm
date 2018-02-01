@@ -1,5 +1,5 @@
 <template>
-    <row :label="label" class="vm-form-switch-box" :vertical-layout="false"> 
+    <cell :label="label" class="vm-form-switch-box" :vertical-layout="false"> 
         <span class="vm-form-switch">
             <input type="checkbox" :id="name" ref="checkbox" class="vm-form-switch" v-model="val" @change="onChange" />
             <label :for="name">
@@ -7,7 +7,7 @@
                 <i></i>
             </label>
         </span>
-    </row>
+    </cell>
 </template>
 
 <style lang="less">
@@ -58,14 +58,14 @@
 </style>
 
 <script>
-    import Row from './box';
+    import Cell from './cell';
     import {Single} from './abstract';
     import {Util} from '../../helper';
 
     var Switch = {
         name: 'switch',
 
-        mixins: [Row, Single],
+        mixins: [Cell, Single],
 
         props: {
             disabled: {
@@ -82,7 +82,7 @@
         },
 
         components: {
-            Row
+            Cell
         },
 
         data(){

@@ -1,13 +1,11 @@
 <template>
-    <row :class="['vm-form-row', flexLayout ? 'vm-form-flex' : '']" :flex="flexLayout">
-        <slot name="label">
-            <div class="vm-form-label" v-if="label"> 
-                {{label}}
-                <span v-if="tips || $slots.tips" class="vm-form-tips">
-                    <slot name="tips">{{tips}}</slot>
-                </span>
-            </div>
-        </slot>
+    <row :class="['vm-form-cell', flexLayout ? 'vm-form-flex' : '']" :flex="flexLayout">
+        <div class="vm-form-label" v-if="label || $slots.label"> 
+            <slot name="label">{{label}}</slot>
+            <span v-if="tips || $slots.tips" class="vm-form-tips">
+                <slot name="tips">{{tips}}</slot>
+            </span>
+        </div>
 
         <div class="vm-form-field">
             <slot></slot>
@@ -16,7 +14,7 @@
 </template>
 
 <style lang="less">
-    .vm-form-row{
+    .vm-form-cell{
         color: #555;
     }
 
@@ -36,7 +34,6 @@
 
     .vm-form-label{
         display: flex;
-        justify-content: space-between;
         height: 0.24rem;
         line-height: 0.24rem;
         margin-top: 0.06rem;
@@ -45,6 +42,8 @@
 
     .vm-form-tips{
         color: #aaa;
+        margin-start: auto;
+        -webkit-margin-start: auto;
         font-size: .12rem;
     }
 </style>
@@ -53,6 +52,8 @@
     import Row from '../layout/row';
 
     export default{
+        name: 'form-cell',
+
         components: {
             Row
         },

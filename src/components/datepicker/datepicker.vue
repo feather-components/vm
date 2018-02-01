@@ -1,273 +1,145 @@
 <template>
-    <div :value="value">
-        <iosselect :source="dateList" @confirm="_onSure" :value="selectVal"
-                   @change="_setDays($event, 2)"  @close="_close" @scrollEnd="_scrollEnd"></iosselect>
-    </div>
+    <iosselect :visible="visibility" :source="[years, months, days]" @select="onSelect" @confirm="onConfirm" @close="close" />
 </template>
 <script>
-    import iosselect from '../iosselect'
+    import Iosselect from '../iosselect';
 
-    let date = new Date();
-    const [
-        CURRENT_YEAR,
-        CURRENT_MONTH,
-        CURRENT_DAY
-    ] = [
-        date.getFullYear(),
-		date.getMonth()+1,
-		date.getDate()
-    ]
+    export default{
+        mixins: [Iosselect],
 
-    let getMonths = () => {
-        let months = []
-        for (let i = 1; i <= 12; i++) {
-            months.push({
-                label: i,
-                value: i
-            })
-        }
+        props: {
+            minDate: {
+                type: [String, Date],
+                default: '1970-01-01'
+            },
 
-        return months
-    }
+            maxDate: {
+                type: [String, Date],
+                default(){
+                    return new Date;
+                }
+            },
 
-	const [
-		MONTHS,
-		BIG_MONTHS,
-		SMALL_MONTHS,
-	] = [
-		getMonths(),
-		[1, 3, 5, 7, 8, 10, 12],
-		[4, 6, 9, 11]
-	]
-
-    let getDays = (currentYear, currentMonth) => {
-        let [end, days] = [0, []]
-
-        if (BIG_MONTHS.indexOf(currentMonth) > -1) {
-            end = 31
-        } else if (SMALL_MONTHS.indexOf(currentMonth) > -1) {
-            end = 30
-        } else {
-            end = currentYear % 100 === 0 ? (currentYear % 400 === 0 ? 29 : 28 ) : (currentYear % 4 === 0 ? 29 : 28)
-        }
-
-        for (let d = 1; d <= end; d++) {
-            let o = {
-                label: d,
-                value: d
-            }
-            days.push(o)
-        }
-
-        return days
-    }
-
-	let getMinOrMax = (date, format) => {
-		let v = []
-
-        switch (format) {
-            case 'yyyy-mm-dd':
-                v = date.split('-')
-                break;
-            case 'yy-mm-dd':
-                v = date.split('-')
-                break;
-            case 'yy/mm/dd':
-                v = date.split('/')
-                break;
-            default:
-                v = date.split('/')
-        }
-		return v
-	}
-
-	let getYearPre = (format) => {
-    	let yearPre = ''
-		if (['yy-mm-dd', 'yy/mm/dd'].indexOf(format) > -1) {
-			yearPre = '20'
-		}
-
-		return yearPre
-	}
-
-	//获取默认选中的选项
-	let currentDuringMinAndMax = (minDate, maxDate, format) => {
-		let year, selectVal = [CURRENT_YEAR, CURRENT_MONTH, CURRENT_DAY],
-            minDateArgs = [], maxDateArgs = [], yearPre = getYearPre(format)
-
-        minDateArgs = getMinOrMax(minDate, format)
-
-        maxDateArgs = getMinOrMax(maxDate, format)
-
-		if (maxDateArgs.length > 0 && minDateArgs.length > 0 && maxDateArgs[0] < minDateArgs[0] ) {
-			return
-		}
-
-		if (['yy-mm-dd', 'yy/mm/dd'].indexOf(format) > -1) {
-			year = parseInt(CURRENT_YEAR.toString().substr(2))
-		} else {
-			year = parseInt(CURRENT_YEAR)
-		}
-
-		let mind = new Date([yearPre + year, minDateArgs[1], minDateArgs[2]].join("/")).getTime();
-		let current = new Date(selectVal.join("/")).getTime()
-
-        if (mind > current) {
-			selectVal = minDateArgs
-			selectVal[0] = yearPre + selectVal[0]
-        }
-
-		return selectVal
-	}
-
-	let getYears = (minDate, maxDate, format) => {
-        let years = [], minYear, maxYear, yearPre = ''
-
-		if (['yy-mm-dd', 'yy/mm/dd'].indexOf(format) > -1) {
-        	yearPre = '20'
-		}
-
-		minYear = {label: yearPre + getMinOrMax(minDate, format)[0], value: yearPre + getMinOrMax( minDate, format)[0]}
-		maxYear = {label: yearPre + getMinOrMax(maxDate, format)[0], value: yearPre + getMinOrMax( maxDate, format)[0]}
-
-		years.push(minYear);
-
-        let l = parseInt(maxYear.value) - parseInt(minYear.value)
-        for (let i = 1; i <= l; i++) {
-            let o = {
-                label: parseInt(minYear.value)  + i,
-                value: parseInt(minYear.value)  + i,
-            };
-            years.push(o)
-        }
-
-		return years
-	}
-
-    const DAYS =  getDays(CURRENT_YEAR, CURRENT_MONTH)
-
-    export default {
-        name: 'datepicker',
-
-        props:{
             format: {
                 type: String,
                 default: 'yyyy/mm/dd'
             },
 
-            value: {
-            	type: String,
-                default: ''
-            },
-
-			minDate: {
+            formatter: {
                 type: String,
-                default: '2010/1/1'
+                default: null
             },
 
-			maxDate: {
-				type: String,
-				default: '2020/12/31'
-			}
-        },
-
-        data() {
-            return {
-				dateList:[
-					getYears(this.minDate, this.maxDate, this.format),
-					MONTHS,
-					DAYS
-				],
-                dateVal: '',
-                selectVal: currentDuringMinAndMax(this.minDate, this.maxDate, this.format),
-                minDateArgs: getMinOrMax(this.minDate, this.format),
-                maxDateArgs: getMinOrMax(this.maxDate, this.format),
-		    }
-        },
-
-        watch: {
-			dateVal (v) {
-				this.$emit('input', v)
-
+            value: {
+                type: String,
+                default(){}
             },
 
-            value (v) {
-				this.dateVal = v
+            visible: {
+                type: Boolean,
+                default: true
             }
         },
 
-        components: {
-            iosselect
+        data(){
+            return {
+                months: [],
+                days: [],
+                val: ''
+            };
+        },
+
+        components: {Iosselect},
+
+        computed: {
+            startDate(){
+                return this.makeDate(this.minDate);
+            },
+
+            endDate(){
+                return this.makeDate(this.maxDate);
+            },
+
+            minYear(){
+                return this.startDate.getFullYear();
+            },
+
+            maxYear(){
+                return this.endDate.getFullYear();
+            },
+
+            years(){
+                let minYear = this.minYear, maxYear = this.maxYear;
+                let years = [];
+
+                while(minYear <= maxYear){
+                    years.push({label: minYear, value: minYear++});
+                }
+
+                return years;
+            }
         },
 
         methods: {
-        	// 结束后判断是否超过选择日期范围
-			_scrollEnd(i, val, done) {
-				let yearPre = getYearPre(this.format)
+            makeDate(date){
+                return typeof date == 'string' ? new Date(date) : date;
+            },
 
-				let minDateInt = new Date([yearPre + this.minDateArgs[0], this.minDateArgs[1], this.minDateArgs[2]].join("/")).getTime();
-				let maxDateInt = new Date([yearPre + this.maxDateArgs[0], this.maxDateArgs[1], this.maxDateArgs[2]].join("/")).getTime();
-				let current = new Date(val.map((v, k) => {return v.value}).join("/")).getTime()
+            onSelect(vals){
+                let year = vals[0].value;
 
-                let minIns = [1, 2]
-                let minDates = [parseInt(this.minDateArgs[1]) + 1,parseInt(this.minDateArgs[2]) + 1]
+                if(vals.length == 1){   
+                    let min = 0, max = 11, months = [];
 
-				let maxIns = [1, 2]
-				let maxDates = [parseInt(this.maxDateArgs[1]) + 1,parseInt(this.maxDateArgs[2]) + 1]
+                    if(year == this.minYear){
+                        min = this.startDate.getMonth();
+                    }
 
-                if (current < minDateInt) {
-					done(minIns, minDates)
+                    if(year == this.maxYear){
+                        max = this.startDate.getMonth();
+                    }
+
+                    while(min <= max){
+                        months.push({label: min + 1, value: min++});
+                    }
+
+                    this.months = months;
+                }else if(vals.length == 2){
+                    let min = 1, max = 31, days = [], month = vals[1].value;
+
+                    if(year == this.minYear && month == this.startDate.getMonth()){
+                        min = this.startDate.getDate();
+                    }
+
+                    if(year == this.maxYear && month == this.endDate.getMonth()){
+                        max = this.endDate.getDate();
+                    }else{
+                        max = (new Date(year, month + 1, 0)).getDate();
+                    }
+
+                    while(min <= max){
+                        days.push({label: min, value: min++});
+                    }
+
+                    this.days = days;
                 }
-
-                if (current > maxDateInt) {
-					done(maxIns, maxDates)
-				}
             },
 
-            _setDays(e) {
-                try{
-                    let days = getDays(e.val[0].value, e.val[1].value)
-                    e.done(days, 2)
-                }catch (e) { return }
-            },
+            onConfirm(vals){
+                let [year, month, day] = vals;
 
-            _onSure (labels, vals, valObj) {
-                let va = []
+                month = month + 1;
 
-				valObj.forEach((v, k) => {
-                    va.push(v.label)
-                })
+                let str = (this.formatter || this.format)
+                            .replace('yyyy', year)
+                            .replace('yy', year % 100)
+                            .replace('mm', month < 10 ? '0' + month : month)
+                            .replace('dd', day < 10 ? '0' + day : day);
 
-                switch (this.format) {
-                    case 'yyyy-mm-dd':
-                        this.dateVal = va.join('-')
-                        break;
-                    case 'yy-mm-dd':
-                        va[0] = va[0].toString().substr(2)
-                        this.dateVal = va.join('-')
-                        break;
-                    case 'yy/mm/dd':
-                        va[0] = va[0].toString().substr(2)
-                        this.dateVal = va.join('/')
-                        break;
-                    default:
-                        this.dateVal = va.join('/')
-                }
-
-                this.selectVal = [valObj[0].value, valObj[1].value, valObj[2].value]
-
-                this.$nextTick(() => {
-					this.$emit('confirm', vals, labels, valObj)
-				})
-            },
-
-            _close() {
-                this.$emit('close')
-            },
+                this.val = str;
+                this.$emit('input', this.val);
+                this.$emit('confirm', this.val);
+            }
         }
-    }
+    }  
 </script>
-
-<style>
-
-</style>
