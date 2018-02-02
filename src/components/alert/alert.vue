@@ -111,7 +111,7 @@
         <overlay :visible="true" class="vm-alert" position="center">
             <div class="vm-alert-content">
                 <div v-html="content"></div>
-                <div class="vm-alert-extras" v-if="!!extras" v-text="extras"></div>
+                <div class="vm-alert-extras" v-if="!!extras" v-html="extras"></div>
             </div>
             
             <div :class="['vm-alert-footer', flex ? 'vm-alert-flexfooter': '']">

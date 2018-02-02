@@ -5,22 +5,17 @@ Alert
 
 * content: 警告框内容
 * options: 定制化参数，不传递时，下一个参数会自动补前
-* manualClose: 是否手动关闭，不重写buttons时生效
 
 ```js
 Alert('abc', {
-    extras: '这里是额外的说明',
-    //重写按钮
-    buttons: {
-        '拨打电话': function(){
-            location.href = 'tel:123';
-            this.close();
-        }
-    }
+    flex: true, //所有的按钮使用水平布局，位置不够自动换行
+    buttons: {...}, //自定义所有的按钮
+    extras: '1233', //小文字部分
+    confirmButtonText: '啦啦啦' //确定按钮的文字显示
 })
 ```
 
-* callback: 点击确定时触发的回调函数
+* callback: 点击确定时回调，只有在options.buttons为空时才生效。
 
 ```js
 Alert('abc', /*options参数, */ function(){
@@ -51,10 +46,14 @@ Alert('1233', () => {
 });
 ```
 
-## Alert.confirm confirm模拟框
+## Alert.confirm(content, options, callback, cancelCallback) confirm模拟框
+
+* options: 包含一个cancelButtonText, 表示取消按钮的文字
 
 ```js
 import {Alert} from 'vm';
 
-Alert.confirm('123');
+Alert.confirm('123', {
+    cancelButtonText: '取消'
+});
 ```

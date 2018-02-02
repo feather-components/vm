@@ -2,56 +2,34 @@ Datepicker
 ====================
 时间选择器
 
+#### 注：该插件是单独的日期选择器，不属于form，如需dateinput，点击查看文档[dateinput.md](./dateinput.md)
+
 ### Example
 
 ```js
-import {Datepicker} from 'vmui';
+import {Datepicker} from 'vm';
 ```
 
 ### Props
 
 * format: 日期格式，默认：yyyy/mm/dd，其他格式：‘yyyy-mm-dd’，‘yy-mm-dd’，‘yy/mm/dd'’
-* minDate: 最小日期，格式必须与format匹配
-* maxDate: 最大日期，格式必须与format匹配，用于select范围，默认为2010-1-1到2020-12-31
+* minDate: 最小日期，类型为字符串或者Date类型
+* maxDate: 最大日期
+* visible: 是否显示，默认显示
 
 ```html
 <template>
-...
-	<input type="text" v-model="val"@click="showDatepicker">
-	 
-	<datepicker 
-		@confirm="sureDate" 
-		format="yy-mm-dd" 
-		v-if="show" 
-		@close="close" 
-		v-model="dateValue"
-	></datepicker>
-...
+	<input type="text" v-model="val" @click="$refs.datepicker.open()">
+	<datepicker format="yy-mm-dd" :visible="false" v-model="val" />
 </template>
-	 
-	 <script>
-	 ...
-	 methods:{
-	   	showDatepicker() {
-		    this.show = true
-		},
-		close() {
-		    this.show = false
-		},
-		sureDate(value, label, val) {
-			console.log(value, label, val)
-		}
-		...
-	 }
-	 ...
-	 </script>
 ```
 #### 注：上面可使用v-model进行父子元素的双向数据绑定，iosselect对此作了相关处理
 
+### Methods
+
+同overlay(open, close, destroy)
+
 ### Events
 
-* confirm： 点击确定，返回参数（values：选中的日期value数组,labels:选中的日期label数组,val: 选中日期对象）；
+* confirm(date)： 点击确定时调用，此时会触发input事件（双向绑定）；
 * close: 关闭
-
-
-

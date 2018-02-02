@@ -22,3 +22,15 @@ Dropdown
 
 * open
 * close
+
+## Config
+
+* labelColor: 文字颜色
+* labelHighColor: 被选中时的颜色
+
+```js
+Dropdown.config({
+	labelColor: '...',
+	labelHighColor: '...'
+});
+```
