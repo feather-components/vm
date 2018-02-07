@@ -18,7 +18,7 @@ Alert('abc', {
 * callback: 点击确定时回调，只有在options.buttons为空时才生效。
 
 ```js
-Alert('abc', /*options参数, */ function(){
+Alert('abc', () => {
     alert('点击了确定') 
 });
 ```

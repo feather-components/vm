@@ -1,9 +1,9 @@
 import {Dom, Event, Util} from '../../helper';
 import Lightbox from '../../components/lightbox';
 
-function getItems(element, selector){
+function getItems(element, selector, attr = 'src'){
     return getImgs(element, selector).map((el, index) => {
-        return el.src;
+        return el.getAttribute(attr);
     });
 }
 
@@ -13,13 +13,14 @@ function getImgs(element, selector = 'img'){
 
 export default{
     bind(element, {value = {}}){
-        let $lightbox, items = getItems(element, value.selector);
+        let $lightbox, items = getItems(element, value.selector, value.srcAttr);
         $lightbox = element.$lightbox = Util.factory(Lightbox, {items: items, visible: false});
         $lightbox.__selector = value.selector;
+        $lightbox.__srcAttr = value.srcAttr;
 
         Event.on(element, 'click', (e) => {
             let el = e.target;
-            let index = getImgs(element, value.selector).indexOf(el);
+            let index = getImgs(element, value.selector, value.srcAttr).indexOf(el);
 
             if(index > -1){
                 $lightbox.open();
@@ -33,7 +34,7 @@ export default{
 
     update(element){
         setTimeout(() => {
-            element.$lightbox.updateItems(getItems(element, element.$lightbox.__selector));
+            element.$lightbox.updateItems(getItems(element, element.$lightbox.__selector, element.$lightbox.__srcAttr));
         }, 0);
     },
 

@@ -105,6 +105,9 @@ new Vue({
 * level: Number 共多少级
 * dataFormatter: Function 进行数据的格式化，如果通过ajax回来的数据中不存在value属性，可通过该函数格式化下
 * itemFormatter: Function 格式化输出的每一项的显示文字
+* unlimitLabel: String 当不限选项启用时显示的文字，默认为 不限
+* unlimitValue: Number|String 设置不限选项的值，默认为undefined，表示不启用
+* unlimitStartLevel: Number 第几层开始才启用不限，默认为0，表示第一级
 
 ```html
 <link-filter :source="[

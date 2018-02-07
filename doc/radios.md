@@ -46,9 +46,15 @@ new Vue({
 ### Props
 
 * label: String 字段标题
+* tips：String 垂直布局时右边的小tips
 * options: Array 选项数组
 * value: String 可直接使用v-model对其进行双向绑定
 
 ### Slots
 
-* msg
+* label
+* tips： 大于等于4个选项时启用
+
+### Configs
+
+* selectedClassName: 选中时的class

@@ -28,3 +28,12 @@ new Vue({
 
 * label: String 字段标题
 * value: String 可直接使用v-model对其进行双向绑定
+
+### Slots
+
+* label
+
+
+### Configs
+
+* color

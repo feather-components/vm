@@ -17,6 +17,7 @@ beforeUploadProcessor(files, next){
 
 * usePack: Boolean 是否打包上传，默认为true，如果为false，则文件是串行上传
 * canUpload: Function 是否上传的判断函数
+* accept: 接受的后缀 默认为*
 
 ## Event
 
@@ -26,3 +27,7 @@ beforeUploadProcessor(files, next){
 * upload:error
 * upload:progress
 * upload:reject
+
+## Slots
+
+* default： 默认是一个icon

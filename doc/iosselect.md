@@ -1,48 +1,105 @@
 Iosselect
 ====================
-select框
+弹出式选择组件
 
 ### Example
 
 ```js
-import {Iosselect} from 'vmui';
+import {Iosselect} from 'vm';
 ```
 
 ### Props
 
-* source: Array，选择对象，里面单个元素为{label: **, value: **}对象，
-* value：Array，初始值，映射source元素的value值，默认第一个选中。
+* source: Array|String，选择对象，里面单个元素为{label: **, value: **}结构，如果不是，可通过dataFormatter进行格式化
 
 ```html
-	<input type="text"
-	 v-model="val"@click="showIosselect">
-	 
-	 <iosselect :source="selectList" @confirm="onSure"  @close="close" v-if="show" v-model="val"></iosselect>
-	 
-	 <script>
-	 ...
-	 methods:{
-	   showIosselect() {
-		    this.show = true
-		},
-		close() {
-		    this.show = false
-		},
-		...
-	 }
-	 ...
-	 </script>
+<input type="text" v-model="val"@click="$refs.iosselect.open()">
+<iosselect :source="list" v-model="val" ref="iosselect" :visible="false"></iosselect>
 ```
+
+```js
+...
+data(){
+	return {
+		list: [
+			{
+				label: '第一个',
+				value: 1
+			},
+
+			{
+				label: '第二个',
+				value: 2
+			}
+		]
+	};
+}
+...
+```
+
+	如果选择为多级时，可进行这样的赋值：
+
+```js
+...data(){
+	return {
+		list: [
+			[
+				{
+					label: '第一组第一个',
+					value: '1-1'
+				}
+			],
+
+			[
+				{
+					'第二组第一个',
+					value: '2-1'
+				}
+			]
+		]
+	}
+}
+```
+
+	这种格式的数据不是无联动效果，只是多级效果，如果想多级联动时，可为item赋值一个children属性，则会自动变为多级联动:
+
+```js
+...data(){
+	return {
+		list: [
+			{
+				label: '第一组第一个',
+				value: '1-1',
+				children: [....]
+			}
+		]
+	}
+}
+```	
+
+	同时source还支持远程数据, 多个值时，效果只是多级，如果需要联动效果，需要一次将数据全部返回:
+```html
+...
+<iosselect :data-formatter="formatSource" :source="['http://...', 'http://....']" />
+```
+
+
+```js
+...
+methods(){
+	formatSource(data){
+		return data.data;
+	}
+}	
+```
+
+* value：Array，初始值，映射source元素的value值，默认第一个选中，value被格式化后一定是返回一个数组。
+* dataFormatter: Function, 对于每个数据源的处理
+
+
 #### 注：上面可使用v-model进行父子元素的双向数据绑定，iosselect对此作了相关处理
 
 ### Events
 
-* confirm： 点击确定，返回参数（values：选中对象的value数组,labels:选中对象的label数组,val: 选中对象元素）；
-* change: 滚动触发，常用于动态改变source传入的元素，相关返回参数{done:** （异步回调函数，用于出发修改source元素，执行时需要传需要传入修改的数组和修改的source的index，如修改第2列的list，done（list，1））, val:**（当前选中的值）}；
+* confirm(vals)： 点击确定会调用
 * close: 关闭
-* scrollEnd: 滚动结束后触发，返回三个参数（index：当前滚动参数，val: 获得的选中的值，done: 这是一个会触发scrollTo的方法，用于指定滚动到第几个，需要
-三个参数（i: 第几列滚动（array），d: 滚动到第几个元素（array）,如([1,2],[8,9]), 表示第二列和第三列需要滚动,且分别滚动到第8，9个，注：由于有两个空选项，
-并且从0开始，如果你想滚到你想要的位置，必须在当前加1，即[7, 8]各加1后才能滚到你想要的位置[8,9]）
-
-
-

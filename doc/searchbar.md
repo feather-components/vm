@@ -50,3 +50,7 @@ new Vue({
 * focus
 * blur
 * clear：清空输入内容，此方法会触发input事件
+
+## Configs
+
+* inputBgColor

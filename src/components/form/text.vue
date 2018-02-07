@@ -1,5 +1,5 @@
 <template>
-    <cell :label="label" class="vm-form-textinput" :tips="tips" :vertical-layout="false"> 
+    <cell :label="label" class="vm-form-textinput" :vertical-layout="false"> 
         <template slot="label" v-if="$slots.label">
             <slot name="label"></slot>
         </template> 

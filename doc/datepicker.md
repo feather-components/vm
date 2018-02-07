@@ -12,7 +12,7 @@ import {Datepicker} from 'vm';
 
 ### Props
 
-* format: 日期格式，默认：yyyy/mm/dd，其他格式：‘yyyy-mm-dd’，‘yy-mm-dd’，‘yy/mm/dd'’
+* formatter: 日期格式，默认：yyyy/mm/dd，其他格式：‘yyyy-mm-dd’，‘yy-mm-dd’，‘yy/mm/dd'’
 * minDate: 最小日期，类型为字符串或者Date类型
 * maxDate: 最大日期
 * visible: 是否显示，默认显示

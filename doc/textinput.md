@@ -1,10 +1,21 @@
 TextInput
 ==================
-文本输入框
+单行文本输入框
 
 ```html
 <div id="app">
-    <text-input label="输入内容" v-model="input_value" placeholder="请输入手机号" />
+    <text-input label="输入内容" v-model="input_value" placeholder="请输入购买数量">
+    	个
+    </text-input>
+</div>
+```
+
+```html
+<div id="app">
+    <text-input label="日期" v-model="input_value" placeholder="选择日期">
+    	<!--加个前进的箭头-->
+    	<vm-forward />
+    </text-input>
 </div>
 ```
 
@@ -25,12 +36,12 @@ new Vue({
 
 ### Props
 
-* multiline: Boolean 是否为多行文本，默认单行文本
 * label: String text标题
 * placeholder: String 
 * readonly: Boolean 是否为多行文本，默认单行文本
 * clearable: Boolean 是否启用清除内容icon
 * value: String 可直接使用v-model对其进行双向绑定
+* align: String[left|right] 默认right，表示右对齐
 
 ### Events
 
@@ -40,4 +51,4 @@ new Vue({
 
 ### Slots
 
-* msg：只有在多行文本时生效
+* label

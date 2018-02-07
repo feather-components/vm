@@ -1,6 +1,6 @@
 Checkboxes
 =============
-多选按钮组
+多选按钮组，checkboxes在少于4个时会自动采用水平布局，大于等于4个时自动采用垂直布局
 
 ```html
 <div id="app">
@@ -52,4 +52,5 @@ new Vue({
 
 ### Slots
 
-* msg
+* label
+* tips：垂直布局生效
