@@ -71,6 +71,9 @@ Vue.use(Vm);
 
 ## 组件列表
 
+* [Box](./doc/box.md)
+* [Row](./doc/row.md)
+* [Forward](./doc/forward.md)
 * [ActionSheet](./doc/actionsheet.md)
 * [Alert](./doc/alert.md)
 * [Button](./doc/button.md)
