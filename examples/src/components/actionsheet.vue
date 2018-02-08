@@ -51,7 +51,7 @@
 
         methods: {
             action(){
-                ActionSheet(this.actions, true);
+                ActionSheet(this.actions);
             }
         }
     }

@@ -1,7 +1,7 @@
 <template>
     <vm-mask :visible="visibility" @click="close">
         <overlay :visible="visibility" class="vm-actionsheet" position="bottom">
-            <div style="margin-bottom: 0.16rem;">
+            <div style="margin-bottom: 0.08rem;">
                 <div 
                     v-for="(action, index) of actions"
                     class="vm-action-sheet-item"
