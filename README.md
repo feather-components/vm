@@ -56,7 +56,7 @@ ActionSheet({
 });
 ```
 
-## 注册全局，所有的组件以 vm- 开头， 指令除外
+## 注册全局，所有的组件以 vm- 开头， 指令除外，我们强烈建议您注册全局
 
 ```js
 import Vm from 'vm';
@@ -68,6 +68,22 @@ Vue.use(Vm);
 ```html
 <vm-scroll></vm-scroll>
 ```
+
+## 关于Config
+
+vm中有很多组件具备有配置，以方便开发者进行一些风格上的自定义，vm中统一了配置的规则，具有配置的组件都可以调用 .config(key, value) 进行设置或者获取配置
+
+```js
+Topbar.config('bgColor', '#000'); //将topbar的背景色改成黑色
+Topbar.config({
+    bgColor: '#000',
+    color: '#fff'   //文字颜色改成白色
+});
+
+console.log(Topbar.config('bgColor'));
+```
+
+更多配置可见组件文档，一般正常具有icon或者常需进行风格定制的组件均已实现配置。
 
 ## 组件列表
 
