@@ -19,7 +19,8 @@ scroll组件
 
 ## slots
 
-* pulldown: axis为y时才会生效，指定下拉时才会显示的部分，用于下拉刷新之类的操作，下拉后，如果坐标大于该slot的高度，则会回弹至该slot的位置，而不是0，需要用户手动进行scrollTo(0)的操作
+* header
+* footer
 
 ## Methods
 
