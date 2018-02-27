@@ -17,6 +17,7 @@ searchview组件
 * useHistory: Boolean 开启历史记录，注，历史记录只有在empty2load为false且关键词为空时才会显示出来
 * historyMark: String 历史记录的id标识，用于处理应用history区分的时候
 * closeAfterSelectHistory: Boolean 选择history时，是否关闭
+* inputBgColor: String input框的背景色，可为rgba，默认为rgba(204, 204, 204, 0.2)
 
 # Slots
 

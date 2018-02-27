@@ -7,7 +7,7 @@ SearchBar
 * maxlength: Number 最大输入长度
 * placeholder：String input的placeholder
 * readonly：Boolean 是否只可读，一般情况下用于配合search组件使用
-* theme: String 风格可选 blue
+* inputBgColor: String input框的背景色，可为rgba，默认为rgba(204, 204, 204, 0.2)
 * searchButtonEnabled: Boolean 是否启动搜索按钮
 
 ## Events
