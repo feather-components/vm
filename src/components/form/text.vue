@@ -4,7 +4,7 @@
             <slot name="label"></slot>
         </template> 
 
-        <input ref="input" :type="type" :name="name" :value="val"
+        <input ref="input" :type="type" :name="name"
             @input="onInput"
             @focus="onFocus" 
             @blur="$emit('blur')" 
@@ -89,6 +89,18 @@
             Icon
         },
 
+        watch: {
+            val(v){
+                this.setValue(v);
+            }
+        },
+
+        mounted(){
+            this.$nextTick(() => {
+                this.setValue(this.val);
+            });
+        },
+
         methods:{
             clear(){
                 this.val = '';
@@ -105,6 +117,10 @@
                 }else{
                     this.$emit('focus');
                 }
+            },
+
+            setValue(v){
+                this.$refs.input && this.$refs.input.value != v && (this.$refs.input.value = v);
             }
         }
     }

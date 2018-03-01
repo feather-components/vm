@@ -30,3 +30,4 @@ Textarea
 * label
 * tips
 * default
+* icon: 多行文本自动采用垂直布局，但是为了满足部分多行文本右侧有时候会出现小icon的情况，可使用该slot实现

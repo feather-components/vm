@@ -96,7 +96,7 @@
                     }
 
                     if(year == this.maxYear){
-                        max = this.startDate.getMonth();
+                        max = this.endDate.getMonth();
                     }
 
                     while(min <= max){

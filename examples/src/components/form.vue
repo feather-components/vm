@@ -11,6 +11,12 @@
                 <template slot="label">多行&nbsp;<span style="font-size: 0.12rem" :style="{color: postData.b.length > 10 ? 'red' : ''}">({{postData.b.length}}/10)</span></template>
             </vm-textarea>
 
+            <vm-textarea label="多行文本" placeholder="多行文本" tips="tips" v-model="postData.b">这里是一些备注之类
+                <template slot="label">多行&nbsp;<span style="font-size: 0.12rem" :style="{color: postData.b.length > 10 ? 'red' : ''}">({{postData.b.length}}/10)</span></template>
+
+                <template slot="icon"> <vm-forward /></template>
+            </vm-textarea>
+
             <vm-switch label="切换开关" v-model="postData.g" />
 
             <radios label="少于4个单选" :options="[
@@ -200,8 +206,8 @@
         data(){
             return {
                 postData: {
-                    a: null,
-                    b: '',
+                    a: '33',
+                    b: '333',
                     c: null,
                     d: null,
                     e: [1,2],

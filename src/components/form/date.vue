@@ -40,7 +40,7 @@ export default{
                 });
 
                 this.$$datepicker.$on('confirm', (val) => {
-                    this.val = val;
+                    this.$emit('confirm', this.val = val);
                 });
             }
 
