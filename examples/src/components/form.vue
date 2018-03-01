@@ -196,11 +196,7 @@
             Iosselect,
             Datepicker
         },
-
-        directives: {
-            Counter
-        },
-
+        
         data(){
             return {
                 postData: {
