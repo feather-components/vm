@@ -246,13 +246,12 @@
                 this.$emit('data:add', source);
             },
 
-            refresh(clearData = true){
+            refresh(){
                 var self = this;
 
                 self.page = 0;
                 self.isCompleted = false;
                 self.isLoading = false;
-                clearData && self.setData();
                 self.$scroll.refresh(false);
                 self.$emit('refresh');
                 setTimeout(() => self.load(), 0);
@@ -296,7 +295,7 @@
                     }),
                     dataType: 'json',
                     success(data){
-                        self.addData(data);  
+                        self.page == 0 ? self.setData(data) : self.addData(data);  
                         self.renderRows();
                         self.$emit('xhr:success', data);
                     },
