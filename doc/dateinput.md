@@ -19,3 +19,7 @@ Dateinput
 ### Slots
 
 * label
+
+### Events
+
+* confirm

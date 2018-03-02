@@ -49,7 +49,7 @@
 
     .vm-list-loading-icon{
         display: inline-block;
-        width: 0.16rem;
+        width: 0.16rem; 
         height: 0.16rem;
         background-image: url(../../assets/loading.gif?__inline);
         background-size: 100%;
@@ -193,11 +193,14 @@
                 self.autoRefresh && self.refresh();
             },
 
-            params(v){
-                var self = this;
+            params: {
+                deep: true,
+                handler(v){
+                    var self = this;
 
-                self.setParams(v);
-                self.autoRefresh && self.refresh();
+                    self.setParams(v);
+                    self.autoRefresh && self.refresh();
+                }
             }
         },
 
@@ -272,11 +275,8 @@
 
                 if(self._source 
                     && typeof self._source == 'string' 
-                    && (
-                        self.rows.length == self.data.length 
-                        || self.page == 0 && !self.data.length
-                        )
-                    ){
+                    && (self.rows.length == self.data.length || self.page == 0)
+                ){
                     self.loadRemote();
                 }else{
                     self.renderRows();
