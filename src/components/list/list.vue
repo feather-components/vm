@@ -302,7 +302,7 @@
                     error(data){
                         self.error = data;
                         self.$emit('xhr:error');
-                        this.isLoading = false;
+                        self.isLoading = false;
                     },
                     complete(){
                         self.$http = null;

@@ -26,6 +26,7 @@
 	.vm-box-row-content{
 		flex: 1;
 		align-items: center;
+		height: 100%;
 		padding: 0.06rem 0px;
 		padding-right: 0.12rem;
 		box-sizing: border-box;
