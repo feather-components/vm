@@ -14,8 +14,13 @@
 		height: auto;
 		display: flex;
 		background: #fff;
-		align-items: center;
+		align-items: stretch;
 		padding-left: 0.12rem;
+	}
+
+	.vm-box-row-icon{
+		display: flex;
+		align-items: center;
 	}
 
 	.vm-box-row-icon{
@@ -26,7 +31,6 @@
 	.vm-box-row-content{
 		flex: 1;
 		align-items: center;
-		height: 100%;
 		padding: 0.06rem 0px;
 		padding-right: 0.12rem;
 		box-sizing: border-box;

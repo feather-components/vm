@@ -23,7 +23,23 @@ import {Single} from './abstract';
 export default{
     name: 'dateinput',
 
-    mixins: [Single, TextInput, Datepicker],
+    mixins: [TextInput],
+
+    props: {
+        minDate: {
+            default: '1970/01/01'
+        },
+
+        maxDate: {
+            default(){
+                return new Date;
+            }
+        },
+        
+        formatter: {
+            default: 'yyyy/mm/dd'
+        }
+    },
 
     components: {
         TextInput,
@@ -36,15 +52,27 @@ export default{
                 this.$$datepicker = Util.factory(Datepicker, {
                     minDate: this.minDate,
                     maxDate: this.maxDate,
-                    formatter: this.format || this.formatter
+                    value: this.val,
+                    visible: false,
+                    formatter: this.formatter
                 });
 
                 this.$$datepicker.$on('confirm', (val) => {
                     this.$emit('confirm', this.val = val);
                 });
+
+                this.$$datepicker.$on('open', () => {
+                    this.$$datepicker.val = this.val;
+                });
             }
 
             return this.$$datepicker;
+        }
+    },
+
+    watch: {
+        value(v){
+            this.$datepicker.val = v;
         }
     },
 

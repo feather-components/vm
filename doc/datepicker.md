@@ -16,6 +16,7 @@ import {Datepicker} from 'vm';
 * minDate: 最小日期，类型为字符串或者Date类型
 * maxDate: 最大日期
 * visible: 是否显示，默认显示
+* value: 默认值，默认值的格式必须同formatter的格式，传递时使用v-model可进行双向绑定
 
 ```html
 <template>

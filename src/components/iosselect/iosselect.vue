@@ -258,6 +258,7 @@
         padding: 0.7rem 0px;
 
         a{
+            color: #333;
             display: block;
             height: .35rem;
             line-height: .35rem;

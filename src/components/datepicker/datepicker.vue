@@ -1,11 +1,12 @@
 <template>
-    <iosselect :visible="visibility" :source="[years, months, days]" @select="onSelect" @confirm="onConfirm" @close="close" />
+    <iosselect :visible="visibility" :source="[years, months, days]" @select="onSelect" @confirm="onConfirm" v-model="vals" @close="close" />
 </template>
 <script>
     import Iosselect from '../iosselect';
+    import Overlay from '../overlay';
 
     export default{
-        mixins: [Iosselect],
+        mixins: [Overlay],
 
         props: {
             minDate: {
@@ -27,12 +28,14 @@
 
             formatter: {
                 type: String,
-                default: null
+                default(){
+                    return this.format;
+                }
             },
 
             value: {
                 type: String,
-                default(){}
+                default: ''
             },
 
             visible: {
@@ -45,8 +48,20 @@
             return {
                 months: [],
                 days: [],
+                vals: this.analyseValue(this.value),
                 val: ''
             };
+        },
+
+        watch: {
+            val(v){
+                this.vals = this.analyseValue(v);
+                this.$emit('input', v);
+            },
+
+            value(v){
+                v != this.val && (this.val = v);
+            }
         },
 
         components: {Iosselect},
@@ -100,7 +115,7 @@
                     }
 
                     while(min <= max){
-                        months.push({label: min + 1, value: min++});
+                        months.push({label: min + 1, value: ++min});
                     }
 
                     this.months = months;
@@ -127,18 +142,25 @@
 
             onConfirm(vals){
                 let [year, month, day] = vals;
-
-                month = month + 1;
-
-                let str = (this.formatter || this.format)
+                let str = this.formatter
                             .replace('yyyy', year)
                             .replace('yy', year % 100)
                             .replace('mm', month < 10 ? '0' + month : month)
                             .replace('dd', day < 10 ? '0' + day : day);
 
                 this.val = str;
-                this.$emit('input', this.val);
-                this.$emit('confirm', this.val);
+                this.$emit('confirm', str);
+            },
+
+            analyseValue(val = ''){
+                let arr = [], types = [/yyyy/.test(this.formatter) ? 'yyyy' : 'yy', 'mm', 'dd'];
+
+                arr = types.map((type) => {
+                    let i = this.formatter.indexOf(type);
+                    return i > -1 ? Number(val.substr(i, type.length)) : '';
+                });
+
+                return arr;
             }
         }
     }  

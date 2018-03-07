@@ -100,7 +100,7 @@
                 }
             ]" v-model="postData.d" :unlimit="-1" />
 
-            <vm-dateinput label="选择日期" />
+            <vm-dateinput label="选择日期" v-model="postData.date" />
 
             <vm-select label="下拉" :options="selectList" v-model="postData.e" />
 
@@ -213,7 +213,8 @@
                     e: [1,2],
                     f: ['https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=30837642,1835949245&fm=26&gp=0.jpg', 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=4152229571,503740049&fm=11&gp=0.jpg', 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=74474160,773507576&fm=26&gp=0.jpg', 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=30837642,1835949245&fm=26&gp=0.jpg', 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=30837642,1835949245&fm=26&gp=0.jpg'],
                     g: true,
-                    h: []
+                    h: [],
+                    date: '2017/01/01'
                 },
 
                 source: Source,
@@ -263,6 +264,10 @@
 //          setInterval(() => {
 //          	  console.log(this.val)
 //          }, 1000)
+
+            setTimeout(() => {
+                this.postData.date = '2016/01/01';
+            }, 5000)
 
 			document.activeElement.blur();
             setTimeout(() => {
