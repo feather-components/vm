@@ -54,6 +54,13 @@
                 }
             },
 
+            params: {
+                type: [Array, Object],
+                default(){
+                    return {}
+                }
+            },
+
             value: {
             	type: Array,
 				default(){
@@ -116,20 +123,22 @@
         methods: {
             render(source = this.source){
                 source = Util.makeArray(source);
+                var params = Util.makeArray(this.params);
 
                 if(!Array.isArray(source[0]) && typeof source[0] != 'string'){
                     source = [source];
                 }
 
-                let promises = source.map((item) => {
+                let promises = source.map((item, key) => {
                     if(typeof item == 'string'){
                         return new Promise((resolve) => {
-                            Ajax.getJSON(item, resolve);
+                            Ajax.getJSON(item, params[key] || params[0], resolve);
                         });
                     }else{
                         return item;
                     }
                 });
+
 
                 Promise.all(promises).then((source) => {
                     let data = source.map(this.dataFormatter);

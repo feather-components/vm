@@ -102,7 +102,7 @@
 
             <vm-dateinput label="选择日期" v-model="postData.date" />
 
-            <vm-select label="下拉" :options="selectList" v-model="postData.e" />
+            <vm-select label="下拉" :source="selectList" v-model="postData.e" />
 
             <images label="上传图片" v-model="postData.f" :size="10" v-lightbox />
         </scroll>

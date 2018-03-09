@@ -53,10 +53,10 @@ export default{
                     minDate: this.minDate,
                     maxDate: this.maxDate,
                     value: this.val,
-                    visible: false,
+                    visible: true,
                     formatter: this.formatter
                 });
-
+                this.$$datepicker.close();
                 this.$$datepicker.$on('confirm', (val) => {
                     this.$emit('confirm', this.val = val);
                 });

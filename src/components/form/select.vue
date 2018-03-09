@@ -33,10 +33,31 @@ export default{
             }
         },
 
+        source: {
+            type: [Array, String],
+            default(){
+                return this.options;
+            }
+        },
+
         selectedLabelFormatter: {
             type: Function,
             default(labels){
                 return Util.makeArray(labels).join('');
+            }
+        },
+
+        dataFormatter: {
+            type: Function,
+            default(v){
+                return v;
+            }   
+        },
+
+        params: {
+            type: [Array, Object],
+            default(){
+                return {}
             }
         }
     },
@@ -54,8 +75,10 @@ export default{
 
     mounted(){
         let $iosselect = this.$iosselect = Util.factory(IosSelect, {
-            source: this.options,
+            source: this.source,
             value: this.val,
+            dataFormatter: this.dataFormatter,
+            params: this.params,
             visible: false
         });
 

@@ -1,7 +1,7 @@
 import Component from './alert';
 import {Util} from '../../helper';
 
-var override = (callback) => {
+function override(callback){
     return (...args) => {
         if(typeof args[1] != 'object'){
             args.splice(1, 0, {});
@@ -18,10 +18,13 @@ var Alert = override((content, options, callback) => {
 
     if(!buttons){
         buttons = {};
-        buttons[options.confirmButtonText || '确定'] = function(){
-            callback && callback();
-            this.destroy(false);
-        }
+        buttons[options.confirmButtonText || '确定'] = {
+            type: options.buttonType || options.type,
+            callback: function(){
+                callback && callback();
+                this.destroy(false);
+            }
+        };
     }
 
     return Util.factory(Component, {
@@ -37,14 +40,19 @@ Alert.confirm = override((content, options, callback, cancelCallback) => {
 
     buttons[options.cancelButtonText || '取消'] = {
         border: true,
+        type: options.buttonType || options.type,
         callback(){
             cancelCallback && cancelCallback();
             this.destroy(false);
         }
     };
-    buttons[options.confirmButtonText || '确定'] = function(){
-        callback && callback();
-        this.destroy(false);
+
+    buttons[options.confirmButtonText || '确定'] = {
+        type: options.buttonType || options.type,
+        callback: function(){
+            callback && callback();
+            this.destroy(false);
+        }
     };
 
     return Util.factory(Component, {

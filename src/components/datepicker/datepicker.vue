@@ -122,11 +122,11 @@
                 }else if(vals.length == 2){
                     let min = 1, max = 31, days = [], month = vals[1].value;
 
-                    if(year == this.minYear && month == this.startDate.getMonth()){
+                    if(year == this.minYear && month == this.startDate.getMonth() + 1){
                         min = this.startDate.getDate();
                     }
 
-                    if(year == this.maxYear && month == this.endDate.getMonth()){
+                    if(year == this.maxYear && month == this.endDate.getMonth() + 1){
                         max = this.endDate.getDate();
                     }else{
                         max = (new Date(year, month + 1, 0)).getDate();
