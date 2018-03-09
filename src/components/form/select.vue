@@ -83,7 +83,7 @@ export default{
         });
 
         $iosselect.$on('scroll:ready', () => {
-            this.selectedLabels = this.selectedLabelFormatter($iosselect.getLabels());
+            this.val != null && (this.selectedLabels = this.selectedLabelFormatter($iosselect.getLabels()));
         });
 
         $iosselect.$on('confirm', (vals, labels) => {
