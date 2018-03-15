@@ -1,7 +1,7 @@
 <template>
     <vm-page>
         <vm-topbar slot="header">
-        	<vm-segment :item="['第一个', '第二个', '第三个', '第四个']" @switch="onSwitch"/>
+        	<vm-segment :items="['第一个', '第二个', '第三个', '第四个']" @switch="onSwitch"/>
         </vm-topbar>
     </vm-page>
 </template>
