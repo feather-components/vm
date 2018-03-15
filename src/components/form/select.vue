@@ -73,6 +73,16 @@ export default{
         };
     },
 
+    watch: {
+        source(v){
+            this.$iosselect.render(v);
+        },
+
+        options(v){
+            this.$iosselect.render(v);
+        }
+    },
+
     mounted(){
         let $iosselect = this.$iosselect = Util.factory(IosSelect, {
             source: this.source,
