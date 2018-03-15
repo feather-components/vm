@@ -1,12 +1,7 @@
 <template>
     <vm-page>
         <vm-topbar slot="header">
-        	<vm-segment :items="{
-        		'第一个': {value: 1},
-        		'第二个': {value: 2},
-        		'第三个': {value: 3},
-        		'第四个': {value: 4}
-        	}" default-key="第一个" @switch="onSwitch"/>
+        	<vm-segment :item="['第一个', '第二个', '第三个', '第四个']" @switch="onSwitch"/>
         </vm-topbar>
     </vm-page>
 </template>
@@ -23,8 +18,8 @@ p{
 
     export default {
     	methods: {
-    		onSwitch(item, label){
-    			Toast('点击了' + label + ', 内容为' + JSON.stringify(item));
+    		onSwitch(index, label){
+    			Toast('点击了' + label);
     		}
     	}
     }

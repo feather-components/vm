@@ -6,11 +6,13 @@
 
         <div ref="headerMark"></div>
 
-        <ul class="vm-list-rows" ref="rows">
-            <li v-for="(item, index) in rows" @click="$emit('row:click', item, index)" class="vm-list-item">
-                <slot name="row" :data="item">{{item}}</slot>
-            </li>
-        </ul>
+        <slot name="rows" :data="rows">
+            <ul class="vm-list-rows" ref="rows">
+                <li v-for="(item, index) in rows" @click="$emit('row:click', item, index)" class="vm-list-item">
+                    <slot name="row" :data="item">{{item}}</slot>
+                </li>
+            </ul>
+        </slot>
 
         <div ref="footerMark"></div>
 

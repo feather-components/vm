@@ -36,6 +36,7 @@
 
     .vm-form-textarea-ph{
         position: absolute;
+        left: 0px;
         top: 0px;
         color: #ccc;
         font-weight: 300;

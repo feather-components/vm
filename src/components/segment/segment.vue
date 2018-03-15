@@ -2,7 +2,7 @@
 	<span class="vm-segment" :style="{
 		border: '1px solid ' + color
 	}">
-		<button v-for="(item, label) of items" :style="currentLabel == label ? highStyle : style" @click="to(label)">{{label}}</button>
+		<button v-for="(item, i) of items" :style="index == i ? highStyle : style" @click="to(i)">{{item.label || item}}</button>
 	</span>
 </template>
 
@@ -50,16 +50,9 @@
 
 		props: {
 			items: {
-				type: Object,
+				type: Array,
 				default(){
-					return {};
-				}
-			},
-
-			defaultLabel: {
-				type: String,
-				default(){
-					return Util.firstKey(this.items);
+					return [];
 				}
 			},
 
@@ -80,7 +73,7 @@
 
 		data(){
 			return {
-				currentLabel: '',
+				index: null,
 				style: {
 					color: this.color,
 					background: this.bgColor,
@@ -99,14 +92,14 @@
 		},
 
 		methods: {
-			to(label = this.defaultLabel){
-				if(label == this.currentLabel){
+			to(index = 0){
+				if(index == this.index){
 					return false;
 				}
 
-				this.currentLabel = label;
-				this.$emit('switch', this.items[label], label);
-				this.$emit('to', this.items[label], label);
+				this.index = index;
+				this.$emit('switch', index, this.items[index]);
+				this.$emit('to', index, this.items[index]);
 			}
 		}
 	};

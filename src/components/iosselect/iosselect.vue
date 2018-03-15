@@ -132,7 +132,12 @@
                 let promises = source.map((item, key) => {
                     if(typeof item == 'string'){
                         return new Promise((resolve) => {
-                            Ajax.getJSON(item, params[key] || params[0], resolve);
+                            Ajax({
+                                url: item,
+                                data: params[key] || params[0],
+                                dataType: 'json',
+                                success: resolve
+                            });
                         });
                     }else{
                         return item;
