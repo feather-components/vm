@@ -51,4 +51,6 @@ new Vue({
 
 ### Slots
 
+* default 默认slot
 * label
+* extra 用于垂直方向上的一些扩展

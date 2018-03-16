@@ -11,13 +11,13 @@
         <div class="vm-form-images-inner">
             <div class="vm-form-images-item" v-for="(item, index) of val">
                 <slot name="item" :data="item">
-                    <img :src="item" />
+                    <img :src="srcFormatter(item)" />
                 </slot>
 
                 <a href="javascript:" class="vm-form-images-del" v-if="delEnabled" @click="del(index)" >删除</a>
             </div>
 
-            <div class="vm-form-images-item">
+            <div class="vm-form-images-item" v-show="rest">
                 <slot name="uploader">
                     <uploader 
                         :url="uploader || url" 
@@ -118,6 +118,13 @@ export default{
             type: Function,
             default(images, data){
                 return data;
+            }
+        },
+
+        srcFormatter: {
+            type: Function,
+            default(src){
+                return src;
             }
         },
 

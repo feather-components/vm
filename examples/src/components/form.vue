@@ -3,8 +3,13 @@
         <topbar slot="header">form系列组件</topbar>
 
         <scroll>
-            <text-input label="单行文本" placeholder="单行" v-model="postData.a"><vm-forward :arrow-size="0.14" @click="alert(3)" />
-   
+            <text-input label="单行文本" placeholder="单行" v-model="postData.a">
+                <vm-forward :arrow-size="0.14" @click="alert(3)"/>
+            </text-input>
+
+            <text-input label="单行文本" placeholder="单行" v-model="postData.a">
+                <vm-forward :arrow-size="0.14" @click="alert(3)" />
+                <div slot="extra" style="font-size: .12rem; color: #ccc;">这边是texetinput的extra slot，用于扩展一些垂直方向的内容</div>
             </text-input>
 
             <vm-textarea label="多行文本" placeholder="多行文本" tips="tips" v-model="postData.b">这里是一些备注之类

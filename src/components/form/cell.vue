@@ -1,15 +1,19 @@
 <template>
-    <row :class="['vm-form-cell', flexLayout ? 'vm-form-flex' : '']" :flex="flexLayout">
-        <div class="vm-form-label" v-if="label || $slots.label"> 
-            <slot name="label">{{label}}</slot>
-            <span v-if="tips || $slots.tips" class="vm-form-tips">
-                <slot name="tips">{{tips}}</slot>
-            </span>
-        </div>
+    <row class="vm-form-cell" :flex="false">
+        <div :class="['vm-form-cell-main', flexLayout ? 'vm-form-flex' : '']">
+            <div class="vm-form-label" v-if="label || $slots.label"> 
+                <slot name="label">{{label}}</slot>
+                <span v-if="tips || $slots.tips" class="vm-form-tips">
+                    <slot name="tips">{{tips}}</slot>
+                </span>
+            </div>
 
-        <div class="vm-form-field">
-            <slot></slot>
+            <div class="vm-form-field">
+                <slot></slot>
+            </div>
         </div>
+        
+        <div class="vm-form-cell-extra" v-if="$slots.extra"><slot name="extra"></slot></div>
     </row>
 </template>
 
@@ -24,6 +28,8 @@
     }
 
     .vm-form-flex{
+        display: flex;
+
          .vm-form-field{
             display: flex;
             flex: 1;

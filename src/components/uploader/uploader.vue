@@ -178,6 +178,7 @@
 
             clear(){
                 this.files.length = 0;
+                this.$refs.uploader.value = '';
             }
         }
     };

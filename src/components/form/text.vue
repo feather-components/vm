@@ -15,7 +15,11 @@
         /> 
 
         <icon name="close" v-if="clearable && val" @click.native="clear" class="vm-form-clear" :size=".14"/>
-        <span v-if="$slots.default" class="vm-form-textinput-other"><slot></slot></span>        
+        <span v-if="$slots.default" class="vm-form-textinput-other"><slot></slot></span>    
+
+        <template slot="extra" v-if="$slots.extra">
+            <slot name="extra"></slot>
+        </template> 
     </cell>
 </template>
 

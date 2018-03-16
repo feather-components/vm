@@ -36,6 +36,7 @@ new Vue({
 * size: Number 最大上传数量 -1为无限
 * value: Array 可直接使用v-model对其进行双向绑定
 * dataFormatter: Function 用来格式化已上传成功返回的图片数据，图片需要处理成一个url格式
+* srcFormatter: Function dataformatter不要求你一定传回的时一个url字符串数组，你可以通过该格式函数进行返回自己需要显示的image地址
 * uploader: String 上传url
 * delEnabled: Boolean 是否使用删除按钮
 
@@ -43,3 +44,7 @@ new Vue({
 
 * label
 * tips
+
+### Events
+
+* limit 超出最大限制时触发
