@@ -2,7 +2,7 @@
     <form :class="['vm-searchbar', 'vm-searchbar-' + theme]" @submit.prevent="submit()">
         <div class="vm-searchbar-inner" :style="{background: inputBgColor}">
             <icon name="search" class="vm-searchbar-icon" />
-            <input :type="searchButtonEnabled ? 'search': 'text'" :placeholder="placeholder" :maxlength="maxlength" @input.trim="input" :value="val" ref="input" @focus="$emit('focus')"  @click="$emit('click')" :readonly="readonly" />
+            <input :type="searchButtonEnabled ? 'search': 'text'" :placeholder="placeholder" :maxlength="maxlength" @input.trim="input" :value="val" ref="input" @focus="$emit('focus')"  @click="$emit('click')" :readonly="readonly" autofocus="autofocus" />
             <a href="javascript:" class="vm-searchbar-clear" @click="clear()" v-show="val">
                 <icon name="close" />
             </a>
