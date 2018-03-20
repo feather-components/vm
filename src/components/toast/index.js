@@ -4,27 +4,29 @@ import {Util} from '../../helper';
 var instance = null, timeid;
 
 var Toast = (content, time = 3000, mask, className = '') => {
-    Toast.destroy();
+    Toast.destroy(false);
+
+    instance = Util.factory(Component, {
+        content: content,
+        mask: mask,
+        iconClass: className
+    });
 
     if(time){
         timeid = setTimeout(Toast.destroy, time);
     }
 
-    return instance = Util.factory(Component, {
-        content: content,
-        mask: mask,
-        iconClass: className
-    });
+    return instance;
 };
 
-Toast.destroy = () => {
+Toast.destroy = (fx = true) => {
     if(timeid){
         clearTimeout(timeid);
         timeid = null;
     }
 
     if(instance){
-        instance.destroy();
+        instance.destroy(fx);
         instance = null;
     }
 };

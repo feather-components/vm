@@ -35,6 +35,10 @@
             height: 0px;
             top: 0px;
         }
+
+        .vm-scroll-inner{
+            min-height: 100%;
+        }
     }
 
     .vm-scroll-x{

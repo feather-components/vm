@@ -129,7 +129,7 @@
                     if(year == this.maxYear && month == this.endDate.getMonth() + 1){
                         max = this.endDate.getDate();
                     }else{
-                        max = (new Date(year, month + 1, 0)).getDate();
+                        max = (new Date(year, month, 0)).getDate();
                     }
 
                     while(min <= max){

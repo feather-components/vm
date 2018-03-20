@@ -90,7 +90,7 @@
             leftCallback: {
                 type: Function,
                 default(){
-                    history.back();
+                    TopBar.config('leftCallback')();
                 }
             },
 
@@ -159,7 +159,10 @@
         topFixed: '0px',
         bgColor: '#28304E',
         color: '#fff',
-        borderBottom: ''
+        borderBottom: '',
+        leftCallback(){
+            history.back();
+        }
     });
 
     export default TopBar;

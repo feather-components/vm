@@ -61,6 +61,16 @@
                 default: false
             },
 
+            params: {
+                type: Object,
+                default(){return {}}
+            },
+
+            name: {
+                type: String,
+                default: null
+            },
+
             accept: {
                 type: String,
                 default: '*'
@@ -142,8 +152,12 @@
                 var formData = new FormData();
 
                 files.forEach((file, key) => {
-                    formData.append('file' + key, file);
+                    formData.append(this.name || ('file' + key), file);
                 });
+
+                for(let key in this.params){
+                    formData.append(key, this.params[key]);
+                }
 
                 var xhr = self.xhr = new XMLHttpRequest;
                 xhr.onload = () => {
@@ -167,7 +181,7 @@
                 xhr.upload.onprogress = (event) => {
                     self.$emit('upload:progress', files, event);
                 };
-                xhr.open('post', self.url);
+                xhr.open('post', self.url, true);
                 xhr.send(formData);
             },
 

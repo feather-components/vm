@@ -272,8 +272,6 @@
                     return false;
                 }
 
-                self.isLoading = true;
-
                 if(self._source 
                     && typeof self._source == 'string' 
                     && (self.rows.length == self.data.length || self.page == 0)
@@ -281,7 +279,6 @@
                     self.loadRemote();
                 }else{
                     self.renderRows();
-                    self.isLoading = false;
                 }
             },
 
@@ -289,6 +286,7 @@
                 var self = this;
 
                 self.abort();
+                self.isLoading = true;
                 self.$http = Ajax({
                     url: self._source,
                     data: Object.assign({}, self._params || {}, {

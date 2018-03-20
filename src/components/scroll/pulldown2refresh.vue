@@ -6,7 +6,7 @@
         @drag:start="onDragStart"
         @drag:end="onDragEnd" 
         ref="scroll"
-        :scrollbars="true"
+        :scrollbars="scrollbars"
     >
 	    <div class="vm-pulldown2refresh" ref="pulldown" slot="header">
          	<slot name="pulldown">
@@ -56,6 +56,13 @@
 		components: {
 			Scroll
 		},
+
+        props: {
+            scrollbars: {
+                type: Boolean,
+                default: true
+            }
+        },
 
 		data(){
 			return {

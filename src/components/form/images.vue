@@ -14,16 +14,19 @@
                     <img :src="srcFormatter(item)" />
                 </slot>
 
-                <a href="javascript:" class="vm-form-images-del" v-if="delEnabled" @click="del(index)" >删除</a>
+                <a href="javascript:" class="vm-form-images-del" v-if="delEnabled" @click="del(index)">删除</a>
             </div>
 
             <div class="vm-form-images-item" v-show="rest">
                 <slot name="uploader">
                     <uploader 
+                        :name="name"
                         :url="uploader || url" 
                         :multiple="rest > 1" 
-                        :beforeUploadProcessor="beforeUploadProcessor"
-                        :canUpload="canUpload"
+                        :before-upload-processor="beforeUploadProcessor"
+                        :can-upload="canUpload"
+                        :use-pack="usePack"
+                        :params="params"
                         accept="image/*"
                         @upload:start="onUploadStart" 
                         @upload:complete="onUploadComplete"
@@ -109,9 +112,24 @@ export default{
     mixins: [Cell, Multiable],
 
     props: {
+        name: {
+            type: String,
+            default: null
+        },
+
         uploader: {
             type: String,
             default: ''
+        },
+
+        usePack: {
+            type: Boolean,
+            default: true
+        },
+
+        params: {
+            type: Object,
+            default: null
         },
 
         dataFormatter: {

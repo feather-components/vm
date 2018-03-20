@@ -17,10 +17,8 @@
         name: 'slider-item',
 
         mounted(){
-            this.$nextTick(() => {
-                Event.on(window, 'resize', () => this.resize());
-                this.resize();
-            });
+            Event.on(window, 'resize', () => this.resize());
+            this.resize();
         },
 
         methods: {

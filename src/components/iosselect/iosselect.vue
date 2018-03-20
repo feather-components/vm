@@ -117,7 +117,7 @@
         },
 
         mounted(){
-            this.source.length > 1 && this.render();
+            this.source.length > 0 && this.render();
         },
 
         methods: {
@@ -143,7 +143,6 @@
                         return item;
                     }
                 });
-
 
                 Promise.all(promises).then((source) => {
                     let data = source.map(this.dataFormatter);

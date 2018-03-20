@@ -15,7 +15,7 @@ class Lazyload{
             var el = Dom.create(`<style type="text/css">
                 .${this.placeholderClassName}{
                     background: url(${this.options.placeholder}) center center no-repeat;
-                    background-size: auto 40%;
+                    background-size: .6rem .6rem;
                 }
                 </style>
             `);
