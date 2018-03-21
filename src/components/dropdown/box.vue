@@ -56,7 +56,10 @@
 
             self.$nextTick(() => {
                 Event.on(self.$el.parentNode, 'click', (e) => {
-                    self.toggle();
+                    //fixed android bug
+                    setTimeout(() => {
+                        self.toggle();
+                    }, 100);
                 });
 
                 Event.on(self.$refs.overlay.$el, 'click', (e) => {

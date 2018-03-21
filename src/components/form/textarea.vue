@@ -10,7 +10,8 @@
 
         <div class="vm-form-textarea-inner">
             <div ref="area" 
-                class="vm-form-textarea-edit" 
+                class="vm-form-textarea-edit needsclick"
+                style="-webkit-user-select:text;" 
                 :contenteditable="!readonly" 
                 @input="input"
                 @focus="$emit('focus')"
@@ -47,6 +48,7 @@
         flex: 1;
         color: #222;
         word-break: break-all;
+        -webkit-user-select: text;
     }
 
     .vm-form-textarea-other{

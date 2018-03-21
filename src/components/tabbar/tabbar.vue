@@ -1,7 +1,7 @@
 <template>
 	<scroll axis="x" class="vm-tabbar" ref="scroll">
 		<div class="vm-tabbar-inner">
-			<a v-for="(item, label) of items" @click="to(label)" :class="{'vm-tabbar-actived': label == currentLabel}">{{label}}</a>
+			<a v-for="(item, key) of items" @click="to(key)" :class="{'vm-tabbar-actived': key == index}">{{item.label || item}}</a>
 		</div>
     </scroll>
 </template>
@@ -44,23 +44,16 @@
 
 		props: {
 			items: {
-				type: Object,
+				type: Array,
 				default(){
-					return {};
-				}
-			},
-
-			defaultLabel: {
-				type: String,
-				default(){
-					return Util.firstKey(this.items);
+					return [];
 				}
 			}
 		},
 
 		data(){
 			return {
-				currentLabel: ''
+				index: null
 			}
 		},
 
@@ -69,17 +62,17 @@
 		},
 
 		methods: {
-			to(label = this.defaultLabel){
-				if(label == this.currentLabel){
+			to(index = 0){
+				if(index == this.index){
 					return false;
 				}
 
-				let item = this.items[this.currentLabel = label];
-				this.$emit('to', item, label);
-				this.$emit('switch', item, label);	
+				this.index = index;
+				this.$emit('to', index, this.items[index]);
+				this.$emit('switch', index, this.items[index]);	
 
 				setTimeout(() => {
-					let left = Dom.offset(Dom.$('.vm-tabbar-actived', this.$el)).left;
+					let left = Dom.$('.vm-tabbar-actived', this.$el).offsetLeft;
 					this.$refs.scroll.scrollTo(-left + 130, 300, true);
 				}, 0);
 			}
