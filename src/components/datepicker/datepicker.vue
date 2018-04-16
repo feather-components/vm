@@ -1,5 +1,5 @@
 <template>
-    <iosselect :visible="visibility" :source="[years, months, days]" @select="onSelect" @confirm="onConfirm" v-model="vals" @close="close" />
+    <iosselect :visible="visibility" :source="source" @select="onSelect" @confirm="onConfirm" v-model="vals" @close="close" />
 </template>
 <script>
     import Iosselect from '../iosselect';
@@ -48,6 +48,8 @@
             return {
                 months: [],
                 days: [],
+                hours: 24,
+                minutes: 60,
                 vals: this.analyseValue(this.value),
                 val: ''
             };
@@ -90,13 +92,40 @@
                 while(minYear <= maxYear){
                     years.push({label: minYear, value: minYear++});
                 }
-
                 return years;
+            },
+
+            hh(){
+                return this.setHMTime(this.hours);
+            },
+
+            ii(){
+                return this.setHMTime(this.minutes);
+            },
+
+            source(){
+                return this.setSource();
             }
         },
 
         methods: {
+            setSource(){
+                if(this.formatter.indexOf('hh:ii') > 0){
+                    return [this.years, this.months, this.days, this.hh, this.ii]
+                }
+                return [this.years, this.months, this.days]
+            },
+
+            setHMTime(num){
+                let hm = [];
+                for(let i = 0; i < num; i++){
+                    hm.push({label: i < 10 ? `0${i}` : i,value: i < 10 ? `0${i}` : i});
+                }
+                return hm
+            },
+
             makeDate(date){
+                date = date.replace(/-/g, '/');
                 return typeof date == 'string' ? new Date(date) : date;
             },
 
@@ -137,23 +166,47 @@
                     }
 
                     this.days = days;
+                }else if(vals.length == 4){
+                    let min = 0, max = 24, month = vals[1].value, day = vals[2].value;
+
+                    if(year == this.maxYear && 
+                        month == this.endDate.getMonth() + 1 && 
+                        day == this.endDate.getDate()){
+                        this.hours = this.endDate.getHours() + 1;
+                    }else{
+                        this.hours = max;
+                    }
+
+                }else if(vals.length == 5){
+                    let min = 0, max = 60, month = vals[1].value, day = vals[2].value, hours = vals[3].value;
+
+                    if(year == this.maxYear && 
+                        month == this.endDate.getMonth() + 1 && 
+                        day == this.endDate.getDate() &&
+                        hours == this.endDate.getHours()){
+                        this.minutes = this.endDate.getMinutes() + 1;
+                    }else{
+                        this.minutes = max;
+                    }
                 }
             },
 
             onConfirm(vals){
-                let [year, month, day] = vals;
+                let [year, month, day, hh, ii] = vals;
                 let str = this.formatter
                             .replace('yyyy', year)
                             .replace('yy', year % 100)
                             .replace('mm', month < 10 ? '0' + month : month)
-                            .replace('dd', day < 10 ? '0' + day : day);
+                            .replace('dd', day < 10 ? '0' + day : day)
+                            .replace('hh', hh)
+                            .replace('ii', ii);
 
                 this.val = str;
                 this.$emit('confirm', str);
             },
 
             analyseValue(val = ''){
-                let arr = [], types = [/yyyy/.test(this.formatter) ? 'yyyy' : 'yy', 'mm', 'dd'];
+                let arr = [], types = [/yyyy/.test(this.formatter) ? 'yyyy' : 'yy', 'mm', 'dd', 'hh', 'ii'];
 
                 arr = types.map((type) => {
                     let i = this.formatter.indexOf(type);

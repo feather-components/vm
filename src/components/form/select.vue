@@ -100,6 +100,7 @@ export default{
             this.multiable = vals.length > 0;
             this.save(vals, false);
             this.selectedLabels = this.selectedLabelFormatter(labels);
+            this.$emit('confirm', vals, labels);
         });
     },
 

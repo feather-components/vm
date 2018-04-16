@@ -1,7 +1,7 @@
 <template>
     <cell :label="label" class="vm-form-switch-box" :vertical-layout="false"> 
         <span class="vm-form-switch">
-            <input type="checkbox" :id="name" ref="checkbox" class="vm-form-switch" v-model="val" @change="onChange" />
+            <input type="checkbox" :id="name" ref="checkbox" class="vm-form-switch" v-model="val" />
             <label :for="name">
                 <i :style="{background: bgColor}"></i>
                 <i></i>
@@ -91,13 +91,9 @@
             };
         },
 
-        mounted(){
-            this.onChange();
-        }, 
-
-        methods: {
-            onChange(){
-                this.bgColor = this.$refs.checkbox.checked ? this.color : '';
+        watch: {
+            val(v){
+                this.bgColor = v ? this.color : '';
             }
         }
     }

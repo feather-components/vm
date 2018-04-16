@@ -167,7 +167,7 @@
             },
 
             showErrorStatus(){
-                return !this.isCompleted && this.error && !this.isLoading;
+                return this.error && !this.isLoading;
             },
 
             showNoMoreStatus(){

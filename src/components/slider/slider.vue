@@ -82,12 +82,14 @@
             },
 
             to(index, transition = true){
+                var left = this.$el.children[index].offsetLeft;
+
+                this.transition = transition;
+                Dom.css(this.$el, 'transform', `translateX(-${left}px)`);
+
                 if(index == this.index){
                     this.$emit('reject', this.index);
                 }else{    
-                    var left = this.$el.children[index].offsetLeft;
-                    this.transition = transition;
-                    Dom.css(this.$el, 'transform', `translateX(-${left}px)`);
                     this.$emit('switch', this.index = index, this.index);
                 }
 
