@@ -31,7 +31,7 @@
 
 		props: {
 			content: {
-				type: String,
+				type: [Number, String],
 				default: ''
 			}
 		},

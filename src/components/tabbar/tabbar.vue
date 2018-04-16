@@ -1,7 +1,10 @@
 <template>
 	<scroll axis="x" class="vm-tabbar" ref="scroll">
 		<div class="vm-tabbar-inner">
-			<a v-for="(item, key) of items" @click="to(key)" :class="{'vm-tabbar-actived': key == index}">{{item.label || item}}</a>
+			<a v-for="(item, key) of items" @click="to(key)" :class="{'vm-tabbar-actived': key == index}" :style="{
+				color: key == index ? highColor : 'inherit',
+				borderBottomColor: key == index ? highColor : 'inherit'
+			}">{{item.label || item}}</a>
 		</div>
     </scroll>
 </template>
@@ -35,7 +38,7 @@
 	import Scroll from '../scroll';
 	import {Dom, Util} from '../../helper';
 
-	export default {
+	var Tabbar = {
 		name: 'tabbar',
 
 		components: {
@@ -47,6 +50,13 @@
 				type: Array,
 				default(){
 					return [];
+				}
+			},
+
+			highColor: {
+				type: String,
+				default(){
+					return Tabbar.config('highColor');
 				}
 			}
 		},
@@ -78,4 +88,9 @@
 			}
 		}
 	}
+
+	Util.defineConfig(Tabbar, {
+		highColor: '#6281C2'
+	});
+	export default Tabbar;
 </script>

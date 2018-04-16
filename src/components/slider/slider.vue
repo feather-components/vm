@@ -63,6 +63,7 @@
 
         methods: {
             onDragStart(event){
+                this.transition = false;
                 this.min = -(this.$el.children.length - 1) * Dom.width(document);
                 this.$emit('drag:start');
             },
@@ -76,7 +77,6 @@
                 let end = event.data.x;
                 let moved = end - start;
                 let index = this.index + (Math.abs(moved)/Dom.width(document) < 0.33 ? 0 : moved > 0 ? -1 : 1);
-
                 this.$emit('drag:end');                
                 this.to(index);
             },
@@ -85,12 +85,12 @@
                 if(index == this.index){
                     this.$emit('reject', this.index);
                 }else{    
-                    var left = this.$el.children[index].offsetLeft;
-                    this.transition = transition;
-                    Dom.css(this.$el, 'transform', `translateX(-${left}px)`);
                     this.$emit('switch', this.index = index, this.index);
                 }
 
+                var left = this.$el.children[index].offsetLeft;
+                this.transition = transition;
+                Dom.css(this.$el, 'transform', `translateX(-${left}px)`);
                 !transition && this.complete();
             },
 

@@ -23,7 +23,7 @@
 			min-height: 1rem;
 			max-width: 100%;
 			max-height: 4rem;
-			border: 0px;
+			border: 0px !important;
 		}
 
 		.vm-overlay{

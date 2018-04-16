@@ -103,8 +103,8 @@
                 this.$emit('drag:start', ...args);
             },
 
-            onDragEnd(translate, destination, duration){
-                this.$emit('drag:end', translate, destination, duration);
+            onDragEnd(...args){
+                this.$emit('drag:end', ...args);
                 this.limitType() == 1 && this.refresh();
             },  
 
@@ -124,8 +124,12 @@
                 return this.$scroll.limitType();
             },
 
-            scrollTo(translate, duration){
-                return this.$scroll.scrollTo(translate, duration);
+            scrollTo(...args){
+                return this.$scroll.scrollTo(...args);
+            },
+
+            scrollToElement(...args){
+                return this.$scroll.scrollToElement(...args);
             },
 
             getPos(){

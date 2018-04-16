@@ -45,24 +45,6 @@
     flex-wrap: wrap;
 }
 
-.vm-form-images{
-    .vm-grid{
-        margin-top: 0.12rem;
-        margin-bottom: 0.05rem;
-    }
-
-    .vm-grid-item{
-        width: 1.09rem;
-        height: 0.8rem;
-        margin-left: 0.08rem;
-        margin-bottom: 0.08rem;
-    }
-
-    .vm-grid-item:nth-child(3n + 1){
-        margin-left: 0px;
-    }
-}
-
 .vm-form-images-item{
     position: relative;
     width: 1.09rem;

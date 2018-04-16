@@ -102,13 +102,7 @@
             },
 
             value(v){
-                v = Util.makeArray(v);
-
-                if(v.toString() === this.val.toString()){
-                    return false;
-                }
-
-            	this.val = v;
+                this.setValue(v);
             },
 
             source(source){
@@ -221,6 +215,17 @@
                 return this.vals.map((item) => {
                     return item.label;
                 });
+            },
+
+            setValue(v){
+                v = Util.makeArray(v);
+
+                if(v.toString() === this.val.toString()){
+                    return false;
+                }   
+
+                this.render();
+                this.val = v;
             }
         }
     }

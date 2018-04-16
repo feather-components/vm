@@ -54,11 +54,14 @@ export default{
         if(!container){
             container = document.createElement('div');
             container.id = '__log__';
-            container.style.cssText = 'position: fixed; bottom: 0px; width: 100%; background: #ccc; z-index: 10000;';
+            container.style.cssText = 'position: fixed; bottom: 0px; width: 100%; background: #ccc; z-index: 10000; overflow: hidden; max-height: 200px;';
             document.body.appendChild(container);
         }
 
         container.innerHTML = container.innerHTML + '<br />' + str;
+        setTimeout(() => {
+            container.scrollTop = 100000000;
+        }, 0)
     },
 
     firstKey(obj){
@@ -102,8 +105,10 @@ export default{
     },
 
     factory(options, data = {}, container = document.body){
-        var instance = new Vue(options, data);
-        Object.assign(instance, data);
+        var klass = Vue.extend(options);
+        var instance = new klass({
+            propsData: data
+        });
         instance.$mount();
         container.appendChild(instance.$el);
         return instance;

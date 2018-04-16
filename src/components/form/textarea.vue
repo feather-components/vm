@@ -9,19 +9,22 @@
         </template> 
 
         <div class="vm-form-textarea-inner">
-            <div ref="area" 
+            <div ref="area"
                 class="vm-form-textarea-edit needsclick"
-                style="-webkit-user-select:text;" 
+                :style="{
+                    'max-height': maxHeight
+                }" 
                 :contenteditable="!readonly" 
                 @input="input"
                 @focus="$emit('focus')"
                 @blur="$emit('blur')"
-                @click="$emit('click')"
-                :value="val"
+                @click="click"
             ></div>
 
-            <span v-if="!val" class="vm-form-textarea-ph" @click="clickPh">{{placeholder}}</span>
-            <span class="vm-form-textarea-icon" v-if="$slots.icon"><slot name="icon"></slot></span>
+            <span v-if="!val" class="vm-form-textarea-ph" @click="clickPh">
+                <slot name="placeholder">{{placeholder}}</slot>
+            </span>
+            <div class="vm-form-textarea-icon" v-if="$slots.icon"><slot name="icon"></slot></div>
         </div>
 
         <div v-if="$slots.default" class="vm-form-textarea-other"><slot></slot></div>
@@ -44,11 +47,15 @@
     }
 
     .vm-form-textarea-edit{
+        overflow: scroll;
         outline: none;
         flex: 1;
         color: #222;
         word-break: break-all;
         -webkit-user-select: text;
+        -webkit-user-modify: read-write-plaintext-only;
+        -moz-user-modify: read-write-plaintext-only;
+        user-modify: read-write-plaintext-only;
     }
 
     .vm-form-textarea-other{
@@ -74,6 +81,13 @@
             Cell
         },
 
+        props: {
+            maxHeight: {
+                type: String,
+                default: 'auto'
+            }
+        },
+
         mounted(){
             this.$nextTick(() => {
                 this.setValue(this.val);
@@ -81,20 +95,25 @@
         },
 
         methods:{
-            focus(){
-                this.$refs.area.focus();
-            },
-
-            blur(){
-                this.$refs.area.blur();
-            },
-
             input(){
                 this.val = this.$refs.area.textContent;
             },
 
             clickPh(){
                 this.$refs.area.focus();
+            },
+
+            click(){
+                this.focus();
+                this.$emit('click');
+            },
+
+            focus(){
+                this.$refs.area.focus();
+            },
+
+            blur(){
+                this.$refs.area.blur();
             },
 
             setValue(v){

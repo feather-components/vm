@@ -12,6 +12,7 @@
             :placeholder="placeholder"
             :readonly="readonly"
             :style="{textAlign: align}"
+            :maxlength="maxlength"
         /> 
 
         <icon name="close" v-if="clearable && val" @click.native="clear" class="vm-form-clear" :size=".14"/>
@@ -85,6 +86,11 @@
             align: {
                 type: String,
                 default: 'right'
+            },
+
+            maxlength: {
+                type: Number,
+                default: 100000000
             }
         },
 

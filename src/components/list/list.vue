@@ -1,10 +1,10 @@
 <template>
     <component ref="scroll" class="vm-list" @scrolling="onScrolling" :is="Component" @refresh="refresh">
-        <div class="vm-list-header">
+        <div class="vm-list-header" v-if="$slots.header">
             <slot name="header"></slot>
         </div>
 
-        <div ref="headerMark"></div>
+        <slot></slot>
 
         <slot name="rows" :data="rows">
             <ul class="vm-list-rows" ref="rows">
@@ -13,8 +13,6 @@
                 </li>
             </ul>
         </slot>
-
-        <div ref="footerMark"></div>
 
         <div class="vm-list-loading" v-if="showLoadingStatus">
             <slot name="loading"><i class="vm-list-loading-icon"></i>正在加载中</slot>
@@ -33,6 +31,10 @@
                 <slot name="nores"><i class="vm-list-nores-icon"></i><br />没有任何结果~</slot>
             </div>
         </template>
+
+        <div class="vm-list-footer">
+            <slot name="footer"></slot>
+        </div>
     </component>
 </template>
 
@@ -237,6 +239,14 @@
             setData(data = []){
                 this.data = [];
                 this.addData(data);
+            },
+
+            scrollTo(...args){
+                this.$scroll.scrollTo(...args);
+            },
+
+            scrollToElement(...args){
+                this.$scroll.scrollToElement(...args);
             },
 
             addData(source){

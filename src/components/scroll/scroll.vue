@@ -81,9 +81,9 @@
 
             ease: {
                 type: Function,
-                default(k){
-                    return Math.sqrt(1 - (--k * k));
-                }
+                default(k) {
+                return Math.sqrt( 1 - ( --k * k ) );
+            }
             },
 
             ignores: {
@@ -217,19 +217,22 @@
                     self.scrollTo(destination = 0, duration = translate * 3);
                 }else if(translate <= self.min){ 
                     self.scrollTo(destination = self.min, duration = (self.min - translate) * 5);
-                }else if(duration < 300){
+                }else if(duration < 150){
                     var distance = event.data[self.axis] - self.base;
                     var speed = Math.abs(distance) / duration, deceleration = 0.0006;
                     var destination = translate + Math.pow(speed, 2) / (2 * 0.0006) * (distance < 0 ? -1 : 1);
 
                     if(destination < self.min){
                         destination = self.min;
+                        duration = Math.abs(destination - translate) / speed;
                     }else if(destination > 0){
                         destination = 0;
+                        duration = Math.abs(destination - translate) / speed;
+                    }else{
+                        duration = speed / deceleration;
                     }
 
-                    duration = speed / deceleration / 2;
-                    duration > 300 && self.scrollTo(destination, duration);
+                    self.scrollTo(destination, duration);
                 }
 
                 self.$emit('drag:end', translate, destination, duration);
@@ -258,6 +261,13 @@
                 }
 
                 self.scrollBarTo(destination, duration);
+            },
+
+            scrollToElement(el, duration, limitMaxOrMin){
+                var eOffset = Dom.offset(el), offset = Dom.offset(this.$el);
+                var prop = this.axi == 'X' ? 'left' : 'top';
+                this.refresh();
+                this.scrollTo(offset[prop] - eOffset[prop], duration, limitMaxOrMin);
             },
 
             scrollBarTo(destination, duration = 0){

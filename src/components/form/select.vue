@@ -80,19 +80,23 @@ export default{
 
         options(v){
             this.$iosselect.render(v);
+        },
+
+        value(v){
+            this.$iosselect.setValue(v);
         }
     },
 
     mounted(){
         let $iosselect = this.$iosselect = Util.factory(IosSelect, {
             source: this.source,
-            value: this.val,
+            value: Util.makeArray(this.val),
             dataFormatter: this.dataFormatter,
             params: this.params,
             visible: false
         });
 
-        $iosselect.$on('scroll:ready', () => {
+        $iosselect.$on('select', () => {
             this.val != null && (this.selectedLabels = this.selectedLabelFormatter($iosselect.getLabels()));
         });
 

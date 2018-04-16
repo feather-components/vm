@@ -9,22 +9,30 @@
     .vm-uploader{
         display: inline-block;
         width: 100%;
-        min-height: 0.8rem;
+        height: 100%;
         position: relative;
-        background: #f3f3f3;
+
         border-radius: 0.04rem;
 
-        &:before{
-            width: 0.32rem;
-            height: 0.05rem;
+        .vm-uploader-icon{
+            display: inline-block;
+            width: 100%;
+            height: 100%;
+            background: #f3f3f3;
         }
 
-        &:after{
+        .vm-uploader-icon:before{
+            width: 0.32rem;
+            height: 0.05rem;
+            background: #f3f3f3;
+        }
+
+        .vm-uploader-icon:after{
             height: 0.32rem;
             width: 0.05rem;
         }
 
-        &:before, &:after{
+        .vm-uploader-icon:before, .vm-uploader-icon:after{
             content: "";
             display: block;
             position: absolute;

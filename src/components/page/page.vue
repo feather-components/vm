@@ -17,7 +17,6 @@
 <style>
     .vm-page.vm-overlay{
         width: 100%;
-        height: 100%;
         background: #fff;
         display: flex;
         font-size: .14rem;
