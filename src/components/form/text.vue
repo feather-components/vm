@@ -13,7 +13,6 @@
             :placeholder="placeholder"
             :readonly="readonly"
             :style="{textAlign: align}"
-            :maxlength="maxlength"
         /> 
 
         <icon name="close" v-if="clearable && val" @click.native="clear" class="vm-form-clear" :size=".14"/>
