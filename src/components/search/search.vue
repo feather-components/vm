@@ -1,6 +1,8 @@
 <template>
     <page position="right" :fx="fx" :visible="visibility" class="vm-search" ref="page">
         <topbar :left-enabled="false">
+            <slot name="searchLeft"></slot>
+            <slot name="extra-condition"></slot>
             <searchbar :placeholder="placeholder" :maxlength="maxlength" ref="search" :input-bg-color="inputBgColor"
                         :search-button-enabled="closeAfterSelectHistory" @submit="submit" v-model="val" />
             <a href="javascript:" class="vm-search-cancel" @touchend="cancel" slot="right">取消</a>
@@ -186,6 +188,15 @@
                 default(){
                     this.close()
                 }
+            }
+        },
+
+        watch: {
+            params: {
+                handler(){
+                    this.load();
+                },
+                deep: true
             }
         },
 

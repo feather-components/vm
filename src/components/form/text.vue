@@ -9,6 +9,7 @@
             @focus="onFocus" 
             @blur="$emit('blur')" 
             @click="$emit('click')" 
+            :maxlength="maxlength" 
             :placeholder="placeholder"
             :readonly="readonly"
             :style="{textAlign: align}"
@@ -89,7 +90,7 @@
             },
 
             maxlength: {
-                type: Number,
+                type: [Number, String],
                 default: 100000000
             }
         },
