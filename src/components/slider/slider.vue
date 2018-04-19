@@ -21,6 +21,7 @@
 
     .vm-slider-transition{
         transition: transform .5s ease;
+        -webkit-transition: transform .5s ease;
     }
 </style>
 
@@ -85,7 +86,6 @@
                 var left = this.$el.children[index].offsetLeft;
 
                 this.transition = transition;
-                Dom.css(this.$el, 'transform', `translateX(-${left}px)`);
 
                 if(index == this.index){
                     this.$emit('reject', this.index);
@@ -93,8 +93,6 @@
                     this.$emit('switch', this.index = index, this.index);
                 }
 
-                var left = this.$el.children[index].offsetLeft;
-                this.transition = transition;
                 Dom.css(this.$el, 'transform', `translateX(-${left}px)`);
                 !transition && this.complete();
             },

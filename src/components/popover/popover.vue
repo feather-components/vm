@@ -69,7 +69,7 @@
         display: block;
         text-decoration: none;
         padding: .06rem 0px;
-        font-size: .12rem;
+        font-size: .16rem;
         text-align: left;
 
         &:last-child{
