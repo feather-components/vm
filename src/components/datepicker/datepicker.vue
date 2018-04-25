@@ -126,8 +126,7 @@
             },
 
             makeDate(date){
-                date = date.replace(/-/g, '/');
-                return typeof date == 'string' ? new Date(date) : date;
+                return typeof date == 'string' ? new Date(date.replace(/-/g, '/')) : date;
             },
 
             onSelect(vals){
