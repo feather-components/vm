@@ -1,7 +1,7 @@
 <template>
 	<scroll axis="x" class="vm-tabbar" ref="scroll">
 		<div class="vm-tabbar-inner">
-			<a v-for="(item, key) of items" @click="to(key)" :class="{'vm-tabbar-actived': key == index}" :style="{
+			<a v-for="(item, key) of items" @click="onClick(key)" :class="{'vm-tabbar-actived': key == index}" :style="{
 				color: key == index ? highColor : 'inherit',
 				borderBottomColor: key == index ? highColor : 'inherit'
 			}">{{item.label || item}}</a>
@@ -72,6 +72,11 @@
 		},
 
 		methods: {
+			onClick(index){
+				this.$emit('click', index, this.items[index]);
+				this.to(index);
+			},
+
 			to(index = 0){
 				if(index == this.index){
 					return false;

@@ -2,7 +2,7 @@
 	<span class="vm-segment" :style="{
 		border: '1px solid ' + color
 	}">
-		<button v-for="(item, i) of items" :style="index == i ? highStyle : style" @click="to(i)">{{item.label || item}}</button>
+		<button v-for="(item, i) of items" :style="index == i ? highStyle : style" @click="onClick(i)">{{item.label || item}}</button>
 	</span>
 </template>
 
@@ -92,6 +92,11 @@
 		},
 
 		methods: {
+			onClick(index){
+				this.$emit('click', index, this.items[index]);
+				this.to(index);
+			},
+
 			to(index = 0){
 				if(index == this.index){
 					return false;

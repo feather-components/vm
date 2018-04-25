@@ -2,15 +2,23 @@
     <vm-mask :visible="visibility" @click="close">
         <overlay :visible="visibility" class="vm-actionsheet" position="bottom">
             <div style="margin-bottom: 0.08rem;">
+                <div class="vm-actionsheet-header" v-if="$slots.header"> 
+                    <slot name="header"></slot>
+                </div>
+
                 <div 
                     v-for="(action, index) of actions"
-                    class="vm-action-sheet-item"
+                    class="vm-actionsheet-item"
                     @click="callAction(index)"
                     :key="index" 
                 >
                     <slot name="item" :text="index">
                         <div class="vm-actionsheet-item-inner">{{index}}</div>
                     </slot>
+                </div>
+
+                <div class="vm-actionsheet-footer" v-if="$slots.footer"> 
+                    <slot name="footer"></slot>
                 </div>
             </div>
             
