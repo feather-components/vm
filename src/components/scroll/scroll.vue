@@ -217,7 +217,7 @@
                     self.scrollTo(destination = 0, duration = translate * 3);
                 }else if(translate <= self.min){ 
                     self.scrollTo(destination = self.min, duration = (self.min - translate) * 5);
-                }else if(duration < 150){
+                }else if(duration < 200){
                     var distance = event.data[self.axis] - self.base;
                     var speed = Math.abs(distance) / duration, deceleration = 0.0006;
                     var destination = translate + Math.pow(speed, 2) / (2 * 0.0006) * (distance < 0 ? -1 : 1);
@@ -254,7 +254,14 @@
 
                 if(!duration){ 
                     self.pos = destination;
-                    Dom.css(self.$refs.inner, 'transform', 'translate' + this.axi + '(' + destination + 'px)');
+                    Dom.css(
+                        self.$refs.inner, 
+                        'transform', 
+                        'translate3d(' 
+                            + (this.axi == 'X' ? destination + 'px' : '0px') + ','
+                            + (this.axi == 'Y' ? destination + 'px' : '0px') + ','
+                            + '0px)'
+                    );
                     self.$emit('scrolling', destination);
                 }else{
                     this.fx(self.$refs.inner, destination, duration);

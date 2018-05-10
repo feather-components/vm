@@ -296,6 +296,7 @@
                 var self = this;
 
                 self.abort();
+                self.error = false;
                 self.isLoading = true;
                 self.$http = Ajax({
                     url: self._source,

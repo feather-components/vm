@@ -6,12 +6,14 @@
     head.appendChild(d);
     var defaultFontSize = parseFloat(window.getComputedStyle(d, null).getPropertyValue('width'));
     d.remove();
-    document.documentElement.style.fontSize = window.innerWidth / designWidth * rem2px / defaultFontSize * 100 + "%";
+    var width = window.innerWidth || window.screen.width;
+    var height = window.innerHeight || window.screen.height;
+    document.documentElement.style.fontSize = width / designWidth * rem2px / defaultFontSize * 100 + "%";
     var st = document.createElement('style');
-    var portrait = "@media screen adn(min-width:" + window.innerWidth + "px){html{font-size:" +
-        ((window.innerHeight / (designWidth / rem2px) / defaultFontSize) * 100) + "%;}}";
-    var landscape = "@media screen adn(min-width:" + window.innerWidth + "px){html{font-size:" +
-        ((window.innerHeight / (designWidth / rem2px) / defaultFontSize) * 100) + "%;}}";
+    var portrait = "@media screen adn(min-width:" + width + "px){html{font-size:" +
+        ((height / (designWidth / rem2px) / defaultFontSize) * 100) + "%;}}";
+    var landscape = "@media screen adn(min-width:" + width + "px){html{font-size:" +
+        ((height / (designWidth / rem2px) / defaultFontSize) * 100) + "%;}}";
     st.innerHTML = portrait + landscape;
     head.appendChild(st);
     return defaultFontSize;

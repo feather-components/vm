@@ -77,7 +77,7 @@
                 let start = -this.$el.children[this.index].offsetLeft;
                 let end = event.data.x;
                 let moved = end - start;
-                let index = this.index + (Math.abs(moved)/Dom.width(document) < 0.33 ? 0 : moved > 0 ? -1 : 1);
+                let index = this.index + (Math.abs(moved)/Dom.width(document) < this.offset ? 0 : moved > 0 ? -1 : 1);
                 this.$emit('drag:end');                
                 this.to(index);
             },

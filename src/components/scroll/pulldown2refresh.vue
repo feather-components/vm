@@ -32,7 +32,6 @@
         -webkit-transform: translateY(0.03rem);
     }
 
-
     .vm-pulldown2refresh{
         text-align: center;
         padding: 0.05rem;
@@ -52,11 +51,7 @@
 
 	export default {
 		name: 'pulldown2refresh',
-
-		components: {
-			Scroll
-		},
-
+        
         props: {
             scrollbars: {
                 type: Boolean,

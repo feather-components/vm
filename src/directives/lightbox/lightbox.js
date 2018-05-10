@@ -3,7 +3,7 @@ import Lightbox from '../../components/lightbox';
 
 function getItems(element, selector, attr = 'src'){
     return getImgs(element, selector).map((el, index) => {
-        return el.getAttribute(attr);
+        return el.getAttribute(attr) || el.getAttribute('src');
     });
 }
 
@@ -35,7 +35,7 @@ export default{
     update(element){
         setTimeout(() => {
             element.$lightbox.updateItems(getItems(element, element.$lightbox.__selector, element.$lightbox.__srcAttr));
-        }, 0);
+        }, 100);
     },
 
     Component: Lightbox,

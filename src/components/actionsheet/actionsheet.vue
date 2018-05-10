@@ -68,16 +68,14 @@
     export default{
         name: 'actionsheet',
 
+        mixins: [Overlay],
+
         props: {
             visible: {
                 type: Boolean,
                 default: false
-            }
-        },
+            },
 
-        mixins: [Overlay],
-
-        props: {
             actions: {
                 type: [Object, Array],
                 default(){

@@ -70,24 +70,17 @@ class Lazyload{
         for(var i = 0; i < images.length; i++){
             var node = images[i];
             var rect = Dom.rect(node);
+            if(self.placeholderClassName){
+                Dom.addClass(node, self.placeholderClassName);
+            }
 
-            if(rect.top > maxTop || rect.left > maxLeft){
+            if(rect.top - 150 > maxTop || rect.left - 150 > maxLeft){
                 break;
             }else if(rect.bottom < 0 || rect.right < 0){
                 continue;
             }else{
-                ((node) => {
-                    if(self.placeholderClassName){
-                        Dom.addClass(node, self.placeholderClassName);
-                    }
-
-                    node.src = node.getAttribute(srcAttr);
-
-                    self.placeholderClassName && (node.onload = () => {
-                        Dom.removeClass(node, self.placeholderClassName); 
-                    });
-                    node.removeAttribute(srcAttr);
-                })(node);
+                node.src = node.getAttribute(srcAttr);
+                node.removeAttribute(srcAttr);
             }
         }
 

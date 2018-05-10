@@ -35,7 +35,7 @@ class AutoSize{
         self.mutationRoot = Util.observer(self.instance.$root.$el, {
             attributes: true,
             subtree: true
-        }, (mutations) => {
+        }, (mutations) => {            
             var change = mutations.some((mutation) => {
                 return mutation.attributeName == 'style' && Dom.contains(mutation.target, self.element);
             });
