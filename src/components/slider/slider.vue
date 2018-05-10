@@ -40,6 +40,11 @@
             offset: {
                 type: Number,
                 default: 0.25
+            },
+
+            defaultIndex: {
+                type: Number,
+                default: 0
             }
         },
 
@@ -47,7 +52,7 @@
             return {
                 transition: false,
                 min: 0,
-                index: 0
+                index: null
             };
         },
 
@@ -59,6 +64,8 @@
                 Event.on(this.$el, 'transitionend webkitTransitionEnd', () => {
                     this.complete();
                 });
+
+                this.to(this.defaultIndex, false, true);
             });
         },
 
@@ -82,16 +89,18 @@
                 this.to(index);
             },
 
-            to(index, transition = true){
+            to(index, transition = true, untrigger = false){
                 var left = this.$el.children[index].offsetLeft;
 
                 this.transition = transition;
 
-                if(index == this.index){
-                    this.$emit('reject', this.index);
-                }else{    
-                    this.$emit('switch', this.index = index, this.index);
-                }
+                if(!untrigger){
+                    if(index == this.index){
+                        this.$emit('reject', this.index);
+                    }else{    
+                        this.$emit('switch', this.index = index, this.index);
+                    }
+                }                
 
                 Dom.css(this.$el, 'transform', `translateX(-${left}px)`);
                 !transition && this.complete();

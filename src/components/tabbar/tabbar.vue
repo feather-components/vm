@@ -58,6 +58,11 @@
 				default(){
 					return Tabbar.config('highColor');
 				}
+			},
+
+			defaultIndex: {
+				type: Number,
+				default: 0
 			}
 		},
 
@@ -68,7 +73,7 @@
 		},
 
 		mounted(){
-			setTimeout(() => this.to(), 100);
+			setTimeout(() => this.to(this.defaultIndex), 100);
 		},
 
 		methods: {
@@ -77,14 +82,17 @@
 				this.to(index);
 			},
 
-			to(index = 0){
+			to(index = 0, untrigger = false){
 				if(index == this.index){
 					return false;
 				}
 
 				this.index = index;
-				this.$emit('to', index, this.items[index]);
-				this.$emit('switch', index, this.items[index]);	
+
+				if(!untrigger){
+					this.$emit('to', index, this.items[index]);
+					this.$emit('switch', index, this.items[index]);	
+				}
 
 				setTimeout(() => {
 					let left = Dom.$('.vm-tabbar-actived', this.$el).offsetLeft;

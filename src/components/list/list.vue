@@ -216,8 +216,9 @@
                 self.autoRefresh && self.refresh(false);
             },
 
-            onScrolling(){
+            onScrolling(...args){
                 this.pullup2load && this.$scroll.limitType() == -1 && this.load();
+                this.$emit('scrolling', ...args);
             },
 
             setParams(params, append){
@@ -296,7 +297,6 @@
                 var self = this;
 
                 self.abort();
-                self.error = false;
                 self.isLoading = true;
                 self.$http = Ajax({
                     url: self._source,

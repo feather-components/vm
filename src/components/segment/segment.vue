@@ -68,12 +68,17 @@
 				default(){
 					return Segment.config('bgColor');
 				}
+			},
+
+			defaultIndex: {
+				type: Number,
+				default: 0
 			}
 		},
 
 		data(){
 			return {
-				index: null,
+				index: this.defaultIndex,
 				style: {
 					color: this.color,
 					background: this.bgColor,
@@ -85,10 +90,6 @@
 					borderColor: this.color
 				}
 			};
-		},
-
-		mounted(){
-			this.to();
 		},
 
 		methods: {
