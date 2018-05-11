@@ -1,7 +1,7 @@
 <template>
-	<vm-mask :visible="visibility" class="vm-lightbox" @click="close">
+	<vm-mask :visible="visibility" class="vm-lightbox" @click="close" v-lazyload>
 		<overlay :visible="visibility" position="center" style="width: 100%;">
-			<slider v-lazyload @switch="onSwitch" ref="slider">
+			<slider @switch="onSwitch" ref="slider">
 				<slider-item class="vm-lightbox-item" v-for="item of imgs">
 					<img :data-src="item" />
 				</slider-item>
