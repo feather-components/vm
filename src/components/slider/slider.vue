@@ -90,7 +90,7 @@
             },
 
             to(index, transition = true, untrigger = false){
-                var left = this.$el.children[index].offsetLeft;
+                var left = -index * Dom.width(document);
 
                 this.transition = transition;
 
