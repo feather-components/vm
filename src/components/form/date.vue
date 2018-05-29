@@ -9,6 +9,10 @@
         @click="onClick"
         v-model="val"
     >
+        <template slot="label" v-if="$slots.label">
+            <slot name="label"></slot>
+        </template>
+
         <forward />
     </text-input>
 </template>

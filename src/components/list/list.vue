@@ -1,5 +1,5 @@
 <template>
-    <component ref="scroll" class="vm-list" @scrolling="onScrolling" :is="Component" @refresh="refresh" :scrollbars="scrollbars">
+    <component ref="scroll" class="vm-list" @scrolling="onScrolling" :is="Component" @refresh="refresh">
         <div class="vm-list-header" v-if="$slots.header">
             <slot name="header"></slot>
         </div>
@@ -96,6 +96,16 @@
         name: 'list',
 
         props: {
+            pageLabel: {
+                type: String,
+                default: 'page'
+            },
+
+            pageSizeLabel: {
+                type: String,
+                default: 'count'
+            },
+
             autoRefresh: {
                 type: Boolean,
                 default: true
@@ -105,11 +115,6 @@
                 default(){
                     return [];
                 }
-            },
-
-            scrollbars: {
-                type: Boolean,
-                default: false
             },
 
             dataFormatter: {
@@ -299,16 +304,17 @@
             },
 
             loadRemote(){
-                var self = this;
+                var self = this, datas = {};
 
                 self.abort();
                 self.isLoading = true;
+
+                datas[self.pageLabel] = self.page + 1;
+                datas[self.pageSizeLabel] = self.maxCountPerPage;
+
                 self.$http = Ajax({
                     url: self._source,
-                    data: Object.assign({}, self._params || {}, {
-                        page: self.page + 1,
-                        count: self.maxCountPerPage
-                    }),
+                    data: Object.assign({}, self._params || {}, datas),
                     dataType: 'json',
                     success(data){
                         self.page == 0 ? self.setData(data) : self.addData(data);  

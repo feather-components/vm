@@ -1,12 +1,5 @@
 <template>
     <cell :label="label" class="vm-form-textarea" :tips="tips"> 
-        <template slot="label" v-if="$slots.label">
-            <slot name="label"></slot>
-        </template> 
-
-        <template slot="tips" v-if="$slots.tips">
-            <slot name="tips"></slot>
-        </template> 
 
         <div class="vm-form-textarea-inner">
             <div ref="area"
@@ -26,6 +19,14 @@
             </span>
             <div class="vm-form-textarea-icon" v-if="$slots.icon"><slot name="icon"></slot></div>
         </div>
+
+        <template slot="label" v-if="$slots.label">
+            <slot name="label"></slot>
+        </template> 
+
+        <template slot="tips" v-if="$slots.tips">
+            <slot name="tips"></slot>
+        </template> 
 
         <div v-if="$slots.default" class="vm-form-textarea-other"><slot></slot></div>
     </cell>

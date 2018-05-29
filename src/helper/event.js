@@ -2,7 +2,7 @@ export default{
     on(element, event, callback, options){
         event.split(' ').forEach((event) => {
             element.addEventListener(event, callback);
-        }, {passive: true});
+        });
     },
 
     off(element, event, callback){
