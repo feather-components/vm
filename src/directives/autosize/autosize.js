@@ -23,8 +23,6 @@ class AutoSize{
         Event.on(window, 'resize', () => {
             self.resize();
         });
-
-        self.observer();
     }
 
     observer(){
@@ -36,7 +34,13 @@ class AutoSize{
             attributes: true,
             subtree: true
         }, (mutations) => {    
-           self.resize();
+            var change = mutations.some((mutation) => {
+                return mutation.attributeName == 'style' && Dom.contains(mutation.target, self.element);
+            });
+
+            if(change){
+                self.resize();
+            }
         });
 
         self.mutationSelf = Util.observer(self.element, {
@@ -72,6 +76,7 @@ class AutoSize{
             }, 2000);
         }else{
             this._resize();
+            this.observer();
         }
     }
 
