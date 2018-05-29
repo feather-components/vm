@@ -97,9 +97,9 @@ class Draggable{
                     Event.trigger(self.dom, 'drag:other', info);
                     return false;
                 }
-            }
+            }   
 
-            Dom.css(self.dom, 'transform', `translate3d(${x}px, ${y}px, 0)`);
+            Dom.css(self.dom, 'transform', `translate3d(${x}px, ${y}px, 0px)`);
             Event.trigger(self.dom, 'draging', info);
         });
 
@@ -141,29 +141,16 @@ class Draggable{
 }
 
 Draggable.getTransform = (element) => {
-    var matrix = Dom.css(element, 'transform'), x = 0, y = 0;
+    var matrix = window.getComputedStyle(element, null), x, y;
 
-    if(matrix && matrix != 'none'){
-        if(matrix[0] != '['){
-            matrix.replace(/translate(3d|X|Y|)\((.+)\)/g, function(all, type, value){
-                if(type == 'X'){
-                    x = parseFloat(value);
-                }else if(type == 'Y'){
-                    y = parseFloat(value);
-                }else{
-                    value = value.split(/\s*,\s*/);
-                    x = parseFloat(value[0]);
-                    y = parseFloat(value[1]);
-                }
-            });
-        }else{
-            matrix = matrix.split(')')[0].split(', ');
-            x = +(matrix[12] || matrix[4]);
-            y = +(matrix[13] || matrix[5]);
-        }
-    }
+    matrix = matrix.webkitTransform.split(')')[0].split(', ');
+    x = +(matrix[12] || matrix[4]);
+    y = +(matrix[13] || matrix[5]);
 
-    return { x: x, y: y };
+    return {
+        x: isNaN(x) ? 0 : x,
+        y: isNaN(y) ? 0 : y
+    };
 };
 
 export default{

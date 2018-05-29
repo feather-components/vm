@@ -2,11 +2,13 @@
     <div :class="'vm-scroll vm-scroll-' + axis" @scroll="onScroll">
         <div ref="inner" class="vm-scroll-inner" @drag:start="onDragStart" @draging="onDraging" @drag:end="onDragEnd">
             <slot name="header"></slot>
-            <slot></slot>
+            <div class="vm-scroll-content">
+                <slot></slot>
+            </div>
             <slot name="footer"></slot>
         </div>
 
-        <div class="vm-scroll-bar" ref="bar" v-if="scrollbars" v-show="barVisible" :class="{'vm-scroll-bar-transition': !!fxer}"></div>
+        <div class="vm-scroll-bar" ref="bar" v-if="scrollbars" v-show="barVisible"></div>
     </div>
 </template>
 
@@ -15,9 +17,8 @@
         position: relative;
         width: 100%;
 
-        .vm-scroll-bar-transition{
-            transition-property: transform;
-            -webkit-transition-property: -webkit-transform;
+        .vm-scroll-content{
+            overflow: hidden;
         }
 
         .vm-scroll-bar{
@@ -80,10 +81,8 @@
             },
 
             ease: {
-                type: Function,
-                default(k) {
-                return Math.sqrt( 1 - ( --k * k ) );
-            }
+                type: String,
+                default: 'cubic-bezier(0.1, 0.57, 0.1, 1)'
             },
 
             ignores: {
@@ -109,7 +108,6 @@
         data(){
             return {
                 barVisible: false,
-                fxer: false,
                 axi: this.axis.toUpperCase(),
                 fillSize: this.axis != 'x'
             }
@@ -126,9 +124,12 @@
                     return !!self.eSize;
                 }
             });
+            
+            Dom.css(self.$refs.inner, 'transition-timing-function', self.ease);
 
-            self.axis == 'y' && (this.$autosize = new Autosize.AutoSize(self.$el, self));
-            self.$actived = true;
+            Event.on(self.$refs.inner, 'transitionend webkitTransitionEnd', () => {
+                self.scrollEnd();
+            });
 
             Util.observer(self.$refs.inner, {
                 childList: true,
@@ -141,6 +142,8 @@
                 self.refresh();
             });
 
+            self.axis == 'y' && (this.$autosize = new Autosize.AutoSize(self.$el, self));
+            self.$actived = true;
             self.refresh();
         },
 
@@ -176,29 +179,28 @@
             resetBase(){ 
                 var self = this;
                 self.baseTime = Date.now();
-                self.base = Draggable.Draggable.getTransform(self.$refs.inner)[self.axis];
+                self.base = self.getComputedPos();
             },
 
             onDragStart(event){
-                var self = this;
+                var self = this, translate = self.pos = event.data[self.axis];
 
+                self.isMoving = true;
                 self.scrollEnd();
+                self.scrollBarTo(translate);
                 self.refresh();
-                self.$emit('drag:start', event.data[self.axis]);
+                self.$emit('drag:start', translate);
             },
 
             onDraging(event){
                 var self = this;
-
-                self.isMoving = true;
-
                 var duration = Date.now() - self.baseTime, 
                     translate = event.data[self.axis],
                     stack = 1;
 
                 duration >= 300 && self.resetBase();
                 self.$emit('draging', translate); 
-                self.scrollTo(translate);
+                self.scrollTo(translate, 0, false, true);
                 self.$drag.stack(translate >= self.max || translate <= self.min ? 3 : 1);
             },
 
@@ -207,7 +209,7 @@
 
                 if(!self.isMoving) return false;
                 self.isMoving = false;
-
+                
                 var duration = Date.now() - self.baseTime, destination,
                     translate = self.pos = event.data[self.axis];
 
@@ -220,7 +222,7 @@
                 }else if(duration < 200){
                     var distance = event.data[self.axis] - self.base;
                     var speed = Math.abs(distance) / duration, deceleration = 0.0006;
-                    var destination = translate + Math.pow(speed, 2) / (2 * 0.0006) * (distance < 0 ? -1 : 1);
+                    var destination = translate + Math.pow(speed, 3) / (2 * 0.0006) * (distance < 0 ? -1 : 1);
 
                     if(destination < self.min){
                         destination = self.min;
@@ -232,7 +234,7 @@
                         duration = speed / deceleration;
                     }
 
-                    self.scrollTo(destination, duration);
+                    self.scrollTo(destination, duration * 4);
                 }
 
                 self.$emit('drag:end', translate, destination, duration);
@@ -241,7 +243,7 @@
                 self.base = null;
             },
 
-            scrollTo(destination, duration = 0, limitMaxOrMin = false){
+            scrollTo(destination, duration = 0, limitMaxOrMin = false, notSetTransform = false){
                 var self = this;
 
                 if(limitMaxOrMin){
@@ -254,17 +256,14 @@
 
                 if(!duration){ 
                     self.pos = destination;
-                    Dom.css(
-                        self.$refs.inner, 
-                        'transform', 
-                        'translate3d(' 
-                            + (this.axi == 'X' ? destination + 'px' : '0px') + ','
-                            + (this.axi == 'Y' ? destination + 'px' : '0px') + ','
-                            + '0px)'
-                    );
+                    !notSetTransform && self.translateTo(self.$refs.inner, destination);
                     self.$emit('scrolling', destination);
+                }else if(self.isMoving){
+                    return false;
                 }else{
-                    this.fx(self.$refs.inner, destination, duration);
+                    self.translateTo(self.$refs.inner, self.pos = destination, duration);
+                    //解决scrolling时无法获取translate的问题
+                    self.listenScrolling();
                 }
 
                 self.scrollBarTo(destination, duration);
@@ -287,36 +286,22 @@
                         self.barVisible = false;
                     }, 3000);
                     
-                    var translate = self.eSize * (destination / self.iSize) * -1;
-
-                    Dom.css(self.$refs.bar, {
-                        'transform': 'translate' + this.axi + '(' + translate  + 'px)',
-                        'transition-duration': duration
-                    });
+                    self.translateTo(self.$refs.bar, self.eSize * (destination / self.iSize) * -1, duration);
                 }
             },
 
-            fx(element, end, duration){
+            listenScrolling(){
                 var self = this;
 
-                self.scrollEnd();
-                var startTime = Date.now(), endTime = startTime + duration;
-                var start = self.pos, range = end - start;
-
-                function step(){
-                    var now = Date.now();
-
-                    if(now >= endTime){
-                        self.scrollTo(end);
-                        self.scrollEnd(); 
-                    }else{
-                        var target = parseInt(parseInt(start) + self.ease((now - startTime) / duration) * range);
-                        self.scrollTo(target);
-                        self.fxer = Util.rfa(step);
+                function trigger(){
+                    //Util.log(Math.random());
+                    if(self.fxer){
+                        self.$emit('scrolling', self.pos = self.getComputedPos());
+                        self.fxer = setTimeout(trigger, 50);
                     }
                 }
 
-                self.fxer = Util.rfa(step);
+                self.fxer = setTimeout(trigger, 50);
             },
 
             scrollEnd(){
@@ -324,9 +309,10 @@
 
                 if(!self.fxer || !this.$actived) return;
 
-                Util.crfa(self.fxer);
+                clearTimeout(self.fxer);
                 self.fxer = false;
-
+                self.pos = self.getComputedPos();
+                self.translateTo(self.$refs.inner, self.pos);
                 self.$emit('scroll:end', self.pos);
             },
 
@@ -337,24 +323,40 @@
             getPos(){
                 return this.pos;
             },
+
+            translateTo(el, translate, duration = 0){
+                Dom.css(el, {
+                    'transition-duration': `${duration}ms`,
+                    'transform': 'translate3d(' 
+                            + (this.axi == 'X' ? translate + 'px' : '0px') + ','
+                            + (this.axi == 'Y' ? translate + 'px' : '0px') + ','
+                            + '0px)'
+                });
+            },
+
+            getComputedPos(){
+                return Draggable.Draggable.getTransform(this.$refs.inner)[this.axis];
+            }
         },
 
         activated(){
-            if(!this.$autosize){
-                return false;
-            }
-
             this.$actived = true;
-            this.$autosize.resize();
-            this.$autosize.observer();
-        },
 
-        deactivated(){
             if(!this.$autosize){
                 return false;
             }
             
+            this.$autosize.resize(false);
+            this.$autosize.observer();
+        },
+
+        deactivated(){
             this.$actived = false;
+
+            if(!this.$autosize){
+                return false;
+            }
+
             this.$autosize.unobserver();
         }
     }

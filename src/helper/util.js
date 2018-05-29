@@ -91,7 +91,7 @@ export default{
             if(directive){
                 Vue.directive(Component.name, obj);
             }else{
-                Vue.component(Component.name = `vm-${Component.name}`, obj);
+                Vue.component(Component.name = `vm-${Component.name}`, Component);
             }
         }
 

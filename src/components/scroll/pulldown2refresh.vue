@@ -81,6 +81,7 @@
             setTimeout(() => {   
                 this.$scroll = this.$refs.scroll;
                 this.maxPos = this.pulldownHeight;
+                this.$scroll.refresh();
             }, 0);
         },
 

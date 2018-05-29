@@ -13,7 +13,7 @@ class AutoSize{
         self.instance = instance;
         self.initEvent();
         setTimeout(() => {
-            self.resize();
+            self.resize(false);
         });
     }
 
@@ -35,14 +35,8 @@ class AutoSize{
         self.mutationRoot = Util.observer(self.instance.$root.$el, {
             attributes: true,
             subtree: true
-        }, (mutations) => {            
-            var change = mutations.some((mutation) => {
-                return mutation.attributeName == 'style' && Dom.contains(mutation.target, self.element);
-            });
-
-            if(change){
-                self.resize();
-            }
+        }, (mutations) => {    
+           self.resize();
         });
 
         self.mutationSelf = Util.observer(self.element, {
@@ -67,13 +61,18 @@ class AutoSize{
         }
     }
 
-    resize(){
+    resize(delay = true){
         this.unobserver();
         clearTimeout(this.$tid);
-        this.$tid = setTimeout(() => {
+        
+        if(this.delay){
+            this.$tid = setTimeout(() => {
+                this._resize();
+                this.observer();
+            }, 2000);
+        }else{
             this._resize();
-            this.observer();
-        }, 300);
+        }
     }
 
     _resize(){

@@ -9,9 +9,7 @@
 
 			<div class="vm-lightbox-index">{{index}}/{{imgs.length}}</div>
 		</overlay>
-		
 	</vm-mask>
-	
 </template>
 
 <style lang="less">

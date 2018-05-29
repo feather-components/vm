@@ -91,7 +91,7 @@
 
             to(index, transition = true, untrigger = false){
                 var left = index * Dom.width(document);
-
+                
                 this.transition = transition;
 
                 if(!untrigger){

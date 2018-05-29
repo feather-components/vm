@@ -1,5 +1,5 @@
 <template>
-    <component ref="scroll" class="vm-list" @scrolling="onScrolling" :is="Component" @refresh="refresh">
+    <component ref="scroll" class="vm-list" @scrolling="onScrolling" :is="Component" @refresh="refresh" :scrollbars="scrollbars">
         <div class="vm-list-header" v-if="$slots.header">
             <slot name="header"></slot>
         </div>
@@ -105,6 +105,11 @@
                 default(){
                     return [];
                 }
+            },
+
+            scrollbars: {
+                type: Boolean,
+                default: false
             },
 
             dataFormatter: {

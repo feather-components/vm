@@ -1,4 +1,4 @@
-var css3s = ['transform', 'transition'];
+var css3s = ['transform', 'transition', 'animation'];
 
 import Util from './util';
 

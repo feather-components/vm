@@ -62,7 +62,7 @@
                     <a href="javascript:" class="vm-topbar-btn-back" @click="leftCallback && leftCallback()" :style="{
                         color: color
                     }">
-                        <icon name="left" :size=".16" />
+                        <icon name="left" :size="backSize" />
                     </a>
                 </slot>
             </div>
@@ -118,6 +118,13 @@
                 default(){
                     return TopBar.config('borderBottom');
                 }
+            },
+
+            backSize: {
+                type: Number,
+                default(){
+                    return TopBar.config('backSize');
+                }
             }
         },
 
@@ -160,6 +167,7 @@
         bgColor: '#28304E',
         color: '#fff',
         borderBottom: '',
+        backSize: .16,
         leftCallback(){
             history.back();
         }

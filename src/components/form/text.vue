@@ -1,9 +1,5 @@
 <template>
     <cell :label="label" class="vm-form-textinput" :vertical-layout="false"> 
-        <template slot="label" v-if="$slots.label">
-            <slot name="label"></slot>
-        </template> 
-
         <input ref="input" :type="type" :name="name"
             @input="onInput"
             @focus="onFocus" 
@@ -18,6 +14,10 @@
         <icon name="close" v-if="clearable && val" @click.native="clear" class="vm-form-clear" :size=".14"/>
         <span v-if="$slots.default" class="vm-form-textinput-other"><slot></slot></span>    
 
+        <template slot="label" v-if="$slots.label">
+            <slot name="label"></slot>
+        </template> 
+        
         <template slot="extra" v-if="$slots.extra">
             <slot name="extra"></slot>
         </template> 
