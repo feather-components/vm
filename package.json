@@ -1,5 +1,5 @@
 {
-  "name": "vm",
+  "name": "vmui",
   "version": "1.1.25",
   "description": "基于vue2的ui组件库",
   "main": "src/index.js",
