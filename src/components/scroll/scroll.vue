@@ -38,8 +38,8 @@
         }
 
         .vm-scroll-inner{
-            min-height: 100%; 
-        }  
+            min-height: 100%;
+        }
     }
 
     .vm-scroll-x{
@@ -85,6 +85,11 @@
                 default: 'cubic-bezier(0.1, 0.57, 0.1, 1)'
             },
 
+            bounce: {
+                type: String,
+                default: 'cubic-bezier(0.175, 0.885, 0.32, 1.05)'
+            },
+
             ignores: {
                 type: [RegExp, Function, String],
                 default: null
@@ -124,9 +129,7 @@
                     return !!self.eSize;
                 }
             });
-            
-            Dom.css(self.$refs.inner, 'transition-timing-function', self.ease);
-
+   
             Event.on(self.$refs.inner, 'transitionend webkitTransitionEnd', () => {
                 self.scrollEnd();
             });
@@ -171,14 +174,13 @@
                     Dom.css(self.$refs.bar, method, 100 * self.barPercent + '%');
                 }
 
-                self.resetBase();
                 self.base < self.min && self.scrollTo(self.min, 300);
             },
 
-            resetBase(){ 
+            resetBase(time, pos){ 
                 var self = this;
-                self.baseTime = Date.now();
-                self.base = self.getComputedPos();
+                self.baseTime = time || Date.now();
+                self.base = pos || self.getComputedPos();
             },
 
             onDragStart(event){
@@ -188,16 +190,32 @@
                 self.scrollEnd();
                 self.scrollBarTo(translate);
                 self.refresh();
+                self.resetBase();
+                self.dragingTime = Date.now();
+                self.direction = 0;
                 self.$emit('drag:start', translate);
             },
 
             onDraging(event){
                 var self = this;
-                var duration = Date.now() - self.baseTime, 
+                var time = Date.now();
+                var duration = time - self.dragingTime, 
                     translate = event.data[self.axis],
                     stack = 1;
 
-                duration >= 300 && self.resetBase();
+                if(translate > self.pos){
+                    self.direction == -1 && self.resetBase(time, translate);
+                    self.direction = 1;
+                }else if(translate < self.pos){
+                    self.direction == 1 && self.resetBase(time, translate);
+                    self.direction = -1;
+                }
+
+                if(duration > 100){
+                    self.resetBase(time, translate);
+                }
+
+                self.dragingTime = time;
                 self.$emit('draging', translate); 
                 self.scrollTo(translate, 0, false, true);
                 self.$drag.stack(translate >= self.max || translate <= self.min ? 3 : 1);
@@ -209,7 +227,8 @@
                 if(!self.isMoving) return false;
                 self.isMoving = false;
                 
-                var duration = Date.now() - self.baseTime, destination,
+                var time = Date.now();
+                var duration = time - self.dragingTime, destination,
                     translate = self.pos = event.data[self.axis];
 
                 if(translate >= self.max){
@@ -218,22 +237,27 @@
                     self.scrollTo(destination = 0, duration = translate * 3);
                 }else if(translate <= self.min){ 
                     self.scrollTo(destination = self.min, duration = (self.min - translate) * 5);
-                }else if(duration < 200){
-                    var distance = event.data[self.axis] - self.base;
-                    var speed = Math.abs(distance) / duration, deceleration = 0.0006;
-                    var destination = translate + Math.pow(speed, 3) / (2 * 0.0006) * (distance < 0 ? -1 : 1);
+                }else if(duration < 50){
+                    var distance = translate - self.base;
+                    var speed = Math.max(0.1, Math.min(1.2, Math.abs(distance) / (time - self.baseTime))), deceleration = 0.0006;
+                    var destination = Math.round(translate + Math.pow(speed, 2) / (2 * deceleration) * (distance < 0 ? -1 : 1));
+                    
+                    duration = 1.5 * speed / deceleration;
 
-                    if(destination < self.min){
-                        destination = self.min;
-                        duration = Math.abs(destination - translate) / speed;
-                    }else if(destination > 0){
-                        destination = 0;
-                        duration = Math.abs(destination - translate) / speed;
-                    }else{
-                        duration = speed / deceleration;
-                    }
+                    do{
+                        if(destination < self.min){
+                            duration = Math.max(300, duration * Math.abs((self.min - translate)/destination));
+                            destination = self.min;     
+                        }else if(destination > 0){
+                            duration = Math.max(300, duration * Math.abs(translate / (translate - destination)));
+                            destination = 0;
+                        }else{
+                            self.scrollTo(destination, duration);
+                            break;
+                        }
 
-                    self.scrollTo(destination, duration * 4);
+                        self.scrollTo(destination, duration, void 0, void 0, self.bounce);
+                    }while(0);
                 }
 
                 self.$emit('drag:end', translate, destination, duration);
@@ -242,7 +266,7 @@
                 self.base = null;
             },
 
-            scrollTo(destination, duration = 0, limitMaxOrMin = false, notSetTransform = false){
+            scrollTo(destination, duration = 0, limitMaxOrMin = false, notSetTransform = false, ease){
                 var self = this;
 
                 if(limitMaxOrMin){
@@ -260,12 +284,12 @@
                 }else if(self.isMoving){
                     return false;
                 }else{
-                    self.translateTo(self.$refs.inner, self.pos = destination, duration);
+                    self.translateTo(self.$refs.inner, self.pos = destination, duration, ease);
                     //解决scrolling时无法获取translate的问题
                     self.listenScrolling();
                 }
 
-                self.scrollBarTo(destination, duration);
+                self.scrollBarTo(destination, duration, ease);
             },
 
             scrollToElement(el, duration, limitMaxOrMin){
@@ -275,7 +299,7 @@
                 this.scrollTo(offset[prop] - eOffset[prop], duration, limitMaxOrMin);
             },
 
-            scrollBarTo(destination, duration = 0){
+            scrollBarTo(destination, duration = 0, ease){
                 var self = this;
 
                 if(self.scrollbars && self.eSize && self.iSize){
@@ -285,7 +309,7 @@
                         self.barVisible = false;
                     }, 3000);
                     
-                    self.translateTo(self.$refs.bar, self.eSize * (destination / self.iSize) * -1, duration);
+                    self.translateTo(self.$refs.bar, self.eSize * (destination / self.iSize) * -1, duration, ease);
                 }
             },
 
@@ -293,7 +317,6 @@
                 var self = this;
 
                 function trigger(){
-                    //Util.log(Math.random());
                     if(self.fxer){
                         self.$emit('scrolling', self.pos = self.getComputedPos());
                         self.fxer = setTimeout(trigger, 50);
@@ -323,9 +346,10 @@
                 return this.pos;
             },
 
-            translateTo(el, translate, duration = 0){
+            translateTo(el, translate, duration = 0, ease = this.ease){
                 Dom.css(el, {
                     'transition-duration': `${duration}ms`,
+                    'transition-timing-function': ease,
                     'transform': 'translate3d(' 
                             + (this.axi == 'X' ? translate + 'px' : '0px') + ','
                             + (this.axi == 'Y' ? translate + 'px' : '0px') + ','
@@ -340,23 +364,10 @@
 
         activated(){
             this.$actived = true;
-
-            if(!this.$autosize){
-                return false;
-            }
-                
-            //this.$autosize.resize(false);
-            this.$autosize.observer();
         },
 
         deactivated(){
             this.$actived = false;
-
-            if(!this.$autosize){
-                return false;
-            }
-
-            this.$autosize.unobserver();
         }
     }
 </script>
