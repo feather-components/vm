@@ -1,20 +1,11 @@
 import {Event, Dom, Util} from '../../helper';
 
 class AutoSize{
-    constructor(element, instance){
-        var self = this;
-
-        if(element.style.height){
-            self.height = element.style.height;
-        }
-
-        element.$autosize = self;
-        self.element = element;
-        self.instance = instance;
-        self.initEvent();
-        setTimeout(() => {
-            self.resize(false);
-        });
+    constructor(root){
+        this.$root = root;
+        this.$root.$autosize = this;
+        this.$listens = {};
+        this.$mutation = null;
     }
 
     initEvent(){
@@ -25,67 +16,69 @@ class AutoSize{
         });
     }
 
-    observer(){
-        var self = this;
+    listen(){
+        if(this.$mutation) return false;
 
-        if(self.mutationRoot) return;
-
-        self.mutationRoot = Util.observer(self.instance.$root.$el, {
+        this.$mutation = Util.observer(this.$root, {
+            childList: true,
             attributes: true,
             subtree: true
-        }, (mutations) => {    
-            var change = mutations.some((mutation) => {
-                return mutation.attributeName == 'style' && Dom.contains(mutation.target, self.element);
-            });
-
-            if(change){
-                self.resize();
-            }
-        });
-
-        self.mutationSelf = Util.observer(self.element, {
-            childList: true,
-            subtree: true
         }, (mutations) => {
-            self.resize();
+            this.resizeAll();
         });
     }
 
-    unobserver(){
-        var self = this;
-
-        if(self.mutationRoot){
-            self.mutationRoot.disconnect();
-            self.mutationRoot = null;
-        }
-
-        if(self.mutationSelf){
-            self.mutationSelf.disconnect();
-            self.mutationSelf = null;
-        }
+    pause(){
+        if(!this.$mutation) return false;
+        this.$mutation.disconnect();
+        this.$mutation = null;
     }
 
-    resize(delay = true){
-        this.unobserver();
-        clearTimeout(this.$tid);
-        
-        if(this.delay){
-            this.$tid = setTimeout(() => {
-                this._resize();
-                this.observer();
-            }, 2000);
-        }else{
-            this._resize();
-            this.observer();
-        }
+    observer(element){
+        if(element.style.height) return false;
+
+        element.$autosize = this;
+
+        this.$listens[element.$autosizeid = Date.now()] = {
+            element: element,
+            rect: {}
+        };
+        this.resize(element);
+        this.listen();
     }
 
-    _resize(){
-        var self = this;        
+    unobserver(element){
+        delete this.$listens[element.$autosizeid];
+        delete element.$autosize;
+        delete element.$autosizeid;
+    }
 
-        if(self.height || self.destroyed) return;
+    resizeAll(){
+        clearTimeout(this.$timer);
+        this.$timer = setTimeout(() => {
+            this.pause();
+            for(let i in this.$listens){
+                this.resize(this.$listens[i].element);
+            }
+            this.listen();
+        }, 300);
+    }
 
-        var element = self.element;
+    resize(element, force = false){        
+        let newRect = Dom.rect(element);
+
+        if(!newRect.width){
+            return false;
+        }
+
+        let info = this.$listens[element.$autosizeid];
+        let oldRect = info.rect;
+
+        if(newRect.top == info.rect.top && !force){
+            return false;
+        } 
+
+        info.rect = newRect;
 
         element.style.height = 'auto';
 
@@ -124,7 +117,7 @@ class AutoSize{
             chains.forEach((ele) => {
                 Dom.nexts(ele).forEach((next) => {
                     if(!/absolute|fixed/.test(Dom.css(next, 'position')) && next.offsetTop != ele.offsetTop){
-                        otherHeight += Dom.height(next);
+                        otherHeight += Dom.height(next) + parseFloat(Dom.css(ele, 'margin-bottom') || 0);
                     }
                 });
 
@@ -138,22 +131,30 @@ class AutoSize{
             element.style.overflow = '';
         }
     }
-
-    destroy(){
-        this.unobserver();
-        this.destroyed = true;
-    }
 }
 
 export default{
     bind(element, data, VNode){
+        if(data.value && data.value.enable == false){
+            return false;
+        }
+
         setTimeout(() => {
-            new AutoSize(element, VNode.context);
+            let root = VNode.context.$root.$el;
+            let instance = root.$autosize || new AutoSize(root);
+            instance.observer(element);
         });
     },
 
     unbind(element){
-        element.$autosize.destroy();
+        element.$autosize && element.$autosize.unobserver(element);
+    },
+
+    resize(element){
+        setTimeout(() => {
+            element = element.$el || element;
+            element.$autosize.resize(element, true);
+        }, 10);
     },
 
     AutoSize,

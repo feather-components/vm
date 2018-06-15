@@ -1,5 +1,5 @@
 <template>
-    <div :class="'vm-scroll vm-scroll-' + axis" @scroll="onScroll">
+    <div :class="'vm-scroll vm-scroll-' + axis" @scroll="onScroll" v-autosize="{enable: axis == 'y'}">
         <div ref="inner" class="vm-scroll-inner" @drag:start="onDragStart" @draging="onDraging" @drag:end="onDragEnd">
             <slot name="header"></slot>
             <div class="vm-scroll-content">
@@ -38,8 +38,8 @@
         }
 
         .vm-scroll-inner{
-            min-height: 100%;
-        }
+            min-height: 100%; 
+        }  
     }
 
     .vm-scroll-x{
@@ -142,7 +142,6 @@
                 self.refresh();
             });
 
-            self.axis == 'y' && (this.$autosize = new Autosize.AutoSize(self.$el, self));
             self.$actived = true;
             self.refresh();
         },
@@ -345,8 +344,8 @@
             if(!this.$autosize){
                 return false;
             }
-            
-            this.$autosize.resize(false);
+                
+            //this.$autosize.resize(false);
             this.$autosize.observer();
         },
 

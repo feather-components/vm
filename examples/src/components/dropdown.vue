@@ -15,6 +15,10 @@
                 </scroll>
             </dropdown>
         </div>
+
+        <scroll axis="y" :scrollbars="true" class="row">
+                1233333123
+            </scroll>
     </page>
 </template>
 

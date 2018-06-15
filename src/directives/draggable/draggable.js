@@ -42,12 +42,13 @@ class Draggable{
             }
 
             var {x, y} = self.translates = Draggable.getTransform(self.dom);
-            var {pageX, pageY} = e.touches[0];
+            var {clientX, clientY} = e.touches[0];
 
-            self.touch = {pageX, pageY};
+
+            self.touch = {clientX, clientY};
 
             Event.trigger(self.dom, 'drag:start', {
-                x, y, pageX, pageY, e
+                x, y, clientX, clientY, e
             });
         });
 
@@ -59,11 +60,11 @@ class Draggable{
             e.preventDefault();
 
             var touch = e.touches[0];
-            var {pageX, pageY} = self.touch;
+            var {clientX, clientY} = self.touch;
             var axis = options.axis;
             var x = 0, y = 0;
 
-            var rx = (touch.pageX - pageX)/options.stackTimes, ry = (touch.pageY - pageY)/options.stackTimes;
+            var rx = (touch.clientX - clientX)/options.stackTimes, ry = (touch.clientY - clientY)/options.stackTimes;
             
             if(/x/.test(axis)){
                 x = rx + self.translates.x;
@@ -74,13 +75,13 @@ class Draggable{
             }
 
             var info = {
-                x, y, pageX: touch.pageX, pageY: touch.pageY, e, rx, ry
+                x, y, clientX: touch.clientX, clientY: touch.clientY, e, rx, ry
             };
 
             self.translates = {x, y};
             self.touch = {
-                pageX: touch.pageX,
-                pageY: touch.pageY
+                clientX: touch.clientX,
+                clientY: touch.clientY
             };
 
             if(!options.canDrag.call(self, {x, y, rx, ry})){
@@ -109,11 +110,10 @@ class Draggable{
             }
 
             self.touch = null;
-
-            var {x, y} = Draggable.getTransform(self.dom);
-
             Event.trigger(self.dom, 'drag:end', {
-                x, y, e
+                x: self.translates.x, 
+                y: self.translates.y, 
+                e
             });
         });
     }
