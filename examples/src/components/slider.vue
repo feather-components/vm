@@ -1,20 +1,20 @@
 <template>
     <page>
         <topbar slot="header">slider组件</topbar>
-        <slider @switch="slideTo">
+        <slider @switch="slideTo" axis="x">
             <slider-item style="height: 300px;">
                 向右滑
             </slider-item>
 
             <slider-item>
                 <list 
-                    source="https://3g.163.com/touch/jsonp/sy/recommend/10-10.html?hasad=1&miss=59&refresh=A&offset=0&size=10&callback=?" 
+                    source="https://3g.163.com/touch/jsonp/sy/recommend/10-10.html?hasad=1&miss=59&refresh=A&offset=0&size=10&callback=?"
                     :max-count-per-page="10" 
                     :data-formatter="formatter" 
                     :pullup2load="true"
                     :pulldown2refresh="true"
                     ref="list"
-                    :auto-refresh="false"
+                    :auto-refresh="true"
                 >   
                     <header slot="header">网易实时新闻</header>
                     <template slot="row" scope="props">
@@ -138,7 +138,7 @@
                 return data.list;
             },
 
-            slideTo(from, to){
+            slideTo(to, from){
                 if(to === 1){
                     this.$refs.list.refresh();
                     this.isLoadedNews = true;

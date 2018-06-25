@@ -24,6 +24,10 @@
         methods: {
             resize(){
                 this.$el.style.width = Dom.width(document) + 'px';
+
+                if(this.$parent.axis == 'y'){
+                    this.$el.style.height = Dom.height(document) + 'px';
+                }
             }
         }
     }

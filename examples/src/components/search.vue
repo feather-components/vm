@@ -7,6 +7,8 @@
             :close-callback="cancel"
             :fx="false"
             :close-after-select-history="true"
+            :clear-history-handler="onClearHistory"
+            :empty2load="true"
             @select="select"
             @confirm="confirm"
         >
@@ -56,6 +58,12 @@
 
             confirm(v){
                 Toast('confirm:' + v);
+            },
+
+            onClearHistory(clear){
+                if(window.confirm('确定清空？')){
+                    clear();
+                }
             }
         }
     }

@@ -2,9 +2,10 @@
     <div 
         :class="{
             'vm-slider': true,
-            'vm-slider-transition': transition
+            'vm-slider-transition': transition,
+            'vm-slider-y': axis == 'y'
         }" 
-        v-draggable="{axis: 'x', canDrag: canDrag}"
+        v-draggable="{axis: axis, canDrag: canDrag}"
     >
         <slot></slot>
     </div>
@@ -17,6 +18,12 @@
         align-items: flex-start;
         margin-top: 0px;
         width: 100000000000px;
+    }
+
+    .vm-slider.vm-slider-y{
+        flex-flow: column;
+        width: auto;
+        height: 10000000000px;
     }
 
     .vm-slider-transition{
@@ -37,6 +44,11 @@
         },
 
         props: {
+            axis: {
+                type: String,
+                default: 'x'
+            },
+
             offset: {
                 type: Number,
                 default: 0.25
@@ -72,7 +84,7 @@
         methods: {
             onDragStart(event){
                 this.transition = false;
-                this.min = -(this.$el.children.length - 1) * Dom.width(document);
+                this.min = -(this.$el.children.length - 1) * this.getDocumentSize();
                 this.$emit('drag:start');
             },
 
@@ -81,16 +93,16 @@
             },
 
             onDragEnd(event){
-                let start = -this.$el.children[this.index].offsetLeft;
-                let end = event.data.x;
+                let start = -this.$el.children[this.index][this.axis == 'x' ? 'offsetLeft' : 'offsetTop'];
+                let end = event.data[this.axis];
                 let moved = end - start;
-                let index = this.index + (Math.abs(moved)/Dom.width(document) < this.offset ? 0 : moved > 0 ? -1 : 1);
+                let index = this.index + (Math.abs(moved)/this.getDocumentSize() < this.offset ? 0 : moved > 0 ? -1 : 1);
                 this.$emit('drag:end');                
                 this.to(index);
             },
 
             to(index, transition = true, untrigger = false){
-                var left = index * Dom.width(document);
+                var offset = index * this.getDocumentSize();
                 
                 this.transition = transition;
 
@@ -98,11 +110,12 @@
                     if(index == this.index){
                         this.$emit('reject', this.index);
                     }else{    
-                        this.$emit('switch', this.index = index, this.index);
+                        this.$emit('switch', index, this.index);
                     }
                 }                
 
-                Dom.css(this.$el, 'transform', `translateX(-${left}px)`);
+                this.index = index;
+                Dom.css(this.$el, 'transform', `translate${this.axis.toUpperCase()}(-${offset}px)`);
                 !transition && this.complete();
             },
 
@@ -112,7 +125,12 @@
             },
 
             canDrag(info){
-                return info.x > this.min && info.x < 0;
+                var offset = info[this.axis];
+                return offset > this.min && offset < 0;
+            },
+
+            getDocumentSize(){
+                return this.axis == 'x' ? Dom.width(document) : Dom.height(document);
             }
         }
     }

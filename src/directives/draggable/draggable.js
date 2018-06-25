@@ -78,12 +78,6 @@ class Draggable{
                 x, y, clientX: touch.clientX, clientY: touch.clientY, e, rx, ry
             };
 
-            self.translates = {x, y};
-            self.touch = {
-                clientX: touch.clientX,
-                clientY: touch.clientY
-            };
-
             if(!options.canDrag.call(self, {x, y, rx, ry})){
                 Event.trigger(self.dom, 'drag:reject', info);
                 return false;
@@ -99,6 +93,12 @@ class Draggable{
                     return false;
                 }
             }   
+
+            self.translates = {x, y};
+            self.touch = {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+            };    
 
             Dom.css(self.dom, 'transform', `translate3d(${x}px, ${y}px, 0px)`);
             Event.trigger(self.dom, 'draging', info);

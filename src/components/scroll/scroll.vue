@@ -186,7 +186,6 @@
             onDragStart(event){
                 var self = this, translate = self.pos = event.data[self.axis];
 
-                self.isMoving = true;
                 self.scrollEnd();
                 self.scrollBarTo(translate);
                 self.refresh();
@@ -215,6 +214,7 @@
                     self.resetBase(time, translate);
                 }
 
+                self.isMoving = true;
                 self.dragingTime = time;
                 self.$emit('draging', translate); 
                 self.scrollTo(translate, 0, false, true);

@@ -87,13 +87,23 @@
 
         data(){
             return {
-                bgColor: ''
+                bgColor: this.color
             };
         },
 
         watch: {
             val(v){
-                this.bgColor = v ? this.color : '';
+                this.resetColor();
+            }
+        },
+
+        mounted(){
+            this.resetColor()
+        },
+
+        methods: {
+            resetColor(){
+                this.bgColor = this.val ? this.color : '';
             }
         }
     }

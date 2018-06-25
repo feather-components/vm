@@ -143,6 +143,13 @@
                 }
             },
 
+            paramsFormatter: {
+                type: Function,
+                default(params){
+                    return params;
+                }
+            },
+
             pulldown2refresh: {
                 type: Boolean,
                 default(){
@@ -319,7 +326,7 @@
 
                 self.$http = Ajax({
                     url: self._source,
-                    data: Object.assign({}, self._params || {}, datas),
+                    data: self.paramsFormatter(Object.assign({}, self._params || {}, datas)),
                     dataType: 'json',
                     success(data){
                         self.page == 0 ? self.setData(data) : self.addData(data);  

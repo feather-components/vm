@@ -16,7 +16,7 @@
             <div class="vm-search-history-container" v-if="!empty2load && !val && historys.length">
                 <div class="vm-search-history-header">
                     历史搜索
-                    <a href="javascript:" @click="clearHistory()" class="vm-searcy-history-clear">清除</a>
+                    <a href="javascript:" @click="clickClearHistory()" class="vm-searcy-history-clear">清除</a>
                 </div>
                 <div class="vm-search-historys">
                     <a v-for="(item, index) of historys" class="vm-search-history" href="javascript:" @click="clickHistory(item, index)">
@@ -29,7 +29,7 @@
                 <slot name="desc" v-if="!isEmpty">搜索结果</slot>
             </div>
 
-            <div class="vm-search-default" v-if="!empty2load && !value">
+            <div class="vm-search-default" v-if="!empty2load && !val">
                 <slot name="default"></slot>
             </div>
 
@@ -183,6 +183,13 @@
                 default: true
             },
 
+            clearHistoryHandler: {
+                type: Function,
+                default(clear){
+                    clear();
+                }
+            },
+
             closeCallback: {
                 type: Function,
                 default(){
@@ -243,7 +250,7 @@
                 });
 
                 self.$list.$on('xhr:success', (data) => {
-                    self.caches[self.value] = data;
+                    self.caches[self.val] = data;
                 });
 
                 self.$list.$on('rows:render', (data) => {
@@ -305,6 +312,12 @@
             clickHistory(text){
                 this.val = text;
                 this.submit();
+            },
+
+            clickClearHistory(){
+                this.clearHistoryHandler(() => {
+                    this.clearHistory();
+                });
             },
 
             clearHistory(){
