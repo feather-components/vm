@@ -16,7 +16,7 @@ class Lazyload{
             this.placeholderClassName = 'vm-lazyload-' + Date.now();
             var el = Dom.create(`<style type="text/css">
                 .${this.placeholderClassName}{
-                    background: url(${this.options.placeholder}) center center no-repeat;
+                    background: ${this.options.placeholder.indexOf('/') > -1 ? 'url(' + this.options.placeholder + ')' : this.options.placeholder} center center no-repeat;
                     background-size: .6rem .6rem;
                 }
                 </style>
@@ -32,6 +32,7 @@ class Lazyload{
 
         self.mutation = Util.observer(self.element, {
             attributes: true,
+            childList: true,
             subtree: true
         }, (mutations) => {
             if(mutations[0].target == 'img') return;

@@ -175,7 +175,7 @@
                 Component: !this.pulldown2refresh ? Scroll : Pulldown2refresh,
                 data: [],
                 rows: [],
-                _params: this.params,
+                _params: Object.assign({}, this.params),
                 isLoading: false,
                 isCompleted: false,
                 page: 0,
@@ -223,9 +223,13 @@
                 deep: true,
                 handler(v){
                     var self = this;
-
+                    var params = JSON.stringify(self._params);
+                    
                     self.setParams(v);
-                    self.autoRefresh && self.refresh();
+
+                    if(self.autoRefresh && params != JSON.stringify(self._params)){
+                        self.refresh();
+                    }
                 }
             }
         },
@@ -281,13 +285,13 @@
                 this.$emit('data:add', source);
             },
 
-            refresh(){
+            refresh(animation = true){
                 var self = this;
 
                 self.page = 0;
                 self.isCompleted = false;
                 self.isLoading = false;
-                self.$scroll.refresh(false);
+                self.$scroll.refresh(false, animation);
                 self.$emit('refresh');
                 setTimeout(() => self.load(), 0);
             },

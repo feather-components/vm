@@ -87,7 +87,7 @@
 
             bounce: {
                 type: String,
-                default: 'cubic-bezier(0.175, 0.885, 0.32, 1.05)'
+                default: 'cubic-bezier(0.175, 0.885, 0.32, 1.1)'
             },
 
             ignores: {
@@ -187,7 +187,7 @@
                 var self = this, translate = self.pos = event.data[self.axis];
 
                 self.scrollEnd();
-                self.scrollBarTo(translate);
+                //self.scrollBarTo(translate);
                 self.refresh();
                 self.resetBase();
                 self.dragingTime = Date.now();
@@ -232,17 +232,17 @@
                     translate = self.pos = event.data[self.axis];
 
                 if(translate >= self.max){
-                    self.scrollTo(destination = self.max, duration = (translate - self.max) * 5);
+                    self.scrollTo(destination = self.max, duration = 1000);
                 }else if(translate > 0 && translate < self.max){
-                    self.scrollTo(destination = 0, duration = translate * 3);
+                    self.scrollTo(destination = 0, duration = 1000);
                 }else if(translate <= self.min){ 
-                    self.scrollTo(destination = self.min, duration = (self.min - translate) * 5);
+                    self.scrollTo(destination = self.min, duration = 1000);
                 }else if(duration < 50){
                     var distance = translate - self.base;
                     var speed = Math.max(0.1, Math.min(1.2, Math.abs(distance) / (time - self.baseTime))), deceleration = 0.0006;
                     var destination = Math.round(translate + Math.pow(speed, 2) / (2 * deceleration) * (distance < 0 ? -1 : 1));
                     
-                    duration = 1.5 * speed / deceleration;
+                    duration = 2 * speed / deceleration;
 
                     do{
                         if(destination < self.min){
@@ -256,7 +256,7 @@
                             break;
                         }
 
-                        self.scrollTo(destination, duration, void 0, void 0, self.bounce);
+                        self.scrollTo(destination, duration, void 0, void 0, duration < 1500 ? self.bounce : void 0);
                     }while(0);
                 }
 
@@ -333,8 +333,7 @@
 
                 clearTimeout(self.fxer);
                 self.fxer = false;
-                self.pos = self.getComputedPos();
-                self.translateTo(self.$refs.inner, self.pos);
+                self.translateTo(self.$refs.inner, self.pos = self.getComputedPos());
                 self.$emit('scroll:end', self.pos);
             },
 

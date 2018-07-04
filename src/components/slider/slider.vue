@@ -34,7 +34,7 @@
 
 <script>
     import Draggable from '../../directives/draggable';
-    import {Event, Dom} from '../../helper';
+    import {Event, Dom, Util} from '../../helper';
 
     export default {
         name: 'slider',
@@ -89,10 +89,17 @@
             },
 
             onDraging(event){
+                this.isMoving = true;
                 this.$emit('draging', event);
             },
 
             onDragEnd(event){
+                if(!this.isMoving){
+                    return false;
+                }
+
+                this.isMoving = false;
+
                 let start = -this.$el.children[this.index][this.axis == 'x' ? 'offsetLeft' : 'offsetTop'];
                 let end = event.data[this.axis];
                 let moved = end - start;
@@ -102,19 +109,18 @@
             },
 
             to(index, transition = true, untrigger = false){
+                if(index == this.index){
+                    this.$emit('reject', index);
+                    return false;
+                }
+
                 var offset = index * this.getDocumentSize();
                 
                 this.transition = transition;
 
-                if(!untrigger){
-                    if(index == this.index){
-                        this.$emit('reject', this.index);
-                    }else{    
-                        this.$emit('switch', index, this.index);
-                    }
-                }                
-
+                var oldIndex = this.index;
                 this.index = index;
+                !untrigger && this.$emit('switch', this.index, oldIndex);
                 Dom.css(this.$el, 'transform', `translate${this.axis.toUpperCase()}(-${offset}px)`);
                 !transition && this.complete();
             },

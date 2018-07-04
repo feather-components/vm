@@ -103,14 +103,14 @@
                 this.limitType() == 1 && this.refresh();
             },  
 
-            refresh(trigger = true){
+            refresh(trigger = true, animation = true){
                 trigger && this.$emit('refresh', this.recover);
                 this.isRefreshing = true; 
-                setTimeout(() => this.scrollTo(this.pulldownHeight), 0);
+                animation && setTimeout(() => this.scrollTo(this.pulldownHeight), 0);
             },
 
             recover(){
-                this.isRefreshing && this.scrollTo(0, 500);
+                this.isRefreshing && this.scrollTo(0, 1000);
                 this.isRefreshing = false;
                 this.$emit('recover');
             },
