@@ -221,7 +221,11 @@
             setValue(v){
                 v = Util.makeArray(v);
 
-                if(v.toString() === this.vals.toString()){
+                let vals = this.vals.map((item) => {
+                    return item.value;
+                });
+
+                if(v.toString() === vals.toString()){
                     return false;
                 }   
 
