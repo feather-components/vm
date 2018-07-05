@@ -1,7 +1,10 @@
 <template>
     <cell :label="label" class="vm-form-textarea" :tips="tips"> 
-
         <div class="vm-form-textarea-inner">
+            <span v-if="!val" class="vm-form-textarea-ph" @click="clickPh">
+                <slot name="placeholder">{{placeholder}}</slot>
+            </span>
+
             <div ref="area"
                 class="vm-form-textarea-edit needsclick"
                 :style="{
@@ -14,9 +17,6 @@
                 @click="click"
             ></div>
 
-            <span v-if="!val" class="vm-form-textarea-ph" @click="clickPh">
-                <slot name="placeholder">{{placeholder}}</slot>
-            </span>
             <div class="vm-form-textarea-icon" v-if="$slots.icon"><slot name="icon"></slot></div>
         </div>
 
@@ -45,9 +45,12 @@
         top: 0px;
         color: #ccc;
         font-weight: 300;
+        z-index: 1;
     }
 
     .vm-form-textarea-edit{
+        position: relative;
+        z-index: 2;
         overflow: scroll;
         outline: none;
         flex: 1;
