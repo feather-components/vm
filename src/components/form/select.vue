@@ -99,8 +99,13 @@ export default{
             visible: false
         });
 
+        let isOpen = false;
+
+        $iosselect.$on('open', () => isOpen = true);
+        $iosselect.$on('close', () => isOpen = false);
+
         $iosselect.$on('select', () => {
-            this.val != null && (this.selectedLabels = this.selectedLabelFormatter($iosselect.getLabels()));
+            this.val != null && !isOpen && (this.selectedLabels = this.selectedLabelFormatter($iosselect.getLabels()));
         });
 
         $iosselect.$on('confirm', (vals, labels) => {
