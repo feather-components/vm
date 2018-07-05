@@ -162,9 +162,10 @@
                 if(!data.length) return false;
 
                 let select = [data[0], 0, level];
+                let val = this.vals[level] ? this.vals[level].value : this.val[level];
 
                 for(let i = 0; i < data.length; i++){
-                    if(data[i].value == this.val[level]){
+                    if(data[i].value == val){
                         select = [data[i], i, level];
                         break;
                     }
@@ -177,7 +178,7 @@
                 let $scroll = this.$refs.scrolls[level];
 
                 $scroll.scrollTo(-HEIGHT * index, duration || 400);
-                this.vals.splice(level, 100000, data);
+                this.vals.splice(level, 1, data);
                 
                 if(data.children){
                     this.renderList(data.children, level + 1);
@@ -185,7 +186,7 @@
                     this.renderList(this.data[level + 1], level + 1);
                 }
 
-                this.$emit('select', this.vals);
+                this.$emit('select', this.vals.slice(0, level + 1));
             },
 
             listen(level){
