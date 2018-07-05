@@ -62,10 +62,10 @@
             },
 
             value: {
-            	type: Array,
-				default(){
-					return []
-				}
+                type: Array,
+                default(){
+                    return []
+                }
             },
 
             dataFormatter: {
@@ -162,10 +162,9 @@
                 if(!data.length) return false;
 
                 let select = [data[0], 0, level];
-                let val = this.vals[level] ? this.vals[level].value : this.val[level];
 
                 for(let i = 0; i < data.length; i++){
-                    if(data[i].value == val){
+                    if(data[i].value == this.val[level]){
                         select = [data[i], i, level];
                         break;
                     }
@@ -178,7 +177,7 @@
                 let $scroll = this.$refs.scrolls[level];
 
                 $scroll.scrollTo(-HEIGHT * index, duration || 400);
-                this.vals.splice(level, 1, data);
+                this.vals.splice(level, 100000, data);
                 
                 if(data.children){
                     this.renderList(data.children, level + 1);
@@ -186,7 +185,7 @@
                     this.renderList(this.data[level + 1], level + 1);
                 }
 
-                this.$emit('select', this.vals.slice(0, level + 1));
+                this.$emit('select', this.vals);
             },
 
             listen(level){
@@ -221,11 +220,7 @@
             setValue(v){
                 v = Util.makeArray(v);
 
-                let vals = this.vals.map((item) => {
-                    return item.value;
-                });
-
-                if(v.toString() === vals.toString()){
+                if(v.toString() === this.val.toString()){
                     return false;
                 }   
 
