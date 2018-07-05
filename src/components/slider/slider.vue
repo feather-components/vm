@@ -109,18 +109,17 @@
             },
 
             to(index, transition = true, untrigger = false){
+                var offset = index * this.getDocumentSize();
+
                 if(index == this.index){
                     this.$emit('reject', index);
-                    return false;
+                }else{
+                    var oldIndex = this.index;
+                    this.index = index;
+                    !untrigger && this.$emit('switch', this.index, oldIndex);
                 }
 
-                var offset = index * this.getDocumentSize();
-                
-                this.transition = transition;
-
-                var oldIndex = this.index;
-                this.index = index;
-                !untrigger && this.$emit('switch', this.index, oldIndex);
+                this.transition = transition;                
                 Dom.css(this.$el, 'transform', `translate${this.axis.toUpperCase()}(-${offset}px)`);
                 !transition && this.complete();
             },

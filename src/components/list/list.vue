@@ -175,7 +175,7 @@
                 Component: !this.pulldown2refresh ? Scroll : Pulldown2refresh,
                 data: [],
                 rows: [],
-                _params: Object.assign({}, this.params),
+                _params: {},
                 isLoading: false,
                 isCompleted: false,
                 page: 0,
@@ -205,8 +205,8 @@
 
         mounted(){
             var self = this;
-
-            self._params = self.params;
+            
+            self.setParams(self.params);
             self.setSource(self.source);    
             self.$nextTick(() => self.init());
         },
@@ -249,9 +249,9 @@
 
             setParams(params, append){
                 if(append){
-                    this._params = Util.assign(this._params, params);
+                    this._params = Util.assign({}, this._params, params);
                 }else{
-                    this._params = params;
+                    this._params = Util.assign({}, params);
                 }
             },
 
