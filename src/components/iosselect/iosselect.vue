@@ -221,7 +221,7 @@
             setValue(v){
                 v = Util.makeArray(v);
 
-                if(v.toString() === this.val.toString()){
+                if(v.toString() === this.vals.toString()){
                     return false;
                 }   
 
