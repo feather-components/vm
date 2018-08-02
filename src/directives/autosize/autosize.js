@@ -6,13 +6,16 @@ class AutoSize{
         this.$root.$autosize = this;
         this.$listens = {};
         this.$mutation = null;
+        setTimeout(() => {
+            this.initEvent();
+        }, 1000)
     }
 
     initEvent(){
         var self = this;
 
         Event.on(window, 'resize', () => {
-            self.resize();
+            self.resizeAll(true);
         });
     }
 
@@ -53,12 +56,12 @@ class AutoSize{
         delete element.$autosizeid;
     }
 
-    resizeAll(){
+    resizeAll(force = false){
         clearTimeout(this.$timer);
         this.$timer = setTimeout(() => {
             this.pause();
             for(let i in this.$listens){
-                this.resize(this.$listens[i].element);
+                this.resize(this.$listens[i].element, force);
             }
             this.listen();
         }, 300);

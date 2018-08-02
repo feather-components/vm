@@ -104,9 +104,11 @@
             },  
 
             refresh(trigger = true, animation = true){
+                if(this.isRefreshing) return;
+
+                animation && this.scrollTo(this.pulldownHeight, 500);
                 trigger && this.$emit('refresh', this.recover);
                 this.isRefreshing = true; 
-                animation && setTimeout(() => this.scrollTo(this.pulldownHeight), 0);
             },
 
             recover(){
