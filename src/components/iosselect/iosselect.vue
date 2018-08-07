@@ -39,7 +39,7 @@
     setTimeout(() => {
         HEIGHT = div.offsetHeight;
         div.parentNode.removeChild(div);
-    }, 100);
+    }, 1000);
 
     export default {
         name: 'iosselect',
