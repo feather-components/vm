@@ -1,7 +1,7 @@
 <template>
     <cell :label="label" class="vm-form-textarea" :tips="tips"> 
         <div class="vm-form-textarea-inner">
-            <span v-if="!val" class="vm-form-textarea-ph" @click="clickPh">
+            <span v-show="!val" class="vm-form-textarea-ph" @click="clickPh">
                 <slot name="placeholder">{{placeholder}}</slot>
             </span>
 

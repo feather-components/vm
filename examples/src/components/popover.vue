@@ -6,13 +6,11 @@
                 <i class="ion-ios-add icon"></i>
                 <popover :actions="{
                     '扫一扫': {
-                        icon: 'ion-ios-person-add',
                         callback: showMsg
                     },
                     '添加朋友': showMsg,
                     '收付款': showMsg,
                     '返回上个页面': {
-                        icon: 'ion-ios-arrow-back',
                         callback: back
                     }
                 }" />
@@ -23,13 +21,11 @@
             点击我
             <popover :actions="{
                     '扫一扫': {
-                        icon: 'ion-ios-person-add',
                         callback: showMsg
                     },
                     '添加朋友': showMsg,
                     '收付款': showMsg,
                     '返回上个页面': {
-                        icon: 'ion-ios-arrow-back',
                         callback: back
                     }
                 }" />
