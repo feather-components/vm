@@ -187,7 +187,6 @@
                 var self = this, translate = self.pos = event.data[self.axis];
 
                 self.scrollEnd();
-                //self.scrollBarTo(translate);
                 self.refresh();
                 self.resetBase();
                 self.dragingTime = Date.now();
@@ -338,7 +337,15 @@
             },
 
             limitType(){
-                return this.pos >= this.max ? 1 : (this.pos <= this.min ? -1 : 0);
+                return this.isAtTop() ? 1 : (this.isAtBottom() ? -1 : 0);
+            },
+
+            isAtBottom(){
+                return this.pos <= this.min;
+            },
+
+            isAtTop(){
+                return this.pos >= this.max;
             },
 
             getPos(){

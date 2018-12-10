@@ -6,13 +6,15 @@
 
         <slot></slot>
 
-        <slot name="rows" :data="rows">
-            <ul class="vm-list-rows" ref="rows">
-                <li v-for="(item, index) in rows" @click="$emit('row:click', item, index)" class="vm-list-item">
-                    <slot name="row" :data="item">{{item}}</slot>
-                </li>
-            </ul>
-        </slot>
+        <div ref="vm-list-rows-container">
+            <slot name="rows" :data="rows">
+                <ul class="vm-list-rows" ref="rows">
+                    <li v-for="(item, index) in rows" @click="$emit('row:click', item, index)" class="vm-list-item">
+                        <slot name="row" :data="item">{{item}}</slot>
+                    </li>
+                </ul>
+            </slot>
+        </div>
 
         <div class="vm-list-loading" v-if="showLoadingStatus">
             <slot name="loading"><i class="vm-list-loading-icon"></i>正在加载中</slot>
@@ -96,6 +98,11 @@
         name: 'list',
 
         props: {
+            optimize: {
+                type: Boolean,
+                default: true
+            },
+
             pageLabel: {
                 type: String,
                 default: 'page'
@@ -108,7 +115,7 @@
 
             scrollbars: {
                 type: Boolean,
-                default: false
+                default: true
             },
 
             autoRefresh: {
@@ -152,16 +159,12 @@
 
             pulldown2refresh: {
                 type: Boolean,
-                default(){
-                    return false;
-                }
+                default: false
             },
 
             pullup2load: {
                 type: Boolean,
-                default(){
-                    return false;
-                }
+                default: false
             },
 
             showMsg: {
