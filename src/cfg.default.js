@@ -14,7 +14,7 @@ export default {
         primary: ''
     },
     'segment.color': '#fff',
-    'segment.high-color': '',
+    'segment.high-color': '#E74D4D',
     'loading.color': '',
     'tabs.high-color': ''
 };

@@ -3,12 +3,10 @@ node_js:
   - "4"
 
 before_script:
-  - npm install -g webpack@~2.6
   - npm install
 
 script:
- - cd examples
- - webpack
+ - npm run example
 
 after_script:
   - cd ./_build_
@@ -20,6 +18,7 @@ after_script:
   - git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" master:master
 
 env:
+
  global:
    - GH_REF: github.com/vmui/vmui.github.io.git
    - NODE_ENV: ci
