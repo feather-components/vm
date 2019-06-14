@@ -12,55 +12,6 @@
     </div>
 </template>
 
-<style lang="less">
-    .vm-scroll{
-        position: relative;
-        width: 100%;
-
-        .vm-scroll-content{
-            overflow: hidden;
-        }
-
-        .vm-scroll-bar{
-            position: absolute;
-            border-radius: 5px;
-            background: #ccc;
-        }
-    }
-
-    .vm-scroll-y{
-        overflow: hidden;
-        & > .vm-scroll-bar{
-            right: 0px;
-            width: 2px;
-            height: 0px;
-            top: 0px;
-        }
-
-        .vm-scroll-inner{
-            min-height: 100%;
-        }
-    }
-
-    .vm-scroll-x{
-        overflow-x: hidden;
-        overflow-y: auto;
-        _height: 1%;
-
-        & > .vm-scroll-bar{
-            height: 2px;
-            width: 0px;
-            left: 0px;
-            bottom: 0px;
-        }
-
-        & > .vm-scroll-inner{
-            float: left;
-            white-space: nowrap;
-        }
-    }
-</style>
-
 <script>
 import Autosize from '../../directives/autosize';
 import Draggable from '../../directives/draggable';
@@ -381,3 +332,53 @@ export default {
     }
 };
 </script>
+
+<style lang="less">
+.vm-scroll {
+    position: relative;
+    width: 100%;
+
+    .vm-scroll-content {
+        overflow: hidden;
+    }
+
+    .vm-scroll-bar {
+        position: absolute;
+        border-radius: 5px;
+        background: #ccc;
+    }
+}
+
+.vm-scroll-y {
+    overflow: hidden;
+
+    &>.vm-scroll-bar {
+        right: 0px;
+        width: 2px;
+        height: 0px;
+        top: 0px;
+    }
+
+    .vm-scroll-inner {
+        min-height: 100%;
+    }
+}
+
+.vm-scroll-x {
+    overflow-x: hidden;
+    overflow-y: auto;
+    _height: 1%;
+
+    &>.vm-scroll-bar {
+        height: 2px;
+        width: 0px;
+        left: 0px;
+        bottom: 0px;
+    }
+
+    &>.vm-scroll-inner {
+        float: left;
+        white-space: nowrap;
+    }
+}
+</style>
