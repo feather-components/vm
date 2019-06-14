@@ -1,6 +1,6 @@
 <template>
     <page>
-        <topbar :left-enabled="false">vm</topbar>
+        <vm-topbar :left-enabled="false">vm</vm-topbar>
 
         <vm-scroll class="navs" >
             <a href="javascript:" v-for="item of source" @click="go(item)">{{item}}</a>
@@ -36,52 +36,51 @@
 </style>
 
 <script>
-    import {
+import {
+    List,
+    Page,
+    Topbar
+} from 'vm';
+
+export default {
+    components: {
         List,
-        Page,
-        Topbar
-    } from 'vm';
+        Page
+    },
 
-    export default{
-        components: {
-            List,
-            Page,
-            Topbar
-        },
+    data () {
+        return {
+            source: [
+                'components/layout',
+                'components/button',
+                'components/segment',
+                'components/forward',
+                'components/overlay',
+                'components/alert',
+                'components/toast',
+                'components/scroll',
+                'components/list',
+                'components/actionsheet',
+                'components/dropdown',
+                'components/search',
+                'components/searchbar',
+                'components/uploader',
+                'components/popover',
+                'components/form',
+                'components/filter',
+                'components/slider',
+                'components/tabs',
+                'directives/badge',
+                'directives/lazyload',
+                'directives/draggable'
+            ]
+        };
+    },
 
-        data(){
-            return {
-                source: [
-                    'components/layout',
-                    'components/button',
-                    'components/segment',
-                    'components/forward',
-                    'components/overlay',
-                    'components/alert',
-                    'components/toast',
-                    'components/scroll',
-                    'components/list',
-                    'components/actionsheet',
-                    'components/dropdown',
-                    'components/search',
-                    'components/searchbar',
-                    'components/uploader',
-                    'components/popover',
-                    'components/form',
-                    'components/filter',
-                    'components/slider',
-                    'components/tabbar',
-                    'directives/badge',
-                    'directives/lazyload',
-                    'directives/draggable'
-                ]
-            }
-        },
-
-        methods: {
-            go(url){
-                this.$router.push(url);
-            }
+    methods: {
+        go (url) {
+            this.$router.push(url);
         }
-    }                    
+    }
+};
 </script>

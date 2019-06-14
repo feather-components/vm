@@ -1,5 +1,5 @@
 <template>
-    <cell :label="label" class="vm-form-switch-box" :vertical-layout="false"> 
+    <cell :label="label" class="vm-form-switch-box" :vertical-layout="false">
         <span class="vm-form-switch">
             <input type="checkbox" :id="name" ref="checkbox" class="vm-form-switch" v-model="val" />
             <label :for="name">
@@ -58,59 +58,59 @@
 </style>
 
 <script>
-    import Cell from './cell';
-    import {Single} from './abstract';
-    import {Util} from '../../helper';
+import Cell from './cell';
+import {Single} from './abstract';
+import {Util} from '../../helper';
 
-    var Switch = {
-        name: 'switch',
+var Switch = {
+    name: 'switch',
 
-        mixins: [Cell, Single],
+    mixins: [Cell, Single],
 
-        props: {
-            disabled: {
-                type: Boolean,
-                default: false
-            },
-
-            color: {
-                type: String,
-                default(){
-                    return Switch.config('color');
-                }
-            }
+    props: {
+        disabled: {
+            type: Boolean,
+            default: false
         },
 
-        components: {
-            Cell
-        },
-
-        data(){
-            return {
-                bgColor: this.color
-            };
-        },
-
-        watch: {
-            val(v){
-                this.resetColor();
-            }
-        },
-
-        mounted(){
-            this.resetColor()
-        },
-
-        methods: {
-            resetColor(){
-                this.bgColor = this.val ? this.color : '';
+        color: {
+            type: String,
+            default () {
+                return Switch.config('color');
             }
         }
+    },
+
+    components: {
+        Cell
+    },
+
+    data () {
+        return {
+            bgColor: this.color
+        };
+    },
+
+    watch: {
+        val (v) {
+            this.resetColor();
+        }
+    },
+
+    mounted () {
+        this.resetColor();
+    },
+
+    methods: {
+        resetColor () {
+            this.bgColor = this.val ? this.color : '';
+        }
     }
+};
 
-    Util.defineConfig(Switch, {
-        color: '#6281c2'
-    });
+Util.defineConfig(Switch, {
+    color: '#6281c2'
+});
 
-    export default Switch;
+export default Switch;
 </script>

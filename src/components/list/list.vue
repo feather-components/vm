@@ -55,7 +55,7 @@
 
     .vm-list-loading-icon{
         display: inline-block;
-        width: 0.16rem; 
+        width: 0.16rem;
         height: 0.16rem;
         background-image: url(../../assets/loading.gif?__inline);
         background-size: 100%;
@@ -90,293 +90,293 @@
 </style>
 
 <script>
-    import {Pulldown2refresh, Scroll} from '../scroll';
-    import {Dom, Util} from '../../helper';
-    import Ajax from 'ajax';
+import {Pulldown2refresh, Scroll} from '../scroll';
+import {Dom, Util} from '../../helper';
+import Ajax from 'ajax';
 
-    export default{
-        name: 'list',
+export default {
+    name: 'list',
 
-        props: {
-            optimize: {
-                type: Boolean,
-                default: true
-            },
+    props: {
+        optimize: {
+            type: Boolean,
+            default: true
+        },
 
-            pageLabel: {
-                type: String,
-                default: 'page'
-            },
+        pageLabel: {
+            type: String,
+            default: 'page'
+        },
 
-            pageSizeLabel: {
-                type: String,
-                default: 'count'
-            },
+        pageSizeLabel: {
+            type: String,
+            default: 'count'
+        },
 
-            scrollbars: {
-                type: Boolean,
-                default: true
-            },
+        scrollbars: {
+            type: Boolean,
+            default: true
+        },
 
-            autoRefresh: {
-                type: Boolean,
-                default: true
-            },
+        autoRefresh: {
+            type: Boolean,
+            default: true
+        },
 
-            source: {
-                default(){
-                    return [];
-                }
-            },
-
-            dataFormatter: {
-                type: Function,
-                default(data = []){
-                    return data;
-                }
-            },
-
-            maxCountPerPage: {
-                type: Number,
-                default(){
-                    return 20;
-                }
-            },
-
-            params: {
-                type: Object,
-                default(){
-                    return {};
-                }
-            },
-
-            paramsFormatter: {
-                type: Function,
-                default(params){
-                    return params;
-                }
-            },
-
-            pulldown2refresh: {
-                type: Boolean,
-                default: false
-            },
-
-            pullup2load: {
-                type: Boolean,
-                default: false
-            },
-
-            showMsg: {
-                type: Boolean,
-                default: true
+        source: {
+            default () {
+                return [];
             }
         },
 
-        data(){
-            return {
-                Component: !this.pulldown2refresh ? Scroll : Pulldown2refresh,
-                data: [],
-                rows: [],
-                _params: {},
-                isLoading: false,
-                isCompleted: false,
-                page: 0,
-                error: 0,
-                $scroll: null,
-                _source: ''
+        dataFormatter: {
+            type: Function,
+            default (data = []) {
+                return data;
             }
         },
 
-        computed: {
-            showLoadingStatus(){
-                return !this.isCompleted && this.pullup2load && !this.error && this.page >= 1;
-            },
-
-            showErrorStatus(){
-                return !this.isCompleted && this.error && !this.isLoading;
-            },
-
-            showNoMoreStatus(){
-                return this.page >= 1 && this.rows.length && this.isCompleted;
-            },
-
-            showEmptyStatus(){
-                return !this.rows.length && this.isCompleted;
+        maxCountPerPage: {
+            type: Number,
+            default () {
+                return 20;
             }
         },
 
-        mounted(){
+        params: {
+            type: Object,
+            default () {
+                return {};
+            }
+        },
+
+        paramsFormatter: {
+            type: Function,
+            default (params) {
+                return params;
+            }
+        },
+
+        pulldown2refresh: {
+            type: Boolean,
+            default: false
+        },
+
+        pullup2load: {
+            type: Boolean,
+            default: false
+        },
+
+        showMsg: {
+            type: Boolean,
+            default: true
+        }
+    },
+
+    data () {
+        return {
+            Component: !this.pulldown2refresh ? Scroll : Pulldown2refresh,
+            data: [],
+            rows: [],
+            _params: {},
+            isLoading: false,
+            isCompleted: false,
+            page: 0,
+            error: 0,
+            $scroll: null,
+            _source: ''
+        };
+    },
+
+    computed: {
+        showLoadingStatus () {
+            return !this.isCompleted && this.pullup2load && !this.error && this.page >= 1;
+        },
+
+        showErrorStatus () {
+            return !this.isCompleted && this.error && !this.isLoading;
+        },
+
+        showNoMoreStatus () {
+            return this.page >= 1 && this.rows.length && this.isCompleted;
+        },
+
+        showEmptyStatus () {
+            return !this.rows.length && this.isCompleted;
+        }
+    },
+
+    mounted () {
+        var self = this;
+
+        self.setParams(self.params);
+        self.setSource(self.source);
+        self.$nextTick(() => self.init());
+    },
+
+    watch: {
+        source (v) {
             var self = this;
-            
-            self.setParams(self.params);
-            self.setSource(self.source);    
-            self.$nextTick(() => self.init());
+
+            self.setSource(v);
+            self.autoRefresh && self.refresh();
         },
 
-        watch: {
-            source(v){
+        params: {
+            deep: true,
+            handler (v) {
                 var self = this;
+                var params = JSON.stringify(self._params);
 
-                self.setSource(v);
-                self.autoRefresh && self.refresh();
-            },
+                self.setParams(v);
 
-            params: {
-                deep: true,
-                handler(v){
-                    var self = this;
-                    var params = JSON.stringify(self._params);
-                    
-                    self.setParams(v);
-
-                    if(self.autoRefresh && params != JSON.stringify(self._params)){
-                        self.refresh();
-                    }
+                if (self.autoRefresh && params != JSON.stringify(self._params)) {
+                    self.refresh();
                 }
-            }
-        },
-
-        methods: {
-            init(){
-                var self = this;
-
-                self.$scroll = self.$refs.scroll;
-                self.autoRefresh && self.refresh(false);
-            },
-
-            onScrolling(...args){
-                this.pullup2load && this.$scroll.limitType() == -1 && this.load();
-                this.$emit('scrolling', ...args);
-            },
-
-            setParams(params, append){
-                if(append){
-                    this._params = Util.assign({}, this._params, params);
-                }else{
-                    this._params = Util.assign({}, params);
-                }
-            },
-
-            setSource(source = ''){
-                if(typeof source != 'string'){
-                    this.setData(source);
-                }else{
-                    this._source = source;
-                }
-            },
-
-            setData(data = []){
-                this.data = [];
-                this.addData(data);
-            },
-
-            scrollTo(...args){
-                this.$scroll.scrollTo(...args);
-            },
-
-            scrollToElement(...args){
-                this.$scroll.scrollToElement(...args);
-            },
-
-            addData(source){
-                try{
-                    source = this.dataFormatter(source);
-                }catch(e){}
-
-                this.data = this.data.concat(source || []);
-                this.$emit('data:add', source);
-            },
-
-            refresh(animation = true){
-                var self = this;
-
-                self.page = 0;
-                self.isCompleted = false;
-                self.isLoading = false;
-                self.$scroll.refresh(false, animation);
-                self.$emit('refresh');
-                setTimeout(() => self.load(), 0);
-            },
-
-            load(){
-                var self = this;
-
-                self.error = null; 
-
-                if(self.isCompleted){
-                    return false;
-                }
-
-                if(self.isLoading){
-                    return false;
-                }
-
-                if(self._source 
-                    && typeof self._source == 'string' 
-                    && (self.rows.length == self.data.length || self.page == 0)
-                ){
-                    self.loadRemote();
-                }else{
-                    self.renderRows();
-                }
-            },
-
-            loadRemote(){
-                var self = this, datas = {};
-
-                self.abort();
-                self.isLoading = true;
-
-                datas[self.pageLabel] = self.page + 1;
-                datas[self.pageSizeLabel] = self.maxCountPerPage;
-
-                self.$http = Ajax({
-                    url: self._source,
-                    data: self.paramsFormatter(Object.assign({}, self._params || {}, datas)),
-                    dataType: 'json',
-                    success(data){
-                        self.page == 0 ? self.setData(data) : self.addData(data);  
-                        self.renderRows();
-                        self.$emit('xhr:success', data);
-                    },
-                    error(data){
-                        self.error = data;
-                        self.$emit('xhr:error');
-                        self.isLoading = false;
-                    },
-                    complete(){
-                        self.$http = null;
-                    }
-                });
-            },
-
-            abort(){
-                return this.$http && this.$http.abort();
-            },
-
-            renderRows(){
-                var self = this;
-                var page = ++self.page;
-
-                var rows = self.data.slice(self.maxCountPerPage * (page - 1), self.maxCountPerPage * page);
-
-                if(!self.pullup2load || rows.length < self.maxCountPerPage){
-                    self.isCompleted = true;
-                    self.$emit('nomore');
-                }
-
-                if(page == 1){
-                    self.rows = rows;
-                    self.$emit('refresh:success', rows);
-                    self.pulldown2refresh && self.$scroll.recover();
-                }else{
-                    self.rows = self.rows.concat(rows);
-                }
-
-                self.isLoading = false;
-                self.$emit('rows:render', rows);
             }
         }
+    },
+
+    methods: {
+        init () {
+            var self = this;
+
+            self.$scroll = self.$refs.scroll;
+            self.autoRefresh && self.refresh(false);
+        },
+
+        onScrolling (...args) {
+            this.pullup2load && this.$scroll.limitType() == -1 && this.load();
+            this.$emit('scrolling', ...args);
+        },
+
+        setParams (params, append) {
+            if (append) {
+                this._params = Util.assign({}, this._params, params);
+            } else {
+                this._params = Util.assign({}, params);
+            }
+        },
+
+        setSource (source = '') {
+            if (typeof source != 'string') {
+                this.setData(source);
+            } else {
+                this._source = source;
+            }
+        },
+
+        setData (data = []) {
+            this.data = [];
+            this.addData(data);
+        },
+
+        scrollTo (...args) {
+            this.$scroll.scrollTo(...args);
+        },
+
+        scrollToElement (...args) {
+            this.$scroll.scrollToElement(...args);
+        },
+
+        addData (source) {
+            try {
+                source = this.dataFormatter(source);
+            } catch (e) {}
+
+            this.data = this.data.concat(source || []);
+            this.$emit('data:add', source);
+        },
+
+        refresh (animation = true) {
+            var self = this;
+
+            self.page = 0;
+            self.isCompleted = false;
+            self.isLoading = false;
+            self.$scroll.refresh(false, animation);
+            self.$emit('refresh');
+            setTimeout(() => self.load(), 0);
+        },
+
+        load () {
+            var self = this;
+
+            self.error = null;
+
+            if (self.isCompleted) {
+                return false;
+            }
+
+            if (self.isLoading) {
+                return false;
+            }
+
+            if (self._source &&
+                    typeof self._source == 'string' &&
+                    (self.rows.length == self.data.length || self.page == 0)
+            ) {
+                self.loadRemote();
+            } else {
+                self.renderRows();
+            }
+        },
+
+        loadRemote () {
+            var self = this; var datas = {};
+
+            self.abort();
+            self.isLoading = true;
+
+            datas[self.pageLabel] = self.page + 1;
+            datas[self.pageSizeLabel] = self.maxCountPerPage;
+
+            self.$http = Ajax({
+                url: self._source,
+                data: self.paramsFormatter(Object.assign({}, self._params || {}, datas)),
+                dataType: 'json',
+                success (data) {
+                    self.page == 0 ? self.setData(data) : self.addData(data);
+                    self.renderRows();
+                    self.$emit('xhr:success', data);
+                },
+                error (data) {
+                    self.error = data;
+                    self.$emit('xhr:error');
+                    self.isLoading = false;
+                },
+                complete () {
+                    self.$http = null;
+                }
+            });
+        },
+
+        abort () {
+            return this.$http && this.$http.abort();
+        },
+
+        renderRows () {
+            var self = this;
+            var page = ++self.page;
+
+            var rows = self.data.slice(self.maxCountPerPage * (page - 1), self.maxCountPerPage * page);
+
+            if (!self.pullup2load || rows.length < self.maxCountPerPage) {
+                self.isCompleted = true;
+                self.$emit('nomore');
+            }
+
+            if (page == 1) {
+                self.rows = rows;
+                self.$emit('refresh:success', rows);
+                self.pulldown2refresh && self.$scroll.recover();
+            } else {
+                self.rows = self.rows.concat(rows);
+            }
+
+            self.isLoading = false;
+            self.$emit('rows:render', rows);
+        }
     }
+};
 </script>

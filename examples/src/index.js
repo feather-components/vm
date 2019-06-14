@@ -1,10 +1,6 @@
 import VueRouter from 'vue-router';
 import AppTransition from 'app-transition';
 import Vue from 'vue';
-require('../../rem.js');
-
-Vue.use(AppTransition);
-Vue.use(VueRouter);
 
 import Main from './main.vue';
 import Alert from './components/alert.vue';
@@ -22,18 +18,26 @@ import Form from './components/form.vue';
 import Filter from './components/filter.vue';
 import Overlay from './components/overlay.vue';
 import Slider from './components/slider.vue';
-import Tabbar from './components/tabbar.vue';
+import Tabs from './components/tabs.vue';
 import Layout from './components/layout.vue';
 import Forward from './components/forward.vue';
 import Badge from './directives/badge.vue';
 import Draggable from './directives/draggable.vue';
 import Lazyload from './directives/lazyload.vue';
 import Segment from './components/segment.vue';
+import Configs from './cfg.js';
 
-import {Topbar} from 'vm';
-import VM from 'vm';
+import VM, {Topbar} from 'vm';
+console.log(VM);
 
-Vue.use(VM);
+Vue.use(AppTransition);
+Vue.use(VueRouter);
+
+VM.install(Vue, {
+    'topbar.border-bottom': '1px solid #eee'
+});
+
+// Vue.use(VM, Configs);
 
 const router = new VueRouter({
     routes: [
@@ -87,7 +91,6 @@ const router = new VueRouter({
             component: Filter
         },
 
-
         {
             path: '/components/form',
             component: Form
@@ -126,7 +129,7 @@ const router = new VueRouter({
         {
             path: '/components/alert',
             component: Alert
-        }, 
+        },
 
         {
             path: '/components/toast',
@@ -149,8 +152,8 @@ const router = new VueRouter({
         },
 
         {
-            path: '/components/tabbar',
-            component: Tabbar
+            path: '/components/tabs',
+            component: Tabs
         }
     ]
 });

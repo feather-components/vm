@@ -1,10 +1,10 @@
 <template>
-	<scroll 
-        :max-pos="maxPos" 
+	<scroll
+        :max-pos="maxPos"
         @scrolling="onScrolling"
-        @scroll:end="onScrollEnd" 
+        @scroll:end="onScrollEnd"
         @drag:start="onDragStart"
-        @drag:end="onDragEnd" 
+        @drag:end="onDragEnd"
         ref="scroll"
         :scrollbars="scrollbars"
     >
@@ -46,92 +46,92 @@
 </style>
 
 <script>
-	import Scroll from './scroll';
-	import {Dom} from '../../helper';
+import Scroll from './scroll';
+import {Dom} from '../../helper';
 
-	export default {
-		name: 'pulldown2refresh',
-        
-        props: {
-            scrollbars: {
-                type: Boolean,
-                default: true
-            }
-        },
+export default {
+    name: 'pulldown2refresh',
 
-		data(){
-			return {
-				maxPos: 0,
-                isRefreshing: false,
-                intop: false
-			};
-		},
-
-        computed: {
-            pulldownHeight(){
-                return Dom.height(this.$refs.pulldown);
-            }
-        },
-
-        components: {
-            Scroll
-        },
-
-        mounted(){
-            setTimeout(() => {   
-                this.$scroll = this.$refs.scroll;
-                this.maxPos = this.pulldownHeight;
-            }, 0);
-        },
-
-        methods: {
-            onScrolling(translate){
-                this.intop = this.limitType() == 1;
-                this.$emit('scrolling', translate);
-            },
-
-            onScrollEnd(...args){
-                this.$emit('scroll:end', ...args);
-            },
-
-            onDragStart(...args){
-                this.$emit('drag:start', ...args);
-            },
-
-            onDragEnd(...args){
-                this.$emit('drag:end', ...args);
-                this.limitType() == 1 && this.refresh();
-            },  
-
-            refresh(trigger = true, animation = true){
-                if(this.isRefreshing) return;
-
-                animation && this.scrollTo(this.pulldownHeight, 500);
-                trigger && this.$emit('refresh', this.recover);
-                this.isRefreshing = true; 
-            },
-
-            recover(){
-                this.isRefreshing && this.scrollTo(0, 1000);
-                this.isRefreshing = false;
-                this.$emit('recover');
-            },
-
-            limitType(){
-                return this.$scroll.limitType();
-            },
-
-            scrollTo(...args){
-                return this.$scroll.scrollTo(...args);
-            },
-
-            scrollToElement(...args){
-                return this.$scroll.scrollToElement(...args);
-            },
-
-            getPos(){
-                return this.$scroll.getPos();
-            }
+    props: {
+        scrollbars: {
+            type: Boolean,
+            default: true
         }
-	}
+    },
+
+    data () {
+        return {
+            maxPos: 0,
+            isRefreshing: false,
+            intop: false
+        };
+    },
+
+    computed: {
+        pulldownHeight () {
+            return Dom.height(this.$refs.pulldown);
+        }
+    },
+
+    components: {
+        Scroll
+    },
+
+    mounted () {
+        setTimeout(() => {
+            this.$scroll = this.$refs.scroll;
+            this.maxPos = this.pulldownHeight;
+        }, 0);
+    },
+
+    methods: {
+        onScrolling (translate) {
+            this.intop = this.limitType() == 1;
+            this.$emit('scrolling', translate);
+        },
+
+        onScrollEnd (...args) {
+            this.$emit('scroll:end', ...args);
+        },
+
+        onDragStart (...args) {
+            this.$emit('drag:start', ...args);
+        },
+
+        onDragEnd (...args) {
+            this.$emit('drag:end', ...args);
+            this.limitType() == 1 && this.refresh();
+        },
+
+        refresh (trigger = true, animation = true) {
+            if (this.isRefreshing) return;
+
+            animation && this.scrollTo(this.pulldownHeight, 500);
+            trigger && this.$emit('refresh', this.recover);
+            this.isRefreshing = true;
+        },
+
+        recover () {
+            this.isRefreshing && this.scrollTo(0, 1000);
+            this.isRefreshing = false;
+            this.$emit('recover');
+        },
+
+        limitType () {
+            return this.$scroll.limitType();
+        },
+
+        scrollTo (...args) {
+            return this.$scroll.scrollTo(...args);
+        },
+
+        scrollToElement (...args) {
+            return this.$scroll.scrollToElement(...args);
+        },
+
+        getPos () {
+            return this.$scroll.getPos();
+        }
+    }
+};
 </script>

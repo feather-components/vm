@@ -1,7 +1,7 @@
 import Component from './toast';
 import {Util} from '../../helper';
 
-var instance = null, timeid;
+var instance = null; var timeid;
 
 var Toast = (content, time = 3000, mask, className = '') => {
     Toast.destroy(false);
@@ -12,7 +12,7 @@ var Toast = (content, time = 3000, mask, className = '') => {
         iconClass: className
     });
 
-    if(time){
+    if (time) {
         timeid = setTimeout(Toast.destroy, time);
     }
 
@@ -20,12 +20,12 @@ var Toast = (content, time = 3000, mask, className = '') => {
 };
 
 Toast.destroy = (fx = true) => {
-    if(timeid){
+    if (timeid) {
         clearTimeout(timeid);
         timeid = null;
     }
 
-    if(instance){
+    if (instance) {
         instance.destroy(fx);
         instance = null;
     }

@@ -4,8 +4,7 @@ var webpack = require('webpack');
 module.exports = {
     entry: {
         vue: ['vue'],
-        vm: './src/index',
-        rem: './rem'
+        vm: './src/index'
     },
 
     resolve: {
@@ -52,7 +51,7 @@ module.exports = {
 
     plugins: [
         new webpack.optimize.CommonsChunkPlugin({
-            name: ['vm', 'vue', 'rem'],
+            name: ['vm', 'vue']
         })
     ]
 };

@@ -1,25 +1,48 @@
-
-@font-face {font-family: "vm-iconfont";
-  src: url('iconfont.ttf?t=1512638317385') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
-  url('iconfont.svg?t=1512638317385#iconfont') format('svg'); /* iOS 4.1- */
+@font-face {
+    font-family: "vm-iconfont";
+    src: url('iconfont.ttf?t=1512638317385') format('truetype');
 }
-
 
 .vm-iconfont {
-  display: inline-block;
-  font-family:"vm-iconfont" !important;
-  font-size:16px;
-  font-style:normal;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    display: inline-block;
+    font-family: "vm-iconfont" !important;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-.vm-icon-down:before { content: "\e68a"; }
-.vm-icon-search:before { content: "\e68b"; }
-.vm-icon-selected:before { content: "\e68c"; }
-.vm-icon-success:before { content: "\e68d"; }
-.vm-icon-unsuccess:before { content: "\e68e"; }
-.vm-icon-close:before { content: "\e699"; }
-.vm-icon-right:before { content: "\e69c"; }
-.vm-icon-left:before { content: "\e69d"; }
-.vm-icon-up:before { content: "\e69e"; }
+.vm-icon-down:before {
+    content: "\e68a";
+}
+
+.vm-icon-search:before {
+    content: "\e68b";
+}
+
+.vm-icon-selected:before {
+    content: "\e68c";
+}
+
+.vm-icon-success:before {
+    content: "\e68d";
+}
+
+.vm-icon-unsuccess:before {
+    content: "\e68e";
+}
+
+.vm-icon-close:before {
+    content: "\e699";
+}
+
+.vm-icon-right:before {
+    content: "\e69c";
+}
+
+.vm-icon-left:before {
+    content: "\e69d";
+}
+
+.vm-icon-up:before {
+    content: "\e69e";
+}

@@ -2,16 +2,16 @@
     <cell :label="label" :vertical-layout="options.length > 3">
         <template slot="label" v-if="$slots.label">
             <slot name="label"></slot>
-        </template> 
+        </template>
 
         <template slot="tips" v-if="$slots.tips && options.length > 3">
             <slot name="tips"></slot>
-        </template> 
+        </template>
 
         <div class="vm-form-tags-inner">
             <button
                 v-for="(option, index) in options"
-                @click="onClick(option.value)"  
+                @click="onClick(option.value)"
                 :class="getClassName(option.value)"
             >{{option.label}}</button>
         </div>
@@ -56,46 +56,46 @@
 </style>
 
 <script>
-    import Cell from "./cell";
-    import {Single} from './abstract';
-    import {Util} from '../../helper';
+import Cell from './cell';
+import {Single} from './abstract';
+import {Util} from '../../helper';
 
-    var Radios = {
-        name: 'radios',
+var Radios = {
+    name: 'radios',
 
-        mixins: [Cell, Single],
+    mixins: [Cell, Single],
 
-        props: {
-            options: {
-                type: Array,
-                required: true
-            },
-
-            selectedClassName: {
-                type: String,
-                default(){
-                    return Radios.config('selectedClassName');
-                }
-            }
+    props: {
+        options: {
+            type: Array,
+            required: true
         },
 
-        components: {
-            Cell
-        },
-
-        methods:{
-            onClick(v){
-                this.val = v;
-            },
-
-            getClassName(v){
-                return ['vm-form-tag', v == this.val ? this.selectedClassName : ''];
+        selectedClassName: {
+            type: String,
+            default () {
+                return Radios.config('selectedClassName');
             }
         }
-    }
+    },
 
-    Util.defineConfig(Radios, {
-        selectedClassName: 'vm-form-tag-selected'
-    });
-    export default Radios;
+    components: {
+        Cell
+    },
+
+    methods: {
+        onClick (v) {
+            this.val = v;
+        },
+
+        getClassName (v) {
+            return ['vm-form-tag', v == this.val ? this.selectedClassName : ''];
+        }
+    }
+};
+
+Util.defineConfig(Radios, {
+    selectedClassName: 'vm-form-tag-selected'
+});
+export default Radios;
 </script>

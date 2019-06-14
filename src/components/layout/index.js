@@ -6,6 +6,6 @@ Util.register(Box);
 Util.register(Row);
 
 export {
-	Box,
-	Row
-}
+    Box,
+    Row
+};

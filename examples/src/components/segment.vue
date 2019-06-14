@@ -1,7 +1,7 @@
 <template>
     <vm-page>
         <vm-topbar slot="header">
-        	<vm-segment :items="['第一个', '第二个', '第三个', '第四个']" @switch="onSwitch"/>
+        	<vm-segment :options="['第一个', '第二个', '第三个', '第四个']" @switch="onSwitch"/>
         </vm-topbar>
     </vm-page>
 </template>
@@ -14,13 +14,13 @@ p{
 </style>
 
 <script>
-	import {Toast} from 'vm'
+import {Toast} from 'vm';
 
-    export default {
+export default {
     	methods: {
-    		onSwitch(index, label){
+    		onSwitch (index, label) {
     			Toast('点击了' + label);
     		}
     	}
-    }
+};
 </script>

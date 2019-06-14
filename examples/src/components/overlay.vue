@@ -18,41 +18,41 @@
 </template>
 
 <script>
-    import {
+import {
+    Page,
+    Topbar,
+    Alert,
+    Button as Btn,
+    Mask,
+    Overlay,
+    Components
+} from 'vm';
+
+export default {
+    components: {
         Page,
         Topbar,
-        Alert,
-        Button as Btn,
-        Mask,
+        Btn,
         Overlay,
-        Components,
-    } from 'vm';
+        vmMask: Mask
+    },
 
-    export default{
-        components: {
-            Page, 
-            Topbar,
-            Btn,
-            Overlay,
-            vmMask: Mask
+    data () {
+        return {
+            position: ''
+        };
+    },
+
+    methods: {
+        show (position) {
+            this.$refs[this.position = position].open();
+            this.$refs.mask.open();
         },
 
-        data(){
-            return {
-                position: ''
-            };
-        },
-
-        methods: {
-            show(position){
-                this.$refs[this.position = position].open();
-                this.$refs.mask.open();
-            },
-
-            hide(position = this.position){
-                this.$refs[position].close();
-                this.$refs.mask.close();
-            }
+        hide (position = this.position) {
+            this.$refs[position].close();
+            this.$refs.mask.close();
         }
     }
+};
 </script>

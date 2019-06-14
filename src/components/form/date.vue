@@ -1,11 +1,11 @@
 <template>
     <text-input
-        class="vm-form-date" 
-        :label="label" 
-        :placeholder="placeholder" 
-        :readonly="true" 
-        :clearable="false" 
-        :align="align" 
+        class="vm-form-date"
+        :label="label"
+        :placeholder="placeholder"
+        :readonly="true"
+        :clearable="false"
+        :align="align"
         @click="onClick"
         v-model="val"
     >
@@ -24,7 +24,7 @@ import Datepicker from '../datepicker';
 import {Util} from '../../helper';
 import {Single} from './abstract';
 
-export default{
+export default {
     name: 'dateinput',
 
     mixins: [TextInput],
@@ -35,11 +35,11 @@ export default{
         },
 
         maxDate: {
-            default(){
-                return new Date;
+            default () {
+                return new Date();
             }
         },
-        
+
         formatter: {
             default: 'yyyy/mm/dd'
         }
@@ -51,8 +51,8 @@ export default{
     },
 
     computed: {
-        $datepicker(){
-            if(!this.$$datepicker){
+        $datepicker () {
+            if (!this.$$datepicker) {
                 this.$$datepicker = Util.factory(Datepicker, {
                     minDate: this.minDate,
                     maxDate: this.maxDate,
@@ -75,23 +75,23 @@ export default{
     },
 
     watch: {
-        value(v){
+        value (v) {
             this.$datepicker.val = v;
         }
     },
 
     methods: {
-        onClick(){
+        onClick () {
             this.$datepicker.open();
         }
     },
 
-    deactivated(){
+    deactivated () {
         this.$datepicker.close();
     },
 
-    destroyed(){
+    destroyed () {
         this.$datepicker.destroy();
     }
-}
+};
 </script>

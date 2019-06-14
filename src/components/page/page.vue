@@ -1,5 +1,5 @@
 <template>
-    <overlay :visible="visibility" :fx="fx" :position="position" ref="overlay" class="vm-page" :style="{paddingTop: top}">
+    <overlay :visible="visibility" :fx="fx" :position="position" ref="overlay" class="vm-page" :style="style">
         <div class="vm-page-header" ref="header">
             <slot name="header"></slot>
         </div>
@@ -14,58 +14,53 @@
     </overlay>
 </template>
 
+<script>
+import Overlay from '../overlay';
+import Config from '../../config';
+
+export default {
+    name: 'page',
+
+    mixins: [Overlay],
+
+    props: {
+        visible: {
+            type: Boolean,
+            default: true
+        }
+    },
+
+    data () {
+        return {
+            style: {
+                background: Config('page.background') || Config('theme')
+            }
+        };
+    },
+
+    components: {
+        Overlay
+    }
+};
+</script>
+
 <style>
-    .vm-page.vm-overlay{
+    .vm-page.vm-overlay {
         width: 100%;
         height: 100%;
         background: #fff;
         display: flex;
-        font-size: .14rem;
+        font-size: 14px;
         flex-direction: column;
     }
 
-    .vm-page-content{
+    .vm-page-content {
         overflow: hidden;
         flex: 1;
     }
 
-    .vm-page-footer{
+    .vm-page-footer {
         width: 100%;
         text-align: center;
     }
 </style>
-
-<script>
-    import Overlay from '../overlay';
-    import {Util} from '../../helper';
-    
-    var Page = {
-        name: 'page',
-
-        mixins: [Overlay],
-
-        props: {
-            visible: {
-                type: Boolean,
-                default: true
-            }
-        },
-
-        data(){
-            return {
-                top: Page.topFixed || Page.config('topFixed')
-            };
-        },
-
-        components: {
-            Overlay
-        }
-    }
-
-    Page.topFixed = '';
-    Util.defineConfig(Page, {
-        topFixed: '0px'
-    });
-
-    export default Page;
-</script>

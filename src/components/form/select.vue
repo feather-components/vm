@@ -1,17 +1,17 @@
 <template>
-    <text-input 
-        class="vm-form-select" 
-        :label="label" 
-        :placeholder="placeholder" 
-        :readonly="true" 
-        :clearable="false" 
-        :align="align" 
+    <text-input
+        class="vm-form-select"
+        :label="label"
+        :placeholder="placeholder"
+        :readonly="true"
+        :clearable="false"
+        :align="align"
         @click="onClick"
         :value="selectedLabels"
     >
         <template slot="label" v-if="$slots.label">
             <slot name="label"></slot>
-        </template> 
+        </template>
         <forward />
     </text-input>
 </template>
@@ -23,7 +23,7 @@ import IosSelect from '../iosselect';
 import {Util} from '../../helper';
 import {Multiable} from './abstract';
 
-export default{
+export default {
     name: 'select',
 
     mixins: [Multiable, TextInput],
@@ -31,36 +31,36 @@ export default{
     props: {
         options: {
             type: [Array, String],
-            default(){
+            default () {
                 return [];
             }
         },
 
         source: {
             type: [Array, String],
-            default(){
+            default () {
                 return this.options;
             }
         },
 
         selectedLabelFormatter: {
             type: Function,
-            default(labels){
+            default (labels) {
                 return Util.makeArray(labels).join('');
             }
         },
 
         dataFormatter: {
             type: Function,
-            default(v){
+            default (v) {
                 return v;
-            }   
+            }
         },
 
         params: {
             type: [Array, Object],
-            default(){
-                return {}
+            default () {
+                return {};
             }
         }
     },
@@ -70,27 +70,27 @@ export default{
         Forward
     },
 
-    data(){
+    data () {
         return {
             selectedLabels: ''
         };
     },
 
     watch: {
-        source(v){
+        source (v) {
             this.$iosselect.render(v);
         },
 
-        options(v){
+        options (v) {
             this.$iosselect.render(v);
         },
 
-        value(v){
+        value (v) {
             this.$iosselect.setValue(v);
         }
     },
 
-    mounted(){
+    mounted () {
         let $iosselect = this.$iosselect = Util.factory(IosSelect, {
             source: this.source,
             value: Util.makeArray(this.val),
@@ -117,17 +117,17 @@ export default{
     },
 
     methods: {
-        onClick(){
+        onClick () {
             this.$iosselect.open();
         }
     },
 
-    deactivated(){
+    deactivated () {
         this.$iosselect.close();
     },
 
-    destroyed(){
+    destroyed () {
         this.$iosselect.destroy();
     }
-}
+};
 </script>

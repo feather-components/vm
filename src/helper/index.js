@@ -2,14 +2,14 @@ import Dom from './dom';
 import Util from './util';
 import Event from './event';
 
-export default{
+export default {
     Dom,
     Util,
     Event
-}
+};
 
-export{
+export {
     Dom,
     Util,
     Event
-}
+};

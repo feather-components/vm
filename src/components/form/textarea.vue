@@ -1,5 +1,5 @@
 <template>
-    <cell :label="label" class="vm-form-textarea" :tips="tips"> 
+    <cell :label="label" class="vm-form-textarea" :tips="tips">
         <div class="vm-form-textarea-inner">
             <span v-show="!val" class="vm-form-textarea-ph" @click="clickPh">
                 <slot name="placeholder">{{placeholder}}</slot>
@@ -9,8 +9,8 @@
                 class="vm-form-textarea-edit needsclick"
                 :style="{
                     'max-height': maxHeight
-                }" 
-                :contenteditable="!readonly" 
+                }"
+                :contenteditable="!readonly"
                 @input="input"
                 @focus="$emit('focus')"
                 @blur="$emit('blur')"
@@ -22,11 +22,11 @@
 
         <template slot="label" v-if="$slots.label">
             <slot name="label"></slot>
-        </template> 
+        </template>
 
         <template slot="tips" v-if="$slots.tips">
             <slot name="tips"></slot>
-        </template> 
+        </template>
 
         <div v-if="$slots.default" class="vm-form-textarea-other"><slot></slot></div>
     </cell>
@@ -72,57 +72,57 @@
 </style>
 
 <script>
-    import Cell from './cell';
-    import Text from './text';
-    import {Single} from './abstract';
+import Cell from './cell';
+import Text from './text';
+import {Single} from './abstract';
 
-    export default{
-        name: 'textarea',
+export default {
+    name: 'textarea',
 
-        mixins: [Cell, Text, Single],
+    mixins: [Cell, Text, Single],
 
-        components: {
-            Cell
+    components: {
+        Cell
+    },
+
+    props: {
+        maxHeight: {
+            type: String,
+            default: 'auto'
+        }
+    },
+
+    mounted () {
+        this.$nextTick(() => {
+            this.setValue(this.val);
+        });
+    },
+
+    methods: {
+        input () {
+            this.val = this.$refs.area.textContent;
         },
 
-        props: {
-            maxHeight: {
-                type: String,
-                default: 'auto'
-            }
+        clickPh () {
+            this.$refs.area.focus();
         },
 
-        mounted(){
-            this.$nextTick(() => {
-                this.setValue(this.val);
-            });
+        click () {
+            this.focus();
+            this.$emit('click');
         },
 
-        methods:{
-            input(){
-                this.val = this.$refs.area.textContent;
-            },
+        focus () {
+            this.$refs.area.focus();
+        },
 
-            clickPh(){
-                this.$refs.area.focus();
-            },
+        blur () {
+            this.$refs.area.blur();
+        },
 
-            click(){
-                this.focus();
-                this.$emit('click');
-            },
-
-            focus(){
-                this.$refs.area.focus();
-            },
-
-            blur(){
-                this.$refs.area.blur();
-            },
-
-            setValue(v){
-                this.$refs.area.textContent != v && (this.$refs.area.textContent = v);
-            }
+        setValue (v) {
+            this.$refs.area.textContent != v && (this.$refs.area.textContent = v);
         }
     }
+};
 </script>

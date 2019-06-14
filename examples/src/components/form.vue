@@ -117,212 +117,214 @@
 
 <script>
 
-    const selectList = [
-        [
-            {label: '第一个', value: 1, children: [
+import {
+    Page,
+    Topbar,
+    TextInput,
+    Radios,
+    Checkboxes,
+    Select,
+    Images,
+    Button,
+    Scroll,
+    Toast,
+    SingleFilter,
+    SearchBar,
+    Searchbar,
+    Switch,
+    LinkMultipleFilter,
+    Iosselect,
+    Datepicker
+} from 'vm';
+
+import Source from '../filter.json';
+
+const selectList = [
+    [
+        {label: '第一个',
+            value: 1,
+            children: [
                 {label: '1', value: 1},
-                    {label: '第二个', value: 2},
-                    {label: '3', value: 3},
-                    {label: '4', value: 4},
-                    {label: '5', value: 5},
-                    {label: '6', value: 6},
-                    {label: '7', value: 7},
-                    {label: '8', value: 8},
-                    {label: '9', value: 9},
-                    {label: '10', value: 10},
-                    {label: '11', value: 11},
-                    {label: '11', value: 12}
+                {label: '第二个', value: 2},
+                {label: '3', value: 3},
+                {label: '4', value: 4},
+                {label: '5', value: 5},
+                {label: '6', value: 6},
+                {label: '7', value: 7},
+                {label: '8', value: 8},
+                {label: '9', value: 9},
+                {label: '10', value: 10},
+                {label: '11', value: 11},
+                {label: '11', value: 12}
             ]},
-            {label: '2', value: 2},
-            {label: '3', value: 3},
-            {label: '4', value: 4},
-            {label: '5', value: 5},
-            {label: '6', value: 6},
-            {label: '7', value: 7},
-            {label: '8', value: 8},
-            {label: '9', value: 9},
-            {label: '10', value: 10},
-            {label: '11', value: 11},
-            {label: '11', value: 12}
-        ],
-        [
-            {label: '1', value: 1},
-            {label: '2', value: 2},
-            {label: '3', value: 3},
-            {label: '4', value: 4},
-            {label: '5', value: 5},
-            {label: '6', value: 6},
-            {label: '7', value: 7},
-            {label: '8', value: 8},
-            {label: '9', value: 9},
-            {label: '10', value: 10},
-            {label: '12', value: 12},
-            {label: '13', value: 13},
-            {label: '14', value: 14}
-        ]
+        {label: '2', value: 2},
+        {label: '3', value: 3},
+        {label: '4', value: 4},
+        {label: '5', value: 5},
+        {label: '6', value: 6},
+        {label: '7', value: 7},
+        {label: '8', value: 8},
+        {label: '9', value: 9},
+        {label: '10', value: 10},
+        {label: '11', value: 11},
+        {label: '11', value: 12}
+    ],
+    [
+        {label: '1', value: 1},
+        {label: '2', value: 2},
+        {label: '3', value: 3},
+        {label: '4', value: 4},
+        {label: '5', value: 5},
+        {label: '6', value: 6},
+        {label: '7', value: 7},
+        {label: '8', value: 8},
+        {label: '9', value: 9},
+        {label: '10', value: 10},
+        {label: '12', value: 12},
+        {label: '13', value: 13},
+        {label: '14', value: 14}
     ]
+];
 
-    const style = {
-        width: '100%',
-        border: 0,
-        lineHeight: '44px'
-    }
+const style = {
+    width: '100%',
+    border: 0,
+    lineHeight: '44px'
+};
 
-    import {
+export default {
+    components: {
         Page,
         Topbar,
         TextInput,
+        SingleFilter,
         Radios,
         Checkboxes,
-        Select,
+        vmSelect: Select,
         Images,
-        Button,
         Scroll,
-        Toast,
-        SingleFilter,
-        SearchBar,
-        Searchbar,
-        Switch,
+        Btn: Button,
+        vmSwitch: Switch,
         LinkMultipleFilter,
         Iosselect,
         Datepicker
-    } from 'vm';
-    
-    import Source from '../filter.json';
+    },
 
-    export default{
-        components: {
-            Page, 
-            Topbar,
-            TextInput,
-            SingleFilter,
-            Radios,
-            Checkboxes,
-            vmSelect: Select,
-            Images,
-            Scroll,
-            Btn: Button,
-            vmSwitch: Switch,
-            LinkMultipleFilter,
-            Iosselect,
-            Datepicker
-        },
-        
-        data(){
-            return {
-                postData: {
-                    a: '33',
-                    b: '333',
-                    c: null,
-                    d: null,
-                    e: [1,2],
-                    f: ['https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=30837642,1835949245&fm=26&gp=0.jpg', 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=4152229571,503740049&fm=11&gp=0.jpg', 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=74474160,773507576&fm=26&gp=0.jpg', 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=30837642,1835949245&fm=26&gp=0.jpg', 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=30837642,1835949245&fm=26&gp=0.jpg'],
-                    g: true,
-                    h: [],
-                    date: '2017/01/01'
-                },
+    data () {
+        return {
+            postData: {
+                a: '33',
+                b: '333',
+                c: null,
+                d: null,
+                e: [1, 2],
+                f: ['https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=30837642,1835949245&fm=26&gp=0.jpg', 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=4152229571,503740049&fm=11&gp=0.jpg', 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=74474160,773507576&fm=26&gp=0.jpg', 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=30837642,1835949245&fm=26&gp=0.jpg', 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=30837642,1835949245&fm=26&gp=0.jpg'],
+                g: true,
+                h: [],
+                date: '2017/01/01'
+            },
 
-                source: Source,
+            source: Source,
 
-                selectList: selectList,
-                show: false,
-                val: [2,3],
-                style: style,
-				dateValue: '2018-1-1',
-				dateShow: false,
-//				initDate: [2018, 1, 1],
+            selectList: selectList,
+            show: false,
+            val: [2, 3],
+            style: style,
+            dateValue: '2018-1-1',
+            dateShow: false,
+            //				initDate: [2018, 1, 1],
 
-				years: [
-                    {
+            years: [
+                {
                     	label: 2015,
-                        value: 2015
-                    },
-					{
-						label: 2016,
-						value: 2016
-					},
-					{
-						label: 2017,
-						value: 2017
-					},
-					{
-						label: 2018,
-						value: 2018
-					},
-					{
-						label: 2019,
-						value: 2019
-					},
-					{
-						label: 2020,
-						value: 2020
-					},
-					{
-						label: 2021,
-						value: 2021
-					},
-                ]
-            };
+                    value: 2015
+                },
+                {
+                    label: 2016,
+                    value: 2016
+                },
+                {
+                    label: 2017,
+                    value: 2017
+                },
+                {
+                    label: 2018,
+                    value: 2018
+                },
+                {
+                    label: 2019,
+                    value: 2019
+                },
+                {
+                    label: 2020,
+                    value: 2020
+                },
+                {
+                    label: 2021,
+                    value: 2021
+                }
+            ]
+        };
+    },
+
+    mounted () {
+        //          setInterval(() => {
+        //          	  console.log(this.val)
+        //          }, 1000)
+
+        setTimeout(() => {
+            this.postData.date = '2016/01/01';
+        }, 5000);
+
+        document.activeElement.blur();
+        setTimeout(() => {
+            this.postData.f.push('https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=4152229571,503740049&fm=11&gp=0.jpg');
+        }, 10000);
+    },
+
+    watch: {
+        postData (v) {
+            console.log(v);
         },
 
-        mounted() {
-//          setInterval(() => {
-//          	  console.log(this.val)
-//          }, 1000)
+        val (v) {
+            console.log(v);
+        }
+    },
 
-            setTimeout(() => {
-                this.postData.date = '2016/01/01';
-            }, 5000)
-
-			document.activeElement.blur();
-            setTimeout(() => {
-                this.postData.f.push('https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=4152229571,503740049&fm=11&gp=0.jpg')
-            }, 10000);
+    methods: {
+        selectFormatter (data) {
+            return data.g || data;
         },
 
-        watch: {
-            postData(v){
-                console.log(v)
-            },
-
-            val(v){
-                console.log(v)
-            }
+        submit () {
+            Toast(JSON.stringify(this.postData, null, '\t'));
         },
 
-        methods: {
-            selectFormatter(data){
-                return data.g || data;
-            },
+        showIosselect () {
+            this.show = true;
+        },
 
-            submit(){
-                Toast(JSON.stringify(this.postData, null, '\t'));
-            },
+        onSure (val) {
+            console.log(val, '发发');
+            this.show = false;
+            console.log(this.val, 8888);
+            //                this.val = val[0].label + '-' + val[1].label
+            //                this.val = val
+        },
 
-            showIosselect() {
-                this.show = true
-            },
- 
-            onSure(val) {
-                console.log(val, '发发')
-                this.show = false
-				console.log(this.val, 8888)
-//                this.val = val[0].label + '-' + val[1].label
-//                this.val = val
-            },
+        showDatepicker () {
+            this.dateShow = true;
+        },
 
-			showDatepicker() {
-				this.dateShow = true
-            },
+        sureDate (val) {
+            console.log(val, '发发发');
+            this.dateShow = false;
+        },
 
-            sureDate(val) {
-                console.log(val, '发发发')
-                this.dateShow = false
-            },
-
-			dateClose() {
-            	this.dateShow = false
-            }
+        dateClose () {
+            	this.dateShow = false;
         }
     }
+};
 </script>

@@ -9,78 +9,78 @@
 </template>
 
 <script>
-    import {
+import {
+    Page,
+    Topbar,
+    Alert,
+    Button as Btn
+} from 'vm';
+
+export default {
+    components: {
         Page,
         Topbar,
-        Alert,
-        Button as Btn
-    } from 'vm';
+        Btn
+    },
 
-    export default{
-        components: {
-            Page, 
-            Topbar,
-            Btn
+    methods: {
+        alert () {
+            Alert('我是alert');
         },
 
-        methods: {
-            alert(){
-                Alert('我是alert');
-            },
+        confirm () {
+            Alert.confirm('我是confirm，请点击确定', function () {
+                Alert('刚刚点击了确定');
+            });
+        },
 
-            confirm(){
-                Alert.confirm('我是confirm，请点击确定', function(){
-                    Alert('刚刚点击了确定');
-                });
-            },
-
-            defined(flex){
-                Alert('自定义alert', {
-                    extras: '说明文字',
-                    flex: flex,
-                    buttons: {
-                        '按钮1': {
-                            type: 'success',
-                            callback(){
-                                Alert('点击了按钮1');
-                                this.destroy();
-                            }
-                        },
-                        '按钮8': {
-                            type: 'success',
-                            callback(){
-                                Alert('点击了按钮1');
-                                this.destroy();
-                            }
-                        },
-                        '按钮5': {
-                            type: 'success',
-                            callback(){
-                                Alert('点击了按钮1');
-                                this.destroy();
-                            }
-                        },
-                        '按钮4': {
-                            type: 'success',
-                            callback(){
-                                Alert('点击了按钮1');
-                                this.destroy();
-                            }
-                        },
-                        '按钮3': {
-                            type: 'success',
-                            callback(){
-                                Alert('点击了按钮1');
-                                this.destroy();
-                            }
-                        },
-                        '按钮2'(){
-                            Alert('点击了按钮2');
+        defined (flex) {
+            Alert('自定义alert', {
+                extras: '说明文字',
+                flex: flex,
+                buttons: {
+                    '按钮1': {
+                        type: 'success',
+                        callback () {
+                            Alert('点击了按钮1');
                             this.destroy();
                         }
+                    },
+                    '按钮8': {
+                        type: 'success',
+                        callback () {
+                            Alert('点击了按钮1');
+                            this.destroy();
+                        }
+                    },
+                    '按钮5': {
+                        type: 'success',
+                        callback () {
+                            Alert('点击了按钮1');
+                            this.destroy();
+                        }
+                    },
+                    '按钮4': {
+                        type: 'success',
+                        callback () {
+                            Alert('点击了按钮1');
+                            this.destroy();
+                        }
+                    },
+                    '按钮3': {
+                        type: 'success',
+                        callback () {
+                            Alert('点击了按钮1');
+                            this.destroy();
+                        }
+                    },
+                    '按钮2' () {
+                        Alert('点击了按钮2');
+                        this.destroy();
                     }
-                });
-            }
+                }
+            });
         }
     }
+};
 </script>

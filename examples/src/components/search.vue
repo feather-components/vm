@@ -1,6 +1,6 @@
 <template>
     <page>
-        <search kw="wd" 
+        <search kw="wd"
             source="https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?json=1&cb=?"
             history-mark="history"
             :data-formatter="formatter"
@@ -28,43 +28,43 @@
 </style>
 
 <script>
-    import {
+import {
+    Page,
+    Topbar,
+    Search,
+    Toast
+} from 'vm';
+
+export default {
+    components: {
         Page,
         Topbar,
         Search,
         Toast
-    } from 'vm';
+    },
 
-    export default{
-        components: {
-            Page, 
-            Topbar,
-            Search,
-            Toast
+    methods: {
+        formatter (data) {
+            return data.g || [];
         },
 
-        methods: {
-            formatter(data){
-                return data.g || [];
-            },
+        cancel () {
+            history.back();
+        },
 
-            cancel(){
-                history.back();
-            },
+        select (v) {
+            Toast('select:' + JSON.stringify(v));
+        },
 
-            select(v){
-                Toast('select:' + JSON.stringify(v));
-            },
+        confirm (v) {
+            Toast('confirm:' + v);
+        },
 
-            confirm(v){
-                Toast('confirm:' + v);
-            },
-
-            onClearHistory(clear){
-                if(window.confirm('确定清空？')){
-                    clear();
-                }
+        onClearHistory (clear) {
+            if (window.confirm('确定清空？')) {
+                clear();
             }
         }
     }
+};
 </script>

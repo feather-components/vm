@@ -1,17 +1,17 @@
 import {Event, Dom, Util} from '../../helper';
 
-class AutoSize{
-    constructor(root){
+class AutoSize {
+    constructor (root) {
         this.$root = root;
         this.$root.$autosize = this;
         this.$listens = {};
         this.$mutation = null;
         setTimeout(() => {
             this.initEvent();
-        }, 1000)
+        }, 1000);
     }
 
-    initEvent(){
+    initEvent () {
         var self = this;
 
         Event.on(window, 'resize', () => {
@@ -19,8 +19,8 @@ class AutoSize{
         });
     }
 
-    listen(){
-        if(this.$mutation) return false;
+    listen () {
+        if (this.$mutation) return false;
 
         this.$mutation = Util.observer(this.$root, {
             childList: true,
@@ -31,14 +31,14 @@ class AutoSize{
         });
     }
 
-    pause(){
-        if(!this.$mutation) return false;
+    pause () {
+        if (!this.$mutation) return false;
         this.$mutation.disconnect();
         this.$mutation = null;
     }
 
-    observer(element){
-        if(element.style.height) return false;
+    observer (element) {
+        if (element.style.height) return false;
 
         element.$autosize = this;
 
@@ -50,59 +50,60 @@ class AutoSize{
         this.listen();
     }
 
-    unobserver(element){
+    unobserver (element) {
         delete this.$listens[element.$autosizeid];
         delete element.$autosize;
         delete element.$autosizeid;
     }
 
-    resizeAll(force = false){
+    resizeAll (force = false) {
         clearTimeout(this.$timer);
         this.$timer = setTimeout(() => {
             this.pause();
-            for(let i in this.$listens){
+            for (let i in this.$listens) {
                 this.resize(this.$listens[i].element, force);
             }
             this.listen();
         }, 300);
     }
 
-    resize(element, force = false){        
+    resize (element, force = false) {
         let newRect = Dom.rect(element);
 
-        if(!newRect.width){
+        if (!newRect.width) {
             return false;
         }
 
         let info = this.$listens[element.$autosizeid];
+
         let oldRect = info.rect;
 
-        if(newRect.top == info.rect.top && !force){
+        if (newRect.top == info.rect.top && !force) {
             return false;
-        } 
+        }
 
         info.rect = newRect;
 
         element.style.height = 'auto';
 
         var chains = [element];
-        var maxHeight, parent = element, hasSetHeight = false;
+        var maxHeight; var parent = element; var hasSetHeight = false;
 
-        while(parent = parent.parentNode){
+        while (parent = parent.parentNode) {
             chains.push(parent);
 
-            if(parent === document.body){
+            if (parent === document.body) {
                 maxHeight = Dom.height(document.documentElement);
                 break;
             }
 
-            if(Dom.css(parent, 'max-height') != 'none'){
+            if (Dom.css(parent, 'max-height') != 'none') {
                 hasSetHeight = true;
                 maxHeight = Math.min(parseFloat(Dom.height(parent)), parseFloat(Dom.css(parent, 'max-height')));
                 break;
             }
 
-            if(parent.style.height){
+            if (parent.style.height) {
                 hasSetHeight = true;
                 maxHeight = Dom.height(parent);
                 break;
@@ -113,47 +114,49 @@ class AutoSize{
 
         var top = Dom.offset(element).top;
 
-        if(!hasSetHeight || top + Dom.height(element.parentNode) > maxHeight){
+        if (!hasSetHeight || top + Dom.height(element.parentNode) > maxHeight) {
             var otherHeight = 0;
 
             chains.pop();
             chains.forEach((ele) => {
                 Dom.nexts(ele).forEach((next) => {
-                    if(!/absolute|fixed/.test(Dom.css(next, 'position')) && next.offsetTop != ele.offsetTop){
+                    if (!/absolute|fixed/.test(Dom.css(next, 'position')) && next.offsetTop != ele.offsetTop) {
                         otherHeight += Dom.height(next) + parseFloat(Dom.css(ele, 'margin-bottom') || 0);
                     }
                 });
 
                 otherHeight += parseFloat(Dom.css(ele, 'margin-bottom') || 0);
             });
-            
+
             element.style.overflow = 'hidden';
             element.style.height = maxHeight - (top - Dom.offset(parent).top) - otherHeight + 'px';
             Event.trigger(element, 'autosize');
-        }else{
+        } else {
             element.style.overflow = '';
         }
     }
 }
 
-export default{
-    bind(element, data, VNode){
-        if(data.value && data.value.enable == false){
+export default {
+    bind (element, data, VNode) {
+        if (data.value && data.value.enable == false) {
             return false;
         }
 
         setTimeout(() => {
             let root = VNode.context.$root.$el;
+
             let instance = root.$autosize || new AutoSize(root);
+
             instance.observer(element);
         });
     },
 
-    unbind(element){
+    unbind (element) {
         element.$autosize && element.$autosize.unobserver(element);
     },
 
-    resize(element){
+    resize (element) {
         setTimeout(() => {
             element = element.$el || element;
             element.$autosize.resize(element, true);
@@ -163,4 +166,4 @@ export default{
     AutoSize,
     Constructor: AutoSize,
     name: 'autosize'
-}
+};

@@ -5,7 +5,7 @@
                 <slot name="icon">
                     <i :class="['vm-toast-icon', iconClass]" v-if="iconClass"></i>
                 </slot>
-                
+
                 <slot>{{cont}}</slot>
             </span>
         </overlay>
@@ -31,19 +31,19 @@
     .vm-toast-inner{
         word-break: break-all;
         display: inline-block;
-        font-size: 0.16rem;
+        font-size: 16px;
         color: #FFFFFF;
-        line-height: 0.28rem;
-        padding: 0.08rem 0.15rem;
+        line-height: 28px;
+        padding: 8px 15px;
         background: rgba(0, 0, 0, 0.7);
         border-radius: 4px;
     }
 
     .vm-toast-icon{
-        width: .36rem;
-        height: .36rem;
+        width: 36px;
+        height: 36px;
         display: block;
-        margin: .05rem auto 0.07rem auto;
+        margin: 5px auto 7px auto;
         background-size: 100% 100%;
         background-repeat: no-repeat;
         background-position: center center;
@@ -51,15 +51,15 @@
 
     .vm-toast-success{
         font-family: "vm-iconfont" !important;
-        font-size: 0.36rem;
+        font-size: 36px;
         font-style: normal;
         color: rgb(133, 205, 158);
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
     }
 
-    .vm-toast-success:before{ 
-        content: "\e68d"; 
+    .vm-toast-success:before{
+        content: "\e68d";
     }
 
     .vm-toast-loading{
@@ -68,54 +68,54 @@
 </style>
 
 <script>
-    import vmMask from '../mask';
-    import Overlay from '../overlay';
-    import '../icon/iconfont.css';
+import vmMask from '../mask';
+import Overlay from '../overlay';
+import '../icon/iconfont.css';
 
-    export default{
-        name: 'toast',
+export default {
+    name: 'toast',
 
-        mixins: [Overlay],
+    mixins: [Overlay],
 
-        props: {
-            iconClass: {
-                type: String,
-                default: null
-            },
-
-            content: {
-                type: String,
-                default: null
-            },
-
-            mask: {
-                type: Boolean,
-                default: false
-            }
+    props: {
+        iconClass: {
+            type: String,
+            default: null
         },
 
-        data(){
-            return {
-                cont: this.content,
-                visibility: true
-            }
+        content: {
+            type: String,
+            default: null
         },
 
-        watch: {
-            content(v){
-                this.setContent(v);
-            }
-        },
-
-        components: {
-            Overlay,
-            vmMask
-        },
-
-        methods: {
-            setContent(content){
-                this.cont = content;
-            }
+        mask: {
+            type: Boolean,
+            default: false
         }
-    };
+    },
+
+    data () {
+        return {
+            cont: this.content,
+            visibility: true
+        };
+    },
+
+    watch: {
+        content (v) {
+            this.setContent(v);
+        }
+    },
+
+    components: {
+        Overlay,
+        vmMask
+    },
+
+    methods: {
+        setContent (content) {
+            this.cont = content;
+        }
+    }
+};
 </script>

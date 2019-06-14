@@ -42,29 +42,28 @@
 </style>
 
 <script>
-    import {
+import {
+    Page,
+    Topbar,
+    Popover,
+    Toast
+} from 'vm';
+
+export default {
+    components: {
         Page,
         Topbar,
-        Popover,
-        Toast
-    } from 'vm';
-    import 'ionicons/dist/css/ionicons.css';
+        Popover
+    },
 
-    export default{
-        components: {
-            Page, 
-            Topbar,
-            Popover
+    methods: {
+        showMsg () {
+            Toast('点击了popover');
         },
 
-        methods: {
-            showMsg(){
-                Toast('点击了popover');
-            },
-
-            back(){
-                history.back();
-            }
+        back () {
+            history.back();
         }
     }
+};
 </script>

@@ -38,78 +38,78 @@
 </style>
 
 <script>
-    import Dropbox from './box';
-    import {Event, Util} from '../../helper';
-    import Icon from '../icon';
+import Dropbox from './box';
+import {Event, Util} from '../../helper';
+import Icon from '../icon';
 
-    var DropDown = {
-        name: 'dropdown',
+var DropDown = {
+    name: 'dropdown',
 
-        props: {
-            label: {
-                type: String,
-                default: ''
-            },
-
-            labelColor: {
-                type: String,
-                default: () => {
-                    return DropDown.config('labelColor');
-                }
-            },
-
-            labelHighColor: {
-                type: String,
-                default: () => {
-                    return DropDown.config('labelHighColor');
-                }
-            }
-        },
-        
-        components: {
-            Dropbox,
-            Icon
+    props: {
+        label: {
+            type: String,
+            default: ''
         },
 
-        data(){
-            return {
-                isOpen: false
+        labelColor: {
+            type: String,
+            default: () => {
+                return DropDown.config('labelColor');
             }
         },
 
-        mounted(){
-            var self = this;
-            
-            self.$nextTick(() => {
-                var $box = self.$refs.box;
-
-                $box.$on('open', () => {
-                    self.isOpen = true;
-                    this.$emit('open');
-                });
-
-                $box.$on('close', () => {
-                    self.isOpen = false;
-                    this.$emit('close');
-                });
-            });
-        },
-
-        methods: {
-            open(){
-                this.$refs.box.open();
-            },
-
-            close(){
-                this.$refs.box.close();
+        labelHighColor: {
+            type: String,
+            default: () => {
+                return DropDown.config('labelHighColor');
             }
         }
+    },
+
+    components: {
+        Dropbox,
+        Icon
+    },
+
+    data () {
+        return {
+            isOpen: false
+        };
+    },
+
+    mounted () {
+        var self = this;
+
+        self.$nextTick(() => {
+            var $box = self.$refs.box;
+
+            $box.$on('open', () => {
+                self.isOpen = true;
+                this.$emit('open');
+            });
+
+            $box.$on('close', () => {
+                self.isOpen = false;
+                this.$emit('close');
+            });
+        });
+    },
+
+    methods: {
+        open () {
+            this.$refs.box.open();
+        },
+
+        close () {
+            this.$refs.box.close();
+        }
     }
+};
 
-    Util.defineConfig(DropDown, {
-        labelColor: '#6281C2',
-        labelHighColor: '#6281C2'
-    });
+Util.defineConfig(DropDown, {
+    labelColor: '#6281C2',
+    labelHighColor: '#6281C2'
+});
 
-    export default DropDown;
+export default DropDown;
 </script>

@@ -1,14 +1,14 @@
 <template>
     <page>
         <topbar slot="header">list组件</topbar>
-            <list 
-                source="https://3g.163.com/touch/jsonp/sy/recommend/10-10.html?hasad=1&miss=59&refresh=A&offset=0&size=10&callback=?" 
-                :max-count-per-page="10" 
-                :data-formatter="formatter" 
+            <list
+                source="https://3g.163.com/touch/jsonp/sy/recommend/10-10.html?hasad=1&miss=59&refresh=A&offset=0&size=10&callback=?"
+                :max-count-per-page="10"
+                :data-formatter="formatter"
                 :pullup2load="true"
                 :pulldown2refresh="true"
                 v-lazyload
-            >   
+            >
                 <header slot="header">网易实时新闻</header>
                 <template slot="row" scope="props">
                     <div class="row">
@@ -16,7 +16,7 @@
                             <div :class="{
                             content: true,
                             active: active
-                            }"  v-draggable="{canDrag: canDrag, axis: 'x'}" @drag:end="dragEnd" @drag:start="dragStart"> 
+                            }"  v-draggable="{canDrag: canDrag, axis: 'x'}" @drag:end="dragEnd" @drag:start="dragStart">
                                 <template v-if="!props.data.title">
                                 <img class="ads" data-src="http://cms-bucket.nosdn.127.net/96d8cf0375f64c24a819d50ae190b51820170601175516.jpeg?imageView&thumbnail=690y230&quality=45&type=webp&interlace=1&enlarge=1" />
                                 </template>
@@ -25,8 +25,7 @@
                                     <span class="title">{{props.data.digest}}</span>
                                 </template>
                             </div>
-                            
-                            
+
                             <a href="javascript:" class="comment">评论</a>
                         </a>
                     </div>
@@ -104,47 +103,48 @@
 </style>
 
 <script>
-    import {
+import {
+    Page,
+    Topbar,
+    List,
+    Draggable,
+    Lazyload
+} from 'vm';
+
+export default {
+    components: {
         Page,
         Topbar,
-        List,
-        Draggable,
-        Lazyload,
-    } from 'vm';
+        List
+    },
 
-    export default{
-        components: {
-            Page, 
-            Topbar,
-            List
+    data () {
+        return {
+            active: false
+        };
+    },
+
+    directives: {Draggable, Lazyload},
+
+    methods: {
+        formatter (data) {
+            return data.list;
         },
 
-        data(){
-            return {
-                active: false
-            };
+        canDrag (info) {
+            return info.x > -100 && info.x <= 0;
         },
 
-        directives: {Draggable, Lazyload},
+        dragStart () {
+            this.active = false;
+        },
 
-        methods: {
-            formatter(data){
-                return data.list;
-            },
+        dragEnd (event) {
+            var info = event.data;
 
-            canDrag(info){
-                return info.x > -100 && info.x <= 0;
-            },
-
-            dragStart(){
-                this.active = false;
-            },
-
-            dragEnd(event){
-                var info = event.data;
-                this.active = true;
-                info.e.target.style.transform = `translate3d(${info.x < -50 ? -100 : 0}px, 0px, 0px)`;
-            }
+            this.active = true;
+            info.e.target.style.transform = `translate3d(${info.x < -50 ? -100 : 0}px, 0px, 0px)`;
         }
     }
+};
 </script>

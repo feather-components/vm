@@ -7,15 +7,15 @@
             </slider-item>
 
             <slider-item>
-                <list 
+                <list
                     source="https://3g.163.com/touch/jsonp/sy/recommend/10-10.html?hasad=1&miss=59&refresh=A&offset=0&size=10&callback=?"
-                    :max-count-per-page="10" 
-                    :data-formatter="formatter" 
+                    :max-count-per-page="10"
+                    :data-formatter="formatter"
                     :pullup2load="true"
                     :pulldown2refresh="true"
                     ref="list"
                     :auto-refresh="true"
-                >   
+                >
                     <header slot="header">网易实时新闻</header>
                     <template slot="row" scope="props">
                         <div class="row">
@@ -36,7 +36,7 @@
             <slider-item style="height: 300px;">
                 向左滑
             </slider-item>
-        </slider>   
+        </slider>
     </page>
 </template>
 
@@ -106,44 +106,44 @@
         padding: 5px;
         text-align: center;
     }
-</style>    
+</style>
 
 <script>
-    import Vue from 'vue';
-    import {
-        List,
+import Vue from 'vue';
+import {
+    List,
+    Page,
+    Topbar,
+    Slider,
+    SliderItem
+} from 'vm';
+
+export default {
+    components: {
         Page,
         Topbar,
         Slider,
-        SliderItem
-    } from 'vm';
+        SliderItem,
+        List
+    },
 
-    export default{
-        components: {
-            Page,
-            Topbar,
-            Slider,
-            SliderItem,
-            List
+    data () {
+        return {
+            isLoadedNews: false
+        };
+    },
+
+    methods: {
+        formatter (data) {
+            return data.list;
         },
 
-        data(){
-            return {
-                isLoadedNews: false
-            };
-        },
-
-        methods: {
-            formatter(data){
-                return data.list;
-            },
-
-            slideTo(to, from){
-                if(to === 1){
-                    this.$refs.list.refresh();
-                    this.isLoadedNews = true;
-                }
+        slideTo (to, from) {
+            if (to === 1) {
+                this.$refs.list.refresh();
+                this.isLoadedNews = true;
             }
         }
     }
+};
 </script>

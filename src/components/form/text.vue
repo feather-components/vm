@@ -1,27 +1,27 @@
 <template>
-    <cell :label="label" class="vm-form-textinput" :vertical-layout="false"> 
+    <cell :label="label" class="vm-form-textinput" :vertical-layout="false">
 
         <input ref="input" :type="type" :name="name"
             @input="onInput"
-            @focus="onFocus" 
-            @blur="$emit('blur')" 
-            @click="$emit('click')" 
-            :maxlength="maxlength" 
+            @focus="onFocus"
+            @blur="$emit('blur')"
+            @click="$emit('click')"
+            :maxlength="maxlength"
             :placeholder="placeholder"
             :readonly="readonly"
             :style="{textAlign: align}"
-        /> 
+        />
 
         <template slot="label" v-if="$slots.label">
             <slot name="label"></slot>
-        </template> 
+        </template>
 
         <icon name="close" v-if="clearable && val" @click.native="clear" class="vm-form-clear" :size=".14"/>
-        <span v-if="$slots.default" class="vm-form-textinput-other"><slot></slot></span>    
+        <span v-if="$slots.default" class="vm-form-textinput-other"><slot></slot></span>
 
         <template slot="extra" v-if="$slots.extra">
             <slot name="extra"></slot>
-        </template> 
+        </template>
     </cell>
 </template>
 
@@ -54,85 +54,85 @@
 </style>
 
 <script>
-    import Cell from './cell';
-    import Icon from '../icon';
-    import {Single} from './abstract';
+import Cell from './cell';
+import Icon from '../icon';
+import {Single} from './abstract';
 
-    export default{
-        name: 'textinput',
+export default {
+    name: 'textinput',
 
-        mixins: [Cell, Single],
+    mixins: [Cell, Single],
 
-        props: {
-            placeholder: {
-                type: String,
-                default: null
-            },
+    props: {
+        placeholder: {
+            type: String,
+            default: null
+        },
 
-            readonly: {
-                type: Boolean,
-                default: false
-            },
+        readonly: {
+            type: Boolean,
+            default: false
+        },
 
-            clearable: {
-                type: Boolean,
-                default: false
-            },
+        clearable: {
+            type: Boolean,
+            default: false
+        },
 
-            type: {
-                type: String,
-                default: 'text'
-            },
+        type: {
+            type: String,
+            default: 'text'
+        },
 
-            align: {
-                type: String,
-                default: 'right'
-            },
+        align: {
+            type: String,
+            default: 'right'
+        },
 
-            maxlength: {
-                type: [Number, String],
-                default: 100000000
+        maxlength: {
+            type: [Number, String],
+            default: 100000000
+        }
+    },
+
+    components: {
+        Cell,
+        Icon
+    },
+
+    watch: {
+        val (v) {
+            this.setValue(v);
+        }
+    },
+
+    mounted () {
+        this.$nextTick(() => {
+            this.setValue(this.val);
+        });
+    },
+
+    methods: {
+        clear () {
+            this.val = '';
+            this.$emit('clear');
+        },
+
+        onInput () {
+            this.val = this.$refs.input.value;
+        },
+
+        onFocus () {
+            if (this.readonly) {
+                this.$refs.input.blur();
+            } else {
+                this.$emit('focus');
             }
         },
 
-        components: {
-            Cell,
-            Icon
-        },
-
-        watch: {
-            val(v){
-                this.setValue(v);
-            }
-        },
-
-        mounted(){
-            this.$nextTick(() => {
-                this.setValue(this.val);
-            });
-        },
-
-        methods:{
-            clear(){
-                this.val = '';
-                this.$emit('clear');
-            },
-
-            onInput(){
-                this.val = this.$refs.input.value;
-            },
-
-            onFocus(){
-                if(this.readonly){
-                    this.$refs.input.blur();
-                }else{
-                    this.$emit('focus');
-                }
-            },
-
-            setValue(v){
-                this.$refs.input && this.$refs.input.value != v && (this.$refs.input.value = v);
-            }
+        setValue (v) {
+            this.$refs.input && this.$refs.input.value != v && (this.$refs.input.value = v);
         }
     }
+};
 </script>

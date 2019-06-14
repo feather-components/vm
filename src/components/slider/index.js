@@ -10,4 +10,4 @@ export default Slider;
 export {
     Slider,
     SliderItem
-}
+};

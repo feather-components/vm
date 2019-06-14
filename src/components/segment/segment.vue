@@ -1,119 +1,110 @@
 <template>
-	<span class="vm-segment" :style="{
-		border: '1px solid ' + color
-	}">
-		<button v-for="(item, i) of items" :style="index == i ? highStyle : style" @click="onClick(i)">{{item.label || item}}</button>
+	<span class="vm-segment" :style="{border: '1px solid ' + highColor}">
+		<button v-for="(item, i) of options" :style="index == i ? highStyle : style" @click="onItemClick(i)">
+            {{item.label || item}}
+        </button>
 	</span>
 </template>
 
-<style lang="less">
-	.vm-segment{
-		height: .22rem;
-		border-radius: 4px;
-		display: flex;
-
-		button{
-			margin: 0px;
-			padding: 0px .1rem;
-			flex-grow: 1;
-			background: transparent;
-			height: 100%;
-			color: #000;
-			background: #fff;
-			border: 0px;
-			border-left: 1px solid #000;
-			height: .22rem;
-			line-height: .22rem;
-			border-radius: 0px;
-			outline: none;
-		}
-
-		button:nth-child(1){
-			border-left: 0px;
-			border-top-left-radius: 3px;
-			border-bottom-left-radius: 3px;
-		}
-
-		button:nth-last-child(1){
-			border-top-right-radius: 3px;
-			border-bottom-right-radius: 3px;
-		}
-	}
-</style>
-
 <script>
-	import {Util} from '../../helper';
-	import Topbar from '../topbar';
+import Config from '../../config';
 
-	var Segment = {
-		name: 'segment',
+export default {
+    name: 'segment',
 
-		props: {
-			items: {
-				type: Array,
-				default(){
-					return [];
-				}
-			},
+    props: {
+        options: {
+            type: Array,
+            default () {
+                return [];
+            }
+        },
 
-			color: {
-				type: String,
-				default(){
-					return Segment.config('color');
-				}
-			},
+        color: {
+            type: String,
+            default () {
+                return Config('segment.color');
+            }
+        },
 
-			bgColor: {
-				type: String,
-				default(){
-					return Segment.config('bgColor');
-				}
-			},
+        highColor: {
+            type: String,
+            default () {
+                return Config('segment.high-color');
+            }
+        },
 
-			defaultIndex: {
-				type: Number,
-				default: 0
-			}
-		},
+        defaultIndex: {
+            type: Number,
+            default: 0
+        }
+    },
 
-		data(){
-			return {
-				index: this.defaultIndex,
-				style: {
-					color: this.color,
-					background: this.bgColor,
-					borderColor: this.color
-				},
-				highStyle: {
-					color: this.bgColor,
-					background: this.color,
-					borderColor: this.color
-				}
-			};
-		},
+    data () {
+        return {
+            index: this.defaultIndex,
+            style: {
+                color: this.color,
+                background: this.highColor,
+                borderColor: this.color
+            },
+            highStyle: {
+                color: this.highColor,
+                background: this.color,
+                borderColor: this.color
+            }
+        };
+    },
 
-		methods: {
-			onClick(index){
-				this.$emit('click', index, this.items[index]);
-				this.to(index);
-			},
+    methods: {
+        onItemClick (index) {
+            this.$emit('item:click', index, this.options[index]);
+            this.switch(index);
+        },
 
-			to(index = 0){
-				if(index == this.index){
-					return false;
-				}
+        switch (index = 0) {
+            if (index == this.index) {
+                return false;
+            }
 
-				this.index = index;
-				this.$emit('switch', index, this.items[index]);
-				this.$emit('to', index, this.items[index]);
-			}
-		}
-	};
-
-	Util.defineConfig(Segment, {
-		color: Topbar.config('color'),
-		bgColor: Topbar.config('bgColor')
-	});
-
-	export default Segment;
+            this.index = index;
+            this.$emit('switch', index, this.options[index]);
+        }
+    }
+};
 </script>
+
+<style lang="less">
+.vm-segment {
+    height: 22px;
+    border-radius: 4px;
+    display: flex;
+
+    button {
+        margin: 0px;
+        padding: 0px 10px;
+        flex-grow: 1;
+        background: transparent;
+        height: 100%;
+        color: #000;
+        background: #fff;
+        border: 0px;
+        border-left: 1px solid #000;
+        height: 22px;
+        line-height: 22px;
+        border-radius: 0px;
+        outline: none;
+    }
+
+    button:nth-child(1) {
+        border-left: 0px;
+        border-top-left-radius: 3px;
+        border-bottom-left-radius: 3px;
+    }
+
+    button:nth-last-child(1) {
+        border-top-right-radius: 3px;
+        border-bottom-right-radius: 3px;
+    }
+}
+</style>

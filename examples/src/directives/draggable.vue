@@ -1,7 +1,7 @@
 <template>
     <vm-page>
         <vm-topbar slot="header">draggable</vm-topbar>
-        
+
         <br />
         <div class="container">
             <br />
@@ -23,36 +23,36 @@
 </style>
 
 <script>
-    export default {
-    	data(){
-            return {
-                d1: '',
-                d2: '',
-                d3: ''
-            }
+export default {
+    	data () {
+        return {
+            d1: '',
+            d2: '',
+            d3: ''
+        };
+    },
+
+    methods: {
+        onDrag1 (pos) {
+            this.d1 = {
+                x: pos.data.x,
+                y: pos.data.y
+            };
         },
 
-        methods: {
-            onDrag1(pos){
-                this.d1 = {
-                    x: pos.data.x,
-                    y: pos.data.y
-                };
-            },
+        onDrag2 (pos) {
+            this.d2 = {
+                x: pos.data.x,
+                y: pos.data.y
+            };
+        },
 
-            onDrag2(pos){
-                this.d2 = {
-                    x: pos.data.x,
-                    y: pos.data.y
-                };
-            },
-
-            onDrag3(pos){
-                this.d3 = {
-                    x: pos.data.x,
-                    y: pos.data.y
-                };
-            }
+        onDrag3 (pos) {
+            this.d3 = {
+                x: pos.data.x,
+                y: pos.data.y
+            };
         }
     }
+};
 </script>

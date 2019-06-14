@@ -6,10 +6,10 @@
             <i class="vm-popover-arrow" ref="arrow" :style="{
                 borderColor: bgColor
             }"></i>
-            <a 
-                href="javascript:void(0);" 
-                :class="['vm-popover-item', action.className]" 
-                v-for="(action, label) of actions" 
+            <a
+                href="javascript:void(0);"
+                :class="['vm-popover-item', action.className]"
+                v-for="(action, label) of actions"
                 @click.stop="callAction(label)"
                 :style="{
                     color: color,
@@ -86,7 +86,7 @@
 
     .vm-popover-arrow{
         position: absolute;
-        content: "";  
+        content: "";
         border-width: 8px;
         border-style: solid;
         border-left-color: transparent !important;
@@ -94,110 +94,110 @@
         height: 0px;
         width: 0px;
         display: inline-block;
-        border-bottom-color: #28304E; 
+        border-bottom-color: #28304E;
         left: 50%;
         transform: translate(-0.08rem,-90%);
     }
 </style>
 
 <script>
-    import Dropbox from '../dropdown/box';
-    import vmMask from '../mask';
-    import {Util, Event, Dom} from '../../helper';
+import Dropbox from '../dropdown/box';
+import vmMask from '../mask';
+import {Util, Event, Dom} from '../../helper';
 
-    var PopOver = {
-        name: 'popover',
+var PopOver = {
+    name: 'popover',
 
-        props: {
-            actions: {
-                type: Object,
-                default(){
-                    return {};
-                }
-            },
-
-            offset: {
-                type: Object,
-                default(){
-                    return {
-                        x: 5,
-                        y: 5
-                    }
-                }
-            },
-
-            color: {
-                type: String,
-                default: () => {
-                    return PopOver.config('color');
-                }
-            },
-
-            bgColor: {
-                type: String,
-                default: () => {
-                    return PopOver.config('bgColor');
-                }
+    props: {
+        actions: {
+            type: Object,
+            default () {
+                return {};
             }
         },
 
-        components: {
-            Dropbox,
-            vmMask
+        offset: {
+            type: Object,
+            default () {
+                return {
+                    x: 5,
+                    y: 5
+                };
+            }
         },
 
-        mounted(){
-            var self = this;
-
-            self.$refs.box.$on('open', () => {
-                setTimeout(() => {
-                    var $inner = self.$refs.inner;
-                    var x = self.offset.x;
-                    var {width, left} = Dom.rect(self.$el.parentNode);
-                    var {width: innerWidth} = Dom.rect($inner);
-                    var bodyWidth = Dom.width(document);
-
-                    var m = left + width/2;
-                    var l = Math.min(
-                        Math.max(m - innerWidth/2, x), 
-                        bodyWidth - innerWidth - x
-                    );
-
-                    Dom.css(self.$refs.box.$refs.overlay.$el, {
-                        left: l
-                    });
-
-                    Dom.css(
-                        self.$refs.arrow, 
-                        'left', 
-                        m - l
-                    );
-
-                    self.$emit('open');
-                });
-            });
+        color: {
+            type: String,
+            default: () => {
+                return PopOver.config('color');
+            }
         },
 
-        methods: {
-            callAction(index){
-                var self = this;
-                var action = self.actions[index];
-
-                if(typeof action == 'function'){
-                    action.call(self);
-                }else{
-                    action.callback.call(self);
-                }
-
-                self.$refs.box.close();
+        bgColor: {
+            type: String,
+            default: () => {
+                return PopOver.config('bgColor');
             }
         }
+    },
+
+    components: {
+        Dropbox,
+        vmMask
+    },
+
+    mounted () {
+        var self = this;
+
+        self.$refs.box.$on('open', () => {
+            setTimeout(() => {
+                var $inner = self.$refs.inner;
+                var x = self.offset.x;
+                var {width, left} = Dom.rect(self.$el.parentNode);
+                var {width: innerWidth} = Dom.rect($inner);
+                var bodyWidth = Dom.width(document);
+
+                var m = left + width / 2;
+                var l = Math.min(
+                    Math.max(m - innerWidth / 2, x),
+                    bodyWidth - innerWidth - x
+                );
+
+                Dom.css(self.$refs.box.$refs.overlay.$el, {
+                    left: l
+                });
+
+                Dom.css(
+                    self.$refs.arrow,
+                    'left',
+                    m - l
+                );
+
+                self.$emit('open');
+            });
+        });
+    },
+
+    methods: {
+        callAction (index) {
+            var self = this;
+            var action = self.actions[index];
+
+            if (typeof action == 'function') {
+                action.call(self);
+            } else {
+                action.callback.call(self);
+            }
+
+            self.$refs.box.close();
+        }
     }
+};
 
-    Util.defineConfig(PopOver, {
-        color: '#fff',
-        bgColor: '#28304E'
-    });
+Util.defineConfig(PopOver, {
+    color: '#fff',
+    bgColor: '#28304E'
+});
 
-    export default PopOver;
+export default PopOver;
 </script>

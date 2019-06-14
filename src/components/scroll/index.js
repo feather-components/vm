@@ -7,6 +7,6 @@ var Pulldown2refresh = Util.register(_Pulldown2refresh);
 
 export default Scroll;
 export {
-	Scroll,
-	Pulldown2refresh
-}
+    Scroll,
+    Pulldown2refresh
+};

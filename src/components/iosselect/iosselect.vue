@@ -11,8 +11,8 @@
                     @hook:mounted="listen(index)"
                 >
                     <div class="vm-iosselect-scroll-inner">
-                        <a href="javascript:" 
-                            v-for="(item, i) of data" 
+                        <a href="javascript:"
+                            v-for="(item, i) of data"
                             @click="select(item, i, index)"
                             :class="{'vm-iosselect-selected': vals[index] && item.value === vals[index].value}"
                         >
@@ -26,209 +26,216 @@
 </template>
 
 <script>
-    import Scroll from '../scroll'
-    import Overlay from '../overlay'
-    import vmMask from '../mask';
-    import {Util, Dom} from '../../helper';
-    import Ajax from 'ajax';
+import Scroll from '../scroll';
+import Overlay from '../overlay';
+import vmMask from '../mask';
+import {Util, Dom} from '../../helper';
+import Ajax from 'ajax';
 
-    let div = Dom.create('<div style="height: .35rem; position: absolute;top: -100px;">');
-    let HEIGHT;
-    document.body.appendChild(div);
+let div = Dom.create('<div style="height: .35rem; position: absolute;top: -100px;">');
 
-    setTimeout(() => {
-        HEIGHT = div.offsetHeight;
-        div.parentNode.removeChild(div);
-    }, 1000);
+let HEIGHT;
 
-    export default {
-        name: 'iosselect',
+document.body.appendChild(div);
 
-        mixins: [Overlay],
+setTimeout(() => {
+    HEIGHT = div.offsetHeight;
+    div.parentNode.removeChild(div);
+}, 1000);
 
-        props: {
-            source: {
-                type: [Array, String],
-                default(){
-                    return [];
-                }
-            },
+export default {
+    name: 'iosselect',
 
-            params: {
-                type: [Array, Object],
-                default(){
-                    return {}
-                }
-            },
+    mixins: [Overlay],
 
-            value: {
-                type: Array,
-                default(){
-                    return []
-                }
-            },
-
-            dataFormatter: {
-                type: Function,
-                default(v){
-                    return v;
-                }
-            },
-
-            visible: {
-                type: Boolean,
-                default: true
+    props: {
+        source: {
+            type: [Array, String],
+            default () {
+                return [];
             }
         },
 
-        components: {
-            Scroll,
-            Overlay,
-            vmMask
-        },
-
-        data(){
-            return {
-                data: [],
-                dataList: [],
-                vals: [],
-                val: this.value
+        params: {
+            type: [Array, Object],
+            default () {
+                return {};
             }
         },
 
-        watch: {
-            val(v){
-                this.$emit('input', v);
-            },
-
-            value(v){
-                this.setValue(v);
-            },
-
-            source(source){
-                this.render(source);
+        value: {
+            type: Array,
+            default () {
+                return [];
             }
         },
 
-        mounted(){
-            this.source.length > 0 && this.render();
+        dataFormatter: {
+            type: Function,
+            default (v) {
+                return v;
+            }
         },
 
-        methods: {
-            render(source = this.source){
-                source = Util.makeArray(source);
-                var params = Util.makeArray(this.params);
+        visible: {
+            type: Boolean,
+            default: true
+        }
+    },
 
-                if(!Array.isArray(source[0]) && typeof source[0] != 'string'){
-                    source = [source];
-                }
+    components: {
+        Scroll,
+        Overlay,
+        vmMask
+    },
 
-                let promises = source.map((item, key) => {
-                    if(typeof item == 'string'){
-                        return new Promise((resolve) => {
-                            Ajax({
-                                url: item,
-                                data: params[key] || params[0],
-                                dataType: 'json',
-                                success: resolve
-                            });
+    data () {
+        return {
+            data: [],
+            dataList: [],
+            vals: [],
+            val: this.value
+        };
+    },
+
+    watch: {
+        val (v) {
+            this.$emit('input', v);
+        },
+
+        value (v) {
+            this.setValue(v);
+        },
+
+        source (source) {
+            this.render(source);
+        }
+    },
+
+    mounted () {
+        this.source.length > 0 && this.render();
+    },
+
+    methods: {
+        render (source = this.source) {
+            source = Util.makeArray(source);
+            var params = Util.makeArray(this.params);
+
+            if (!Array.isArray(source[0]) && typeof source[0] != 'string') {
+                source = [source];
+            }
+
+            let promises = source.map((item, key) => {
+                if (typeof item == 'string') {
+                    return new Promise((resolve) => {
+                        Ajax({
+                            url: item,
+                            data: params[key] || params[0],
+                            dataType: 'json',
+                            success: resolve
                         });
-                    }else{
-                        return item;
-                    }
-                });
+                    });
+                } else {
+                    return item;
+                }
+            });
 
-                Promise.all(promises).then((source) => {
-                    let data = source.map(this.dataFormatter);
-                    this.$emit('data:ready', data);
+            Promise.all(promises).then((source) => {
+                let data = source.map(this.dataFormatter);
 
-                    let i = 0, j = 0;
+                this.$emit('data:ready', data);
 
-                    for(; i < data.length; i++){
-                        if(this.data[i] != data[i]){
-                            j = i;
-                            break;
-                        }
-                    }
+                let i = 0;
 
-                    this.data = data;                    
-                    this.renderList(this.data[j], j);
-                });
-            },
+                let j = 0;
 
-            renderList(data, level){
-                this.dataList.splice(level, 1, data);
-
-                if(!data.length) return false;
-
-                let select = [data[0], 0, level];
-
-                for(let i = 0; i < data.length; i++){
-                    if(data[i].value == this.val[level]){
-                        select = [data[i], i, level];
+                for (; i < data.length; i++) {
+                    if (this.data[i] != data[i]) {
+                        j = i;
                         break;
                     }
                 }
 
-                setTimeout(() => this.select(...select), 10);
-            },
+                this.data = data;
+                this.renderList(this.data[j], j);
+            });
+        },
 
-            select(data, index, level, duration){
-                let $scroll = this.$refs.scrolls[level];
+        renderList (data, level) {
+            this.dataList.splice(level, 1, data);
 
-                $scroll.scrollTo(-HEIGHT * index, duration || 400);
-                this.vals.splice(level, 100000, data);
-                
-                if(data.children){
-                    this.renderList(data.children, level + 1);
-                }else if(level < this.data.length - 1){
-                    this.renderList(this.data[level + 1], level + 1);
+            if (!data.length) return false;
+
+            let select = [data[0], 0, level];
+
+            for (let i = 0; i < data.length; i++) {
+                if (data[i].value == this.val[level]) {
+                    select = [data[i], i, level];
+                    break;
                 }
-
-                this.$emit('select', this.vals);
-            },
-
-            listen(level){
-                let $scroll = this.$refs.scrolls[level];
-
-                $scroll.$on('drag:end', (pos, dest = pos, duration = 0) => {
-                    let dataList = this.dataList[level];
-                    let index = Math.min(dataList.length - 1, Math.round(Math.abs(Math.min(dest , pos)) / HEIGHT));
-                    this.select(dataList[index], index, level, duration);
-                });
-
-                level === this.data.length - 1 && setTimeout(() => this.$emit('scroll:ready'), 20);
-            },
-
-            confirm(){
-                let labels = this.getLabels();
-
-                this.val = this.vals.map((item) => {
-                    return item.value;
-                });
-
-                this.$emit('confirm', this.val, labels, this.vals);
-                this.close();
-            },
-
-            getLabels(){
-                return this.vals.map((item) => {
-                    return item.label;
-                });
-            },
-
-            setValue(v){
-                v = Util.makeArray(v);
-
-                if(v.toString() === this.val.toString()){
-                    return false;
-                }   
-
-                this.render();
-                this.val = v;
             }
+
+            setTimeout(() => this.select(...select), 10);
+        },
+
+        select (data, index, level, duration) {
+            let $scroll = this.$refs.scrolls[level];
+
+            $scroll.scrollTo(-HEIGHT * index, duration || 400);
+            this.vals.splice(level, 100000, data);
+
+            if (data.children) {
+                this.renderList(data.children, level + 1);
+            } else if (level < this.data.length - 1) {
+                this.renderList(this.data[level + 1], level + 1);
+            }
+
+            this.$emit('select', this.vals);
+        },
+
+        listen (level) {
+            let $scroll = this.$refs.scrolls[level];
+
+            $scroll.$on('drag:end', (pos, dest = pos, duration = 0) => {
+                let dataList = this.dataList[level];
+
+                let index = Math.min(dataList.length - 1, Math.round(Math.abs(Math.min(dest, pos)) / HEIGHT));
+
+                this.select(dataList[index], index, level, duration);
+            });
+
+            level === this.data.length - 1 && setTimeout(() => this.$emit('scroll:ready'), 20);
+        },
+
+        confirm () {
+            let labels = this.getLabels();
+
+            this.val = this.vals.map((item) => {
+                return item.value;
+            });
+
+            this.$emit('confirm', this.val, labels, this.vals);
+            this.close();
+        },
+
+        getLabels () {
+            return this.vals.map((item) => {
+                return item.label;
+            });
+        },
+
+        setValue (v) {
+            v = Util.makeArray(v);
+
+            if (v.toString() === this.val.toString()) {
+                return false;
+            }
+
+            this.render();
+            this.val = v;
         }
     }
+};
 </script>
 
 <style lang="less">

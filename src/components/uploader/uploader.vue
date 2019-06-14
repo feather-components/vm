@@ -57,163 +57,164 @@
 </style>
 
 <script>
-    import {Util} from '../../helper';
-    import Toast from '../toast';
+import {Util} from '../../helper';
+import Toast from '../toast';
 
-    var Uploader = {
-        name: 'uploader',
+var Uploader = {
+    name: 'uploader',
 
-        props: {
-            multiple: {
-                type: Boolean,
-                default: false
-            },
+    props: {
+        multiple: {
+            type: Boolean,
+            default: false
+        },
 
-            params: {
-                type: Object,
-                default(){return {}}
-            },
+        params: {
+            type: Object,
+            default () { return {}; }
+        },
 
-            name: {
-                type: String,
-                default: null
-            },
+        name: {
+            type: String,
+            default: null
+        },
 
-            accept: {
-                type: String,
-                default: '*'
-            },
+        accept: {
+            type: String,
+            default: '*'
+        },
 
-            usePack: {
-                type: Boolean,
-                default: true
-            },
+        usePack: {
+            type: Boolean,
+            default: true
+        },
 
-            url: {
-                type: String,
-                default: ''
-            },
+        url: {
+            type: String,
+            default: ''
+        },
 
-            beforeUploadProcessor: {
-                type: Function,
-                default(files, next){
-                    return next(files);
-                }
-            },
-
-            canUpload: {
-                type: Function,
-                default(files){
-                    return true;
-                }
+        beforeUploadProcessor: {
+            type: Function,
+            default (files, next) {
+                return next(files);
             }
         },
 
-        mounted(){
-            this.files = [];
-            this.xhr = null;
+        canUpload: {
+            type: Function,
+            default (files) {
+                return true;
+            }
+        }
+    },
+
+    mounted () {
+        this.files = [];
+        this.xhr = null;
+    },
+
+    methods: {
+        onSelect () {
+            var self = this;
+            var files = [].slice.call(self.$refs.uploader.files);
+
+            Util.each(files, (file) => {
+                file.url = Uploader.getUrl(file);
+            });
+
+            self.$emit('select', files);
+            self.upload(files);
         },
 
-        methods: {
-            onSelect(){
-                var self = this;
-                var files = [].slice.call(self.$refs.uploader.files);
+        upload (files = []) {
+            var self = this;
 
-                Util.each(files, (file) => {
-                    file.url = Uploader.getUrl(file);
-                });
-
-                self.$emit('select', files);
-                self.upload(files);
-            },
-
-            upload(files = []){
-                var self = this;
-                
-                self.beforeUploadProcessor(files, function(files){
-                    if(!self.canUpload(files)){
-                        self.$emit('reject', files);
-                        return false;
-                    }
-
-                    self.files = self.files.concat(files);
-                    self._upload();
-                });
-            },
-
-            _upload(){
-                var self = this, files = self.files;
-
-                if(!files.length){
+            self.beforeUploadProcessor(files, function (files) {
+                if (!self.canUpload(files)) {
+                    self.$emit('reject', files);
                     return false;
                 }
 
-                if(!self.usePack){
-                    files = [self.files.shift()];
-                }else{
-                    files = self.files.slice(0);
-                    self.clear();
-                }
+                self.files = self.files.concat(files);
+                self._upload();
+            });
+        },
 
-                self.$emit('upload:start', files);
+        _upload () {
+            var self = this; var files = self.files;
 
-                var formData = new FormData();
-
-                files.forEach((file, key) => {
-                    formData.append(this.name || ('file' + key), file);
-                });
-
-                for(let key in this.params){
-                    formData.append(key, this.params[key]);
-                }
-
-                var xhr = self.xhr = new XMLHttpRequest;
-                xhr.onload = () => {
-                    if(xhr.readyState == 4){
-                        if(xhr.status == 200 || xhr.status == 304){
-                            var data = {};
-
-                            try{
-                                data = JSON.parse(xhr.responseText);
-                            }catch(e){};
-
-                            self.$emit('upload:complete', files, data);
-                        }
-
-                        this._upload();
-                    }  
-                };
-                xhr.onerror = () => {
-                    self.$emit('upload:error', files, xhr.status);
-                };
-                xhr.upload.onprogress = (event) => {
-                    self.$emit('upload:progress', files, event);
-                };
-                xhr.open('post', self.url, true);
-                xhr.send(formData);
-            },
-
-            abort(){
-                this.xhr && this.xhr.abort();
-                this.clear();
-            },
-
-            clear(){
-                this.files.length = 0;
-                this.$refs.uploader.value = '';
+            if (!files.length) {
+                return false;
             }
+
+            if (!self.usePack) {
+                files = [self.files.shift()];
+            } else {
+                files = self.files.slice(0);
+                self.clear();
+            }
+
+            self.$emit('upload:start', files);
+
+            var formData = new FormData();
+
+            files.forEach((file, key) => {
+                formData.append(this.name || ('file' + key), file);
+            });
+
+            for (let key in this.params) {
+                formData.append(key, this.params[key]);
+            }
+
+            var xhr = self.xhr = new XMLHttpRequest();
+
+            xhr.onload = () => {
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200 || xhr.status == 304) {
+                        var data = {};
+
+                        try {
+                            data = JSON.parse(xhr.responseText);
+                        } catch (e) {};
+
+                        self.$emit('upload:complete', files, data);
+                    }
+
+                    this._upload();
+                }
+            };
+            xhr.onerror = () => {
+                self.$emit('upload:error', files, xhr.status);
+            };
+            xhr.upload.onprogress = (event) => {
+                self.$emit('upload:progress', files, event);
+            };
+            xhr.open('post', self.url, true);
+            xhr.send(formData);
+        },
+
+        abort () {
+            this.xhr && this.xhr.abort();
+            this.clear();
+        },
+
+        clear () {
+            this.files.length = 0;
+            this.$refs.uploader.value = '';
         }
-    };
+    }
+};
 
-    Uploader.getUrl = (() => {
-        var url = window.URL || window.webkitURL;
+Uploader.getUrl = (() => {
+    var url = window.URL || window.webkitURL;
 
-        if(!url){
-            return (file) => {return file.name};
-        }
+    if (!url) {
+        return (file) => { return file.name; };
+    }
 
-        return url.createObjectURL;
-    })();
+    return url.createObjectURL;
+})();
 
-    export default Uploader;
+export default Uploader;
 </script>

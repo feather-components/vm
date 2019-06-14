@@ -10,17 +10,17 @@
 </template>
 
 <script>
-    export default {
-    	data(){
+export default {
+    	data () {
     		return {
     			badge: ''
-    		}
+    		};
     	},
 
-    	mounted(){
+    	mounted () {
     		setTimeout(() => {
     			this.badge = 123;
-    		}, 3000)
+    		}, 3000);
     	}
-    }
+};
 </script>

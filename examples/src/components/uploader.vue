@@ -28,32 +28,32 @@
 </style>
 
 <script>
-    import Vue from 'vue';
-    import {
+import Vue from 'vue';
+import {
+    Page,
+    Topbar,
+    Toast,
+    Uploader
+} from 'vm';
+
+export default {
+    components: {
         Page,
         Topbar,
-        Toast,
-        Uploader
-    } from 'vm';
+        Uploader,
+        Toast
+    },
 
-    export default{
-        components: {
-            Page, 
-            Topbar,
-            Uploader,
-            Toast
-        },
+    data () {
+        return {
+            src: false
+        };
+    },
 
-        data(){
-            return {
-                src: false
-            }
-        },
-
-        methods: {
-            select(files){
-                this.src = files[0].url;
-            }
+    methods: {
+        select (files) {
+            this.src = files[0].url;
         }
     }
+};
 </script>

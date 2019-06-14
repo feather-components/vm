@@ -9,7 +9,7 @@ export const Single = {
 
         name: {
             type: String,
-            default(){
+            default () {
                 return String(Date.now());
             }
         },
@@ -17,18 +17,18 @@ export const Single = {
         value: null
     },
 
-    data(){
+    data () {
         return {
             val: this.value
-        }
+        };
     },
 
     watch: {
-        val(v){
+        val (v) {
             this.$emit('input', v);
         },
 
-        value(v){
+        value (v) {
             this.val = v;
         }
     }
@@ -43,13 +43,13 @@ export const Multiable = {
 
         value: {
             type: Array,
-            default(){
+            default () {
                 return [];
             }
         }
     }),
 
-    data(){
+    data () {
         return {
             val: Util.makeArray(this.value),
             multiable: this.size != 1
@@ -57,34 +57,34 @@ export const Multiable = {
     },
 
     watch: {
-        val(v){
+        val (v) {
             this.$emit('input', !this.multiable ? v[0] : v);
         },
 
-        value(v){
+        value (v) {
             this.val = Util.makeArray(v);
         }
     },
 
     methods: {
-        save(v, merge = true){
+        save (v, merge = true) {
             v = Util.makeArray(v);
 
-            if(this.size == 1){
+            if (this.size == 1) {
                 merge = false;
             }
 
-            if(!merge){
+            if (!merge) {
                 this.val = v;
-            }else{
+            } else {
                 this.val = this.val.concat(v);
             }
         },
 
-        del(index){
-            if(index == null){
+        del (index) {
+            if (index == null) {
                 this.val = [];
-            }else{
+            } else {
                 this.val.splice(index, 1);
             }
         }

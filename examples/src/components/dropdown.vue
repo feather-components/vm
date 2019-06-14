@@ -22,21 +22,20 @@
     </page>
 </template>
 
-
 <script>
-    import {
+import {
+    Page,
+    Topbar,
+    Dropdown,
+    Scroll
+} from 'vm';
+
+export default {
+    components: {
         Page,
         Topbar,
         Dropdown,
         Scroll
-    } from 'vm';
-
-    export default{
-        components: {
-            Page, 
-            Topbar,
-            Dropdown,
-            Scroll
-        }
     }
+};
 </script>

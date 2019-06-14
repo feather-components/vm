@@ -9,7 +9,7 @@
                     {{props.text}}
                 </div>
             </template>
-            
+
             <div style="background: #fff; height: 0.4rem; line-height: 0.4rem;" slot="cancel">
                 取消
             </div>
@@ -17,42 +17,41 @@
     </page>
 </template>
 
-
 <script>
-    import {
+import {
+    Page,
+    Topbar,
+    ActionSheet,
+    Toast,
+    Button as Btn
+} from 'vm';
+
+export default {
+    components: {
         Page,
         Topbar,
-        ActionSheet,
-        Toast,
-        Button as Btn
-    } from 'vm';
+        Btn
+        // Actionsheet: ActionSheet.Component
+    },
 
-    export default{
-        components: {
-            Page, 
-            Topbar,
-            Btn,
-            Actionsheet: ActionSheet.Component
-        },
+    data () {
+        return {
+            actions: {
+                '新增' () {
+                    Toast('点击了新增');
+                },
 
-        data(){
-            return {
-                actions: {
-                    '新增'(){
-                        Toast('点击了新增')
-                    },
-
-                    '删除'(){
-                        Toast('点击了删除')
-                    }
+                '删除' () {
+                    Toast('点击了删除');
                 }
             }
-        },
+        };
+    },
 
-        methods: {
-            action(){
-                ActionSheet(this.actions);
-            }
+    methods: {
+        action () {
+            // ActionSheet(this.actions);
         }
     }
+};
 </script>

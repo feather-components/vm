@@ -5,11 +5,9 @@
                 <a v-for="(i, a) of 100">{{i}}</a>
             </scroll>
 
-
             <pulldown2refresh axis="y" class="col" style="margin-bottom: 30px;" ref='scroll' @refresh="onRefresh" id="scroll2">
                 <a v-for="(i, a) of 50">scroll组件</a>
             </pulldown2refresh>
-
 
             <scroll slot="footer" axis="y" :scrollbars="true" class="col" style="margin-bottom: 30px; height: 100px;" id="scroll1" v-if="show">
                 <a v-for="(i, a) of 7">scroll组件</a>
@@ -32,50 +30,50 @@
 </style>
 
 <script>
-    import {
+import {
+    Page,
+    Topbar,
+    Scroll,
+    Pulldown2refresh,
+    Autosize
+} from 'vm';
+
+export default {
+    components: {
         Page,
         Topbar,
         Scroll,
-        Pulldown2refresh,
-        Autosize
-    } from 'vm';
+        Pulldown2refresh
+    },
 
-    export default{
-        components: {
-            Page, 
-            Topbar,
-            Scroll,
-            Pulldown2refresh
-        },
+    data () {
+        return {
+            show: true
+        };
+    },
 
-        data(){
-            return {
-                show: true
-            };
-        },
+    mounted () {
+        setTimeout(() => {
+            this.show = false;
+            Autosize.resize(this.$refs.scroll.$el);
 
-        mounted(){
             setTimeout(() => {
-                this.show = false;
+                this.show = true;
                 Autosize.resize(this.$refs.scroll.$el);
+            }, 2000);
+        }, 1000);
+    },
 
-                setTimeout(() => {
-                    this.show = true;
-                    Autosize.resize(this.$refs.scroll.$el)
-                }, 2000);
-            }, 1000);
+    methods: {
+        _scrollStop () {
+            //                this.$refs.scroll.scrollTo(-100)
         },
 
-        methods: {
-            _scrollStop() {
-//                this.$refs.scroll.scrollTo(-100)
-            },
-
-            onRefresh(recover){
-                setTimeout(() => {
-                    recover();
-                }, 1000)
-            }
+        onRefresh (recover) {
+            setTimeout(() => {
+                recover();
+            }, 1000);
         }
     }
+};
 </script>

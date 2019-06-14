@@ -14,27 +14,28 @@
 	</div>
 </template>
 
-<style lang="less">
-	.vm-box{
-		margin-top: 0.1rem;
-	}
-
-	.vm-box-header, .vm-box-footer{
-		height: .4rem;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		padding: 0px 0.12rem;
-	}
-
-	.vm-box-inner{
-		border-top: 1px solid #eee;
-		border-bottom: 1px solid #eee;
-	}
-</style>
-
 <script>
-	export default {
-		name: 'box'
-	}
+export default {
+    name: 'box'
+};
 </script>
+
+<style lang="less">
+.vm-box {
+	margin-top: 10px;
+}
+
+.vm-box-header,
+.vm-box-footer {
+	height: 40px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0px 12px;
+}
+
+.vm-box-inner {
+	border-top: 1px solid #eee;
+	border-bottom: 1px solid #eee;
+}
+</style>

@@ -1,7 +1,7 @@
 <template>
     <row class="vm-form-cell" :flex="false">
         <div :class="['vm-form-cell-main', flexLayout ? 'vm-form-flex' : '']">
-            <div class="vm-form-label" v-if="label || $slots.label"> 
+            <div class="vm-form-label" v-if="label || $slots.label">
                 <slot name="label">{{label}}</slot>
                 <span v-if="tips || $slots.tips" class="vm-form-tips">
                     <slot name="tips">{{tips}}</slot>
@@ -12,7 +12,7 @@
                 <slot></slot>
             </div>
         </div>
-        
+
         <div class="vm-form-cell-extra" v-if="$slots.extra"><slot name="extra"></slot></div>
     </row>
 </template>
@@ -23,7 +23,7 @@
     }
 
     .vm-form-field{
-        min-height: .36rem; 
+        min-height: .36rem;
         margin-bottom: 0.06rem;
     }
 
@@ -55,43 +55,43 @@
 </style>
 
 <script>
-    import Row from '../layout/row';
+import Row from '../layout/row';
 
-    export default{
-        name: 'form-cell',
+export default {
+    name: 'form-cell',
 
-        components: {
-            Row
+    components: {
+        Row
+    },
+
+    props: {
+        label: {
+            type: String,
+            default: null
         },
 
-        props: {
-            label: {
-                type: String,
-                default: null
-            },
+        verticalLayout: {
+            type: Boolean,
+            default: true
+        },
 
-            verticalLayout: {
-                type: Boolean,
-                default: true
-            },
-
-            name: {
-                type: String,
-                default(){
-                    return String(Date.now());
-                }
-            },
-
-            tips: {
-                type: String,
-                default: null
+        name: {
+            type: String,
+            default () {
+                return String(Date.now());
             }
         },
 
-        data(){
-            return {
-                flexLayout: !this.verticalLayout && !this.$slots.tips && !this.tips
-            };
+        tips: {
+            type: String,
+            default: null
         }
+    },
+
+    data () {
+        return {
+            flexLayout: !this.verticalLayout && !this.$slots.tips && !this.tips
+        };
     }
+};
 </script>

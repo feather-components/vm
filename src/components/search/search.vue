@@ -114,234 +114,234 @@
 </style>
 
 <script>
-    import Page from '../page';
-    import Topbar from '../topbar';
-    import Searchbar from '../searchbar';
-    import List from '../list';
+import Page from '../page';
+import Topbar from '../topbar';
+import Searchbar from '../searchbar';
+import List from '../list';
 
-    export default {
-        name: 'search',
+export default {
+    name: 'search',
 
-        mixins: [Page, Searchbar],
+    mixins: [Page, Searchbar],
 
-        components: {
-            Page,
-            Topbar,
-            Searchbar,
-            List
-        },
+    components: {
+        Page,
+        Topbar,
+        Searchbar,
+        List
+    },
 
-        props: {
-            source: {
-                default(){
-                    return [];
-                }
-            },
-
-            useHistory: {
-                type: Boolean,
-                default: true
-            },
-
-            dataFormatter: null,
-
-            params: null,
-
-            autofocus: {
-                type: Boolean,
-                default: true
-            },
-
-            delay: {
-                type: Number,
-                default: 300
-            },
-            
-            caching: {
-                type: Boolean,
-                default: true
-            },
-
-            empty2load: {
-                type: Boolean,
-                default: false
-            },
-
-            kw: {
-                type: String,
-                default: 'kw'
-            },
-
-            historyMark:{
-                type: String,
-                require: true,
-                default: null
-            },
-
-            closeAfterSelectHistory: {
-                type: Boolean,
-                default: true
-            },
-
-            clearHistoryHandler: {
-                type: Function,
-                default(clear){
-                    clear();
-                }
-            },
-
-            closeCallback: {
-                type: Function,
-                default(){
-                    this.close()
-                }
+    props: {
+        source: {
+            default () {
+                return [];
             }
         },
 
-        watch: {
-            params: {
-                handler(){
-                    this.load();
-                },
-                deep: true
+        useHistory: {
+            type: Boolean,
+            default: true
+        },
+
+        dataFormatter: null,
+
+        params: null,
+
+        autofocus: {
+            type: Boolean,
+            default: true
+        },
+
+        delay: {
+            type: Number,
+            default: 300
+        },
+
+        caching: {
+            type: Boolean,
+            default: true
+        },
+
+        empty2load: {
+            type: Boolean,
+            default: false
+        },
+
+        kw: {
+            type: String,
+            default: 'kw'
+        },
+
+        historyMark: {
+            type: String,
+            require: true,
+            default: null
+        },
+
+        closeAfterSelectHistory: {
+            type: Boolean,
+            default: true
+        },
+
+        clearHistoryHandler: {
+            type: Function,
+            default (clear) {
+                clear();
             }
         },
 
-        mounted(){
-            var self = this;
-
-            self.$search = self.$refs.search;
-            self.$list = self.$refs.list;
-            self.initEvents();
-
-            self.autofocus && setTimeout(() => {
-                self.$search.focus();
-            }, 1000);
-        },
-
-        data(){
-            var historys = [];
-
-            try{
-                historys = JSON.parse(localStorage.getItem('_vm_history_stores_.' + this.historyMark)) || [];
-            }catch(e){};
-
-            return {
-                caches: {},
-                isEmpty: true,
-                historys: historys,
-                timeout: "",
-            };
-        },
-
-        methods: {
-            initEvents(){
-                var self = this, tid;
-
-                self.$search.$on('input', function(){
-                    clearTimeout(tid);
-                    self.$list.abort();
-                    tid = setTimeout(() => self.load(), self.delay);              
-                });
-
-                self.$list.$on('row:click', (item, index) => {
-                    self.$emit('select', item, index);
-                    self.addHistory();
-                });
-
-                self.$list.$on('xhr:success', (data) => {
-                    self.caches[self.val] = data;
-                });
-
-                self.$list.$on('rows:render', (data) => {
-                    self.isEmpty = !!!data.length;
-                });
-            },
-
-            load(){
-                var self = this;
-
-                if(!self.empty2load && !self.val){
-                    return;
-                }
-
-                if(self.caches[self.val]){
-                    self.$list.setData(self.caches[self.val]);
-                }else{
-                    let param = {};
-                    param[self.kw] =  self.val;
-                    self.$list.setParams(param, true);
-                    if(this.timeout){
-                        clearTimeout(this.timeout)
-                    }
-                    this.timeout = setTimeout(()=>{
-                        self.$list.refresh();
-                    },400)
-                    
-                }
-            },
-
-            open(){
-                var self = this;
-
-                self.$refs.page.open();
-                self.$emit('open');
-                setTimeout(() => {
-                    self.$refs.search.focus();
-                }, 400);
-            },
-
-            close(){
-                var self = this;
-
-                self.$refs.page.close();
-                self.$refs.search.blur();
-                self.$emit('close');
-            },
-
-            submit(){
-                var self = this;
-                
-                if(this.closeAfterSelectHistory){
-                    self.cancel();
-                    self.addHistory();
-                    self.$emit('confirm', self.val);
-                }
-            },
-
-            clickHistory(text){
-                this.val = text;
-                this.submit();
-            },
-
-            clickClearHistory(){
-                this.clearHistoryHandler(() => {
-                    this.clearHistory();
-                });
-            },
-
-            clearHistory(){
-                this.historys = [];
-                this.storeHistory();
-            },
-
-            storeHistory(){
-                localStorage.setItem('_vm_history_stores_.' + this.historyMark, JSON.stringify(this.historys));
-            },
-
-            addHistory(val = this.val){
-                var self = this;
-
-                if(val && self.historys.indexOf(val) == -1){
-                    self.historys.unshift(val);
-                    self.historys = self.historys.slice(0, 10);
-                    self.storeHistory();
-                }
-            },
-
-            cancel(){
-                this.closeCallback();
+        closeCallback: {
+            type: Function,
+            default () {
+                this.close();
             }
         }
+    },
+
+    watch: {
+        params: {
+            handler () {
+                this.load();
+            },
+            deep: true
+        }
+    },
+
+    mounted () {
+        var self = this;
+
+        self.$search = self.$refs.search;
+        self.$list = self.$refs.list;
+        self.initEvents();
+
+        self.autofocus && setTimeout(() => {
+            self.$search.focus();
+        }, 1000);
+    },
+
+    data () {
+        var historys = [];
+
+        try {
+            historys = JSON.parse(localStorage.getItem('_vm_history_stores_.' + this.historyMark)) || [];
+        } catch (e) {};
+
+        return {
+            caches: {},
+            isEmpty: true,
+            historys: historys,
+            timeout: ''
+        };
+    },
+
+    methods: {
+        initEvents () {
+            var self = this; var tid;
+
+            self.$search.$on('input', function () {
+                clearTimeout(tid);
+                self.$list.abort();
+                tid = setTimeout(() => self.load(), self.delay);
+            });
+
+            self.$list.$on('row:click', (item, index) => {
+                self.$emit('select', item, index);
+                self.addHistory();
+            });
+
+            self.$list.$on('xhr:success', (data) => {
+                self.caches[self.val] = data;
+            });
+
+            self.$list.$on('rows:render', (data) => {
+                self.isEmpty = !data.length;
+            });
+        },
+
+        load () {
+            var self = this;
+
+            if (!self.empty2load && !self.val) {
+                return;
+            }
+
+            if (self.caches[self.val]) {
+                self.$list.setData(self.caches[self.val]);
+            } else {
+                let param = {};
+
+                param[self.kw] = self.val;
+                self.$list.setParams(param, true);
+                if (this.timeout) {
+                    clearTimeout(this.timeout);
+                }
+                this.timeout = setTimeout(() => {
+                    self.$list.refresh();
+                }, 400);
+            }
+        },
+
+        open () {
+            var self = this;
+
+            self.$refs.page.open();
+            self.$emit('open');
+            setTimeout(() => {
+                self.$refs.search.focus();
+            }, 400);
+        },
+
+        close () {
+            var self = this;
+
+            self.$refs.page.close();
+            self.$refs.search.blur();
+            self.$emit('close');
+        },
+
+        submit () {
+            var self = this;
+
+            if (this.closeAfterSelectHistory) {
+                self.cancel();
+                self.addHistory();
+                self.$emit('confirm', self.val);
+            }
+        },
+
+        clickHistory (text) {
+            this.val = text;
+            this.submit();
+        },
+
+        clickClearHistory () {
+            this.clearHistoryHandler(() => {
+                this.clearHistory();
+            });
+        },
+
+        clearHistory () {
+            this.historys = [];
+            this.storeHistory();
+        },
+
+        storeHistory () {
+            localStorage.setItem('_vm_history_stores_.' + this.historyMark, JSON.stringify(this.historys));
+        },
+
+        addHistory (val = this.val) {
+            var self = this;
+
+            if (val && self.historys.indexOf(val) == -1) {
+                self.historys.unshift(val);
+                self.historys = self.historys.slice(0, 10);
+                self.storeHistory();
+            }
+        },
+
+        cancel () {
+            this.closeCallback();
+        }
     }
+};
 </script>

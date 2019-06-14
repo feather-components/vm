@@ -1,20 +1,14 @@
 <template>
-    <page>
-        <topbar slot="header">button</topbar>
-        <p><btn style="width: 1.5rem;">main</btn>&nbsp;&nbsp;<btn style="width: 1.5rem;" type="drak">drak</btn></p>
-        <p><btn style="width: 1.5rem;" type="success">success</btn>&nbsp;&nbsp;<btn style="width: 1.5rem;" type="disable">disable</btn></p>
-        <p><btn style="width: 1.5rem;" :small="true">main</btn>&nbsp;&nbsp;<btn style="width: 1.5rem;" type="drak" :small="true">drak</btn></p>
-        <p><btn style="width: 1.5rem;" type="success" :small="true">success</btn>&nbsp;&nbsp;<btn style="width: 1.5rem;" type="disable" :small="true">disable</btn></p>
-        <p><btn style="width: 1.5rem;" :border="true">main</btn>&nbsp;&nbsp;<btn style="width: 1.5rem;" type="drak" :border="true">drak</btn></p>
-        <p><btn style="width: 1.5rem;" type="success" :border="true">success</btn>&nbsp;&nbsp;<btn style="width: 1.5rem;" type="disable" :border="true">disable</btn></p>
-        <p><btn style="width: 1.5rem;" :square="true">main</btn>&nbsp;&nbsp;<btn style="width: 1.5rem;" type="drak" :square="true" >drak</btn></p>
-        <p><btn style="width: 1.5rem;" type="success" :square="true">success</btn>&nbsp;&nbsp;<btn style="width: 1.5rem;" type="disable" :square="true">disable</btn></p>
-        <p><btn style="width: 2rem; height: 0.3rem;" type="success">自定义尺寸</btn></p>
-        <p><btn type="success">默认尺寸</btn></p>
-        <p>
-
-        </p>
-    </page>
+    <vm-page style="background: #fff;">
+        <vm-topbar slot="header">button</vm-topbar>
+        <p><vm-button >primary</vm-button></p>
+        <p><vm-button size="large">large</vm-button></p>
+        <p><vm-button size="mini">small/mini</vm-button></p>
+        <p><vm-button type="black" hollow>空心</vm-button></p>
+        <p><vm-button :square="true">方形</vm-button></p>
+        <p><vm-button style="width: 200px; height: 30px" type="red">自定义尺寸</vm-button></p>
+        <p><vm-button disabled>disabled</vm-button></p>
+    </vm-page>
 </template>
 
 <style scoped>
@@ -25,17 +19,7 @@ p{
 </style>
 
 <script>
-    import {
-        Page,
-        Topbar,
-        Button as Btn
-    } from 'vm';
+export default {
 
-    export default{
-        components: {
-            Page, 
-            Topbar,
-            Btn
-        }
-    }
+};
 </script>

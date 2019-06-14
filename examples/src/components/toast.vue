@@ -8,33 +8,33 @@
 </template>
 
 <script>
-    import Vue from 'vue';
-    import {
+import Vue from 'vue';
+import {
+    Page,
+    Topbar,
+    Toast,
+    Button as Btn
+} from 'vm';
+
+export default {
+    components: {
         Page,
         Topbar,
-        Toast,
-        Button as Btn
-    } from 'vm';
+        Btn
+    },
 
-    export default{
-        components: {
-            Page, 
-            Topbar,
-            Btn
+    methods: {
+        show () {
+            Toast('操作成功', false);
         },
 
-        methods: {
-            show(){
-                Toast('操作成功', false);
-            },
+        success () {
+            Toast.success('操作成功');
+        },
 
-            success(){
-                Toast.success('操作成功');
-            },
-
-            loading(){
-                Toast.loading('加载中');
-            }
+        loading () {
+            Toast.loading('加载中');
         }
     }
+};
 </script>

@@ -21,25 +21,27 @@ import Iosselect from './components/iosselect';
 import Datepicker from './components/datepicker';
 import {Slider, SliderItem} from './components/slider';
 import Forward from './components/forward';
-import Tabbar from './components/tabbar';
+import {Tabs, TabsPane} from './components/Tabs';
 import {Box, Row} from './components/layout';
 import Badge from './directives/badge';
 import Segment from './components/segment';
 import BadgeComponent from './components/badge';
+import Loading from './components/loading';
 import Helper from './helper';
 import Lazyload from './directives/lazyload';
 import Lightbox from './directives/lightbox';
-
-import Vue from 'vue';
+import Config from './config';
 
 var Components = [
+    Loading,
     Segment,
     Box,
     Row,
     Badge,
     BadgeComponent,
     Forward,
-    Tabbar,
+    Tabs,
+    TabsPane,
     Scroll,
     Pulldown2refresh,
     List,
@@ -76,13 +78,16 @@ var Components = [
     Lightbox
 ];
 
-function install(Vue){
-    for(let Component of Components){
-        Vue.use(Component);
+function install (Vue, options = {}) {
+    for (let Component of Components) {
+        Component.install(Vue);
     }
+
+    Config(options);
 }
 
 export {
+    Loading,
     Box,
     Segment,
     Row,
@@ -91,8 +96,8 @@ export {
     Search,
     Searchbar,
     Searchbar as SearchBar,
-    Tabbar as TabBar,
-    Tabbar,
+    Tabs,
+    TabsPane,
     Scroll,
     Pulldown2refresh,
     Page,

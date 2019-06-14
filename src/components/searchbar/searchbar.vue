@@ -93,99 +93,99 @@
 </style>
 
 <script>
-    import Icon from '../icon';
-    import {Util} from '../../helper';
+import Icon from '../icon';
+import {Util} from '../../helper';
 
-    var Searchbar = {
-        name: 'searchbar',
+var Searchbar = {
+    name: 'searchbar',
 
-        props: {
-            theme: {
-                type: String,
-                default: 'white'
-            },
-
-            maxlength: {
-                type: Number,
-                default: 50
-            },
-
-            placeholder: {
-                type: String,
-                default: "请输入关键字进行搜索"
-            },
-
-            readonly: {
-                type: Boolean,
-                default: false
-            },
-
-            searchButtonEnabled: {
-                type: Boolean,
-                default: false
-            },
-
-            value: {
-                type: String,
-                default: ''
-            },
-
-            inputBgColor: {
-                type: String,
-                default(){
-                    return Searchbar.config('inputBgColor');
-                }
-            }
+    props: {
+        theme: {
+            type: String,
+            default: 'white'
         },
 
-        components: {
-            Icon
+        maxlength: {
+            type: Number,
+            default: 50
         },
 
-        data(){
-            return {
-                val: this.value
-            };
+        placeholder: {
+            type: String,
+            default: '请输入关键字进行搜索'
         },
 
-        watch: {
-            val(v){
-                this.$emit('input', v);
-            },
-
-            value(v){
-                this.val = v.trim();
-            }
+        readonly: {
+            type: Boolean,
+            default: false
         },
 
-        methods: {
-            focus(){
-                this.$refs.input.focus();
-            },
+        searchButtonEnabled: {
+            type: Boolean,
+            default: false
+        },
 
-            blur(){
-                this.$refs.input.blur();
-            },
+        value: {
+            type: String,
+            default: ''
+        },
 
-            input(){
-                this.val = this.$refs.input.value;
-            },
-
-            clear(){
-                this.val = '';
-                this.$emit('clear');
-            },
-
-            submit(){
-                this.$emit('submit');
-                this.$refs.input.blur();
+        inputBgColor: {
+            type: String,
+            default () {
+                return Searchbar.config('inputBgColor');
             }
         }
-    };
+    },
 
-    Util.defineConfig(Searchbar, {
-        inputBgColor: 'rgba(204, 204, 204, 0.2)'
-    });
+    components: {
+        Icon
+    },
 
-    export default Searchbar;
+    data () {
+        return {
+            val: this.value
+        };
+    },
+
+    watch: {
+        val (v) {
+            this.$emit('input', v);
+        },
+
+        value (v) {
+            this.val = v.trim();
+        }
+    },
+
+    methods: {
+        focus () {
+            this.$refs.input.focus();
+        },
+
+        blur () {
+            this.$refs.input.blur();
+        },
+
+        input () {
+            this.val = this.$refs.input.value;
+        },
+
+        clear () {
+            this.val = '';
+            this.$emit('clear');
+        },
+
+        submit () {
+            this.$emit('submit');
+            this.$refs.input.blur();
+        }
+    }
+};
+
+Util.defineConfig(Searchbar, {
+    inputBgColor: 'rgba(204, 204, 204, 0.2)'
+});
+
+export default Searchbar;
 </script>

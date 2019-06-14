@@ -2,11 +2,11 @@
     <cell :label="label" class="vm-form-images" :veritcal-layout="true" :field-flex-layout="true">
         <template slot="label" v-if="$slots.label">
             <slot name="label"></slot>
-        </template> 
+        </template>
 
         <template slot="tips" v-if="$slots.tips">
             <slot name="tips"></slot>
-        </template> 
+        </template>
 
         <div class="vm-form-images-inner">
             <div class="vm-form-images-item" v-for="(item, index) of val">
@@ -19,16 +19,16 @@
 
             <div class="vm-form-images-item" v-show="rest">
                 <slot name="uploader">
-                    <uploader 
+                    <uploader
                         :name="name"
-                        :url="uploader || url" 
-                        :multiple="rest > 1" 
+                        :url="uploader || url"
+                        :multiple="rest > 1"
                         :before-upload-processor="beforeUploadProcessor"
                         :can-upload="canUpload"
                         :use-pack="usePack"
                         :params="params"
                         accept="image/*"
-                        @upload:start="onUploadStart" 
+                        @upload:start="onUploadStart"
                         @upload:complete="onUploadComplete"
                         @upload:error="onUploadError"
                         @upload:progress="onUploadProgress"
@@ -82,13 +82,13 @@
 </style>
 
 <script>
-import Cell from "./cell";
+import Cell from './cell';
 import Uploader from '../uploader';
 import _ from '../../helper';
 import Toast from '../toast';
 import {Multiable} from './abstract';
 
-export default{
+export default {
     name: 'images',
 
     mixins: [Cell, Multiable],
@@ -116,14 +116,14 @@ export default{
 
         dataFormatter: {
             type: Function,
-            default(images, data){
+            default (images, data) {
                 return data;
             }
         },
 
         srcFormatter: {
             type: Function,
-            default(src){
+            default (src) {
                 return src;
             }
         },
@@ -143,14 +143,14 @@ export default{
     },
 
     computed: {
-        rest(){
-            return this.size == -1 ? 1000000 : Math.max(this.size - this.val.length, 0)
+        rest () {
+            return this.size == -1 ? 1000000 : Math.max(this.size - this.val.length, 0);
         }
     },
 
-    methods:{
-        canUpload(files){
-            if(files.length > this.rest){
+    methods: {
+        canUpload (files) {
+            if (files.length > this.rest) {
                 this.$emit('limit', files, this.rest);
                 return false;
             }
@@ -158,30 +158,30 @@ export default{
             return true;
         },
 
-        onUploadStart(){
+        onUploadStart () {
             this.$toast = Toast.loading('上传中', false, true);
         },
 
-        onUploadProgress(images, event){
-            this.$toast.setContent('已上传' + parseInt((event.loaded/event.total) * 100) + '%');
+        onUploadProgress (images, event) {
+            this.$toast.setContent('已上传' + parseInt((event.loaded / event.total) * 100) + '%');
         },
 
-        onUploadComplete(images, data){
+        onUploadComplete (images, data) {
             var data = this.dataFormatter(images, data);
 
             this.$toast = null;
-            
-            if(data){
+
+            if (data) {
                 this.save(data);
                 Toast.success('上传成功');
-            }else{
+            } else {
                 Toast('上传失败');
             }
         },
 
-        onUploadError(){
+        onUploadError () {
             Toast('网络请求错误');
         }
     }
-}
+};
 </script>

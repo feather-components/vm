@@ -11,24 +11,24 @@
 </style>
 
 <script>
-    import {Event, Dom} from '../../helper';
+import {Event, Dom} from '../../helper';
 
-    export default {
-        name: 'slider-item',
+export default {
+    name: 'slider-item',
 
-        mounted(){
-            Event.on(window, 'resize', () => this.resize());
-            this.resize();
-        },
+    mounted () {
+        Event.on(window, 'resize', () => this.resize());
+        this.resize();
+    },
 
-        methods: {
-            resize(){
-                this.$el.style.width = Dom.width(document) + 'px';
+    methods: {
+        resize () {
+            this.$el.style.width = Dom.width(document) + 'px';
 
-                if(this.$parent.axis == 'y'){
-                    this.$el.style.height = Dom.height(document) + 'px';
-                }
+            if (this.$parent.axis == 'y') {
+                this.$el.style.height = Dom.height(document) + 'px';
             }
         }
     }
+};
 </script>

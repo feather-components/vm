@@ -8,14 +8,14 @@
             :auto-refresh="true"
             :data-formatter="formatter"
 
-        >   
+        >
             <template slot="row" scope="props">
                 <div class="row">
                     <a :href="'https://www.baidu.com/s?f=8&rsv_bp=1&rsv_idx=1&word=' + props.data.q + '&tn=97925205_hao_pg'" class="inner">
                         {{props.data.q}}
                     </a>
                 </div>
-                
+
             </template>
         </list>
     </page>
@@ -39,33 +39,33 @@
 </style>
 
 <script>
-    import {
+import {
+    Page,
+    Topbar,
+    Searchbar,
+    Search,
+    List
+} from 'vm';
+
+export default {
+    components: {
         Page,
         Topbar,
         Searchbar,
         Search,
         List
-    } from 'vm';
+    },
 
-    export default{
-        components: {
-            Page, 
-            Topbar,
-            Searchbar,
-            Search,
-            List
-        },
+    data () {
+        return {
+            wd: ''
+        };
+    },
 
-        data(){
-            return {
-                wd: ''
-            };
-        },
-
-        methods: {
-            formatter(data){
-                return data.g || [];
-            }
+    methods: {
+        formatter (data) {
+            return data.g || [];
         }
     }
+};
 </script>

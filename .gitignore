@@ -2,3 +2,4 @@
 .DS_Store
 node_modules
 examples/_build_
+package-lock.json

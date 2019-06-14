@@ -1,7 +1,7 @@
 import Radios from './radios';
 import Checkboxes from './checkboxes';
 import TextInput from './text';
-import Textarea from './textarea'; 
+import Textarea from './textarea';
 import Select from './select';
 import Images from './images';
 import Switch from './switch';
@@ -20,7 +20,7 @@ Util.register(FormCell);
 Util.register(DateInput);
 
 export {
-	FormCell,
+    FormCell,
     Radios,
     Checkboxes,
     TextInput,

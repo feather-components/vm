@@ -33,7 +33,7 @@
 			height: 100%;
 			align-items: center;
 		}
-	} 
+	}
 
 	.vm-lightbox-index{
 		text-align: center;
@@ -53,65 +53,65 @@
 </style>
 
 <script>
-	import Lazyload from '../../directives/lazyload';
-	import {Slider, SliderItem} from '../slider';
-	import vmMask from '../mask';
-	import Overlay from '../overlay';
+import Lazyload from '../../directives/lazyload';
+import {Slider, SliderItem} from '../slider';
+import vmMask from '../mask';
+import Overlay from '../overlay';
 
-	export default {
-		name: 'lightbox',
+export default {
+    name: 'lightbox',
 
-		mixins: [vmMask],
+    mixins: [vmMask],
 
-		props: {
-			items: {
-				type: Array,
-				default(){
-					return [];
-				}
-			}
-		},
+    props: {
+        items: {
+            type: Array,
+            default () {
+                return [];
+            }
+        }
+    },
 
-		components: {
-			Slider,
-			SliderItem,
-			vmMask,
-			Overlay
-		},
+    components: {
+        Slider,
+        SliderItem,
+        vmMask,
+        Overlay
+    },
 
-		directives: {
-			Lazyload
-		},
+    directives: {
+        Lazyload
+    },
 
-		data(){
-			return {
-				index: 1,
-				imgs: []
-			};
-		},
+    data () {
+        return {
+            index: 1,
+            imgs: []
+        };
+    },
 
-		watch: {
-			items(v){
-				this.updateItems(v);
-			}
-		},
+    watch: {
+        items (v) {
+            this.updateItems(v);
+        }
+    },
 
-		mounted(){
-			this.updateItems(this.items);
-		},
+    mounted () {
+        this.updateItems(this.items);
+    },
 
-		methods: {
-			onSwitch(index){
-				this.index = index + 1;
-			},
+    methods: {
+        onSwitch (index) {
+            this.index = index + 1;
+        },
 
-			to(index, transition){
-				this.$refs.slider.to(index, transition);
-			},
+        to (index, transition) {
+            this.$refs.slider.to(index, transition);
+        },
 
-			updateItems(items = []){
-				this.imgs = items;
-			}
-		}
-	}
+        updateItems (items = []) {
+            this.imgs = items;
+        }
+    }
+};
 </script>

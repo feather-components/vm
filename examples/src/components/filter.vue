@@ -17,10 +17,9 @@
                 <link-filter :level="3" :source="source" v-model="l_val" :unlimit-value="-1" :unlimit-start-group="0"></link-filter>
             </dropdown>
 
-
-        </div>        
+        </div>
         <link-multiple-filter :source="source" v-model="lm_val"></link-multiple-filter>
-        
+
         <btn type="main" style="width: 100%" :square="true" slot="footer">提交</btn>
     </page>
 </template>
@@ -30,72 +29,72 @@
 </style>
 
 <script>
-    import {
+import {
+    Page,
+    Topbar,
+    SingleFilter,
+    LinkFilter,
+    LinkMultipleFilter,
+    MultipleFilter,
+    Button,
+    Toast,
+    Dropdown,
+    Scroll
+} from 'vm';
+
+import Source from '../filter.json';
+
+export default {
+    components: {
         Page,
         Topbar,
         SingleFilter,
         LinkFilter,
-        LinkMultipleFilter,
         MultipleFilter,
-        Button,
-        Toast,
+        LinkMultipleFilter,
+        Btn: Button,
         Dropdown,
         Scroll
-    } from 'vm';
+    },
 
-    import Source from '../filter.json';
+    data () {
+        return {
+            source: Source,
+            s_val: 3,
+            m_val: [1],
+            l_val: ['1', '1-1'],
+            lm_val: null
+        };
+    },
 
-    export default{
-        components: {
-            Page, 
-            Topbar,
-            SingleFilter,
-            LinkFilter,
-            MultipleFilter,
-            LinkMultipleFilter,
-            Btn: Button,
-            Dropdown,
-            Scroll
+    watch: {
+        s_val (v) {
+            Toast(v);
         },
 
-        data(){
-            return {
-                source: Source,
-                s_val: 3,
-                m_val: [1],
-                l_val: ['1', '1-1'],
-                lm_val: null
-            }
+        m_val (v) {
+            Toast(v);
         },
 
-        watch: {
-            s_val(v){
-                Toast(v);
-            },
-            
-            m_val(v){
-                Toast(v);
-            },
-
-            l_val(v){
-                Toast(v)
-            },
-
-            lm_val(v){
-                Toast(v)
-            }
+        l_val (v) {
+            Toast(v);
         },
 
-        mounted () {
-			// setInterval(() => {
-			// 	console.log(this.lm_val, 999)
-			// }, 1000)
+        lm_val (v) {
+            Toast(v);
         }
+    },
 
-        // methods: {
-        //     change(value, label, data){
-        //         Toast('选择了' + JSON.stringify(data));
-        //     }
-        // }
+    mounted () {
+        // setInterval(() => {
+        // 	console.log(this.lm_val, 999)
+        // }, 1000)
     }
+
+    // methods: {
+    //     change(value, label, data){
+    //         Toast('选择了' + JSON.stringify(data));
+    //     }
+    // }
+};
 </script>
