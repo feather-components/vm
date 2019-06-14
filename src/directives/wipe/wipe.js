@@ -1,3 +1,4 @@
+/* eslint-disable standard/no-callback-literal */
 import Draggable from '../draggable';
 import {Dom, Event} from '../../helper';
 
@@ -36,9 +37,7 @@ export default {
         Event.on(element, 'drag:end', (e) => {
             let change = e.data.e.changedTouches[0].clientX - x;
 
-            if (Math.abs(change) > min) {
-                callback(change > 0 ? 1 : -1);
-            }
+            Math.abs(change > min) && callback(change > 0 ? 1 : -1);
         });
     },
 
