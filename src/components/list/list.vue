@@ -8,7 +8,7 @@
             <slot name="header"></slot>
         </div>
 
-        <div class="vm-list-rows">
+        <div>
             <slot name="rows" :data="rows">
                 <div class="vm-list-row" v-for="(item, index) in rows" :key="index" @click="$emit('row:click', item, index)">
                     <slot name="row" :data="item" :index="index">{{item}}</slot>
@@ -135,7 +135,8 @@ export default {
             page: 0,
             error: 0,
             $scroll: null,
-            _source: ''
+            _source: '',
+            unitHeights: []
         };
     },
 

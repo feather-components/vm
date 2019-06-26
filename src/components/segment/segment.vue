@@ -30,7 +30,7 @@ export default {
         highColor: {
             type: String,
             default () {
-                return Config('segment.high-color');
+                return Config('segment.high-color') || Config('theme');
             }
         },
 

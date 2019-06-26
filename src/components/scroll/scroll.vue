@@ -180,13 +180,16 @@ export default {
             this.stick = pos >= this.maxPos || pos <= this.minPos ? 3 : 1;
             this.triggerScrolling(pos);
             this.scrollBarTo(pos);
+            this.$emit('draging', pos);
         },
 
         onDragEnd (event) {
             if (!this.draging) return false;
 
+           
             this.draging = false;
-
+            this.$emit('drag:end', this.pos);
+            
             let now = Date.now(), target = this.pos, fn = 'ease';
             let duration = 1000;
 

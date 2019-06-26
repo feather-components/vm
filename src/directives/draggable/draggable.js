@@ -53,6 +53,8 @@ class Draggable {
             Event.trigger(this.dom, 'drag:start', {
                 x, y, clientX, clientY, e
             });
+        }, {
+            passive: false
         });
 
         Event.on(this.dom, 'touchmove', (e) => {
@@ -112,6 +114,8 @@ class Draggable {
 
             Dom.css(this.dom, 'transform', `translate3d(${x}px, ${y}px, 0px)`);
             Event.trigger(this.dom, 'draging', info);
+        }, {
+            passive: false
         });
 
         Event.on(this.dom, 'touchend', (e) => {

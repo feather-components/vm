@@ -21,16 +21,36 @@
 </template>
 
 <style scoped>
-    .col a{
+    .col a {
         display: block;
         font-size: 14px;
         padding: 10px;
     }
 
-    .row a{
+    .row a {
         font-size: 14px;
         padding: 10px;
         display: inline-block;
+    }
+
+    .g {
+        display: inline-block;
+        width: 10px;
+        height: 5px;
+        background: red;
+        line-height: 0;
+        font-size: 0;
+        vertical-align: middle;
+        -webkit-transform: rotate(45deg);
+    }
+
+    .g:after {
+        content:'/';
+        display:block;
+        width: 20px;
+        height:5px;
+        background: red;
+        -webkit-transform: rotate(-90deg) translateY(-50%) translateX(50%);
     }
 </style>
 
@@ -78,7 +98,7 @@ export default {
             if (pos <= -this.$refs.header.clientHeight - 50) {
                 if (this.innerDisabled) {
                     this.innerDisabled = false;
-                    this.$refs.outerScroller.scrollTo(-this.$refs.header.clientHeight);
+                    this.$refs.outerScroller.scrollTo(-this.$refs.header.clientHeight - 50);
                 }
             } else {
                 this.innerDisabled = true;

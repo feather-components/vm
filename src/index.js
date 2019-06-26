@@ -27,6 +27,7 @@ import Badge from './directives/badge';
 import Segment from './components/segment';
 import BadgeComponent from './components/badge';
 import Loading from './components/loading';
+import Tick from './components/tick';
 import Helper from './helper';
 import Lazyload from './directives/lazyload';
 import Lightbox from './directives/lightbox';
@@ -34,6 +35,7 @@ import Config from './config';
 
 var Components = [
     Loading,
+    Tick,
     Segment,
     Box,
     Row,
@@ -88,6 +90,7 @@ function install (Vue, options = {}) {
 
 export {
     Loading,
+    Tick,
     Box,
     Segment,
     Row,

@@ -1,6 +1,8 @@
 <template>
 	<scroll
         :boundary="[maxPos, 0]"
+        @drag:start="onDragStart"
+        @drag:end="onDragEnd"
         @scrolling="onScrolling"
         @scroll:end="onScrollEnd"
         @translate="onTranslate"
@@ -22,6 +24,7 @@
 <script>
 import Scroll from './scroll';
 import Loading from '../loading';
+import Tick from '../tick';
 import {Dom} from '../../helper';
 
 export default {
@@ -50,6 +53,7 @@ export default {
 
     components: {
         Loading,
+        Tick,
         Scroll
     },
 
@@ -67,12 +71,20 @@ export default {
         },
 
         onScrollEnd (...args) {
-            this.limitType() == 1 && this.refresh();
             this.$emit('scroll:end', ...args);
         },
 
         onTranslate (...args) {
-            this.$emit('translate', ...args);
+            this.$emit('translate', ...args);  
+        },
+
+        onDragStart (...args) {
+            this.$emit('drag:start', ...args);
+        },
+
+        onDragEnd (...args) {
+            this.limitType() == 1 && this.refresh();
+            this.$emit('drag:end', ...args);
         },
 
         refresh (animation = true, trigger = true) {
@@ -84,8 +96,11 @@ export default {
         },
 
         recover () {
-            this.isRefreshing && this.scrollTo(0, 1000);
-            this.isRefreshing = false;
+            if (this.isRefreshing) {
+                this.isRefreshing = false;
+                this.scrollTo(0, 1000);
+            }
+
             this.$emit('recover');
         },
 

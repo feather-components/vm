@@ -18,10 +18,11 @@ export default {
         primary: ''
     },
     'segment.color': '#fff',
-    'segment.high-color': '#E74D4D',
+    'segment.high-color': '',
     'loading.color': '',
     'tabs.high-color': '',
     'loading.color': '',
+    'tick.color': '#009933',
     'scroll.ignores': null,
     'scroll.use-transform': false,
     'list.label.page': 'page',
