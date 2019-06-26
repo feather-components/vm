@@ -1,30 +1,35 @@
 <template>
     <page>
         <topbar slot="header">scroll组件</topbar>
-            <scroll axis="x" :scrollbars="true" class="row" style="height: 200px;">
-                <a v-for="(i, a) of 100">{{i}}</a>
+            <scroll scrollbars class="col" style="height: 300px;" ref="outerScroller" @scrolling="onScroll" :disabled="outerDisabled">
+                <scroll axis="x" :scrollbars="true" class="row" style="height: 50px;">
+                    <a v-for="(i, a) of 100">{{i}}</a>
+                </scroll>
+
+                <div ref="header">
+                    <a v-for="(i, a) of 10">fjdkfd</a>
+                </div>
+                <scroll scrollbars class="col" style="height: 300px;" ref="innerScroller" :disabled="innerDisabled" @scrolling="onInnerScroll">
+                    <a v-for="(i, a) of 100">{{i}}</a>
+                </scroll>
             </scroll>
 
             <pulldown2refresh axis="y" class="col" style="margin-bottom: 30px;" ref='scroll' @refresh="onRefresh" id="scroll2">
                 <a v-for="(i, a) of 50">scroll组件</a>
             </pulldown2refresh>
-
-            <scroll slot="footer" axis="y" :scrollbars="true" class="col" style="margin-bottom: 30px; height: 100px;" id="scroll1" v-if="show">
-                <a v-for="(i, a) of 7">scroll组件</a>
-            </scroll>
     </page>
 </template>
 
 <style scoped>
     .col a{
         display: block;
-        font-size: 0.2rem;
-        padding: .1rem .2rem;
+        font-size: 14px;
+        padding: 10px;
     }
 
     .row a{
-        font-size: 0.2rem;
-        padding: .2rem;
+        font-size: 14px;
+        padding: 10px;
         display: inline-block;
     }
 </style>
@@ -48,25 +53,44 @@ export default {
 
     data () {
         return {
-            show: true
+            show: true,
+            innerDisabled: true,
+            outerDisabled: false
         };
     },
 
-    mounted () {
-        setTimeout(() => {
-            this.show = false;
-            Autosize.resize(this.$refs.scroll.$el);
-
-            setTimeout(() => {
-                this.show = true;
-                Autosize.resize(this.$refs.scroll.$el);
-            }, 2000);
-        }, 1000);
+    watch: {
+        innerDisabled (v) {
+            if (!v) {
+                this.outerDisabled = true;
+            } else {
+                this.outerDisabled = false;
+            }
+        } 
     },
 
     methods: {
         _scrollStop () {
             //                this.$refs.scroll.scrollTo(-100)
+        },
+
+        onScroll (pos) {
+            if (pos <= -this.$refs.header.clientHeight - 50) {
+                if (this.innerDisabled) {
+                    this.innerDisabled = false;
+                    this.$refs.outerScroller.scrollTo(-this.$refs.header.clientHeight);
+                }
+            } else {
+                this.innerDisabled = true;
+            }
+
+        //    this.innerDisabled = pos > -this.$refs.header.clientHeight;
+        },
+
+        onInnerScroll (pos) {
+            if (pos >= 0) {
+                this.innerDisabled = true;
+            }
         },
 
         onRefresh (recover) {

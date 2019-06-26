@@ -13,15 +13,7 @@ export default {
         return str.replace(/-(\w)/g, (all, c, index) => index > 0 ? c.toUpperCase() : c);
     },
 
-    assign (obj) {
-        [].slice.call(arguments, 1).forEach((args) => {
-            for (var i in args) {
-                obj[i] = args[i];
-            }
-        });
-
-        return obj;
-    },
+    assign: Object.assign,
 
     each (arr, callback) {
         if (arr.length) {
@@ -95,7 +87,7 @@ export default {
             if (install._installed) return;
 
             install._installed = true;
-            console.log(Component.name, Component);
+
             if (directive) {
                 Vue.directive(Component.name, obj);
             } else {
@@ -134,7 +126,41 @@ export default {
                 obj._config[name] = value;
             }
         };
+    },
+
+    ajax (url, params) {
+        let xhr = new XMLHttpRequest();
+        let promise = new Promise((resolve, reject) => {
+            xhr.open('GET', url + '?_random=' + Math.random(), true);
+            xhr.onreadystatechange = () => {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    resolve(JSON.parse(xhr.responseText));
+                } else {
+                    reject();
+                }
+            };
+            xhr.send(params);
+        });
+
+        promise.abort = xhr.abort;
+        return promise;
+    },
+
+    acm (ajax, context) {
+        if (context.$$ajax && context.$$ajax.abort) {
+            context.$$ajax.abort();
+        }
+
+        const id = context.$$ajaxid = Date.now();
+        
+        context.$$ajax = ajax;
+
+        return new Promise((resolve, reject) => {
+            ajax.then((data) => {
+                id == context.$$ajaxid && resolve(data);
+            }, (data) => {
+                id == context.$$ajaxid && reject(data);
+            });
+        });
     }
 };
-
-!Object.assign && (Object.assign = exports.default.assign);

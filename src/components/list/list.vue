@@ -1,38 +1,33 @@
 <template>
-    <component ref="scroll" class="vm-list" @scrolling="onScrolling" :is="Component" @refresh="refresh" :scrollbars="scrollbars">
+    <component 
+        ref="scroll" class="vm-list" :is="Component" :scrollbars="scrollbars"
+        @refresh="refresh" 
+        @scrolling="onScrolling"
+    >
         <div class="vm-list-header" v-if="$slots.header">
             <slot name="header"></slot>
         </div>
 
-        <slot></slot>
-
-        <div ref="vm-list-rows-container">
+        <div class="vm-list-rows">
             <slot name="rows" :data="rows">
-                <ul class="vm-list-rows" ref="rows">
-                    <li v-for="(item, index) in rows" @click="$emit('row:click', item, index)" class="vm-list-item">
-                        <slot name="row" :data="item">{{item}}</slot>
-                    </li>
-                </ul>
+                <div class="vm-list-row" v-for="(item, index) in rows" :key="index" @click="$emit('row:click', item, index)">
+                    <slot name="row" :data="item" :index="index">{{item}}</slot>
+                </div>
             </slot>
         </div>
 
-        <div class="vm-list-loading" v-if="showLoadingStatus">
-            <slot name="loading"><i class="vm-list-loading-icon"></i>正在加载中</slot>
+        <div class="vm-list-status">
+            <slot name="if-loading" v-if="ifLoading">
+                <loading /> 正在加载中
+            </slot>
+            <slot name="if-nomore" v-if="isCompleted">就这么多啦~</slot>
+            <slot name="if-empty" v-if="ifFailed">
+                <span class="vm-list-status-box">神马都木有~</span>
+            </slot>
+            <slot name="if-failed" v-if="ifFailed">
+                <span class="vm-list-status-box">网络异常，加载失败</span>
+            </slot>
         </div>
-
-        <template v-if="showMsg">
-            <div class="vm-list-error" v-if="showErrorStatus">
-                <slot name="error">网络异常，加载失败</slot>
-            </div>
-
-            <div class="vm-list-nomore" v-if="showNoMoreStatus" ref="nomore">
-                <slot name="nomore">~没有更多了~</slot>
-            </div>
-
-            <div class="vm-list-empty" v-if="showEmptyStatus">
-                <slot name="nores"><i class="vm-list-nores-icon"></i><br />没有任何结果~</slot>
-            </div>
-        </template>
 
         <div class="vm-list-footer">
             <slot name="footer"></slot>
@@ -40,77 +35,40 @@
     </component>
 </template>
 
-<style>
-    .vm-list{
-        font-size: 0.16rem;
-    }
+<style lang="less">
+.vm-list-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0px;
+    color: #878787;
+    width: 100%;
+    font-size: 14px;
+}
 
-    .vm-list-loading, .vm-list-error, .vm-list-nomore, .vm-list-empty{
-        text-align: center;
-        padding: 0.05rem;
-        color: #878787;
-        width: 100%;
-        font-size: 0.12rem;
-    }
-
-    .vm-list-loading-icon{
-        display: inline-block;
-        width: 0.16rem;
-        height: 0.16rem;
-        background-image: url(../../assets/loading.gif?__inline);
-        background-size: 100%;
-        margin-right: 0.05rem;
-        transform: translateY(0.03rem);
-        -webkit-transform: translateY(0.03rem);
-    }
-
-    .vm-list-rows{
-        padding: 0px;
-        margin: 0px;
-        list-style: none;
-
-        *{
-            margin: 0px;
-            padding: 0px;
-        }
-    }
-
-    .vm-list-nores{
-        margin-top: 0.2rem;
-    }
-
-    .vm-list-nores-icon{
-        background: url(./empty.png?__inline);
-        width: 1.3rem;
-        height: 1.3rem;
-        display: inline-block;
-        margin-bottom: 0.1rem;
-        background-size: 100%;
-    }
+.vm-list-status-box {
+    display: inline-block;
+    padding: 20px 0px;
+}
 </style>
 
 <script>
 import {Pulldown2refresh, Scroll} from '../scroll';
+import Loading from '../loading';
 import {Dom, Util} from '../../helper';
-import Ajax from 'ajax';
+import Config from '../../config';
 
 export default {
     name: 'list',
+
+    components: {
+        Loading
+    },
 
     props: {
         optimize: {
             type: Boolean,
             default: true
-        },
-
-        pageLabel: {
-            type: String,
-            default: 'page'
-        },
-
-        pageSizeLabel: {
-            type: String,
-            default: 'count'
         },
 
         scrollbars: {
@@ -138,9 +96,7 @@ export default {
 
         maxCountPerPage: {
             type: Number,
-            default () {
-                return 20;
-            }
+            default: 20
         },
 
         params: {
@@ -165,11 +121,6 @@ export default {
         pullup2load: {
             type: Boolean,
             default: false
-        },
-
-        showMsg: {
-            type: Boolean,
-            default: true
         }
     },
 
@@ -189,62 +140,46 @@ export default {
     },
 
     computed: {
-        showLoadingStatus () {
+        ifLoading () {
             return !this.isCompleted && this.pullup2load && !this.error && this.page >= 1;
         },
 
-        showErrorStatus () {
+        ifFailed () {
             return !this.isCompleted && this.error && !this.isLoading;
         },
 
-        showNoMoreStatus () {
+        ifCompleted () {
             return this.page >= 1 && this.rows.length && this.isCompleted;
         },
 
-        showEmptyStatus () {
+        ifEmpty () {
             return !this.rows.length && this.isCompleted;
         }
     },
 
     mounted () {
-        var self = this;
-
-        self.setParams(self.params);
-        self.setSource(self.source);
-        self.$nextTick(() => self.init());
+        this.setParams(this.params);
+        this.$nextTick(() => {
+            this.$scroll = this.$refs.scroll;
+            this.autoRefresh && this.refresh(false);
+        });
     },
 
     watch: {
         source (v) {
-            var self = this;
-
-            self.setSource(v);
-            self.autoRefresh && self.refresh();
+            this.autoRefresh && this.refresh();
         },
 
         params: {
             deep: true,
             handler (v) {
-                var self = this;
-                var params = JSON.stringify(self._params);
-
-                self.setParams(v);
-
-                if (self.autoRefresh && params != JSON.stringify(self._params)) {
-                    self.refresh();
-                }
+                this.setParams(v);
+                this.autoRefresh && this.refresh();
             }
         }
     },
 
     methods: {
-        init () {
-            var self = this;
-
-            self.$scroll = self.$refs.scroll;
-            self.autoRefresh && self.refresh(false);
-        },
-
         onScrolling (...args) {
             this.pullup2load && this.$scroll.limitType() == -1 && this.load();
             this.$emit('scrolling', ...args);
@@ -252,17 +187,9 @@ export default {
 
         setParams (params, append) {
             if (append) {
-                this._params = Util.assign({}, this._params, params);
+                this._params = Object({}, this._params, params);
             } else {
-                this._params = Util.assign({}, params);
-            }
-        },
-
-        setSource (source = '') {
-            if (typeof source != 'string') {
-                this.setData(source);
-            } else {
-                this._source = source;
+                this._params = Object({}, params);
             }
         },
 
@@ -279,103 +206,86 @@ export default {
             this.$scroll.scrollToElement(...args);
         },
 
-        addData (source) {
+        addData (data) {
             try {
-                source = this.dataFormatter(source);
+                data = this.dataFormatter(data);
             } catch (e) {}
 
-            this.data = this.data.concat(source || []);
-            this.$emit('data:add', source);
+            this.data = this.data.concat(data || []);
+            this.$emit('data:add', data);
         },
 
         refresh (animation = true) {
-            var self = this;
-
-            self.page = 0;
-            self.isCompleted = false;
-            self.isLoading = false;
-            self.$scroll.refresh(false, animation);
-            self.$emit('refresh');
-            setTimeout(() => self.load(), 0);
+            this.page = 0;
+            this.isCompleted = false;
+            this.isLoading = false;
+            this.$scroll.refresh(animation, false);
+            this.$emit('refresh');
+            setTimeout(() => this.load(), 10);
         },
 
         load () {
-            var self = this;
+            this.error = null;
 
-            self.error = null;
-
-            if (self.isCompleted) {
+            if (this.isCompleted || this.isLoading) {
                 return false;
             }
 
-            if (self.isLoading) {
-                return false;
-            }
-
-            if (self._source &&
-                    typeof self._source == 'string' &&
-                    (self.rows.length == self.data.length || self.page == 0)
-            ) {
-                self.loadRemote();
+            if (this.rows.length == this.data.length || this.page == 0) {
+                this.loadByRemote();
             } else {
-                self.renderRows();
+                this.renderRows();
             }
         },
 
-        loadRemote () {
-            var self = this; var datas = {};
+        loadByRemote () {
+            let params = Object.assign({}, this._params);
 
-            self.abort();
-            self.isLoading = true;
+            params[Config('list.label.page')] = this.page + 1;
+            params[Config('list.label.persize')] = this.maxCountPerPage;
+            params = this.paramsFormatter(params);
 
-            datas[self.pageLabel] = self.page + 1;
-            datas[self.pageSizeLabel] = self.maxCountPerPage;
+            this.isLoading = true;
 
-            self.$http = Ajax({
-                url: self._source,
-                data: self.paramsFormatter(Object.assign({}, self._params || {}, datas)),
-                dataType: 'json',
-                success (data) {
-                    self.page == 0 ? self.setData(data) : self.addData(data);
-                    self.renderRows();
-                    self.$emit('xhr:success', data);
-                },
-                error (data) {
-                    self.error = data;
-                    self.$emit('xhr:error');
-                    self.isLoading = false;
-                },
-                complete () {
-                    self.$http = null;
-                }
+            let ajax;
+
+            if (typeof this.source == 'string') {
+                ajax = Config('requestHelper')(this.source, params);
+            } else {
+                ajax = this.source(params);
+            }
+
+            Util.acm(ajax, this).then((data) => {
+                this.page == 0 ? this.setData(data) : this.addData(data);
+                this.renderRows();
+                this.$emit('xhr:success', data);
+                this.$xhr = null;
+            }, (data) => {
+                this.error = data;
+                this.$emit('xhr:fail', data);
+                this.$xhr = null;
             });
         },
 
-        abort () {
-            return this.$http && this.$http.abort();
-        },
-
         renderRows () {
-            var self = this;
-            var page = ++self.page;
+            let page = ++this.page;
+            let rows = this.data.slice(this.maxCountPerPage * (page - 1), this.maxCountPerPage * page);
 
-            var rows = self.data.slice(self.maxCountPerPage * (page - 1), self.maxCountPerPage * page);
-
-            if (!self.pullup2load || rows.length < self.maxCountPerPage) {
-                self.isCompleted = true;
-                self.$emit('nomore');
+            if (!this.pullup2load || rows.length < this.maxCountPerPage) {
+                this.isCompleted = true;
+                this.$emit('nomore');
             }
 
             if (page == 1) {
-                self.rows = rows;
-                self.$emit('refresh:success', rows);
-                self.pulldown2refresh && self.$scroll.recover();
+                this.rows = rows;
+                this.$emit('refresh:success', rows);
+                this.pulldown2refresh && this.$scroll.recover();
             } else {
-                self.rows = self.rows.concat(rows);
+                this.rows = this.rows.concat(rows);
             }
 
-            self.isLoading = false;
-            self.$emit('rows:render', rows);
+            this.isLoading = false;
+            this.$emit('rows:render', rows);
         }
     }
 };

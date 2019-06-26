@@ -2,7 +2,7 @@
     <page>
         <topbar slot="header">list组件</topbar>
             <list
-                source="https://3g.163.com/touch/jsonp/sy/recommend/10-10.html?hasad=1&miss=59&refresh=A&offset=0&size=10&callback=?"
+                :source="api"
                 :max-count-per-page="10"
                 :data-formatter="formatter"
                 :pullup2load="true"
@@ -10,19 +10,19 @@
                 v-lazyload
             >
                 <header slot="header">网易实时新闻</header>
-                <template slot="row" scope="props">
+                <template v-slot:row="{data, index}">
                     <div class="row">
-                        <a class="inner" :href="props.data.link">
+                        <a class="inner" :href="data.link">
                             <div :class="{
                             content: true,
                             active: active
                             }"  v-draggable="{canDrag: canDrag, axis: 'x'}" @drag:end="dragEnd" @drag:start="dragStart">
-                                <template v-if="!props.data.title">
+                                <template v-if="!data.title">
                                 <img class="ads" data-src="http://cms-bucket.nosdn.127.net/96d8cf0375f64c24a819d50ae190b51820170601175516.jpeg?imageView&thumbnail=690y230&quality=45&type=webp&interlace=1&enlarge=1" />
                                 </template>
                                 <template v-else>
-                                    <img v-if="props.data.picInfo[0]" :data-src="props.data.picInfo[0].url"  />
-                                    <span class="title">{{props.data.digest}}</span>
+                                    <img v-if="data.picInfo[0]" :data-src="data.picInfo[0].url"  />
+                                    <span class="title">{{data.digest}}</span>
                                 </template>
                             </div>
 
@@ -40,7 +40,7 @@
     }
 
     .inner{
-        min-height: 0.7rem;
+        min-height: 70px;
         display: block;
         text-decoration: none;
         color: #000;
@@ -79,21 +79,21 @@
     }
 
     .title{
-        font-size: 0.14rem;
+        font-size: 14px;
     }
 
     img{
-        width: .90rem;
-        height: 0.7rem;
+        width: 90px;
+        height: 70px;
         display: block;
         float: left;
-        margin-right: 0.1rem;
+        margin-right: 10px;
     }
 
     .ads{
         width: 100%;
         float: none;
-        height: 1.15rem;
+        height: 115px;
     }
 
     header{
@@ -110,6 +110,7 @@ import {
     Draggable,
     Lazyload
 } from 'vm';
+import Ajax from 'ajax';
 
 export default {
     components: {
@@ -127,6 +128,18 @@ export default {
     directives: {Draggable, Lazyload},
 
     methods: {
+        api (params) {
+            return new Promise((resolve, reject) => {
+                Ajax({
+                    url: 'https://3g.163.com/touch/jsonp/sy/recommend/10-10.html?hasad=1&miss=59&refresh=A&offset=0&size=10&callback=?',
+                    dataType: 'json',
+                    success (data) {
+                        resolve(data);
+                    }
+                });
+            });
+        },
+
         formatter (data) {
             return data.list;
         },
@@ -141,9 +154,11 @@ export default {
 
         dragEnd (event) {
             var info = event.data;
-
             this.active = true;
-            info.e.target.style.transform = `translate3d(${info.x < -50 ? -100 : 0}px, 0px, 0px)`;
+            setTimeout(() => {
+                info.e.target.style.transform = `translate3d(${info.x < -50 ? -100 : 0}px, 0px, 0px)`;
+            }, 100);
+            
         }
     }
 };

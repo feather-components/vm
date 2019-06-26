@@ -7,6 +7,20 @@ if (!Element.prototype.matches) {
 }
 
 export default {
+    getTransform (element) {
+        var matrix = window.getComputedStyle(element, null); 
+        var x; var y;
+
+        matrix = matrix.webkitTransform.split(')')[0].split(', ');
+        x = +(matrix[12] || matrix[4]);
+        y = +(matrix[13] || matrix[5]);
+
+        return {
+            x: isNaN(x) ? 0 : x,
+            y: isNaN(y) ? 0 : y
+        };
+    },
+
     offset (element) {
         var top = 0; var left = 0;
 

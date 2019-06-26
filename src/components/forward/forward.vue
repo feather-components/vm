@@ -24,11 +24,10 @@ export default {
     },
 
     mounted () {
-        let parentNode = this.$el.parentNode;
+		let parentNode = this.$el.parentNode;
+		let display = Dom.css(parentNode, 'display');
 
         this.leftLayout = parentNode.childNodes[0] === this.$el;
-
-        let display = Dom.css(parentNode, 'display');
 
         if (display == 'block') {
             Dom.css(parentNode, 'display', 'flex');

@@ -1,57 +1,71 @@
-<template>
-	<span class="vm-badge"><slot>{{text}}</slot></span>
-</template>
-
-<style>
+<style lang="less">
 .vm-badge {
-    background: #f40;
     color: #fff;
     display: inline-block;
-    min-width: 0.18rem;
-    padding: 0px 0.07rem;
-    height: 0.32rem;
-    line-height: 0.32rem;
+    min-width: 18px;
+    padding: 0px 7px;
+    height: 32px;
+    line-height: 32px;
     transform: scale(0.5);
-    font-size: 0.2rem;
+    font-size: 20px;;
     text-align: center;
     border-radius: 100px;
 }
 
 .vm-badge:empty {
-    width: 0.2rem;
+    width: 20px;
     min-width: 0px;
-    height: 0.2rem;
+    height: 20px;
     padding: 0px;
 }
 </style>
 
 <script>
+import Config from '../../config';
+
 export default {
     name: 'badge',
 
     props: {
-        content: {
-            type: [Number, String],
-            default: ''
-        }
+        color: {
+            type: String,
+            default: Config('badge.color') || Config('theme')
+        },
+
+        text: {
+            type: [Number, String]
+        },
     },
 
     data () {
         return {
-            text: this.content
+            txt: this.text
         };
     },
 
     watch: {
-        content (v) {
-            this.setContent(v);
+        text (text) {
+            this.setText(text);
         }
     },
 
     methods: {
-        setContent (content) {
-            this.text = content;
+        setText (text) {
+            this.txt = text;
         }
+    },
+
+    render (h) {
+        return h(
+            'span',
+            {
+                class: 'vm-badge',
+                style: {
+                    background: this.color
+                }
+            },
+            [this.txt ? this.txt : this.$slots.default]
+        );
     }
 };
 </script>

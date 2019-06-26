@@ -1,6 +1,10 @@
+import Util from './helper/util';
+
 export default {
     'theme': '#E74D4D',
-    'requestHelper': null,
+    'requestHelper' (url, params) {
+        return Promise.resolve([]);
+    },
     // components
     'page.background': '#fff',
     'topbar.padding-top': '0px',
@@ -16,5 +20,10 @@ export default {
     'segment.color': '#fff',
     'segment.high-color': '#E74D4D',
     'loading.color': '',
-    'tabs.high-color': ''
+    'tabs.high-color': '',
+    'loading.color': '',
+    'scroll.ignores': null,
+    'scroll.use-transform': false,
+    'list.label.page': 'page',
+    'list.label.persize': 'size'
 };

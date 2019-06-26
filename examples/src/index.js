@@ -28,13 +28,16 @@ import Segment from './components/segment.vue';
 import Configs from './cfg.js';
 
 import VM, {Topbar} from 'vm';
-console.log(VM);
+import Ajax from 'ajax';
 
 Vue.use(AppTransition);
 Vue.use(VueRouter);
 
 VM.install(Vue, {
-    'topbar.border-bottom': '1px solid #eee'
+    'topbar.border-bottom': '1px solid #eee',
+    'requestHelper': (url, params) => {
+        
+    }
 });
 
 // Vue.use(VM, Configs);

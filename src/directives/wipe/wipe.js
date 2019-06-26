@@ -37,7 +37,7 @@ export default {
         Event.on(element, 'drag:end', (e) => {
             let change = e.data.e.changedTouches[0].clientX - x;
 
-            Math.abs(change > min) && callback(change > 0 ? 1 : -1);
+            Math.abs(change) > min && callback(change > 0 ? 1 : -1);
         });
     },
 

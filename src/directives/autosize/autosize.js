@@ -145,7 +145,6 @@ export default {
 
         setTimeout(() => {
             let root = VNode.context.$root.$el;
-
             let instance = root.$autosize || new AutoSize(root);
 
             instance.observer(element);
@@ -163,7 +162,6 @@ export default {
         }, 10);
     },
 
-    AutoSize,
     Constructor: AutoSize,
     name: 'autosize'
 };

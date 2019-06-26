@@ -1,5 +1,5 @@
 <template>
-    <overlay :visible="visibility" :fx="fx" :position="position" ref="overlay" class="vm-page" :style="style">
+    <div class="vm-page">
         <div class="vm-page-header" ref="header">
             <slot name="header"></slot>
         </div>
@@ -11,24 +11,14 @@
         <div class="vm-page-footer" ref="footer">
             <slot name="footer"></slot>
         </div>
-    </overlay>
+    </div>
 </template>
 
 <script>
-import Overlay from '../overlay';
 import Config from '../../config';
 
 export default {
     name: 'page',
-
-    mixins: [Overlay],
-
-    props: {
-        visible: {
-            type: Boolean,
-            default: true
-        }
-    },
 
     data () {
         return {
@@ -36,21 +26,18 @@ export default {
                 background: Config('page.background') || Config('theme')
             }
         };
-    },
-
-    components: {
-        Overlay
     }
 };
 </script>
 
 <style>
-    .vm-page.vm-overlay {
+    .vm-page {
+        position: fixed;
+        z-index: 10000;
         width: 100%;
         height: 100%;
         background: #fff;
         display: flex;
-        font-size: 14px;
         flex-direction: column;
     }
 

@@ -2,162 +2,185 @@ import {Dom, Event, Util} from '../../helper';
 
 class Draggable {
     constructor (element, options = {}) {
-        var self = this;
-
-        self.dom = element;
-        self.dom.$draggable = self;
-        self.options = Util.assign({
+        this.dom = element;
+        this.dom.$draggable = this;
+        this.options = {
             axis: 'xy',
-            stackTimes: 1,
+            stick: 1,
             ignores: null,
             canDrag () { return true; }
-        }, options);
+        };
+        this.setOptions(options);
+        this.initEvent();
+    }
 
-        self.stack(self.options.stackTimes);
-        self.initEvent();
+    setOptions (options = {}) {
+        Object.assign(this.options, options);
+    }
+
+    isIgnoresTouch (target) {
+        var ignores = this.options.ignores;
+
+        if (!ignores) return false;
+
+        switch (typeof ignores) {
+            case 'function':
+                return ignores(target);
+
+            case 'string':
+                return Dom.matches(target, ignores);
+
+            default:
+                return ignores.test(target.tagName);
+        };
     }
 
     initEvent () {
-        var self = this; var options = self.options; var justStart = false; var target;
+        var options = this.options;
+        var first;
 
-        Event.on(self.dom, 'touchstart', (e) => {
-            target = e.target;
+        Event.on(this.dom, 'touchstart', (e) => {
+            this.handler = e.target;
+            first = true;
 
-            justStart = true;
+            if (this.isIgnoresTouch(this.handler)) return false;
 
-            if (target && options.ignores) {
-                if (typeof options.ignores == 'function') {
-                    if (options.ignores.test(target)) {
-                        return false;
-                    }
-                } else if (typeof options.ignores == 'string') {
-                    if (Dom.matches(target, options.ignores)) {
-                        return false;
-                    }
-                } else {
-                    if (options.ignores.test(target.tagName)) {
-                        return false;
-                    }
-                }
-            }
-
-            var {x, y} = self.translates = Draggable.getTransform(self.dom);
+            var {x, y} = this.translates = Dom.getTransform(this.dom);
             var {clientX, clientY} = e.touches[0];
 
-            self.touch = {clientX, clientY};
+            this.touch = {clientX, clientY};
 
-            Event.trigger(self.dom, 'drag:start', {
+            Event.trigger(this.dom, 'drag:start', {
                 x, y, clientX, clientY, e
             });
         });
 
-        Event.on(document, 'touchmove', (e) => {
-            if (!self.touch) {
-                return false;
-            }
+        Event.on(this.dom, 'touchmove', (e) => {
+            if (!this.touch) return false;
 
             e.preventDefault();
 
             var touch = e.touches[0];
-            var {clientX, clientY} = self.touch;
+            var {clientX, clientY} = this.touch;
             var axis = options.axis;
-            var x = 0; var y = 0;
-
-            var rx = (touch.clientX - clientX) / options.stackTimes; var ry = (touch.clientY - clientY) / options.stackTimes;
+            var x = 0;
+            var y = 0;
+            var rx = (touch.clientX - clientX) / options.stick;
+            var ry = (touch.clientY - clientY) / options.stick;
 
             if (/x/.test(axis)) {
-                x = rx + self.translates.x;
+                x = rx + this.translates.x;
             }
 
             if (/y/.test(axis)) {
-                y = ry + self.translates.y;
+                y = ry + this.translates.y;
             }
 
             var info = {
                 x, y, clientX: touch.clientX, clientY: touch.clientY, e, rx, ry
             };
 
-            if (!options.canDrag.call(self, {x, y, rx, ry})) {
-                Event.trigger(self.dom, 'drag:reject', info);
-                return false;
-            }
-
-            if (justStart) {
-                justStart = false;
-
-                // if other draggable, end
-                if (self.isOtherDraggable(target, {x: rx, y: ry})) {
-                    self.touch = null;
-                    Event.trigger(self.dom, 'drag:other', info);
-                    return false;
-                }
-            }
-
-            self.translates = {x, y};
-            self.touch = {
+            this.touch = {
                 clientX: touch.clientX,
                 clientY: touch.clientY
             };
 
-            Dom.css(self.dom, 'transform', `translate3d(${x}px, ${y}px, 0px)`);
-            Event.trigger(self.dom, 'draging', info);
-        });
+            if (first) {
+                first = false;
+                this.collectDragablesOnSameTree(info);
 
-        Event.on(document, 'touchend', (e) => {
-            if (!self.touch) {
+                if (this.isOtherAxisDraggable(info)) {
+                    Event.trigger(this.dom, 'drag:other', info);
+                    this.touch = null;
+                    return false;
+                }
+            }
+
+            this.isCanDrag = this.options.canDrag(info);
+
+            if (!this.isCanDrag) {
+                Event.trigger(this.dom, 'drag:reject', info);
                 return false;
             }
 
-            self.touch = null;
-            Event.trigger(self.dom, 'drag:end', {
-                x: self.translates.x,
-                y: self.translates.y,
+            if (this.isOtherDraggable()) {
+                Event.trigger(this.dom, 'drag:reject', info);
+                return false;
+            }
+
+            this.translates = {x, y};
+
+            Dom.css(this.dom, 'transform', `translate3d(${x}px, ${y}px, 0px)`);
+            Event.trigger(this.dom, 'draging', info);
+        });
+
+        Event.on(this.dom, 'touchend', (e) => {
+            if (!this.touch) return false;
+
+            this.touch = null;
+            Event.trigger(this.dom, 'drag:end', {
+                x: this.translates.x,
+                y: this.translates.y,
                 e
             });
         });
     }
 
-    stack (times = 1) {
-        this.options.stackTimes = times;
+    setStick (times = 1) {
+        this.options.stick = times;
     }
 
-    isOtherDraggable (target, info) {
-        var $draggable; var self = this;
-        var isX = Math.abs(info.x) > Math.abs(info.y);
+    collectDragablesOnSameTree (info) {
+        this.$draggables = [];
+
+        var isX = Math.abs(info.rx) > Math.abs(info.ry);
+        var handler = this.handler;
 
         do {
-            if (target.$draggable) {
-                $draggable = target.$draggable;
+            let $draggable = handler.$draggable;
 
-                if (isX && $draggable.options.axis == 'x' || !isX && $draggable.options.axis != 'x') {
-                    break;
-                }
+            if ($draggable && (isX && $draggable.options.axis == 'x' || !isX && $draggable.options.axis != 'x')) {
+                this.$draggables.push($draggable);
             }
-        } while (target = target.parentNode);
 
-        return $draggable !== self;
+            handler = handler.parentNode;
+        } while (handler);
+    }
+
+    isOtherAxisDraggable () {
+        return this.$draggables.every(($draggable) => {
+            return $draggable !== this;
+        });
+    }
+
+    isOtherDraggable () {
+        var $draggables = this.$draggables;
+        var l = $draggables.length;
+
+        for (let i = 0; i < l; i++) {
+            let $draggable = this.$draggables[i];
+
+            if ($draggable === this) {
+                return false;
+            }
+
+            if ($draggable.isCanDrag) {
+                return true;
+            }
+        }
     }
 }
 
-Draggable.getTransform = (element) => {
-    var matrix = window.getComputedStyle(element, null); var x; var y;
-
-    matrix = matrix.webkitTransform.split(')')[0].split(', ');
-    x = +(matrix[12] || matrix[4]);
-    y = +(matrix[13] || matrix[5]);
-
-    return {
-        x: isNaN(x) ? 0 : x,
-        y: isNaN(y) ? 0 : y
-    };
-};
-
 export default {
     bind (element, data) {
+        // eslint-disable-next-line no-new
         new Draggable(element, data.value);
     },
 
-    Draggable,
+    update (element, data) {
+        element.$draggable.setOptions(data.value);
+    },
+
     Constructor: Draggable,
     name: 'draggable'
 };

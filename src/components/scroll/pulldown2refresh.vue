@@ -1,18 +1,17 @@
 <template>
 	<scroll
-        :max-pos="maxPos"
+        :boundary="[maxPos, 0]"
         @scrolling="onScrolling"
         @scroll:end="onScrollEnd"
-        @drag:start="onDragStart"
-        @drag:end="onDragEnd"
+        @translate="onTranslate"
         ref="scroll"
         :scrollbars="scrollbars"
     >
-	    <div class="vm-pulldown2refresh" ref="pulldown" slot="header">
-         	<slot name="pulldown">
-         		<slot name="pulldown-msg" v-if="!isRefreshing && !intop">下拉刷新数据</slot>
-	            <slot name="pullleave-msg" v-if="!isRefreshing && intop">松手刷新数据</slot>
-	            <slot name="refresh-msg" v-if="isRefreshing"><i class="vm-pulldown2refresh-icon"></i>正在刷新数据</slot>
+	    <div class="vm-pulldown2refresh" ref="status" slot="header">
+         	<slot name="pull-status">
+         		<slot name="if-pulldown" v-if="!isRefreshing && !isMax">下拉刷新数据</slot>
+	            <slot name="if-pullleave" v-if="!isRefreshing && isMax">松手刷新数据</slot>
+	            <slot name="if-refreshing" v-if="isRefreshing"><loading />正在刷新数据</slot>
          	</slot>
         </div>
 
@@ -20,33 +19,9 @@
 	</scroll>
 </template>
 
-<style>
-    .vm-pulldown2refresh-icon{
-        display: inline-block;
-        width: 0.16rem;
-        height: 0.16rem;
-        background-image: url(../../assets/loading.gif?__inline);
-        background-size: 100%;
-        margin-right: 0.05rem;
-        transform: translateY(0.03rem);
-        -webkit-transform: translateY(0.03rem);
-    }
-
-    .vm-pulldown2refresh{
-        text-align: center;
-        padding: 0.05rem;
-        color: #878787;
-        width: 100%;
-        font-size: 0.12rem;
-        width: 100%;
-        position: absolute;
-        transform: translateY(-100%);
-        -webkit-transform: translateY(-100%);
-    }
-</style>
-
 <script>
 import Scroll from './scroll';
+import Loading from '../loading';
 import {Dom} from '../../helper';
 
 export default {
@@ -61,54 +36,51 @@ export default {
 
     data () {
         return {
-            maxPos: 0,
             isRefreshing: false,
-            intop: false
+            isMax: false,
+            maxPos: 0
         };
     },
 
     computed: {
-        pulldownHeight () {
-            return Dom.height(this.$refs.pulldown);
+        statusBoxHeight () {
+            return Dom.height(this.$refs.status);
         }
     },
 
     components: {
+        Loading,
         Scroll
     },
 
     mounted () {
         setTimeout(() => {
             this.$scroll = this.$refs.scroll;
-            this.maxPos = this.pulldownHeight;
+            this.maxPos = this.statusBoxHeight;
         }, 0);
     },
 
     methods: {
         onScrolling (translate) {
-            this.intop = this.limitType() == 1;
+            this.isMax = this.limitType() == 1;
             this.$emit('scrolling', translate);
         },
 
         onScrollEnd (...args) {
+            this.limitType() == 1 && this.refresh();
             this.$emit('scroll:end', ...args);
         },
 
-        onDragStart (...args) {
-            this.$emit('drag:start', ...args);
+        onTranslate (...args) {
+            this.$emit('translate', ...args);
         },
 
-        onDragEnd (...args) {
-            this.$emit('drag:end', ...args);
-            this.limitType() == 1 && this.refresh();
-        },
-
-        refresh (trigger = true, animation = true) {
+        refresh (animation = true, trigger = true) {
             if (this.isRefreshing) return;
 
+            this.isRefreshing = true;
             animation && this.scrollTo(this.pulldownHeight, 500);
             trigger && this.$emit('refresh', this.recover);
-            this.isRefreshing = true;
         },
 
         recover () {
@@ -135,3 +107,19 @@ export default {
     }
 };
 </script>
+
+<style lang="less">
+.vm-pulldown2refresh {
+    padding: 10px 0px;
+    color: #878787;
+    width: 100%;
+    font-size: 14px;
+    width: 100%;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateY(-100%);
+    -webkit-transform: translateY(-100%);
+}
+</style>
