@@ -134,6 +134,7 @@ export default {
         },
 
         onSelect (vals) {
+            console.log(vals);
             let year = vals[0].value;
 
             if (vals.length == 1) {

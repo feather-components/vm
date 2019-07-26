@@ -1,115 +1,141 @@
-<template>
-    <div :class="'vm-dropdown' + (isOpen ? ' vm-dropdown-open' : '')">
-        <a class="vm-dropdown-label" ref="label" href="javascript:" :style="{
-            color: !isOpen ? labelColor: labelHighColor
-        }">
-            {{label}}
-            <icon :name="isOpen ? 'up' : 'down'" />
-        </a>
-
-        <dropbox ref="box">
-            <div class="vm-dropdown-inner">
-                <slot></slot>
-            </div>
-        </dropbox>
-    </div>
-</template>
-
-<style lang="less">
-    .vm-dropdown{
-        border-bottom: 1px solid #eee;
-        flex: 1;
-    }
-
-    .vm-dropdown-label{
-        font-size: .14rem;
-        text-decoration: none;
-        display: inline-block;
-        height: .44rem;
-        margin: auto;
-        width: 100%;
-        text-align: center;
-        line-height: .44rem;
-    }
-
-    .vm-dropdown-inner{
-        max-height: 3.5rem;
-    }
-</style>
-
 <script>
-import Dropbox from './box';
-import {Event, Util} from '../../helper';
-import Icon from '../icon';
+import {Event, Dom} from '../../helper';
+import Popup from '../popup';
+import Overlay from '../overlay';
 
-var DropDown = {
+export default {
+    mixins: [Popup],
+
     name: 'dropdown',
-
-    props: {
-        label: {
-            type: String,
-            default: ''
-        },
-
-        labelColor: {
-            type: String,
-            default: () => {
-                return DropDown.config('labelColor');
-            }
-        },
-
-        labelHighColor: {
-            type: String,
-            default: () => {
-                return DropDown.config('labelHighColor');
-            }
-        }
-    },
-
-    components: {
-        Dropbox,
-        Icon
-    },
 
     data () {
         return {
-            isOpen: false
+            above: false,
+            boxStyle: {}
         };
     },
 
+    components: {
+        Popup
+    },
+
+    computed: {
+        pos () {
+            return this.above ? 'bottom' : 'top';
+        }
+    },
+
+    watch: {
+        visibility (value) {
+            value && this.resetPosition();
+        }
+    },
+
     mounted () {
-        var self = this;
-
-        self.$nextTick(() => {
-            var $box = self.$refs.box;
-
-            $box.$on('open', () => {
-                self.isOpen = true;
-                this.$emit('open');
-            });
-
-            $box.$on('close', () => {
-                self.isOpen = false;
-                this.$emit('close');
+        this.$nextTick(() => {
+            Event.on(document.body, 'click', (e) => {
+                !Dom.contains(this.$el, e.target) && this.hide();
             });
         });
     },
 
     methods: {
-        open () {
-            this.$refs.box.open();
+        onLabelClick () {
+            // fixed android bug
+            setTimeout(() => {
+                this.toggle();
+            }, 50);
         },
 
-        close () {
-            this.$refs.box.close();
+        onBoxBgClick (e) {
+            e.stopPropagation();
+            this.hide();
+        },
+
+        onBoxInnerClick (e) {
+            e.target !== this.$refs.inner && e.stopPropagation();
+        },
+
+        toggle () {
+            this.visibility ? this.hide() : this.show();
+        },
+
+        resetPosition () {
+            const BODY_HEIGHT = Dom.height(document);
+            const {top, height, bottom} = Dom.rect(this.$el);
+
+            this.above = top + height > BODY_HEIGHT / 2;
+
+            if (this.above) {
+                this.boxStyle = {
+                    bottom: BODY_HEIGHT - top,
+                    height: top
+                };
+            } else {
+                this.boxStyle = {
+                    top: bottom,
+                    height: BODY_HEIGHT - bottom
+                };
+            }
         }
+    },
+
+    render (h) {
+        return h(
+            'div', {
+                class: 'vm-dropdown'
+            },
+            [
+                h(
+                    'div', {
+                        class: 'vm-dropdown-label',
+                        on: {
+                            click: this.onLabelClick.bind(this)
+                        }
+                    },
+                    [
+                        this.$slots.default,
+                        this.$scopedSlots.label ? this.$scopedSlots.label(this.visibility) : null,
+                        this.visibility ? this.$slots['if-show'] : this.$slots['if-hide']
+                    ]
+                ),
+
+                h(
+                    Popup, {
+                        class: 'vm-dropbox',
+                        style: this.boxStyle,
+                        props: {
+                            visible: this.visibility,
+                            position: this.pos,
+                            clickBg2hide: this.clickBg2hide
+                        },
+                        nativeOn: {
+                            click: this.onBoxBgClick.bind(this)
+                        }
+                    },
+                    [
+                        h(
+                            'div', {
+                                class: ['vm-dropbox-inner', `vm-dropbox-${this.pos}`],
+                                on: {
+                                    click: this.onBoxInnerClick.bind(this)
+                                },
+                                ref: 'inner'
+                            },
+                            [
+                                this.$slots.box
+                            ]
+                        )
+                    ]
+                )
+            ]
+        );
     }
 };
-
-Util.defineConfig(DropDown, {
-    labelColor: '#6281C2',
-    labelHighColor: '#6281C2'
-});
-
-export default DropDown;
 </script>
+
+<style>
+.vm-dropbox .vm-overlay{
+    position: absolute;
+}
+</style>

@@ -55,7 +55,7 @@ export default {
                 'components/button',
                 'components/segment',
                 'components/forward',
-                'components/overlay',
+                'components/popup',
                 'components/alert',
                 'components/toast',
                 'components/scroll',

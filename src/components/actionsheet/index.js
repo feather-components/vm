@@ -1,20 +1,11 @@
-import Component from './actionsheet';
+import ActionSheet from './actionsheet';
+import ActionSheetItem from './item';
 import {Util} from '../../helper';
 
-var instance;
-var ActionSheet = (actions, cancelDisabled) => {
-    instance && instance.destroy();
-    instance = Util.factory(Component, {
-        actions,
-        cancelDisabled,
-        visible: true
-    });
-    instance.$on('close', () => {
-        instance.destroy();
-    });
+Util.register(ActionSheet);
+Util.register(ActionSheetItem);
 
-    return instance;
+export {
+    ActionSheet,
+    ActionSheetItem
 };
-
-ActionSheet.Component = Component;
-export default Util.register(ActionSheet);

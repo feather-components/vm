@@ -1,52 +1,5 @@
-<style lang="less">
-.vm-alert.vm-overlay {
-    border-radius: 4px;
-    width: 65%;
-    padding: 0px .1rem;
-}
-
-.vm-alert-content {
-    color: #3B4263;
-    font-size: 16px;
-    letter-spacing: 0;
-    line-height: 28px;
-    text-align: center;
-    margin-top: 0.16rem;
-    margin-bottom: 0.16rem;
-}
-
-.vm-alert-extras {
-    margin-top: 0.08rem;
-    color: #555;
-    font-size: 12px;
-    line-height: 20px;
-    text-align: center;
-}
-
-.vm-alert-footer {
-    text-align: center;
-    margin-bottom: 0.16rem;
-}
-
-.vm-alert-flexfooter {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.vm-alert-btn {
-    flex: 1;
-    text-align: center;
-    margin-bottom: 6px;
-
-    .vm-button {
-        width: 90%;
-        height: 0.36rem;
-    }
-}
-</style>
-
 <script>
-import vmMask from '../mask';
+import Modal from '../masker';
 import Overlay from '../overlay';
 import Button from '../button';
 
@@ -56,7 +9,7 @@ export default {
     mixins: [Overlay],
 
     props: {
-        content: {
+        title: {
             type: String,
             default: ''
         },
@@ -80,7 +33,7 @@ export default {
     },
 
     components: {
-        vmMask,
+        Modal,
         Overlay,
         Btn: Button
     },
@@ -130,3 +83,50 @@ export default {
         </overlay>
     </vm-mask>
 </template>
+
+<style lang="less">
+.vm-alert.vm-overlay {
+    border-radius: 4px;
+    width: 65%;
+    padding: 0px .1rem;
+}
+
+.vm-alert-content {
+    color: #3B4263;
+    font-size: 16px;
+    letter-spacing: 0;
+    line-height: 28px;
+    text-align: center;
+    margin-top: 0.16rem;
+    margin-bottom: 0.16rem;
+}
+
+.vm-alert-extras {
+    margin-top: 0.08rem;
+    color: #555;
+    font-size: 12px;
+    line-height: 20px;
+    text-align: center;
+}
+
+.vm-alert-footer {
+    text-align: center;
+    margin-bottom: 0.16rem;
+}
+
+.vm-alert-flexfooter {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.vm-alert-btn {
+    flex: 1;
+    text-align: center;
+    margin-bottom: 6px;
+
+    .vm-button {
+        width: 90%;
+        height: 0.36rem;
+    }
+}
+</style>

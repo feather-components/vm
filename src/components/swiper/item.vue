@@ -1,14 +1,8 @@
 <template>
-    <div class="vm-slider-item">
+    <div class="vm-swiper-item">
         <slot></slot>
     </div>
 </template>
-
-<style>
-    .vm-slider-item{
-        overflow: hidden;
-    }
-</style>
 
 <script>
 import {Event, Dom} from '../../helper';
@@ -32,3 +26,9 @@ export default {
     }
 };
 </script>
+
+<style>
+.vm-swiper-item {
+    overflow: hidden;
+}
+</style>

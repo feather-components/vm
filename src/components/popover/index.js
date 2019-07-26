@@ -1,4 +1,11 @@
 import Popover from './popover';
+import PopoverAction from './action';
 import {Util} from '../../helper';
 
-export default Util.register(Popover);
+Util.register(Popover);
+Util.register(PopoverAction);
+
+export {
+    Popover,
+    PopoverAction
+};

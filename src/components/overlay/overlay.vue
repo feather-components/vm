@@ -10,8 +10,6 @@
 import {Event} from '../../helper';
 
 export default {
-    name: 'overlay',
-
     props: {
         fx: {
             type: Boolean,
@@ -43,74 +41,66 @@ export default {
 
     watch: {
         visible (v) {
-            v ? this.open() : this.close();
+            v ? this.show() : this.hide();
         }
     },
 
     computed: {
         className () {
-            var self = this;
             var c = ['vm-overlay'];
 
-            if (self.position) {
-                c.push('vm-overlay-' + self.position);
+            if (this.position) {
+                c.push('vm-overlay-' + this.position);
             }
 
-            c.push(self.class || '');
+            c.push(this.class || '');
 
             return c;
         }
     },
 
     mounted: function () {
-        this.visible && this.open();
+        this.visible && this.show();
     },
 
     methods: {
-        open () {
-            var self = this;
+        show () {
+            if (this.visibility) return false;
 
-            if (self.visibility) return false;
-
-            self.visibility = true;
-            self.$nextTick(function () {
-                self.$emit('open');
+            this.visibility = true;
+            this.$nextTick(function () {
+                this.$emit('show');
             });
         },
 
-        close () {
-            var self = this;
+        hide () {
+            
+            if (!this.visibility) return false;
 
-            if (!self.visibility) return false;
-
-            self.visibility = false;
-            self.$nextTick(function () {
-                self.$emit('close');
+            this.visibility = false;
+            this.$nextTick(function () {
+                this.$emit('hide');
             });
         },
 
         destroy (fx = this.fx) {
-            var self = this;
+            if (this.destroyed) return;
 
-            if (self.destroyed) return;
-
-            self.close();
+            this.hide();
 
             if (fx) {
-                Event.on(self.$el, 'transitionend webkitTransitionEnd', () => {
-                    self._destroy();
+                Event.on(this.$el, 'transitionend webkitTransitionEnd', () => {
+                    this._destroy();
                 });
             } else {
-                self._destroy();
+                this._destroy();
             }
         },
 
         _destroy () {
-            var self = this;
-
-            self.$el.parentNode && self.$el.parentNode.removeChild(self.$el);
-            self.$emit('destroy');
-            self.destroyed = true;
+            this.$el.parentNode && this.$el.parentNode.removeChild(this.$el);
+            this.$emit('destroy');
+            this.destroyed = true;
         }
     }
 };
@@ -120,8 +110,6 @@ export default {
 .vm-overlay {
     position: fixed;
     z-index: 10000;
-    background: #fff;
-    overflow: hidden;
 }
 
 .vm-overlay-center {
@@ -129,6 +117,7 @@ export default {
     left: 50%;
     transform: translate(-50%, -50%);
     -webkit-transform: translate(-50%, -50%);
+    white-space: nowrap;
 }
 
 .vm-overlay-left,

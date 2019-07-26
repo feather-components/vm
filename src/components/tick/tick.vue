@@ -1,5 +1,5 @@
 <template>
-	<span class="vm-tick" :style="style">✔</span>
+	<span class="vm-tick" :style="style">✓</span>
 </template>
 
 <script>

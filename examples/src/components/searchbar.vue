@@ -1,13 +1,16 @@
 <template>
     <page>
         <topbar slot="header">searchbar + list组件</topbar>
-        <searchbar v-model="wd" placeholder="请输入关键词，百度搜索"></searchbar>
+        <searchbar style="background: blue; " v-model="wd" :inner-style="{backgroundColor: '#fff', borderRadius: '0px'}" placeholder="请输入关键词，百度搜索">
+            <select slot="inner-left" style="width: 100px;">
+                <option>1</option>
+            </select>
+        </searchbar>
         <list
-            source="https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?json=1&cb=?"
+            :api="api"
             :params="{'wd': wd}"
             :auto-refresh="true"
             :data-formatter="formatter"
-
         >
             <template slot="row" scope="props">
                 <div class="row">
@@ -47,6 +50,8 @@ import {
     List
 } from 'vm';
 
+import Ajax from 'ajax';
+
 export default {
     components: {
         Page,
@@ -62,7 +67,29 @@ export default {
         };
     },
 
+    watch: {
+        wd (v) {
+            console.log(v);
+        }
+    },
+
     methods: {
+        api (params) {
+            return new Promise((resolve, reject) => {
+                Ajax({
+                    url: 'https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?json=1&cb=?',
+                    data: params,
+                    dataType: 'json',
+                    success (data) {
+                        resolve(data.g);
+                    },
+                    error () {
+                        reject();
+                    }
+                });
+            });
+        },
+
         formatter (data) {
             return data.g || [];
         }

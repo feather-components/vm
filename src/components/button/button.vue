@@ -8,6 +8,8 @@
 import Config from '../../config';
 import {Util} from '../../helper';
 
+const SIZES = ['large', 'normal', 'small', 'mini'];
+
 export default {
     name: 'button',
 
@@ -48,7 +50,7 @@ export default {
     computed: {
         style () {
             const {square, radius, hollow, type, size} = this;
-            const height = Config('button.sizes')[size == 'large' ? 0 : /small|mini/.test(size) ? 2 : 1];
+            const height = Config('button.sizes')[SIZES.indexOf(size)];
             const color = Config('button.colors')[type] || (type == 'primary' ? Config('theme') : type);
 
             let style = {
@@ -90,6 +92,7 @@ export default {
     border: 0px;
     word-break: keep-all;
     padding: 0px 15px;
+    line-height: 1;
 
     &:active {
         opacity: 0.7;
@@ -112,10 +115,11 @@ export default {
 
 .vm-button-large {
     font-size: 16px;
-    width: 90%;
+    display: block;
+    width: 100%;
 }
 
-.vm-button-small {
+.vm-button-small, .vm-button-mini {
     min-width: 0px;
     font-size: 12px;
 }

@@ -1,39 +1,43 @@
 import Component from './toast';
 import {Util} from '../../helper';
 
-var instance = null; var timeid;
+let instance;
 
-var Toast = (content, time = 3000, mask, className = '') => {
+function Toast (options, type) {
     Toast.destroy(false);
 
-    instance = Util.factory(Component, {
-        content: content,
-        mask: mask,
-        iconClass: className
-    });
+    let props = {
+        duration: 3000
+    };
 
-    if (time) {
-        timeid = setTimeout(Toast.destroy, time);
+    if (typeof options == 'string') {
+        props.message = options;
+    } else {
+        props = Object.assign(props, options);
+    }
+
+    type && (props.type = type);
+
+    instance = Util.factory(Component, props);
+
+    if (props.duration && props.duration > 0) {
+        instance.$id = setTimeout(Toast.destroy, props.duration);
     }
 
     return instance;
-};
+}
 
 Toast.destroy = (fx = true) => {
-    if (timeid) {
-        clearTimeout(timeid);
-        timeid = null;
-    }
-
     if (instance) {
         instance.destroy(fx);
+        instance.$id && clearTimeout(instance.$id);
         instance = null;
     }
 };
 
-['success', 'loading'].forEach((method) => {
-    Toast[method] = (content, time, mask) => {
-        return Toast(content, time, mask, 'vm-toast-' + method);
+['success', 'loading'].forEach((type) => {
+    Toast[type] = (options) => {
+        return Toast(options, type);
     };
 });
 

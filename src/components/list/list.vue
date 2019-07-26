@@ -3,6 +3,8 @@
         ref="scroll" class="vm-list" :is="Component" :scrollbars="scrollbars"
         @refresh="refresh" 
         @scrolling="onScrolling"
+        @draging="try2load"
+        @scroll:end="try2load"
     >
         <div class="vm-list-header" v-if="$slots.header">
             <slot name="header"></slot>
@@ -20,13 +22,13 @@
             <slot name="if-loading" v-if="ifLoading">
                 <loading /> 正在加载中
             </slot>
-            <slot name="if-nomore" v-if="isCompleted">就这么多啦~</slot>
-            <slot name="if-empty" v-if="ifFailed">
-                <span class="vm-list-status-box">神马都木有~</span>
-            </slot>
-            <slot name="if-failed" v-if="ifFailed">
+            <slot name="if-failed" v-else-if="ifFailed">
                 <span class="vm-list-status-box">网络异常，加载失败</span>
             </slot>
+            <slot name="if-empty" v-else-if="ifEmpty">
+                <span class="vm-list-status-box">神马都木有~</span>
+            </slot>
+            <slot name="if-nomore" v-else-if="isCompleted">就这么多啦~</slot>
         </div>
 
         <div class="vm-list-footer">
@@ -81,17 +83,9 @@ export default {
             default: true
         },
 
-        source: {
-            default () {
-                return [];
-            }
-        },
-
-        dataFormatter: {
+        api: {
             type: Function,
-            default (data = []) {
-                return data;
-            }
+            default: null
         },
 
         maxCountPerPage: {
@@ -103,13 +97,6 @@ export default {
             type: Object,
             default () {
                 return {};
-            }
-        },
-
-        paramsFormatter: {
-            type: Function,
-            default (params) {
-                return params;
             }
         },
 
@@ -133,7 +120,7 @@ export default {
             isLoading: false,
             isCompleted: false,
             page: 0,
-            error: 0,
+            error: null,
             $scroll: null,
             _source: '',
             unitHeights: []
@@ -167,7 +154,7 @@ export default {
     },
 
     watch: {
-        source (v) {
+        source () {
             this.autoRefresh && this.refresh();
         },
 
@@ -181,16 +168,19 @@ export default {
     },
 
     methods: {
-        onScrolling (...args) {
-            this.pullup2load && this.$scroll.limitType() == -1 && this.load();
-            this.$emit('scrolling', ...args);
+        try2load (...args) {
+            this.pullup2load && this.page > 0 && this.$scroll.limitType() == -1 && this.load();
         },
+
+        onScrolling (...args) {
+            this.$emit('scrolling', ...args);
+        },  
 
         setParams (params, append) {
             if (append) {
-                this._params = Object({}, this._params, params);
+                this._params = Object.assign({}, this._params, params);
             } else {
-                this._params = Object({}, params);
+                this._params = Object.assign({}, params);
             }
         },
 
@@ -208,10 +198,6 @@ export default {
         },
 
         addData (data) {
-            try {
-                data = this.dataFormatter(data);
-            } catch (e) {}
-
             this.data = this.data.concat(data || []);
             this.$emit('data:add', data);
         },
@@ -244,49 +230,48 @@ export default {
 
             params[Config('list.label.page')] = this.page + 1;
             params[Config('list.label.persize')] = this.maxCountPerPage;
-            params = this.paramsFormatter(params);
 
             this.isLoading = true;
 
-            let ajax;
-
-            if (typeof this.source == 'string') {
-                ajax = Config('requestHelper')(this.source, params);
-            } else {
-                ajax = this.source(params);
-            }
+            let ajax = this.api(params);
 
             Util.acm(ajax, this).then((data) => {
                 this.page == 0 ? this.setData(data) : this.addData(data);
-                this.renderRows();
-                this.$emit('xhr:success', data);
-                this.$xhr = null;
+                this.$emit('fetch:success', data);
+                this.fetchComplete();
             }, (data) => {
-                this.error = data;
-                this.$emit('xhr:fail', data);
-                this.$xhr = null;
+                this.error = true;
+                this.$emit('fetch:fail', data);
+                this.fetchComplete();
             });
         },
 
-        renderRows () {
+        fetchComplete () {
             let page = ++this.page;
-            let rows = this.data.slice(this.maxCountPerPage * (page - 1), this.maxCountPerPage * page);
 
-            if (!this.pullup2load || rows.length < this.maxCountPerPage) {
-                this.isCompleted = true;
-                this.$emit('nomore');
-            }
+            if (!this.error) {
+                let rows = this.data.slice(this.maxCountPerPage * (page - 1), this.maxCountPerPage * page);
 
-            if (page == 1) {
-                this.rows = rows;
-                this.$emit('refresh:success', rows);
+                if (!this.pullup2load || rows.length < this.maxCountPerPage) {
+                    this.isCompleted = true;
+                    this.$emit('nomore');
+                }
+
+                if (page == 1) {
+                    this.rows = rows;
+                    this.$emit('refresh:success', rows);
+                    this.pulldown2refresh && this.$scroll.recover();
+                } else {
+                    this.rows = this.rows.concat(rows);
+                }
+            } else if (page == 1) {
+                this.page = 0;
+                this.$emit('refresh:error', this.rows = []);
                 this.pulldown2refresh && this.$scroll.recover();
-            } else {
-                this.rows = this.rows.concat(rows);
             }
 
+            this.$emit('rows:render', this.rows);
             this.isLoading = false;
-            this.$emit('rows:render', rows);
         }
     }
 };

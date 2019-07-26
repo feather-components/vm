@@ -1,109 +1,50 @@
 <template>
-    <vm-mask :visible="visibility" @click="close">
-        <overlay :visible="visibility" class="vm-actionsheet" position="bottom">
-            <div style="margin-bottom: 0.08rem;">
-                <div class="vm-actionsheet-header" v-if="$slots.header">
-                    <slot name="header"></slot>
-                </div>
+    <popup :visible="visibility" :click-bg2hide="clickBg2hide" position="bottom" class="vm-actionsheet" @click="hide">
+        <div class="vm-actionsheet-items">
+            <slot></slot>
+        </div>
 
-                <div
-                    v-for="(action, index) of actions"
-                    class="vm-actionsheet-item"
-                    @click="callAction(index)"
-                    :key="index"
-                >
-                    <slot name="item" :text="index">
-                        <div class="vm-actionsheet-item-inner">{{index}}</div>
-                    </slot>
-                </div>
-
-                <div class="vm-actionsheet-footer" v-if="$slots.footer">
-                    <slot name="footer"></slot>
-                </div>
-            </div>
-
-            <div @click="close" class="vm-actionsheet-cancel" v-if="!cancelDisabled">
-                <slot name="cancel">
-                    <div class="vm-actionsheet-item-inner">取消</div>
-                </slot>
-            </div>
-        </overlay>
-    </vm-mask>
+        <div class="vm-actionsheet-cancel" v-if="!cancelDisabled">
+            <slot name="cancel">
+                <item @click="hide">取消</item>
+            </slot>
+        </div>
+    </popup>
 </template>
 
-<style lang="less">
-.vm-actionsheet {
-    width: 100%;
-    text-align: center;
-    background: transparent;
-}
-
-.vm-actionsheet-item-inner {
-    margin-top: .1rem;
-    text-decoration: none;
-    background: rgba(255, 255, 255, 0.8);
-    border-radius: 100px;
-    font-weight: bold;
-    height: 46px;
-    line-height: 46px;
-    display: inline-block;
-    width: 90%;
-    font-size: 16px;
-    color: #222222;
-}
-
-.vm-actionsheet-cancel {
-    font-weight: normal;
-
-    .vm-actionsheet-item-inner {
-        margin-bottom: .16rem;
-    }
-}
-</style>
-
 <script>
-import vmMask from '../mask';
-import Overlay from '../overlay';
+import Popup from '../popup';
+import Item from './item';
 
 export default {
     name: 'actionsheet',
 
-    mixins: [Overlay],
+    mixins: [Popup],
 
     props: {
-        visible: {
-            type: Boolean,
-            default: false
-        },
-
-        actions: {
-            type: [Object, Array],
-            default () {
-                return {};
-            }
-        },
-
         cancelDisabled: {
             type: Boolean,
             default: false
+        },
+
+        clickBg2hide: {
+            type: Boolean,
+            default: true
         }
     },
 
     components: {
-        vmMask,
-        Overlay
-    },
-
-    data () {
-        return {
-            visibility: this.visible
-        };
-    },
-
-    methods: {
-        callAction (index) {
-            this.actions[index].call(this);
-        }
+        Popup,
+        Item
     }
 };
 </script>
+
+<style lang="less">
+.vm-actionsheet-items, .vm-actionsheet-cancel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 5px;
+}
+</style>

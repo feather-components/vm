@@ -1,41 +1,35 @@
 <template>
-    <page>
-        <topbar slot="header">
-            dropdown组件
-        </topbar>
+    <vm-page>
+        <vm-topbar slot="header">dropdown</vm-topbar>
         <div style="display: flex; flex: 1;">
-            <dropdown label="区域" style="width: 50%;">
-                <scroll style="height: 300px;">
-                    <div v-for="(item, a) of 100">{{item}}</div>
-                </scroll>
-            </dropdown>
-            <dropdown label="筛选" style="width: 50%;">
-                <scroll axis="x">
+            <vm-dropdown style="width: 50%;">
+                <template v-slot:label="visible">
+                    <span>
+                        筛选
+                        <span :class="['t', visible ? 'ts' : '']">∨</span>
+                    </span>
+                </template>
+                <vm-scroll style="width: 100px; height: 300px; background: #fff" slot="box">
+                    <div v-for="(item, a) of 100" :key="a">{{item}}</div>
+                </vm-scroll>
+            </vm-dropdown>
+            <vm-dropdown style="width: 50%;">
+                筛选
+                <vm-scroll axis="x" style="background: #fff;" slot="box">
                     <div style="display: inline-block" v-for="(item, a) of 100">{{item}}</div>
-                </scroll>
-            </dropdown>
+                </vm-scroll>
+            </vm-dropdown>
         </div>
-
-        <scroll axis="y" :scrollbars="true" class="row">
-                1233333123
-            </scroll>
-    </page>
+    </vm-page>
 </template>
 
-<script>
-import {
-    Page,
-    Topbar,
-    Dropdown,
-    Scroll
-} from 'vm';
+<style>
+.t {
+    transition: transform, -webkit-transform 1s ease;
+    display: inline-block;
+}
 
-export default {
-    components: {
-        Page,
-        Topbar,
-        Dropdown,
-        Scroll
-    }
-};
-</script>
+.ts {
+    -webkit-transform: rotate(180deg); 
+}
+</style>

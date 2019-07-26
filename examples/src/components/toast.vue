@@ -1,31 +1,24 @@
 <template>
-    <page>
-        <topbar slot="header">toast组件</topbar>
-        <p style="text-align: center;"><btn @click="show()" style="width: 80%; margin-top: 20px;">提示</btn></p>
-        <p style="text-align: center;"><btn @click="success()" style="width: 80%; margin-top: 20px;">成功</btn></p>
-        <p style="text-align: center;"><btn  @click="loading()" style="width: 80%; margin-top: 20px;">loading</btn></p>
-    </page>
+    <vm-page>
+        <vm-topbar slot="header">toast组件</vm-topbar>
+
+        <div style="margin: 20px; display: flex;">
+            <vm-button radius="0" size="large" @click="show()">提示</vm-button>
+            <vm-button radius="0" size="large" @click="success()">成功</vm-button>
+            <vm-button radius="0" size="large" @click="loading()">loading</vm-button>
+        </div>
+    </vm-page>
 </template>
 
 <script>
-import Vue from 'vue';
-import {
-    Page,
-    Topbar,
-    Toast,
-    Button as Btn
-} from 'vm';
+import {Toast} from 'vm';
 
 export default {
-    components: {
-        Page,
-        Topbar,
-        Btn
-    },
-
     methods: {
         show () {
-            Toast('操作成功', false);
+            Toast({
+                message: '操作成功操作成功操作成功<br>换行'
+            });
         },
 
         success () {

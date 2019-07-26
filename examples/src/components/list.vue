@@ -2,7 +2,7 @@
     <page>
         <topbar slot="header">list组件</topbar>
             <list
-                :source="api"
+                :api="api"
                 :max-count-per-page="10"
                 :data-formatter="formatter"
                 :pullup2load="true"
@@ -12,21 +12,26 @@
                 <header slot="header">网易实时新闻</header>
                 <template v-slot:row="{data, index}">
                     <div class="row">
-                        <a class="inner" :href="data.link">
-                            <div :class="{
-                            content: true,
-                            active: active
-                            }"  v-draggable="{canDrag: canDrag, axis: 'x'}" @drag:end="dragEnd" @drag:start="dragStart">
-                                <template v-if="!data.title">
-                                <img class="ads" data-src="http://cms-bucket.nosdn.127.net/96d8cf0375f64c24a819d50ae190b51820170601175516.jpeg?imageView&thumbnail=690y230&quality=45&type=webp&interlace=1&enlarge=1" />
-                                </template>
-                                <template v-else>
-                                    <img v-if="data.picInfo[0]" :data-src="data.picInfo[0].url"  />
-                                    <span class="title">{{data.digest}}</span>
-                                </template>
-                            </div>
+                        <a class="inner" href="javascript:">
+                            <vm-swipeout>
+                                <div :class="{
+                                content: true,
+                                active: active
+                                }" >
+                                    <template v-if="!data.title">
+                                    <img class="ads" data-src="http://cms-bucket.nosdn.127.net/96d8cf0375f64c24a819d50ae190b51820170601175516.jpeg?imageView&thumbnail=690y230&quality=45&type=webp&interlace=1&enlarge=1" />
+                                    </template>
+                                    <template v-else>
+                                        <img v-if="data.picInfo[0]" :data-src="data.picInfo[0].url"  />
+                                        <span class="title">{{data.digest}}</span>
+                                    </template>
+                                </div>
 
-                            <a href="javascript:" class="comment">评论</a>
+                                <template slot="actions">
+                                    <vm-swipeout-action style="width: 100px; background: blue;" @click="onDel">删除</vm-swipeout-action>
+                                    <vm-swipeout-action @click="onComment">评论</vm-swipeout-action>
+                                </template>
+                            </vm-swipeout>
                         </a>
                     </div>
                 </template>
@@ -134,8 +139,9 @@ export default {
                     url: 'https://3g.163.com/touch/jsonp/sy/recommend/10-10.html?hasad=1&miss=59&refresh=A&offset=0&size=10&callback=?',
                     dataType: 'json',
                     success (data) {
-                        resolve(data);
-                    }
+                        resolve(data.list);
+                    },
+                    error: reject
                 });
             });
         },
@@ -159,6 +165,14 @@ export default {
                 info.e.target.style.transform = `translate3d(${info.x < -50 ? -100 : 0}px, 0px, 0px)`;
             }, 100);
             
+        },
+
+        onDel () {
+            console.log('del');
+        },
+
+        onComment () {
+            console.log('comment')
         }
     }
 };

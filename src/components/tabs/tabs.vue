@@ -81,7 +81,7 @@ export default {
     },
 
     mounted () {
-        this.switch(this.defaultIndex);
+        this.switch(this.defaultIndex, true);
     },
 
     methods: {
@@ -114,10 +114,7 @@ export default {
             this.index = index;
             this.try2scroll();
             this.fxPanes();
-
-            if (!untrigger) {
-                this.$emit('switch', index, this.headers[index]);
-            }
+            !untrigger && this.$emit('switch', index, this.headers[index]);
         },
 
         try2scroll () {

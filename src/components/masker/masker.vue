@@ -1,5 +1,12 @@
 <template>
-    <overlay :visible="visibility" class="vm-mask" :fx="fx" @click="$emit('click')"><slot></slot></overlay>
+    <overlay 
+        class="vm-masker" 
+        :visible="visibility" 
+        :fx="fx" 
+        @click="$emit('click')"
+    >
+        <slot></slot>
+    </overlay>
 </template>
 
 <script>
@@ -8,7 +15,7 @@ import Overlay from '../overlay';
 export default {
     mixins: [Overlay],
 
-    name: 'mask',
+    name: 'masker',
 
     components: {
         Overlay
@@ -17,7 +24,8 @@ export default {
 </script>
 
 <style>
-.vm-mask.vm-overlay {
+.vm-masker.vm-overlay {
+    overflow: hidden;
     width: 100%;
     height: 100%;
     left: 0px;

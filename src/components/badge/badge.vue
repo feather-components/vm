@@ -1,25 +1,3 @@
-<style lang="less">
-.vm-badge {
-    color: #fff;
-    display: inline-block;
-    min-width: 18px;
-    padding: 0px 7px;
-    height: 32px;
-    line-height: 32px;
-    transform: scale(0.5);
-    font-size: 20px;;
-    text-align: center;
-    border-radius: 100px;
-}
-
-.vm-badge:empty {
-    width: 20px;
-    min-width: 0px;
-    height: 20px;
-    padding: 0px;
-}
-</style>
-
 <script>
 import Config from '../../config';
 
@@ -69,3 +47,25 @@ export default {
     }
 };
 </script>
+
+<style lang="less">
+.vm-badge {
+    color: #fff;
+    display: inline-block;
+    min-width: 18px;
+    padding: 0px 7px;
+    height: 32px;
+    line-height: 32px;
+    transform: scale(0.5);
+    font-size: 20px;;
+    text-align: center;
+    border-radius: 100px;
+}
+
+.vm-badge:empty {
+    width: 20px;
+    min-width: 0px;
+    height: 20px;
+    padding: 0px;
+}
+</style>

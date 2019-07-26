@@ -55,7 +55,7 @@
 <script>
 import Lazyload from '../../directives/lazyload';
 import {Slider, SliderItem} from '../slider';
-import vmMask from '../mask';
+import vmMask from '../masker';
 import Overlay from '../overlay';
 
 export default {

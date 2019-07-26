@@ -5,21 +5,22 @@ import Topbar from './components/topbar';
 import Button from './components/button';
 import Alert from './components/alert';
 import Toast from './components/toast';
-import ActionSheet from './components/actionsheet';
+import {ActionSheet, ActionSheetItem} from './components/actionsheet';
 import Dropdown from './components/dropdown';
 import Draggable from './directives/draggable';
-import Popover from './components/popover';
+import {Popover, PopoverAction} from './components/popover';
+import Popup from './components/popup';
 import Search from './components/search';
 import Searchbar from './components/searchbar';
 import Uploader from './components/uploader';
 import {Radios, Checkboxes, TextInput, Select, Images, Switch, Textarea, FormCell, DateInput} from './components/form';
 import {Single, Multiple, Link, LinkMultiple} from './components/filter';
 import Autosize from './directives/autosize';
-import Mask from './components/mask';
-import Overlay from './components/overlay';
+import Masker from './components/masker';
 import Iosselect from './components/iosselect';
 import Datepicker from './components/datepicker';
 import {Slider, SliderItem} from './components/slider';
+import {SwipeOut, SwipeOutAction} from './components/swipeout';
 import Forward from './components/forward';
 import {Tabs, TabsPane} from './components/Tabs';
 import {Box, Row} from './components/layout';
@@ -53,9 +54,12 @@ var Components = [
     Alert,
     Toast,
     ActionSheet,
+    ActionSheetItem,
     Dropdown,
     Draggable,
     Popover,
+    PopoverAction,
+    Popup,
     Searchbar,
     Search,
     Uploader,
@@ -70,12 +74,13 @@ var Components = [
     Switch,
     FormCell,
     Autosize,
-    Mask,
-    Overlay,
+    Masker,
     Iosselect,
     Datepicker,
     Slider,
     SliderItem,
+    SwipeOut,
+    SwipeOutAction,
     Lazyload,
     Lightbox
 ];
@@ -110,9 +115,12 @@ export {
     Button,
     Toast,
     ActionSheet,
+    ActionSheetItem,
     Dropdown,
     Draggable,
     Popover,
+    PopoverAction,
+    Popup,
     Uploader,
     Radios,
     Checkboxes,
@@ -130,13 +138,16 @@ export {
     Link as LinkFilter,
     LinkMultiple as LinkMultipleFilter,
     Autosize,
-    Mask,
-    Overlay,
+    Masker,
     Helper,
     Iosselect,
     Datepicker,
     Slider,
     SliderItem,
+    SwipeOut,
+    SwipeOut as Swipeout,
+    SwipeOutAction,
+    SwipeOutAction as SwipeoutAction,
     Lazyload,
     Lightbox
 };

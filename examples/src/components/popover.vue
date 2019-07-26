@@ -2,34 +2,23 @@
     <page>
         <topbar slot="header">
             popover组件
-            <a href="javascript:" slot="right">
-                <i class="ion-ios-add icon"></i>
-                <popover :actions="{
-                    '扫一扫': {
-                        callback: showMsg
-                    },
-                    '添加朋友': showMsg,
-                    '收付款': showMsg,
-                    '返回上个页面': {
-                        callback: back
-                    }
-                }" />
-            </a>
+            <vm-popover slot="right">
+                <a href="javascript:" style="display: flex; align-items: center; height: 44px; float: right;">12333
+                    <i class="ion-ios-add icon"></i>
+                </a>
+
+                <template slot="actions">
+                    <vm-popover-action><i class="vm-iconfont vm-icon-up" slot="icon"></i> 相机</vm-popover-action>
+                    <vm-popover-action><i class="ion-ios-add icon"></i> 扫码</vm-popover-action>
+                    <vm-popover-action>连连看</vm-popover-action>
+                    <vm-popover-action style="color: #fff; font-weight: bold;">自定义一下</vm-popover-action>
+                </template>
+            </vm-popover>
         </topbar>
 
-        <a href="javascript:" style="display:inline-block; width: 50px; height: 30px; position: absolute; bottom: 40%; left: 45%;">
+        <vm-popover style="width: 50px; height: 30px; position: absolute; bottom: 40%; left: 45%;" message="hello, world">
             点击我
-            <popover :actions="{
-                    '扫一扫': {
-                        callback: showMsg
-                    },
-                    '添加朋友': showMsg,
-                    '收付款': showMsg,
-                    '返回上个页面': {
-                        callback: back
-                    }
-                }" />
-        </a>
+        </vm-popover>
     </page>
 </template>
 

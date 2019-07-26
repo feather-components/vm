@@ -35,6 +35,10 @@ class Draggable {
         };
     }
 
+    cancel () {
+        this.touch = null;   
+    }
+
     initEvent () {
         var options = this.options;
         var first;
@@ -93,7 +97,7 @@ class Draggable {
 
                 if (this.isOtherAxisDraggable(info)) {
                     Event.trigger(this.dom, 'drag:other', info);
-                    this.touch = null;
+                    this.cancel();
                     return false;
                 }
             }
@@ -143,7 +147,14 @@ class Draggable {
         do {
             let $draggable = handler.$draggable;
 
-            if ($draggable && (isX && $draggable.options.axis == 'x' || !isX && $draggable.options.axis != 'x')) {
+            if (
+                $draggable && 
+                (
+                    isX && $draggable.options.axis == 'x' 
+                    || !isX && $draggable.options.axis == 'y' 
+                    || $draggable.options.axis == 'xy'
+                )
+            ) {
                 this.$draggables.push($draggable);
             }
 
@@ -152,6 +163,8 @@ class Draggable {
     }
 
     isOtherAxisDraggable () {
+        if (!this.$draggables.length) return false;
+
         return this.$draggables.every(($draggable) => {
             return $draggable !== this;
         });
@@ -172,6 +185,8 @@ class Draggable {
                 return true;
             }
         }
+
+        return false;
     }
 }
 

@@ -53,8 +53,6 @@ export default {
 	display: inline-flex;
 	color: inherit;
 	align-items: center;
-	line-height: 100%;
-	height: 100%;
 
 	.vm-forward-content {
 		margin-right: 6px;

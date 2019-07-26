@@ -1,20 +1,27 @@
 <template>
-    <vm-mask :visible="visibility" :value="value">
+    <masker :visible="visibility">
         <overlay :visible="visibility" class="vm-iosselect" position="bottom">
             <div class="vm-iosselect-header">
-                <a href="javascript:" class="vm-iosselect-cancel" @click="close">取消</a>
-                <a href="javascript:" class="vm-iosselect-confirm" @click="confirm">确定</a>
+                <a href="javascript:" @click="close">取消</a>
+                <div class="vm-iosselect-title">{{title}}</div>
+                <a href="javascript:" class="vm-iosselect-confirm" :style="{color: theme}" @click="confirm">确定</a>
             </div>
 
-            <div class="vm-iosselect-scroll-list">
-                <scroll class="vm-iosselect-scroll" v-for="(data, index) in dataList" style="height: 100%;" ref="scrolls"
+            <div class="vm-iosselect-inner">
+                <scroll 
+                    class="vm-iosselect-scroll" 
+                    v-for="(list, index) in renderLists" 
+                    :key="index"
+                    ref="scrolls"
                     @hook:mounted="listen(index)"
                 >
-                    <div class="vm-iosselect-scroll-inner">
-                        <a href="javascript:"
-                            v-for="(item, i) of data"
-                            @click="select(item, i, index)"
-                            :class="{'vm-iosselect-selected': vals[index] && item.value === vals[index].value}"
+                    <div class="vm-iosselect-list">
+                        <a 
+                            href="javascript:"
+                            v-for="(item, key) of list"
+                            :key="key"
+                            @click="select(item, key, index)"
+                            :style="vals[index] && item.value === vals[index].value ? activedStyle : {}"
                         >
                             {{item.label}}
                         </a>
@@ -22,26 +29,17 @@
                 </scroll>
             </div>
         </overlay>
-    </vm-mask>
+    </masker>
 </template>
 
 <script>
 import Scroll from '../scroll';
 import Overlay from '../overlay';
-import vmMask from '../mask';
+import Masker from '../masker';
 import {Util, Dom} from '../../helper';
-import Ajax from 'ajax';
+import Config from '../../config';
 
-let div = Dom.create('<div style="height: .35rem; position: absolute;top: -100px;">');
-
-let HEIGHT;
-
-document.body.appendChild(div);
-
-setTimeout(() => {
-    HEIGHT = div.offsetHeight;
-    div.parentNode.removeChild(div);
-}, 1000);
+const HEIGHT = 35;
 
 export default {
     name: 'iosselect',
@@ -49,17 +47,25 @@ export default {
     mixins: [Overlay],
 
     props: {
-        source: {
-            type: [Array, String],
-            default () {
-                return [];
-            }
+        title: {
+            type: String,
+            default: ''
         },
 
-        params: {
-            type: [Array, Object],
+        cancelText: {
+            type: String,
+            default: '取消'
+        },
+
+        confirmText: {
+            type: String,
+            default: '确定'
+        },
+
+        source: {
+            type: Array,
             default () {
-                return {};
+                return [];
             }
         },
 
@@ -68,33 +74,28 @@ export default {
             default () {
                 return [];
             }
-        },
-
-        dataFormatter: {
-            type: Function,
-            default (v) {
-                return v;
-            }
-        },
-
-        visible: {
-            type: Boolean,
-            default: true
         }
     },
 
     components: {
         Scroll,
         Overlay,
-        vmMask
+        Masker
     },
 
     data () {
+        const color = Config('theme');
+
         return {
-            data: [],
-            dataList: [],
+            theme: color,
+            allData: [],
+            renderLists: [],
             vals: [],
-            val: this.value
+            val: this.value,
+            activedStyle: {
+                opacity: 1,
+                color
+            }
         };
     },
 
@@ -107,8 +108,8 @@ export default {
             this.setValue(v);
         },
 
-        source (source) {
-            this.render(source);
+        source (v) {
+            this.render(v);
         }
     },
 
@@ -119,50 +120,38 @@ export default {
     methods: {
         render (source = this.source) {
             source = Util.makeArray(source);
-            var params = Util.makeArray(this.params);
 
-            if (!Array.isArray(source[0]) && typeof source[0] != 'string') {
+            if (!Array.isArray(source[0])) {
                 source = [source];
             }
 
-            let promises = source.map((item, key) => {
-                if (typeof item == 'string') {
-                    return new Promise((resolve) => {
-                        Ajax({
-                            url: item,
-                            data: params[key] || params[0],
-                            dataType: 'json',
-                            success: resolve
-                        });
-                    });
+            let promises = source.map((data, key) => {
+                if (typeof data == 'function') {
+                    return Util.acm(data(), this, key);
                 } else {
-                    return item;
+                    return data;
                 }
             });
 
-            Promise.all(promises).then((source) => {
-                let data = source.map(this.dataFormatter);
-
+            Promise.all(promises).then((data) => {
                 this.$emit('data:ready', data);
 
-                let i = 0;
+                let i = 0, render = 0;
 
-                let j = 0;
-
-                for (; i < data.length; i++) {
-                    if (this.data[i] != data[i]) {
-                        j = i;
+                for (let i = 0; i < data.length; i++) {
+                    if (this.allData[i] != data[i]) {
+                        render = i;
                         break;
                     }
                 }
 
-                this.data = data;
-                this.renderList(this.data[j], j);
+                this.allData = data;
+                this.renderColumns(this.allData[render], render);
             });
         },
 
-        renderList (data, level) {
-            this.dataList.splice(level, 1, data);
+        renderColumns (data, level) {
+            this.renderLists.splice(level, 1, data);
 
             if (!data.length) return false;
 
@@ -185,43 +174,34 @@ export default {
             this.vals.splice(level, 100000, data);
 
             if (data.children) {
-                this.renderList(data.children, level + 1);
-            } else if (level < this.data.length - 1) {
-                this.renderList(this.data[level + 1], level + 1);
+                this.renderColumns(data.children, level + 1);
+            } else if (level < this.allData.length - 1) {
+                this.renderColumns(this.allData[level + 1], level + 1);
             }
-
+            
             this.$emit('select', this.vals);
         },
 
         listen (level) {
             let $scroll = this.$refs.scrolls[level];
 
-            $scroll.$on('drag:end', (pos, dest = pos, duration = 0) => {
-                let dataList = this.dataList[level];
+            $scroll.$on('drag:end', (pos, target = pos, duration = 0) => {
+                let list = this.renderLists[level];
+                let index = Math.min(list.length - 1, Math.round(Math.abs(target)) / HEIGHT);
 
-                let index = Math.min(dataList.length - 1, Math.round(Math.abs(Math.min(dest, pos)) / HEIGHT));
-
-                this.select(dataList[index], index, level, duration);
+                this.select(list[index], index, level, duration);
             });
 
-            level === this.data.length - 1 && setTimeout(() => this.$emit('scroll:ready'), 20);
+            level === this.allData.length - 1 && setTimeout(() => this.$emit('scroll:ready'), 20);
         },
 
         confirm () {
-            let labels = this.getLabels();
-
             this.val = this.vals.map((item) => {
                 return item.value;
             });
 
-            this.$emit('confirm', this.val, labels, this.vals);
+            this.$emit('confirm', this.val, this.vals);
             this.close();
-        },
-
-        getLabels () {
-            return this.vals.map((item) => {
-                return item.label;
-            });
         },
 
         setValue (v) {
@@ -239,62 +219,66 @@ export default {
 </script>
 
 <style lang="less">
-    .vm-iosselect.vm-overlay{
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        z-index: 10001;
-        background: #f5f5f5;
+.vm-iosselect.vm-overlay {
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    z-index: 10001;
+    background: #f5f5f5;
+}
+
+.vm-iosselect-header {
+    display: flex;
+    height: 44px;
+    background: #fff;
+    font-size: 14px;
+    justify-content: space-between;
+
+    .vm-iosselect-title {
+        font-weight: bold;
+        height: 44px;
+        line-height: 44px;
     }
 
-    .vm-iosselect-header{
-        display: flex;
-        height: .44rem;
-        background: #fff;
-        justify-content: space-between;
-
-        a{
-            display: inline-block;
-            height: .44rem;
-            text-decoration: none;
-            line-height: .44rem;
-            width: .5rem;
-            color: #ddd;
-            text-align: center;
-            font-size: .14rem;
-        }
-
-        .vm-iosselect-confirm{
-            color: #7792cb;
-        }
+    a {
+        display: inline-block;
+        height: 44px;
+        text-decoration: none;
+        line-height: 44px;
+        width: 50px;
+        color: #ddd;
+        text-align: center;
+        font-size: 14px;
     }
 
-    .vm-iosselect-scroll-list{
-        width: 100%;
-        height: 1.75rem;
-        display: flex;
+    .vm-iosselect-confirm {
+        color: #7792cb;
     }
+}
 
-    .vm-iosselect-scroll{
-        flex-grow: 1;
+.vm-iosselect-inner {
+    width: 100%;
+    height: 175px;
+    display: flex;
+}
+
+.vm-iosselect-scroll {
+    flex-grow: 1;
+    height: 100%;
+}
+
+.vm-iosselect-list {
+    padding: 70px 0px;
+
+    a {
+        color: #333;
+        display: block;
+        height: 35px;
+        line-height: 35px;
+        text-align: center;
+        text-decoration: none;
+        opacity: 0.3;
+        font-size: 13px;
     }
-
-    .vm-iosselect-scroll-inner{
-        padding: 0.7rem 0px;
-
-        a{
-            color: #333;
-            display: block;
-            height: .35rem;
-            line-height: .35rem;
-            text-align: center;
-            text-decoration: none;
-            opacity: 0.3;
-            font-size: 0.13rem;
-        }
-
-        .vm-iosselect-selected{
-            opacity: 1;
-        }
-    }
+}
 </style>

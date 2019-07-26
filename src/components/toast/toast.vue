@@ -1,76 +1,14 @@
-<template>
-    <vm-mask v-if="mask" :visible="visibility">
-        <overlay :class="'vm-toast ' + className" position="center" :visible="true">
-            <span class="vm-toast-inner">
-                <slot name="icon">
-                    <i :class="['vm-toast-icon', iconClass]" v-if="iconClass"></i>
-                </slot>
-
-                <slot>{{cont}}</slot>
-            </span>
-        </overlay>
-    </vm-mask>
-    <overlay v-else :visible="visibility" :class="'vm-toast ' + className" position="center">
-        <span class="vm-toast-inner">
-            <slot name="icon">
-                <i :class="['vm-toast-icon', iconClass]" v-if="iconClass"></i>
-            </slot>
-
-            <slot>{{cont}}</slot>
-        </span>
-    </overlay>
-</template>
-
-<style>
-    .vm-toast.vm-overlay{
-        text-align: center;
-        width: 90%;
-        background: transparent;
-    }
-
-    .vm-toast-inner{
-        word-break: break-all;
-        display: inline-block;
-        font-size: 16px;
-        color: #FFFFFF;
-        line-height: 28px;
-        padding: 8px 15px;
-        background: rgba(0, 0, 0, 0.7);
-        border-radius: 4px;
-    }
-
-    .vm-toast-icon{
-        width: 36px;
-        height: 36px;
-        display: block;
-        margin: 5px auto 7px auto;
-        background-size: 100% 100%;
-        background-repeat: no-repeat;
-        background-position: center center;
-    }
-
-    .vm-toast-success{
-        font-family: "vm-iconfont" !important;
-        font-size: 36px;
-        font-style: normal;
-        color: rgb(133, 205, 158);
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-    }
-
-    .vm-toast-success:before{
-        content: "\e68d";
-    }
-
-    .vm-toast-loading{
-        background-image: url(../../assets/loading.gif);
-    }
-</style>
-
 <script>
-import vmMask from '../mask';
 import Overlay from '../overlay';
-import '../icon/iconfont.css';
+import Popup from '../popup';
+import Tick from '../tick';
+import Loading from '../loading';
+import Config from '../../config';
+
+const Icons = Object.assign({
+    success: Tick,
+    loading: Loading
+}, Config('toast.icons') || {});
 
 export default {
     name: 'toast',
@@ -78,17 +16,17 @@ export default {
     mixins: [Overlay],
 
     props: {
-        iconClass: {
+        type: {
             type: String,
             default: null
         },
 
-        content: {
+        message: {
             type: String,
-            default: null
+            default: ''
         },
 
-        mask: {
+        masker: {
             type: Boolean,
             default: false
         }
@@ -96,26 +34,72 @@ export default {
 
     data () {
         return {
-            cont: this.content,
             visibility: true
         };
     },
 
-    watch: {
-        content (v) {
-            this.setContent(v);
-        }
-    },
+    render (h) {
+        return h(
+            this.masker ? Popup : Overlay,
+            {
+                class: 'vm-toast-container',
+                props: {
+                    position: 'center',
+                    visible: this.visibility,
+                    clickBg2hide: false
+                }
+            },
+            [
+                h(
+                    'div',
+                    {
+                        class: 'vm-toast',
+                    },
+                    [
+                        this.$scopedSlots.icon
+                        || 
+                            Icons[this.type] ? 
+                                h(
+                                    Icons[this.type],
+                                    {
+                                        props: {
+                                            size: 25
+                                        },
 
-    components: {
-        Overlay,
-        vmMask
-    },
-
-    methods: {
-        setContent (content) {
-            this.cont = content;
-        }
+                                        style: {
+                                            marginBottom: '5px'
+                                        }
+                                    }
+                                ) 
+                                : '',
+                        h(
+                            'div',
+                            {
+                                domProps: this.message ? {innerHTML: this.message} : null
+                            },
+                            [this.$slots.default]
+                        )
+                    ]
+                )
+            ]
+        );
     }
 };
 </script>
+
+<style>
+.vm-toast {
+    text-align: center;
+    flex-direction: column;
+    align-items: center;
+    display: flex;
+    font-size: 16px;
+    color: #FFFFFF;
+    line-height: 28px;
+    padding: 8px 15px;
+    word-break: break-all;
+    word-wrap: break-word;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 4px;
+}
+</style>

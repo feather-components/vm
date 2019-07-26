@@ -63,43 +63,43 @@ export default {
 </script>
 
 <style lang="less">
-    .vm-topbar {
-        height: 44px;
-        padding: 0px 16px;
-    }
+.vm-topbar {
+    height: 44px;
+    padding: 0px 16px;
+}
 
-    .vm-topbar-inner {
-        position: relative;
-        height: 44px;
-    }
+.vm-topbar-inner {
+    position: relative;
+    height: 44px;
+}
 
-    .vm-topbar-left,
-    .vm-topbar-right {
-        min-width: 44px;
-        height: 44px;
-        display: inline-block;
-        display: flex;
-        align-items: center;
-        position: absolute;
-        bottom: 0px;
-        font-weight: bold;
-    }
+.vm-topbar-left,
+.vm-topbar-right {
+    min-width: 44px;
+    height: 44px;
+    display: inline-block;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    bottom: 0px;
+    font-weight: bold;
+}
 
-    .vm-topbar-left {
-        left: 0px;
-        text-align: left;
-    }
+.vm-topbar-left {
+    left: 0px;
+    text-align: left;
+}
 
-    .vm-topbar-right {
-        right: 0px;
-        text-align: right;
-    }
+.vm-topbar-right {
+    right: 0px;
+    text-align: right;
+}
 
-    .vm-topbar-title {
-        font-weight: bold;
-        align-items: center;
-        height: 44px;
-        display: flex;
-        justify-content: center;
-    }
+.vm-topbar-title {
+    font-weight: bold;
+    align-items: center;
+    height: 44px;
+    display: flex;
+    justify-content: center;
+}
 </style>

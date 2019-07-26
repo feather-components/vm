@@ -16,7 +16,7 @@ import Uploader from './components/uploader.vue';
 import Popover from './components/popover.vue';
 import Form from './components/form.vue';
 import Filter from './components/filter.vue';
-import Overlay from './components/overlay.vue';
+import Popup from './components/popup.vue';
 import Slider from './components/slider.vue';
 import Tabs from './components/tabs.vue';
 import Layout from './components/layout.vue';
@@ -85,8 +85,8 @@ const router = new VueRouter({
         },
 
         {
-            path: '/components/overlay',
-            component: Overlay
+            path: '/components/popup',
+            component: Popup
         },
 
         {

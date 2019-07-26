@@ -1,6 +1,6 @@
 <template>
     <vm-page>
-        <vm-topbar slot="header">tabbar</vm-topbar>
+        <vm-topbar slot="header">tabs</vm-topbar>
         <vm-tabs :headers="headers">
 			<vm-tabs-pane v-for="(item, key) of headers" :key="key">
 				{{item}}

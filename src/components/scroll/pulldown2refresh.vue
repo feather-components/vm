@@ -2,6 +2,7 @@
 	<scroll
         :boundary="[maxPos, 0]"
         @drag:start="onDragStart"
+        @draging="onDraging"
         @drag:end="onDragEnd"
         @scrolling="onScrolling"
         @scroll:end="onScrollEnd"
@@ -82,6 +83,10 @@ export default {
             this.$emit('drag:start', ...args);
         },
 
+        onDraging (...args) {
+            this.$emit('draging', ...args);
+        },
+
         onDragEnd (...args) {
             this.limitType() == 1 && this.refresh();
             this.$emit('drag:end', ...args);
@@ -99,9 +104,8 @@ export default {
             if (this.isRefreshing) {
                 this.isRefreshing = false;
                 this.scrollTo(0, 1000);
+                this.$emit('recover');
             }
-
-            this.$emit('recover');
         },
 
         limitType () {

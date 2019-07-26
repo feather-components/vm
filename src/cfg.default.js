@@ -13,7 +13,7 @@ export default {
     'topbar.color': '#000',
     'topbar.font-size': '18px',
     'button.radius': '100px',
-    'button.sizes': ['46px', '36px', '23px'], // large|normal|small
+    'button.sizes': ['46px', '36px', '23px', '23px'], // large|normal|small|mini
     'button.colors': {
         primary: ''
     },
@@ -26,5 +26,10 @@ export default {
     'scroll.ignores': null,
     'scroll.use-transform': false,
     'list.label.page': 'page',
-    'list.label.persize': 'size'
+    'list.label.persize': 'size',
+    'swipeout-action.background': '',
+    'swipeout-action.color': '#fff',   
+    'popover.background': '#333',
+    'popover.actions-gap': '0.5px solid #eee',
+    'popover.actions-color': '#fff'
 };

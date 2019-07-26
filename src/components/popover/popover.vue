@@ -1,203 +1,193 @@
-<template>
-    <dropbox class="vm-popover" ref="box" :offset="offset">
-        <vm-mask :visible="true" class="vm-popover-mask" @click="$refs.box.close()" />
-
-        <div class="vm-popover-inner" ref="inner" :style="{background: bgColor}">
-            <i class="vm-popover-arrow" ref="arrow" :style="{
-                borderColor: bgColor
-            }"></i>
-            <a
-                href="javascript:void(0);"
-                :class="['vm-popover-item', action.className]"
-                v-for="(action, label) of actions"
-                @click.stop="callAction(label)"
-                :style="{
-                    color: color,
-                    borderBottom: '1px solid ' + color
-                }"
-            >
-                <i v-if="action.icon" :class="['icon', action.icon]"></i>
-                {{label}}
-            </a>
-        </div>
-    </dropbox>
-</template>
-
-<style lang="less">
-    .vm-popover{
-        font-weight: normal;
-        line-height: normal;
-        height: 100%;
-
-        &.vm-mask{
-            background: transparent !important;
-        }
-
-        .vm-overlay{
-            background: transparent !important;
-            width: auto;
-        }
-
-        .vm-dropbox-bottom{
-            .vm-popover-arrow{
-                border-bottom-color: transparent !important;
-                top: 100%;
-                transform: translate(-0.08rem, -10%);
-            }
-        }
-
-        .vm-dropbox-top{
-            .vm-popover-arrow{
-                border-top-color: transparent !important;
-            }
-        }
-    }
-
-    .vm-popover-mask{
-        width: 100% !important;
-    }
-
-    .vm-popover-inner{
-        border-radius: 3px;
-        padding: 0px .08rem;
-        margin: .12rem 0px;
-        position: relative;
-        z-index: 100000;
-    }
-
-    .vm-popover-item{
-        display: block;
-        text-decoration: none;
-        padding: .06rem 0px;
-        font-size: .16rem;
-        text-align: left;
-
-        &:last-child{
-            border: 0px !important;
-        }
-
-        .icon{
-            float: left;
-            font-size: 0.17rem;
-            display: inline-block;
-            margin-right: .05rem;
-        }
-    }
-
-    .vm-popover-arrow{
-        position: absolute;
-        content: "";
-        border-width: 8px;
-        border-style: solid;
-        border-left-color: transparent !important;
-        border-right-color: transparent !important;
-        height: 0px;
-        width: 0px;
-        display: inline-block;
-        border-bottom-color: #28304E;
-        left: 50%;
-        transform: translate(-0.08rem,-90%);
-    }
-</style>
-
 <script>
-import Dropbox from '../dropdown/box';
-import vmMask from '../mask';
+import Dropdown from '../dropdown';
 import {Util, Event, Dom} from '../../helper';
+import Config from '../../config';
 
-var PopOver = {
+export default {
     name: 'popover',
 
     props: {
-        actions: {
-            type: Object,
-            default () {
-                return {};
-            }
-        },
-
-        offset: {
-            type: Object,
-            default () {
-                return {
-                    x: 5,
-                    y: 5
-                };
-            }
-        },
-
-        color: {
-            type: String,
-            default: () => {
-                return PopOver.config('color');
-            }
-        },
-
         bgColor: {
             type: String,
-            default: () => {
-                return PopOver.config('bgColor');
-            }
+            default: Config('popover.background') || Config('theme')
+        },
+
+        actionsGap: {
+            type: String,
+            default: Config('popover.actions-gap')
+        },
+
+        message: {
+            type: String,
+            default: ''
         }
     },
 
-    components: {
-        Dropbox,
-        vmMask
+    data () {
+        return {
+            boxOffset: 0,
+            arrowOffset: 0,
+            isOpen: false
+        };
     },
 
-    mounted () {
-        var self = this;
+    computed: {
+        boxStyle () {
+            return {
+                left: this.boxOffset,
+                background: this.bgColor
+            };
+        },
 
-        self.$refs.box.$on('open', () => {
-            setTimeout(() => {
-                var $inner = self.$refs.inner;
-                var x = self.offset.x;
-                var {width, left} = Dom.rect(self.$el.parentNode);
-                var {width: innerWidth} = Dom.rect($inner);
-                var bodyWidth = Dom.width(document);
-
-                var m = left + width / 2;
-                var l = Math.min(
-                    Math.max(m - innerWidth / 2, x),
-                    bodyWidth - innerWidth - x
-                );
-
-                Dom.css(self.$refs.box.$refs.overlay.$el, {
-                    left: l
-                });
-
-                Dom.css(
-                    self.$refs.arrow,
-                    'left',
-                    m - l
-                );
-
-                self.$emit('open');
-            });
-        });
+        arrowStyle () {
+            return {
+                left: this.arrowOffset,
+                borderColor: this.bgColor
+            };
+        }
     },
 
     methods: {
-        callAction (index) {
-            var self = this;
-            var action = self.actions[index];
+        onShow () {
+            setTimeout(() => {
+                const {width: boxWidth} = Dom.rect(this.$refs.box);
+                const {width, left} = Dom.rect(this.$el);
+                const BODY_WIDTH = Dom.width(document);
 
-            if (typeof action == 'function') {
-                action.call(self);
-            } else {
-                action.callback.call(self);
-            }
+                let m = left + width / 2;
+                let l = Math.min(
+                    Math.max(m - boxWidth / 2, 5),
+                    BODY_WIDTH - boxWidth - 5
+                );
 
-            self.$refs.box.close();
+                this.boxOffset = l;
+                this.arrowOffset = m - l;
+                this.isOpen = true;
+                this.$emit('show');
+            });
+        },
+
+        onHide () {
+            this.isOpen = false;
+            this.$emit('hide');
         }
+    },
+
+    render (h) {
+        const actions = (this.$slots.actions || []).filter((action) => {
+            return !!action.tag;
+        });
+        const max = actions.length - 1;
+        const AVNodes = actions.map((vnode, index) => {
+            return h(
+                'div', {
+                    class: 'vm-popover-aw',
+                    style: index != max ? `border-bottom: ${this.actionsGap}` : ''
+                },
+                [
+                    vnode
+                ]
+            );
+        });
+
+        return h(
+            Dropdown,
+            {
+                class: 'vm-popover',
+                on: {
+                    show: this.onShow.bind(this),
+                    hide: this.onHide.bind(this)
+                }
+            },
+            [
+                this.$slots.default,
+                this.$scopedSlots.label ? this.$scopedSlots.label(this.isOpen) : null,
+
+                h(
+                    'div', {
+                        class: 'vm-popover-box',
+                        ref: 'box',
+                        slot: 'box',
+                        style: this.boxStyle
+                    },
+
+                    [
+                        h(
+                            'i', {
+                                class: 'vm-popover-arrow',
+                                style: this.arrowStyle
+                            }
+                        ),
+                        
+                        AVNodes.length ? AVNodes : (
+                            this.$slots.box || 
+                            h (
+                                'span',
+                                {   
+                                    class: 'vm-popover-message',
+                                    style: {
+                                        color: Config('popover.actions-color')
+                                    },
+                                    domProps: {
+                                        innerHTML: this.message
+                                    }
+                                }
+                            )
+                        )
+                    ]
+                )
+            ]
+        );
     }
 };
-
-Util.defineConfig(PopOver, {
-    color: '#fff',
-    bgColor: '#28304E'
-});
-
-export default PopOver;
 </script>
+
+<style>
+.vm-popover .vm-popup {
+    background: transparent !important;
+}
+
+.vm-popover .vm-popup .vm-overlay {
+    text-align: initial;
+}
+
+.vm-popover-box {
+    box-shadow: 0px 0px 10px #333;
+    line-height: initial;
+    font-weight: normal;
+    border-radius: 3px;
+    margin: 12px 0px;
+    position: relative;
+    z-index: 100000;
+    display: inline-block;
+}
+
+.vm-dropbox-bottom .vm-popover-arrow {
+    border-bottom-color: transparent !important;
+    top: 100%;
+    transform: translate(-8px, -10%);
+}
+
+.vm-dropbox-top .vm-popover-arrow {
+    border-top-color: transparent !important;
+}
+
+.vm-popover-arrow {
+    position: absolute;
+    content: "";
+    border-width: 8px;
+    border-style: solid;
+    border-left-color: transparent !important;
+    border-right-color: transparent !important;
+    height: 0px;
+    width: 0px;
+    display: inline-block;
+    left: 50%;
+    transform: translate(-8px, -90%);
+}
+
+.vm-popover-message {
+    display: inline-block;
+    padding: 10px;
+}
+</style>

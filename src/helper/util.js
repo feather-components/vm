@@ -133,10 +133,8 @@ export default {
         let promise = new Promise((resolve, reject) => {
             xhr.open('GET', url + '?_random=' + Math.random(), true);
             xhr.onreadystatechange = () => {
-                if (xhr.readyState == 4 && xhr.status == 200) {
-                    resolve(JSON.parse(xhr.responseText));
-                } else {
-                    reject();
+                if (xhr.readyState == 4) {
+                    xhr.status == 200 ? resolve(JSON.parse(xhr.responseText)) : reject();
                 }
             };
             xhr.send(params);
@@ -146,20 +144,27 @@ export default {
         return promise;
     },
 
-    acm (ajax, context) {
-        if (context.$$ajax && context.$$ajax.abort) {
-            context.$$ajax.abort();
+    acm (ajax, context, index = 0) {
+        const name = '$$ajax-' + index;
+        const idn = name + '-id';
+
+        if (context[name] && context[name].abort) {
+            context[name].abort();
         }
 
-        const id = context.$$ajaxid = Date.now();
+        let id = context[idn] = Date.now();
         
-        context.$$ajax = ajax;
+        context[name] = ajax;
+
+        if (!ajax.then) {
+            throw new Error('api return must be a promise~');
+        }
 
         return new Promise((resolve, reject) => {
             ajax.then((data) => {
-                id == context.$$ajaxid && resolve(data);
+                id == context[idn] && resolve(data);
             }, (data) => {
-                id == context.$$ajaxid && reject(data);
+                id == context[idn] && reject(data);
             });
         });
     }

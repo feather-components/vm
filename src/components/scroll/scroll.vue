@@ -35,7 +35,7 @@ const FUNCTIONS = {
     },
 
     back: {
-        style: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+        style: 'cubic-bezier(0.175, 0.885, 0.32, 1.1)',
         fn (k) {
             var b = 4;
             return ( k = k - 1 ) * k * ( ( b + 1 ) * k + b ) + 1;
@@ -185,14 +185,13 @@ export default {
 
         onDragEnd (event) {
             if (!this.draging) return false;
-
-           
-            this.draging = false;
-            this.$emit('drag:end', this.pos);
             
+            this.draging = false;
+    
             let now = Date.now(), target = this.pos, fn = 'ease';
             let duration = 1000;
-
+            let unt = false;
+            
             if (this.pos >= this.maxPos) {
                 target = this.maxPos;
             } else if (this.pos > 0 && this.pos < this.maxPos) {
@@ -214,10 +213,11 @@ export default {
                     fn = duration < 1500 ? 'back' : 'ease';
                 }
             } else {
-                return false;
+                unt = true;
             }
 
-            this.translateTo(target, duration, fn);
+            this.$emit('drag:end', this.pos, target, duration);
+            !unt && this.translateTo(target, duration, fn);
         },
 
         triggerScrolling (pos) {
