@@ -7,7 +7,8 @@ function Toast (options, type) {
     Toast.destroy(false);
 
     let props = {
-        duration: 3000
+        duration: 1000,
+        visible: true
     };
 
     if (typeof options == 'string') {
@@ -42,4 +43,6 @@ Toast.destroy = (fx = true) => {
 });
 
 Toast.Component = Component;
-export default Util.register(Toast);
+export default Util.register(Toast, false, (Vue) => {
+    Vue.prototype.$toast = Toast;
+});

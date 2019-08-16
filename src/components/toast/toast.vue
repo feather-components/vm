@@ -5,10 +5,11 @@ import Tick from '../tick';
 import Loading from '../loading';
 import Config from '../../config';
 
-const Icons = Object.assign({
+const Icons = {
     success: Tick,
-    loading: Loading
-}, Config('toast.icons') || {});
+    loading: Loading,
+    ...Config('toast.icons')
+};
 
 export default {
     name: 'toast',
@@ -30,12 +31,6 @@ export default {
             type: Boolean,
             default: false
         }
-    },
-
-    data () {
-        return {
-            visibility: true
-        };
     },
 
     render (h) {
@@ -93,6 +88,7 @@ export default {
     flex-direction: column;
     align-items: center;
     display: flex;
+    max-width: 70%;
     font-size: 16px;
     color: #FFFFFF;
     line-height: 28px;

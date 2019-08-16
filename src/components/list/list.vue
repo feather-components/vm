@@ -177,11 +177,10 @@ export default {
         },  
 
         setParams (params, append) {
-            if (append) {
-                this._params = Object.assign({}, this._params, params);
-            } else {
-                this._params = Object.assign({}, params);
-            }
+            this._params = {
+                ...(append ? this._params : {}),
+                ...params
+            };
         },
 
         setData (data = []) {
@@ -226,7 +225,9 @@ export default {
         },
 
         loadByRemote () {
-            let params = Object.assign({}, this._params);
+            let params = {
+                ...this._params
+            };
 
             params[Config('list.label.page')] = this.page + 1;
             params[Config('list.label.persize')] = this.maxCountPerPage;
@@ -247,9 +248,8 @@ export default {
         },
 
         fetchComplete () {
-            let page = ++this.page;
-
             if (!this.error) {
+                let page = ++this.page;
                 let rows = this.data.slice(this.maxCountPerPage * (page - 1), this.maxCountPerPage * page);
 
                 if (!this.pullup2load || rows.length < this.maxCountPerPage) {
@@ -264,8 +264,7 @@ export default {
                 } else {
                     this.rows = this.rows.concat(rows);
                 }
-            } else if (page == 1) {
-                this.page = 0;
+            } else if (this.page == 0) {
                 this.$emit('refresh:error', this.rows = []);
                 this.pulldown2refresh && this.$scroll.recover();
             }

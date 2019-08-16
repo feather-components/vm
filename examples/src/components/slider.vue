@@ -1,12 +1,12 @@
 <template>
     <page>
-        <topbar slot="header">slider组件</topbar>
-        <slider @switch="slideTo" axis="x">
-            <slider-item style="height: 300px;">
+        <vm-topbar slot="header">swiper组件</vm-topbar>
+        <swiper @switch="slideTo" axis="x">
+            <swiper-item style="height: 300px;">
                 向右滑
-            </slider-item>
+            </swiper-item>
 
-            <slider-item>
+            <swiper-item>
                 <list
                     source="https://3g.163.com/touch/jsonp/sy/recommend/10-10.html?hasad=1&miss=59&refresh=A&offset=0&size=10&callback=?"
                     :max-count-per-page="10"
@@ -31,12 +31,12 @@
                         </div>
                     </template>
                 </list>
-            </slider-item>
+            </swiper-item>
 
-            <slider-item style="height: 300px;">
+            <swiper-item style="height: 300px;">
                 向左滑
-            </slider-item>
-        </slider>
+            </swiper-item>
+        </swiper>
     </page>
 </template>
 
@@ -113,17 +113,17 @@ import Vue from 'vue';
 import {
     List,
     Page,
-    Topbar,
-    Slider,
-    SliderItem
+    TopBar,
+    Swiper,
+    SwiperItem
 } from 'vm';
 
 export default {
     components: {
         Page,
-        Topbar,
-        Slider,
-        SliderItem,
+        TopBar,
+        Swiper,
+        SwiperItem,
         List
     },
 

@@ -1,60 +1,16 @@
 <template>
-    <a href="javascript:" class="vm-uploader">
-        <slot><i class="vm-uploader-icon"></i></slot>
-        <input type="file" class="vm-uploader-input" :accept="accept" @click="$emit('click')" @change="onSelect" ref="uploader" :multiple="multiple" />
-    </a>
+    <div class="vm-uploader">
+        <slot><div class="vm-uploader-icon">╋</div></slot>
+        <input 
+            type="file" 
+            class="vm-uploader-input" 
+            :accept="accept" 
+            @change="onSelect" 
+            ref="uploader" 
+            :multiple="multiple" 
+        />
+    </div>
 </template>
-
-<style lang="less">
-    .vm-uploader{
-        display: inline-block;
-        width: 100%;
-        height: 100%;
-        position: relative;
-
-        border-radius: 0.04rem;
-
-        .vm-uploader-icon{
-            display: inline-block;
-            width: 100%;
-            height: 100%;
-            background: #f3f3f3;
-        }
-
-        .vm-uploader-icon:before{
-            width: 0.32rem;
-            height: 0.05rem;
-            background: #f3f3f3;
-        }
-
-        .vm-uploader-icon:after{
-            height: 0.32rem;
-            width: 0.05rem;
-        }
-
-        .vm-uploader-icon:before, .vm-uploader-icon:after{
-            content: "";
-            display: block;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            -webkit-transform: translate(-50%, -50%);
-            background:#fff;
-        }
-    }
-
-    .vm-uploader-input{
-        display: block;
-        opacity: 0;
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        top: 0px;
-        left: 0px;
-        z-index: 1;
-    }
-</style>
 
 <script>
 import {Util} from '../../helper';
@@ -68,12 +24,7 @@ var Uploader = {
             type: Boolean,
             default: false
         },
-
-        params: {
-            type: Object,
-            default () { return {}; }
-        },
-
+        
         name: {
             type: String,
             default: null
@@ -218,3 +169,33 @@ Uploader.getUrl = (() => {
 
 export default Uploader;
 </script>
+
+<style lang="less">
+.vm-uploader {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    border-radius: 4px;
+}
+
+.vm-uploader-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background: #f3f3f3;
+}
+
+.vm-uploader-input {
+    display: block;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 1;
+}
+</style>

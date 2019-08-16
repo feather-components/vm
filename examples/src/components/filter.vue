@@ -1,6 +1,6 @@
 <template>
     <page>
-        <topbar slot="header">filter组件</topbar>
+        <vm-topbar slot="header">filter组件</vm-topbar>
 
         <div style="display: flex;">
             <dropdown label="1级单选">

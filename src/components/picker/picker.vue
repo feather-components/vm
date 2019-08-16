@@ -1,50 +1,60 @@
 <template>
-    <masker :visible="visibility">
-        <overlay :visible="visibility" class="vm-iosselect" position="bottom">
-            <div class="vm-iosselect-header">
-                <a href="javascript:" @click="close">取消</a>
-                <div class="vm-iosselect-title">{{title}}</div>
-                <a href="javascript:" class="vm-iosselect-confirm" :style="{color: theme}" @click="confirm">确定</a>
-            </div>
+    <popup :visible="visibility" position="bottom">
+        <div class="vm-picker-header">
+            <a href="javascript:" @click="hide">
+                {{cancelText}}
+            </a>
 
-            <div class="vm-iosselect-inner">
-                <scroll 
-                    class="vm-iosselect-scroll" 
-                    v-for="(list, index) in renderLists" 
-                    :key="index"
-                    ref="scrolls"
-                    @hook:mounted="listen(index)"
-                >
-                    <div class="vm-iosselect-list">
-                        <a 
-                            href="javascript:"
-                            v-for="(item, key) of list"
-                            :key="key"
-                            @click="select(item, key, index)"
-                            :style="vals[index] && item.value === vals[index].value ? activedStyle : {}"
-                        >
-                            {{item.label}}
-                        </a>
-                    </div>
-                </scroll>
-            </div>
-        </overlay>
-    </masker>
+            <div class="vm-picker-title">{{title}}</div>
+            
+            <a 
+                href="javascript:" 
+                class="vm-picker-confirm" 
+                :style="{color: theme}" 
+                @click="onConfirm"
+            >
+                {{confirmText}}
+            </a>
+        </div>
+
+        <div class="vm-picker-inner">
+            <scroll 
+                class="vm-picker-colum" 
+                style="height: 100%;"
+                v-for="(list, index) in renderLists" 
+                :key="index"
+                ref="scrolls"
+                @hook:mounted="listen(index)"
+            >
+                <div class="vm-picker-column-inner">
+                    <a 
+                        href="javascript:"
+                        v-for="(item, key) of list"
+                        :key="key"
+                        @click="select(item, key, index)"
+                        :style="isActived(item, index) ? activedStyle : ''"
+                    >
+                        {{item.label}}
+                    </a>
+                </div>
+            </scroll>
+        </div>
+    </popup>
 </template>
 
 <script>
 import Scroll from '../scroll';
-import Overlay from '../overlay';
-import Masker from '../masker';
+import Popup from '../popup';
 import {Util, Dom} from '../../helper';
 import Config from '../../config';
+import Model from '../../mixins/model';
 
 const HEIGHT = 35;
 
 export default {
-    name: 'iosselect',
+    name: 'picker',
 
-    mixins: [Overlay],
+    mixins: [Popup, Model],
 
     props: {
         title: {
@@ -62,14 +72,7 @@ export default {
             default: '确定'
         },
 
-        source: {
-            type: Array,
-            default () {
-                return [];
-            }
-        },
-
-        value: {
+        options: {
             type: Array,
             default () {
                 return [];
@@ -79,8 +82,7 @@ export default {
 
     components: {
         Scroll,
-        Overlay,
-        Masker
+        Popup
     },
 
     data () {
@@ -91,7 +93,7 @@ export default {
             allData: [],
             renderLists: [],
             vals: [],
-            val: this.value,
+            val: Util.makeArray(this.value),
             activedStyle: {
                 opacity: 1,
                 color
@@ -100,32 +102,24 @@ export default {
     },
 
     watch: {
-        val (v) {
-            this.$emit('input', v);
-        },
-
-        value (v) {
-            this.setValue(v);
-        },
-
-        source (v) {
-            this.render(v);
+        options (options) {
+            this.render(options);
         }
     },
 
     mounted () {
-        this.source.length > 0 && this.render();
+        this.options.length > 0 && this.render();
     },
 
     methods: {
-        render (source = this.source) {
-            source = Util.makeArray(source);
+        render (options = this.options) {
+            options = Util.makeArray(options);
 
-            if (!Array.isArray(source[0])) {
-                source = [source];
+            if (!Array.isArray(options[0])) {
+                options = [options];
             }
 
-            let promises = source.map((data, key) => {
+            let promises = options.map((data, key) => {
                 if (typeof data == 'function') {
                     return Util.acm(data(), this, key);
                 } else {
@@ -169,17 +163,19 @@ export default {
 
         select (data, index, level, duration) {
             let $scroll = this.$refs.scrolls[level];
-
-            $scroll.scrollTo(-HEIGHT * index, duration || 400);
-            this.vals.splice(level, 100000, data);
-
-            if (data.children) {
-                this.renderColumns(data.children, level + 1);
-            } else if (level < this.allData.length - 1) {
-                this.renderColumns(this.allData[level + 1], level + 1);
-            }
             
-            this.$emit('select', this.vals);
+            setTimeout(() => {
+                $scroll.scrollTo(-HEIGHT * index, duration || 400);
+                this.vals.splice(level, 100000, data);
+
+                if (data.children) {
+                    this.renderColumns(data.children, level + 1);
+                } else if (level < this.allData.length - 1) {
+                    this.renderColumns(this.allData[level + 1], level + 1);
+                }
+                
+                this.$emit('select', this.vals);
+            }, 0)
         },
 
         listen (level) {
@@ -187,21 +183,24 @@ export default {
 
             $scroll.$on('drag:end', (pos, target = pos, duration = 0) => {
                 let list = this.renderLists[level];
-                let index = Math.min(list.length - 1, Math.round(Math.abs(target)) / HEIGHT);
-
+                let index = Math.min(list.length - 1, Math.round(Math.abs(target) / HEIGHT));
                 this.select(list[index], index, level, duration);
             });
 
             level === this.allData.length - 1 && setTimeout(() => this.$emit('scroll:ready'), 20);
         },
 
-        confirm () {
+        isActived (item, index) {
+            return this.vals[index] && item.value === this.vals[index].value;
+        },
+
+        onConfirm () {
             this.val = this.vals.map((item) => {
                 return item.value;
             });
 
             this.$emit('confirm', this.val, this.vals);
-            this.close();
+            this.hide();
         },
 
         setValue (v) {
@@ -219,7 +218,7 @@ export default {
 </script>
 
 <style lang="less">
-.vm-iosselect.vm-overlay {
+.vm-picker.vm-overlay {
     left: 0;
     bottom: 0;
     width: 100%;
@@ -227,14 +226,14 @@ export default {
     background: #f5f5f5;
 }
 
-.vm-iosselect-header {
+.vm-picker-header {
     display: flex;
     height: 44px;
     background: #fff;
     font-size: 14px;
     justify-content: space-between;
 
-    .vm-iosselect-title {
+    .vm-picker-title {
         font-weight: bold;
         height: 44px;
         line-height: 44px;
@@ -251,23 +250,23 @@ export default {
         font-size: 14px;
     }
 
-    .vm-iosselect-confirm {
+    .vm-picker-confirm {
         color: #7792cb;
     }
 }
 
-.vm-iosselect-inner {
+.vm-picker-inner {
     width: 100%;
     height: 175px;
     display: flex;
+    background: #fff;
 }
 
-.vm-iosselect-scroll {
+.vm-picker-column {
     flex-grow: 1;
-    height: 100%;
 }
 
-.vm-iosselect-list {
+.vm-picker-column-inner {
     padding: 70px 0px;
 
     a {

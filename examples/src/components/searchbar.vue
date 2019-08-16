@@ -1,12 +1,12 @@
 <template>
-    <page>
-        <topbar slot="header">searchbar + list组件</topbar>
-        <searchbar style="background: blue; " v-model="wd" :inner-style="{backgroundColor: '#fff', borderRadius: '0px'}" placeholder="请输入关键词，百度搜索">
-            <select slot="inner-left" style="width: 100px;">
-                <option>1</option>
-            </select>
-        </searchbar>
-        <list
+    <vm-page>
+        <vm-topbar slot="header">searchbar + list组件</vm-topbar>
+        <vm-searchbar style="background: blue; " v-model="wd" :inner-style="{
+            backgroundColor: '#fff', borderRadius: '0px'
+            }" placeholder="请输入关键词，百度搜索" @click="onClick">
+        </vm-searchbar>
+
+        <vm-list
             :api="api"
             :params="{'wd': wd}"
             :auto-refresh="true"
@@ -18,10 +18,9 @@
                         {{props.data.q}}
                     </a>
                 </div>
-
             </template>
-        </list>
-    </page>
+        </vm-list>
+    </vm-page>
 </template>
 
 <style scoped>
@@ -88,6 +87,10 @@ export default {
                     }
                 });
             });
+        },
+
+        onClick () {
+           // this.$refs.bar.focus();
         },
 
         formatter (data) {

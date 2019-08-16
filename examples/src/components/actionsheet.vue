@@ -1,8 +1,8 @@
 <template>
     <page>
-        <topbar slot="header">actionsheet组件</topbar>
-        <p style="text-align: center;"><btn @click="$refs.def.show()" style="width: 80%; margin-top: 20px;">点击</btn></p>
-        <vm-actionsheet ref="def">
+        <vm-topbar slot="header">actionsheet组件</vm-topbar>
+        <p style="text-align: center;"><btn @click="visible = true" style="width: 80%; margin-top: 20px;">点击</btn></p>
+        <vm-actionsheet v-model="visible">
             <vm-actionsheet-item @click="hehe" extras="啦啦啦">
                 呵呵
             </vm-actionsheet-item>
@@ -26,6 +26,18 @@ export default {
         Page,
         Topbar,
         Btn
+    },
+
+    data () {
+        return {
+            visible: false
+        };
+    },
+
+    watch: {
+        visible (v) {
+            console.log(v);
+        }
     },
 
     methods: {

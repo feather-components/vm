@@ -75,8 +75,8 @@ export default {
         return element === document.documentElement || element === document;
     },
 
-    contains (root, el, hasSelf = true) {
-        return root === el && hasSelf || !!(root.compareDocumentPosition(el) & 16);
+    contains (root, el, containSelf = true) {
+        return root === el && containSelf || !!(root.compareDocumentPosition(el) & 16);
     },
 
     css (element, name, value) {

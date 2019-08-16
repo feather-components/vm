@@ -1,163 +1,84 @@
 <template>
-    <page position="right" :fx="fx" :visible="visibility" class="vm-search" ref="page">
-        <topbar :left-enabled="false">
-            <slot name="searchLeft"></slot>
-            <slot name="extra-condition"></slot>
-            <searchbar :placeholder="placeholder" :maxlength="maxlength" ref="search" :input-bg-color="inputBgColor"
-                        :search-button-enabled="closeAfterSelectHistory" @submit="submit" v-model="val" />
-            <a href="javascript:" class="vm-search-cancel" @touchend="cancel" slot="right">取消</a>
-        </topbar>
-
-        <div class="vm-search-inner">
-            <div class="vm-search-header">
-                <slot name="header"></slot>
-            </div>
-
-            <div class="vm-search-history-container" v-if="!empty2load && !val && historys.length">
-                <div class="vm-search-history-header">
-                    历史搜索
-                    <a href="javascript:" @click="clickClearHistory()" class="vm-searcy-history-clear">清除</a>
-                </div>
-                <div class="vm-search-historys">
-                    <a v-for="(item, index) of historys" class="vm-search-history" href="javascript:" @click="clickHistory(item, index)">
-                        <slot name="history-row" :data="item">{{item.length > 20 ? item.substring(0, 20) + '..' : item}}</slot>
-                    </a>
-                </div>
-            </div>
-
-            <div class="vm-search-desc" v-if="!isEmpty">
-                <slot name="desc" v-if="!isEmpty">搜索结果</slot>
-            </div>
+    <overlay position="right" class="vm-search" :visible="visibility">
+        <searchbar 
+            :placeholder="placeholder" 
+            :maxlength="maxlength" 
+            :style="barSty"
+            :inner-style="barInnerStyle"
+            v-model="val"
+            @input="onInput"
+            @submit="submit" 
+        >
+            <a 
+                href="javascript:" 
+                class="vm-search-cancel" 
+                @click="onCancel" 
+                slot="right" 
+            >
+                取消
+            </a>
+        </searchbar>
+        
+        <scroll class="vm-search-panel">
+            <historys :id="historyId" v-if="!val"  />
 
             <div class="vm-search-default" v-if="!empty2load && !val">
-                <slot name="default"></slot>
+                <slot></slot>
+            </div>  
+
+            <div slot="rows">
+                {{list}}
+                <!-- <div v-for="(row, key) of list"></div> -->
             </div>
-
-            <list ref="list" :source="source" :data-formatter="dataFormatter" :params="params"  :auto-refresh="false">
-                <template slot="row" scope="props">
-                    <slot name="row" :data="props.data">{{props.data}}</slot>
-                </template>
-
-                <template slot="nores" v-if="$slots.nores">
-                    <slot name="nores"></slot>
-                </template>
-            </list>
-        </div>
-    </page>
+        </scroll>
+    </overlay>
 </template>
 
-<style lang="less">
-    .vm-search-cancel{
-        float: right;
-        width: .32rem;
-        display: inline-block;
-        text-decoration: none;
-        color: inherit;
-        font-size: 0.14rem;
-        font-weight: normal;
-    }
-
-    .vm-search{
-        font-weight: normal;
-
-        .vm-list-rows{
-            margin-bottom: .3rem;
-        }
-
-        .vm-searchbar-inner{
-            margin: 0px;
-        }
-
-        .vm-searchbar{
-            padding-top: 0px;
-            padding-bottom: 0px;
-            padding-right: 0.45rem;
-            box-sizing: border-box;
-            width: 100%;
-        }
-    }
-
-    .vm-search-inner{
-        margin: 0 .16rem;
-        margin-top: .08rem;
-    }
-
-    .vm-search-desc, .vm-search-history-header{
-        height: .28rem;
-        line-height: .28rem;
-    }
-
-    .vm-search-history-container a{
-        text-decoration: none;
-        color: #333;
-    }
-
-    .vm-search-historys{
-        margin: 0.08rem 0px;
-    }
-
-    .vm-search-history{
-        background: #eee;
-        margin-bottom: .08rem;
-        margin-right: 0.08rem;
-        height: .24rem;
-        line-height: .24rem;
-        display: inline-block;
-        border-radius: 10px;
-        padding: 0px .10rem;
-    }
-
-    .vm-searcy-history-clear{
-        float: right;
-        color: #6281C2;
-    }
-</style>
-
 <script>
-import Page from '../page';
-import Topbar from '../topbar';
+import Overlay from '../overlay';
 import Searchbar from '../searchbar';
-import List from '../list';
+import Scroll from '../scroll';
+import Historys from './history';
+import Config from '../../config';
+import { Util } from '../../helper';
 
 export default {
     name: 'search',
 
-    mixins: [Page, Searchbar],
+    mixins: [Overlay], 
 
     components: {
-        Page,
-        Topbar,
+        Overlay,
         Searchbar,
-        List
+        Historys,
+        Scroll
     },
 
     props: {
-        source: {
-            default () {
-                return [];
-            }
+        api: {
+            type: Function,
+            default: null
         },
 
-        useHistory: {
-            type: Boolean,
-            default: true
+        barStyle: {
+            type: [String, Object],
+            default: null
         },
 
-        dataFormatter: null,
+        barInnerStyle: {
+            type: [String, Object],
+            default: null
+        },
 
-        params: null,
+        maxlength: null,
+        historyId: null,
 
         autofocus: {
             type: Boolean,
             default: true
         },
 
-        delay: {
-            type: Number,
-            default: 300
-        },
-
-        caching: {
+        cache: {
             type: Boolean,
             default: true
         },
@@ -167,56 +88,40 @@ export default {
             default: false
         },
 
-        kw: {
-            type: String,
-            default: 'kw'
-        },
-
-        historyMark: {
-            type: String,
-            require: true,
-            default: null
-        },
-
         closeAfterSelectHistory: {
             type: Boolean,
             default: true
         },
 
-        clearHistoryHandler: {
+        cancelHandler: {
             type: Function,
-            default (clear) {
-                clear();
+            default () {
+                history.back();
             }
         },
 
-        closeCallback: {
-            type: Function,
-            default () {
-                this.close();
-            }
+        value: {
+            type: String,
+            default: ''
+        }
+    },
+
+    computed: {
+        barSty () {
+            return this.barStyle || {
+                background: Config('topbar.background') || Config('search.bar.background')
+            };
         }
     },
 
     watch: {
-        params: {
-            handler () {
-                this.load();
-            },
-            deep: true
+        value (val) {
+            this.val = val;
         }
     },
 
     mounted () {
-        var self = this;
-
-        self.$search = self.$refs.search;
-        self.$list = self.$refs.list;
-        self.initEvents();
-
-        self.autofocus && setTimeout(() => {
-            self.$search.focus();
-        }, 1000);
+        
     },
 
     data () {
@@ -230,74 +135,32 @@ export default {
             caches: {},
             isEmpty: true,
             historys: historys,
-            timeout: ''
+            timeout: '',
+            val: this.value,
+            list: []
         };
     },
 
     methods: {
-        initEvents () {
-            var self = this; var tid;
-
-            self.$search.$on('input', function () {
-                clearTimeout(tid);
-                self.$list.abort();
-                tid = setTimeout(() => self.load(), self.delay);
-            });
-
-            self.$list.$on('row:click', (item, index) => {
-                self.$emit('select', item, index);
-                self.addHistory();
-            });
-
-            self.$list.$on('xhr:success', (data) => {
-                self.caches[self.val] = data;
-            });
-
-            self.$list.$on('rows:render', (data) => {
-                self.isEmpty = !data.length;
-            });
-        },
-
-        load () {
-            var self = this;
-
-            if (!self.empty2load && !self.val) {
-                return;
+        onInput () {
+            if (!this.empty2load && this.val) {
+                return false;
             }
 
-            if (self.caches[self.val]) {
-                self.$list.setData(self.caches[self.val]);
+            if (this.caches[this.val]) {
+                this.list = this.caches[this.val];
             } else {
-                let param = {};
-
-                param[self.kw] = self.val;
-                self.$list.setParams(param, true);
-                if (this.timeout) {
-                    clearTimeout(this.timeout);
-                }
-                this.timeout = setTimeout(() => {
-                    self.$list.refresh();
-                }, 400);
+                this.loadByRemote();
             }
         },
 
-        open () {
-            var self = this;
+        loadByRemote: Util.debounce(function () {
+            let val = this.val;
 
-            self.$refs.page.open();
-            self.$emit('open');
-            setTimeout(() => {
-                self.$refs.search.focus();
-            }, 400);
-        },
-
-        close () {
-            var self = this;
-
-            self.$refs.page.close();
-            self.$refs.search.blur();
-            self.$emit('close');
-        },
+            Util.acm(this.api(this.val), this).then((list) => {
+                this.caches[val] = this.list = list;
+            });
+        }, 300),
 
         submit () {
             var self = this;
@@ -339,9 +202,48 @@ export default {
             }
         },
 
-        cancel () {
-            this.closeCallback();
+        onCancel () {
+            this.cancelHandler();
+            this.$emit('cancel');
         }
     }
 };
 </script>
+
+<style lang="less">
+.vm-search-cancel {
+    width: 32px;
+    display: inline-block;
+    text-decoration: none;
+    color: #999;
+    font-size: 14px;
+    margin-left: 16px;
+    font-weight: normal;
+}
+
+.vm-search {
+    font-weight: normal;
+
+    .vm-list-rows {
+        margin-bottom: .3rem;
+    }
+
+    .vm-searchbar-inner {
+        margin: 0px;
+    }
+
+    .vm-searchbar {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        padding-right: 0.45rem;
+        box-sizing: border-box;
+        width: 100%;
+    }
+}
+
+.vm-search-panel {
+    position: fixed;
+    left: 0px;
+    width: 100%;
+}
+</style>

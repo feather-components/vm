@@ -85,6 +85,12 @@ export default {
         Draggable
     },
 
+    provide () {
+        return {
+            _$scroller: this
+        };
+    },
+
     data () {
         return {
             stick: 1,
@@ -133,7 +139,7 @@ export default {
                 Dom.css(this.$refs.bar, style, 100 * (s1 / Math.max(s1, s2)) + '%');
             }
 
-            this.basePos < this.minPos && this.scrollTo(this.minPos, 300);
+            this.basePos < this.minPos && this.scrollTo(-this.minPos, 300);
         },
 
         resetBase (time, pos) {
@@ -146,7 +152,7 @@ export default {
 
             if (!this.$el[name]) return false;
 
-            this.scrollTo(-this.$el[name]);
+            this.scrollTo(this.$el[name]);
             this.$el[name] = 0;
         },
         
@@ -227,7 +233,7 @@ export default {
         scrollTo (pos, duration = 0, limit = false, fn) {
             if (this.draging) return false;
 
-            if (limit) {
+            if (limit) {    
                 pos = Math.max(this.minPos, Math.min(pos, this.maxPos));
             }
 
@@ -240,7 +246,7 @@ export default {
             let prop = this.axis ? 'left' : 'top';
 
             this.refresh();
-            this.scrollTo(offset[prop] - eOffset[prop], duration, limit, fn);
+            this.scrollTo(eOffset[prop] - offset[prop], duration, limit, fn);
         },
 
         cancel () {
@@ -252,7 +258,10 @@ export default {
             this.useTransform ? clearTimeout(this.$fx) : Util.crfa(this.$fx);
             this.$fx = null;
 
-            this.useTransform && this.translateByC3(this.$refs.inner, this.getComputedPos());
+            const pos = this.getComputedPos();
+
+            this.useTransform && this.translateByC3(this.$refs.inner, pos);
+            this.scrollBarTo(pos);
             this.$emit('scroll:cancel');
             this.triggerScrollEnd();
         },
@@ -312,16 +321,17 @@ export default {
                     this.barVisible = false;
                 }, 3000);
 
-                this.translateByC3(this.$refs.bar, this.eSize * (pos / this.iSize) * -1, duration, fn);
+                this.translateByC3(this.$refs.bar, this.eSize * (pos / this.iSize) * -1, duration, fn, true);
             }
         },
 
-        translateByC3 (el, pos, duration = 0, fn = 'ease') {
-            Dom.css(el, {
+        translateByC3 (el, pos, duration = 0, fn = 'ease', useTransform = this.useTransform) {
+            useTransform && Dom.css(el, {
                 'transition-duration': `${duration}ms`,
-                'transition-timing-function': fn === false ? '' : FUNCTIONS[fn].style,
-                'transform': `translate${this.axis.toUpperCase()}(${pos}px) translateZ(0px)`
+                'transition-timing-function': fn === false && !duration ? '' : FUNCTIONS[fn].style
             });
+
+            Dom.css(el, 'transform', `translate${this.axis.toUpperCase()}(${pos}px) translateZ(0px)`);
         },
 
         getComputedPos () {

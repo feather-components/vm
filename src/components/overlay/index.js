@@ -1,2 +1,4 @@
 import Overlay from './overlay';
-export default Overlay;
+import {Util} from '../../helper';
+
+export default Util.register(Overlay);

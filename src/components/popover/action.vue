@@ -26,11 +26,11 @@ export default {
 
 .vm-popover-action {
     padding: 0px 10px;
-    height: 30px;
+    height: 35px;
     line-height: initial;
     display: flex;
     align-items: center;
-    font-size: 13px;
+    font-size: 14px;
     text-decoration: none;
 }
 </style>

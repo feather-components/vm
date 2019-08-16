@@ -1,7 +1,7 @@
 <template>
     <overlay 
         class="vm-masker" 
-        :visible="visibility" 
+        v-model="visibility" 
         :fx="fx" 
         @click="$emit('click')"
     >

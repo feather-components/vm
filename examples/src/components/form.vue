@@ -1,18 +1,33 @@
 <template>
-    <page>
-        <topbar slot="header">form系列组件</topbar>
+    <vm-page>
+        <vm-topbar slot="header">form系列组件</vm-topbar>
 
-        <scroll>
-            <text-input label="单行文本" placeholder="单行" v-model="postData.a">
-                <vm-forward :arrow-size="0.14" @click="alert(3)"/>
-            </text-input>
+        <vm-scroll ignores=".textarea">
+            <vm-form-row vertical-layout label="输入价格">
+                <vm-input />
+            </vm-form-row>
 
-            <text-input label="单行文本" placeholder="单行" v-model="postData.a">
-                <vm-forward :arrow-size="0.14" @click="alert(3)" />
-                <div slot="extra" style="font-size: .12rem; color: #ccc;">这边是texetinput的extra slot，用于扩展一些垂直方向的内容</div>
-            </text-input>
+            <vm-form-row align="right" label="输入价格">
+                <vm-input />
+                <vm-forward :arrow-size="14" @click="alert(3)"/>
+            </vm-form-row>
 
-            <vm-textarea label="多行文本" placeholder="多行文本" tips="tips" v-model="postData.b">这里是一些备注之类
+            <vm-form-row label="icon checker">
+                <vm-checker-group :options="years" icon-type @change="onCheckerChange" v-model="checkers" />
+            </vm-form-row>
+
+            <vm-form-row label="checker">
+                <vm-checker-group :options="years" @change="onCheckerChange" v-model="checkers">
+                    
+                </vm-checker-group>
+            </vm-form-row>
+        
+            <vm-form-row label="textarea">
+                <vm-textarea placeholder="多行文本" class="textarea" />
+            </vm-form-row>            
+
+
+            <!-- <vm-textarea label="多行文本" placeholder="多行文本" tips="tips" v-model="postData.b">这里是一些备注之类
                 <template slot="label">多行&nbsp;<span style="font-size: 0.12rem" :style="{color: postData.b.length > 10 ? 'red' : ''}">({{postData.b.length}}/10)</span></template>
             </vm-textarea>
 
@@ -21,122 +36,24 @@
 
                 <template slot="icon"> <vm-forward /></template>
             </vm-textarea>
+        -->
+            <vm-form-row label="开关切换" align="right">
+                <vm-switch checked />
+            </vm-form-row>
 
-            <vm-switch label="切换开关" v-model="postData.g" />
+<!-- 
+            <vm-dateinput label="选择日期" v-model="postData.date" /> -->
+<!-- 
+            <vm-select label="下拉" :source="selectList" v-model="postData.e" /> -->
 
-            <radios label="少于4个单选" :options="[
-                {
-                    label: '1',
-                    value: 1
-                },
-
-                {
-                    label: '2',
-                    value: 2
-                },
-
-                {
-                    label: '3',
-                    value: 3
-                }
-            ]" v-model="postData.c" />
-
-            <radios label="多于3个单选" :options="[
-                {
-                    label: '1',
-                    value: 1
-                },
-
-                {
-                    label: '2',
-                    value: 2
-                },
-
-                {
-                    label: '3',
-                    value: 3
-                },
-
-                {
-                    label: '4',
-                    value: 4
-                },
-
-                {
-                    label: '5',
-                    value: 5
-                }
-            ]" v-model="postData.c" />
-
-            <checkboxes label="多选" :options="[
-                {
-                    label: '不限',
-                    value: -1
-                },
-
-                {
-                    label: '1',
-                    value: 1
-                },
-
-                {
-                    label: '2',
-                    value: 2
-                },
-
-                {
-                    label: '3',
-                    value: 3
-                },
-
-                {
-                    label: '4',
-                    value: 4
-                },
-
-                {
-                    label: '5',
-                    value: 5
-                },
-
-                {
-                    label: '6',
-                    value: 6
-                }
-            ]" v-model="postData.d" :unlimit="-1" />
-
-            <vm-dateinput label="选择日期" v-model="postData.date" />
-
-            <vm-select label="下拉" :source="selectList" v-model="postData.e" />
-
-            <images label="上传图片" v-model="postData.f" :size="10" v-lightbox />
-        </scroll>
-        <btn style="margin: 10px 0px; width: 90%;" type="drak" @click="submit" slot="footer">提交</btn>
-    </page>
+            <!-- <images label="上传图片" v-model="postData.f" :size="10" v-lightbox /> -->
+        </vm-scroll>
+        <vm-button style="margin: 10px auto; width: 90%;" size="large" @click="submit" slot="footer">提交</vm-button>
+        <vm-datepicker visible formatter="yyyy/mm/dd hh:ii" value="2017/10/01" max-date="2018/10/01 02:02" />
+    </vm-page>
 </template>
 
 <script>
-
-import {
-    Page,
-    Topbar,
-    TextInput,
-    Radios,
-    Checkboxes,
-    Select,
-    Images,
-    Button,
-    Scroll,
-    Toast,
-    SingleFilter,
-    SearchBar,
-    Searchbar,
-    Switch,
-    LinkMultipleFilter,
-    Iosselect,
-    Datepicker
-} from 'vm';
-
 import Source from '../filter.json';
 
 const selectList = [
@@ -193,25 +110,11 @@ const style = {
 };
 
 export default {
-    components: {
-        Page,
-        Topbar,
-        TextInput,
-        SingleFilter,
-        Radios,
-        Checkboxes,
-        vmSelect: Select,
-        Images,
-        Scroll,
-        Btn: Button,
-        vmSwitch: Switch,
-        LinkMultipleFilter,
-        Iosselect,
-        Datepicker
-    },
-
     data () {
         return {
+            abc: '11:11',
+            checkers: 2019,
+            aaa: '',
             postData: {
                 a: '33',
                 b: '333',
@@ -250,18 +153,6 @@ export default {
                 {
                     label: 2018,
                     value: 2018
-                },
-                {
-                    label: 2019,
-                    value: 2019
-                },
-                {
-                    label: 2020,
-                    value: 2020
-                },
-                {
-                    label: 2021,
-                    value: 2021
                 }
             ]
         };
@@ -273,7 +164,7 @@ export default {
         //          }, 1000)
 
         setTimeout(() => {
-            this.postData.date = '2016/01/01';
+            this.checkers = [2018, 2019];
         }, 5000);
 
         document.activeElement.blur();
@@ -283,16 +174,34 @@ export default {
     },
 
     watch: {
+        checker (v) {
+            console.log(v);
+        },
         postData (v) {
             console.log(v);
         },
 
         val (v) {
             console.log(v);
+        },
+
+        aaa (v) {
+            console.log('jfkdjfkdsfds', v)
+        },
+
+        abc (v) {
+            console.log(v)
         }
     },
 
     methods: {
+        onCheckerChange (...args) {
+            console.log(...args);
+        },
+        onInputinput (...args) {
+            console.log(...args)
+        },
+
         selectFormatter (data) {
             return data.g || data;
         },

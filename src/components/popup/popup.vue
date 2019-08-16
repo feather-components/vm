@@ -1,6 +1,6 @@
 <template>
-    <masker :visible="visibility" class="vm-popup" @click.native="onMaskerClick">
-        <overlay :visible="visibility" :position="position">
+    <masker v-model="visibility" class="vm-popup" @click.native="onMaskerClick">
+        <overlay v-model="visibility" :position="position">
             <slot></slot>
         </overlay>
     </masker>

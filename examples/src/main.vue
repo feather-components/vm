@@ -9,6 +9,8 @@
 </template>
 
 <style scoped lang="less">
+    
+
     header{
         padding: 0px 10px;
         height: 50px;

@@ -96,7 +96,7 @@ export default {
             if (this.isRefreshing) return;
 
             this.isRefreshing = true;
-            animation && this.scrollTo(this.pulldownHeight, 500);
+            animation && this.scrollTo(-this.statusBoxHeight, 500);
             trigger && this.$emit('refresh', this.recover);
         },
 

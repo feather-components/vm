@@ -1,7 +1,19 @@
 <template>
-    <popup :visible="visibility" :click-bg2hide="clickBg2hide" position="bottom" class="vm-actionsheet" @click="hide">
+    <popup :visible="visibility" :click-bg2hide="clickBg2hide" position="bottom" class="vm-actionsheet" @click.native="hide">
         <div class="vm-actionsheet-items">
-            <slot></slot>
+            <slot>
+                <template v-if="actions">
+                    <item 
+                        v-for="(action, key) of options" 
+                        :key="key"
+                        @click="action.handler"
+                        :disabled="action.disabled"
+                        :extras="action.extras"
+                    >
+                        {{action.title}}
+                    </item>
+                </template>
+            </slot>
         </div>
 
         <div class="vm-actionsheet-cancel" v-if="!cancelDisabled">
@@ -30,6 +42,11 @@ export default {
         clickBg2hide: {
             type: Boolean,
             default: true
+        },
+
+        actions: {
+            type: Array,
+            default: null
         }
     },
 

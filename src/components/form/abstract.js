@@ -35,7 +35,8 @@ export const Single = {
 };
 
 export const Multiable = {
-    props: Util.assign(Single, {
+    props: {
+        ...Single, 
         size: {
             type: Number,
             default: -1
@@ -47,7 +48,7 @@ export const Multiable = {
                 return [];
             }
         }
-    }),
+    },
 
     data () {
         return {

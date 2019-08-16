@@ -1,6 +1,6 @@
 <template>
     <page>
-        <topbar slot="header">scroll组件</topbar>
+        <vm-topbar slot="header">scroll组件</vm-topbar>
             <scroll scrollbars class="col" style="height: 300px;" ref="outerScroller" @scrolling="onScroll" :disabled="outerDisabled">
                 <scroll axis="x" :scrollbars="true" class="row" style="height: 50px;">
                     <a v-for="(i, a) of 100">{{i}}</a>

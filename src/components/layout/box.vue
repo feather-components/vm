@@ -1,5 +1,5 @@
 <template>
-	<div class="vm-box">
+	<div class="vm-box" :style="style">
 		<div v-if="$slots.header" class="vm-box-header">
 			<slot name="header"></slot>
 		</div>
@@ -15,16 +15,22 @@
 </template>
 
 <script>
+import Config from '../../config';
+
 export default {
-    name: 'box'
+	name: 'box',
+	
+	data () {
+		return {
+			style: {
+				marginTop: Config('box.margin-top')
+			}
+		};
+	}
 };
 </script>
 
 <style lang="less">
-.vm-box {
-	margin-top: 10px;
-}
-
 .vm-box-header,
 .vm-box-footer {
 	height: 40px;

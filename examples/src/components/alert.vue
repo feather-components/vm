@@ -1,10 +1,8 @@
 <template>
     <page>
-        <topbar slot="header">alert组件</topbar>
+        <vm-topbar slot="header">alert组件</vm-topbar>
         <p style="text-align: center;"><btn @click="alert()" style="width: 80%; margin-top: 20px;">alert</btn></p>
         <p style="text-align: center;"><btn @click="confirm()" style="width: 80%; margin-top: 20px;">confirm</btn></p>
-        <p style="text-align: center;"><btn @click="defined(true)" style="width: 80%; margin-top: 20px;">flex</btn></p>
-        <p style="text-align: center;"><btn @click="defined()" style="width: 80%; margin-top: 20px;">自定义</btn></p>
     </page>
 </template>
 
@@ -23,15 +21,30 @@ export default {
         Btn
     },
 
+    data () {
+        return {
+            visible: true
+        };
+    },
+
     methods: {
         alert () {
-            Alert('我是alert');
+            this.$alert('hello，我是alert');
         },
 
         confirm () {
-            Alert.confirm('我是confirm，请点击确定', function () {
-                Alert('刚刚点击了确定');
+            let $confirm = this.$confirm('我是confirm，请点击确定', {
+                buttonClick2hide: false
             });
+            
+            $confirm.$on('cancel', () => {
+                this.$confirm('确定取消吗？').$on('confirm', () => {
+                    $confirm.destroy();
+                });
+            }).$on('confirm', () => {
+                this.$alert('你点击了确定');
+                $confirm.destroy();
+            })
         },
 
         defined (flex) {

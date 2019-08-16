@@ -1,36 +1,14 @@
 <template>
-    <div
-        :class="{
-            'vm-slider': true,
-            'vm-slider-transition': transition,
-            'vm-slider-y': axis == 'y'
-        }"
-        v-draggable="{axis: axis, canDrag: canDrag}"
+    <div 
+        :class="classes" 
+        v-draggable="draggableOptions"
+        @drag:start="onDragStart"
+        @draging="onDraging"
+        @drag:end="onDragEnd"
     >
         <slot></slot>
     </div>
 </template>
-
-<style>
-    .vm-slider{
-        display: flex;
-        flex-flow: row;
-        align-items: flex-start;
-        margin-top: 0px;
-        width: 100000000000px;
-    }
-
-    .vm-slider.vm-slider-y{
-        flex-flow: column;
-        width: auto;
-        height: 10000000000px;
-    }
-
-    .vm-slider-transition{
-        transition: transform .5s ease;
-        -webkit-transition: transform .5s ease;
-    }
-</style>
 
 <script>
 import Draggable from '../../directives/draggable';
@@ -49,7 +27,7 @@ export default {
             default: 'x'
         },
 
-        offset: {
+        ratio: {
             type: Number,
             default: 0.25
         },
@@ -62,20 +40,33 @@ export default {
 
     data () {
         return {
-            transition: false,
+            fxing: false,
             min: 0,
-            index: null
+            index: null,
+            draggableOptions: {
+                axis: this.axis,
+                canDrag: this.canDrag
+            }
         };
+    },
+
+    computed: {
+        classes () {
+            return {
+                'vm-swiper': true,
+                'vm-swiper-fxing': this.fxing,
+                'vm-swiper-y': this.axis == 'y'
+            }
+        }
     },
 
     mounted () {
         this.$nextTick(() => {
-            Event.on(this.$el, 'drag:start', this.onDragStart);
-            Event.on(this.$el, 'drag:end', this.onDragEnd);
-            Event.on(this.$el, 'draging', this.onDraging);
-            Event.on(this.$el, 'transitionend webkitTransitionEnd', () => {
-                this.complete();
-            });
+            Event.on(
+                this.$el, 
+                'transitionend webkitTransitionEnd', 
+                this.complete.bind(this)
+            );
 
             this.to(this.defaultIndex, false, true);
         });
@@ -83,7 +74,7 @@ export default {
 
     methods: {
         onDragStart (event) {
-            this.transition = false;
+            this.fxing = false;
             this.min = -(this.$el.children.length - 1) * this.getDocumentSize();
             this.$emit('drag:start');
         },
@@ -101,18 +92,15 @@ export default {
             this.isMoving = false;
 
             let start = -this.$el.children[this.index][this.axis == 'x' ? 'offsetLeft' : 'offsetTop'];
-
             let end = event.data[this.axis];
-
             let moved = end - start;
-
-            let index = this.index + (Math.abs(moved) / this.getDocumentSize() < this.offset ? 0 : moved > 0 ? -1 : 1);
+            let index = this.index + (Math.abs(moved) / this.getDocumentSize() < this.ratio ? 0 : moved > 0 ? -1 : 1);
 
             this.$emit('drag:end');
             this.to(index);
         },
 
-        to (index, transition = true, untrigger = false) {
+        to (index, fx = true, untrigger = false) {
             var offset = index * this.getDocumentSize();
 
             if (index == this.index) {
@@ -124,13 +112,13 @@ export default {
                 !untrigger && this.$emit('switch', this.index, oldIndex);
             }
 
-            this.transition = transition;
+            this.fxing = fx;
             Dom.css(this.$el, 'transform', `translate${this.axis.toUpperCase()}(-${offset}px)`);
-            !transition && this.complete();
+            !fx && this.complete();
         },
 
         complete () {
-            this.transition = false;
+            this.fxing = false;
             this.$emit('switch:complete', this.index);
         },
 
@@ -146,3 +134,24 @@ export default {
     }
 };
 </script>
+
+<style>
+.vm-swiper {
+    display: flex;
+    flex-flow: row;
+    align-items: flex-start;
+    margin-top: 0px;
+    width: 100000000000px;
+}
+
+.vm-swiper.vm-swiper-y {
+    flex-flow: column;
+    width: auto;
+    height: 10000000000px;
+}
+
+.vm-swiper-fxing {
+    transition: transform .5s ease;
+    -webkit-transition: transform .5s ease;
+}
+</style>

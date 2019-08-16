@@ -1,6 +1,18 @@
-import Vue from 'vue';
-
 export default {
+    pad (str) {
+        return str < 10 ? `0${str}` : str;
+    },
+
+    date (str) {
+        let date = typeof str == 'string' ? new Date(str.replace(/-/g, '/')) : str;
+
+        if (isNaN(date.getTime())) {
+            throw new Error(`${date} is not a valid date type!`);
+        }
+
+        return date;
+    },
+
     n2p (number) {
         if (/^\d+$/.test(number)) {
             return number + 'px';
@@ -12,8 +24,6 @@ export default {
     l2camel (str) {
         return str.replace(/-(\w)/g, (all, c, index) => index > 0 ? c.toUpperCase() : c);
     },
-
-    assign: Object.assign,
 
     each (arr, callback) {
         if (arr.length) {
@@ -80,7 +90,7 @@ export default {
         return observer;
     },
 
-    register (obj, directive = false) {
+    register (obj, directive = false, after) {
         var Component = directive ? obj : (obj.Component || obj);
 
         function install (Vue) {
@@ -91,8 +101,12 @@ export default {
             if (directive) {
                 Vue.directive(Component.name, obj);
             } else {
-                Vue.component(`vm-${Component.name}`, Component);
+                Component._$name = Component.name;
+                delete Component.name;
+                Vue.component(`vm-${Component._$name}`, Component);
             }
+
+            after && after(Vue);
         }
 
         if (window.Vue) {
@@ -105,7 +119,7 @@ export default {
     },
 
     factory (options, data = {}, container = document.body) {
-        var klass = Vue.extend(options);
+        var klass = this.$$.extend(options);
         var instance = new klass({
             propsData: data
         });
@@ -115,16 +129,14 @@ export default {
         return instance;
     },
 
-    defineConfig (obj, _default = {}) {
-        obj._config = _default;
-        obj.config = (name, value) => {
-            if (typeof name == 'object') {
-                this.assign(obj._config, name);
-            } else if (value == void 0) {
-                return obj._config[name];
-            } else {
-                obj._config[name] = value;
-            }
+    debounce (fn, wait) {
+        let id;
+
+        return function (...args) {
+            id && clearTimeout(id);
+            id = setTimeout(() => {
+                fn.apply(this, args);
+            }, wait);
         };
     },
 

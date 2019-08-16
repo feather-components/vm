@@ -11,22 +11,20 @@
 </template>
 
 <script>
-import {Toast} from 'vm';
-
 export default {
     methods: {
         show () {
-            Toast({
+            this.$toast({
                 message: '操作成功操作成功操作成功<br>换行'
             });
         },
 
         success () {
-            Toast.success('操作成功');
+            this.$toast.success('操作成功');
         },
 
         loading () {
-            Toast.loading('加载中');
+            this.$toast.loading('加载中');
         }
     }
 };

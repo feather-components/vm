@@ -1,91 +1,105 @@
+import './assets/base.css';
+
+import Page from './components/page';
+import {Box, Row} from './components/layout';
+import Button from './components/button';
+import TopBar from './components/topbar';
+import Forward from './components/forward';
+import Overlay from './components/overlay';
+import Masker from './components/masker';
+import Popup from './components/popup';
+import {ActionSheet, ActionSheetItem} from './components/actionsheet';
+import Modal from './components/modal';
+import Toast from './components/toast';
+import Segment from './components/segment';
+import DropDown from './components/dropdown';
+import {Popover, PopoverAction} from './components/popover';
+
 import {Scroll, Pulldown2refresh} from './components/scroll';
 import List from './components/list';
-import Page from './components/page';
-import Topbar from './components/topbar';
-import Button from './components/button';
-import Alert from './components/alert';
-import Toast from './components/toast';
-import {ActionSheet, ActionSheetItem} from './components/actionsheet';
-import Dropdown from './components/dropdown';
-import Draggable from './directives/draggable';
-import {Popover, PopoverAction} from './components/popover';
-import Popup from './components/popup';
+
 import Search from './components/search';
-import Searchbar from './components/searchbar';
-import Uploader from './components/uploader';
-import {Radios, Checkboxes, TextInput, Select, Images, Switch, Textarea, FormCell, DateInput} from './components/form';
-import {Single, Multiple, Link, LinkMultiple} from './components/filter';
-import Autosize from './directives/autosize';
-import Masker from './components/masker';
-import Iosselect from './components/iosselect';
-import Datepicker from './components/datepicker';
-import {Slider, SliderItem} from './components/slider';
+import SearchBar from './components/searchbar';
+
+// import Uploader from './components/uploader';
+import Input from './components/input';
+import Switch from './components/switch';
+import Textarea from './components/textarea';
+import Image from './components/image';
+import {Checker, IconChecker, CheckerGroup} from './components/checker';
+import {Picker, TimePicker, DatePicker} from './components/picker';
+import {FormRow} from './components/form';
+
+// import {Single, Multiple, Link, LinkMultiple} from './components/filter';
+
+import {Swiper, SwiperItem} from './components/swiper';
 import {SwipeOut, SwipeOutAction} from './components/swipeout';
-import Forward from './components/forward';
 import {Tabs, TabsPane} from './components/Tabs';
-import {Box, Row} from './components/layout';
-import Badge from './directives/badge';
-import Segment from './components/segment';
-import BadgeComponent from './components/badge';
+
+import BadgeDirective from './directives/badge';
+import Badge from './components/badge';
+
 import Loading from './components/loading';
 import Tick from './components/tick';
-import Helper from './helper';
-import Lazyload from './directives/lazyload';
-import Lightbox from './directives/lightbox';
+
+import Draggable from './directives/draggable';
+import AutoSize from './directives/autosize';
+// import Lazyload from './directives/lazyload';
+// import Lightbox from './directives/lightbox';
 import Config from './config';
+import Helper from './helper';
 
 var Components = [
-    Loading,
-    Tick,
-    Segment,
+    Page,
     Box,
     Row,
-    Badge,
-    BadgeComponent,
+    Button,
+    TopBar,
     Forward,
-    Tabs,
-    TabsPane,
+    Overlay,
+    Masker,
+    Popup,
+    ActionSheet,
+    ActionSheetItem,
+    Modal,
+    Toast,
+    Segment,
+    DropDown,
+    Popover,
+    PopoverAction,
     Scroll,
     Pulldown2refresh,
     List,
-    Page,
-    Topbar,
-    Button,
-    Alert,
-    Toast,
-    ActionSheet,
-    ActionSheetItem,
-    Dropdown,
-    Draggable,
-    Popover,
-    PopoverAction,
-    Popup,
-    Searchbar,
     Search,
-    Uploader,
-    Radios,
-    Checkboxes,
-    TextInput,
-    DateInput,
-    Textarea,
-    Select,
-    Images,
-    FormCell,
+    SearchBar,
+    Input,
     Switch,
-    FormCell,
-    Autosize,
-    Masker,
-    Iosselect,
-    Datepicker,
-    Slider,
-    SliderItem,
+    Textarea,
+    Image,
+    Checker,
+    IconChecker,
+    CheckerGroup,
+    Picker,
+    TimePicker,
+    DatePicker,
+    FormRow,
+    Swiper,
+    SwiperItem,
     SwipeOut,
     SwipeOutAction,
-    Lazyload,
-    Lightbox
+    Tabs,
+    TabsPane,
+    Badge,
+    Loading,
+    Tick,
+    Draggable,
+    BadgeDirective,
+    AutoSize,
 ];
 
 function install (Vue, options = {}) {
+    Helper.Util.$$ = Vue;
+
     for (let Component of Components) {
         Component.install(Vue);
     }
@@ -94,62 +108,53 @@ function install (Vue, options = {}) {
 }
 
 export {
-    Loading,
-    Tick,
-    Box,
-    Segment,
-    Row,
-    Forward,
-    Badge,
-    Search,
-    Searchbar,
-    Searchbar as SearchBar,
-    Tabs,
-    TabsPane,
-    Scroll,
-    Pulldown2refresh,
     Page,
-    Topbar,
-    List,
-    Alert,
+    Box,
+    Row,
     Button,
-    Toast,
+    TopBar,
+    Forward,
+    Overlay,
+    Masker,
+    Popup,
     ActionSheet,
     ActionSheetItem,
-    Dropdown,
-    Draggable,
+    Modal,
+    Toast,
+    Segment,
+    DropDown,
     Popover,
     PopoverAction,
-    Popup,
-    Uploader,
-    Radios,
-    Checkboxes,
-    TextInput,
-    TextInput as Textinput,
-    DateInput,
-    DateInput as Dateinput,
-    Textarea,
-    Select,
+    Scroll,
+    Pulldown2refresh,
+    List,
+    Search,
+    SearchBar,
+    Input,
     Switch,
-    Images,
-    FormCell,
-    Single as SingleFilter,
-    Multiple as MultipleFilter,
-    Link as LinkFilter,
-    LinkMultiple as LinkMultipleFilter,
-    Autosize,
-    Masker,
-    Helper,
-    Iosselect,
-    Datepicker,
-    Slider,
-    SliderItem,
+    Textarea,
+    Image,
+    Checker,
+    IconChecker,
+    CheckerGroup,
+    Picker,
+    TimePicker,
+    DatePicker,
+    FormRow,
+    Swiper,
+    SwiperItem,
     SwipeOut,
-    SwipeOut as Swipeout,
     SwipeOutAction,
-    SwipeOutAction as SwipeoutAction,
-    Lazyload,
-    Lightbox
+    Tabs,
+    TabsPane,
+    Badge,
+    Loading,
+    Tick,
+
+    Draggable,
+    BadgeDirective,
+    AutoSize,
+    Helper
 };
 
 export default {install, Helper};

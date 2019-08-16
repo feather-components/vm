@@ -1,5 +1,5 @@
 <script>
-import Dropdown from '../dropdown';
+import DropDown from '../dropdown';
 import {Util, Event, Dom} from '../../helper';
 import Config from '../../config';
 
@@ -91,7 +91,7 @@ export default {
         });
 
         return h(
-            Dropdown,
+            DropDown,
             {
                 class: 'vm-popover',
                 on: {

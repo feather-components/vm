@@ -1,9 +1,9 @@
 <template>
-	<div class="vm-box-row" @click="$emit('click')">
-		<span class="vm-box-row-icon" v-if="$slots.icon">
+	<div class="vm-row">
+		<span class="vm-row-icon" v-if="$slots.icon">
 			<slot name="icon"></slot>
 		</span>
-		<div class="vm-box-row-content" :style="{display: flexLayout ? 'flex' : 'block'}">
+		<div class="vm-row-content">
 			<slot></slot>
 		</div>
 	</div>
@@ -11,18 +11,12 @@
 
 <script>
 export default {
-    name: 'row',
-    props: {
-        flexLayout: {
-            type: Boolean,
-            default: true
-        }
-    }
+    name: 'row'
 };
 </script>
 
 <style lang="less">
-.vm-box-row {
+.vm-row {
 	height: auto;
 	display: flex;
 	background: #fff;
@@ -30,17 +24,18 @@ export default {
 	padding-left: 12px;
 }
 
-.vm-box-row-icon {
+.vm-row-icon {
 	display: flex;
 	align-items: center;
 }
 
-.vm-box-row-icon {
+.vm-row-icon {
 	border-bottom: 1px solid transparent;
 	margin-right: 12px;
 }
 
-.vm-box-row-content {
+.vm-row-content {
+	display: flex;
 	flex: 1;
 	align-items: center;
 	padding: 6px 0px;
@@ -49,9 +44,9 @@ export default {
 	border-bottom: 1px solid #eee;
 }
 
-.vm-box-row:nth-last-child(1) {
-	.vm-box-row-icon,
-	.vm-box-row-content {
+.vm-row:nth-last-child(1) {
+	.vm-row-icon,
+	.vm-row-content {
 		border-bottom: 0px;
 	}
 }

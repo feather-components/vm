@@ -2,9 +2,7 @@ import Util from './helper/util';
 
 export default {
     'theme': '#E74D4D',
-    'requestHelper' (url, params) {
-        return Promise.resolve([]);
-    },
+    'box.margin-top': '12px',
     // components
     'page.background': '#fff',
     'topbar.padding-top': '0px',
@@ -31,5 +29,16 @@ export default {
     'swipeout-action.color': '#fff',   
     'popover.background': '#333',
     'popover.actions-gap': '0.5px solid #eee',
-    'popover.actions-color': '#fff'
+    'popover.actions-color': '#fff',
+    'form-row.label-min-width': '80px',
+    'input.pre-themes': {},
+    'checker.color': '',
+    'checker.icon-size': '16px',
+    'checker.square-radius': '2px',
+    'switch.color': '',
+    'timepicker.units': ['时', '分'],
+    'datepicker.units': ['年', '月', '日'],
+
+    'modal.button.normal': '',
+    'modal.button.confirm': ''
 };

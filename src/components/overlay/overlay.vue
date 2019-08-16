@@ -10,6 +10,13 @@
 import {Event} from '../../helper';
 
 export default {
+    name: 'overlay',
+
+    model: {
+        prop: 'visible',
+        event: 'update:visible'
+    },
+
     props: {
         fx: {
             type: Boolean,
@@ -42,6 +49,10 @@ export default {
     watch: {
         visible (v) {
             v ? this.show() : this.hide();
+        },
+
+        visibility (v) {
+            this.$emit('update:visible', v);
         }
     },
 
@@ -74,7 +85,6 @@ export default {
         },
 
         hide () {
-            
             if (!this.visibility) return false;
 
             this.visibility = false;
@@ -113,11 +123,16 @@ export default {
 }
 
 .vm-overlay-center {
-    top: 50%;
+    /* top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     -webkit-transform: translate(-50%, -50%);
-    white-space: nowrap;
+    white-space: nowrap; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
 }
 
 .vm-overlay-left,

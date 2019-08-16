@@ -1,57 +1,3 @@
-<template>
-    <cell :label="label" class="vm-form-textinput" :vertical-layout="false">
-
-        <input ref="input" :type="type" :name="name"
-            @input="onInput"
-            @focus="onFocus"
-            @blur="$emit('blur')"
-            @click="$emit('click')"
-            :maxlength="maxlength"
-            :placeholder="placeholder"
-            :readonly="readonly"
-            :style="{textAlign: align}"
-        />
-
-        <template slot="label" v-if="$slots.label">
-            <slot name="label"></slot>
-        </template>
-
-        <icon name="close" v-if="clearable && val" @click.native="clear" class="vm-form-clear" :size=".14"/>
-        <span v-if="$slots.default" class="vm-form-textinput-other"><slot></slot></span>
-
-        <template slot="extra" v-if="$slots.extra">
-            <slot name="extra"></slot>
-        </template>
-    </cell>
-</template>
-
-<style lang="less">
-    .vm-form-textinput input{
-        line-height: .24rem;
-        border: 0px;
-        outline: none;
-        padding: 0px;
-        flex: 1;
-        color: inherit;
-        font-size: .14rem;
-        margin-left: 0.1rem;
-        color: #222;
-
-        &::-webkit-input-placeholder{
-            font-weight: 300;
-            color: #ccc;
-        }
-    }
-
-    .vm-form-clear{
-        font-weight: bold;
-        margin-left: 0.1rem;
-    }
-
-    .vm-form-textinput-other{
-        margin-left: 0.1rem;
-    }
-</style>
 
 <script>
 import Cell from './cell';
@@ -133,6 +79,93 @@ export default {
         setValue (v) {
             this.$refs.input && this.$refs.input.value != v && (this.$refs.input.value = v);
         }
+    },
+
+    // <input ref="input" :type="type" :name="name"
+    //         @input="onInput"
+    //         @focus="onFocus"
+    //         @blur="$emit('blur')"
+    //         @click="$emit('click')"
+    //         :maxlength="maxlength"
+    //         :placeholder="placeholder"
+    //         :readonly="readonly"
+    //         :style="{textAlign: align}"
+    //     />
+
+    //     <template slot="label" v-if="$slots.label">
+    //         <slot name="label"></slot>
+    //     </template>
+
+    //     <icon name="close" v-if="clearable && val" @click.native="clear" class="vm-form-clear" :size=".14"/>
+
+    //     <template slot="extra" v-if="$slots.extra">
+    //         <slot name="extra"></slot>
+    //     </template>
+
+    render (h) {
+        const {name, maxlength, placeholder, readonly} = this;
+
+        return h(
+            Cell,
+            {
+                props: {
+                    ...this.$options.propsData
+                },
+                class: 'vm-input',
+                scopedSlots: {
+                    //...this.$scopedSlots
+                }
+            },
+            [
+                h(
+                    'div',
+                    {
+                        class: 'vm-input-inner'
+                    },
+                    [
+                        h(
+                            'input',
+                            {
+                                attrs: {
+                                    name,
+                                    maxlength,
+                                    placeholder,
+                                    readonly
+                                }
+                            }
+                        )
+                    ]
+                )
+            ]
+        );
     }
 };
 </script>
+
+<style lang="less">
+.vm-form-textinput input {
+    line-height: .24rem;
+    border: 0px;
+    outline: none;
+    padding: 0px;
+    flex: 1;
+    color: inherit;
+    font-size: .14rem;
+    margin-left: 0.1rem;
+    color: #222;
+
+    &::-webkit-input-placeholder {
+        font-weight: 300;
+        color: #ccc;
+    }
+}
+
+.vm-form-clear {
+    font-weight: bold;
+    margin-left: 0.1rem;
+}
+
+.vm-form-textinput-other {
+    margin-left: 0.1rem;
+}
+</style>

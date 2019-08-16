@@ -1,6 +1,6 @@
 <template>
     <page>
-        <topbar slot="header">popup</topbar>
+        <vm-topbar slot="header">popup</vm-topbar>
         <p style="text-align: center;"><btn @click="show('left')" style="width: 80%; margin-top: 20px;">左</btn></p>
         <p style="text-align: center;"><btn @click="show('right')" style="width: 80%; margin-top: 20px;">右</btn></p>
         <p style="text-align: center;"><btn @click="show('top')" style="width: 80%; margin-top: 20px;">上</btn></p>

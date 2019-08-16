@@ -15,7 +15,10 @@ class Draggable {
     }
 
     setOptions (options = {}) {
-        Object.assign(this.options, options);
+        this.options = {
+            ...this.options,
+            ...options
+        };
     }
 
     isIgnoresTouch (target) {
@@ -40,17 +43,16 @@ class Draggable {
     }
 
     initEvent () {
-        var options = this.options;
         var first;
 
-        Event.on(this.dom, 'touchstart', (e) => {
+        Event.on(this.dom, 'touchstart mousedown', (e) => {
             this.handler = e.target;
             first = true;
 
             if (this.isIgnoresTouch(this.handler)) return false;
 
             var {x, y} = this.translates = Dom.getTransform(this.dom);
-            var {clientX, clientY} = e.touches[0];
+            var {clientX, clientY} = e.touches ? e.touches[0] : e;
 
             this.touch = {clientX, clientY};
 
@@ -61,12 +63,13 @@ class Draggable {
             passive: false
         });
 
-        Event.on(this.dom, 'touchmove', (e) => {
+        Event.on(this.dom, 'touchmove mousemove', (e) => {
             if (!this.touch) return false;
 
             e.preventDefault();
-
-            var touch = e.touches[0];
+            
+            var options = this.options;
+            var touch = e.touches ? e.touches[0] : e;
             var {clientX, clientY} = this.touch;
             var axis = options.axis;
             var x = 0;
@@ -116,13 +119,13 @@ class Draggable {
 
             this.translates = {x, y};
 
-            Dom.css(this.dom, 'transform', `translate3d(${x}px, ${y}px, 0px)`);
+            Dom.css(this.dom, 'transform', `translate3d(${parseInt(x)}px, ${parseInt(y)}px, 0px)`);
             Event.trigger(this.dom, 'draging', info);
         }, {
             passive: false
         });
 
-        Event.on(this.dom, 'touchend', (e) => {
+        Event.on(document, 'touchend mouseup', (e) => {
             if (!this.touch) return false;
 
             this.touch = null;

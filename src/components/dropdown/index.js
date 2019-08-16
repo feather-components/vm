@@ -1,4 +1,4 @@
-import Dropdown from './dropdown';
+import DropDown from './dropdown';
 import {Util} from '../../helper';
 
-export default Util.register(Dropdown);
+export default Util.register(DropDown);

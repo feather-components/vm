@@ -1,6 +1,6 @@
 <template>
     <page>
-        <topbar slot="header">uploader组件</topbar>
+        <vm-topbar slot="header">uploader组件</vm-topbar>
         <div class="uploader">
             <uploader @select="select" url="http://www.uploadify.com/uploadify/uploadify.php" style="height: 50%;"></uploader>
         </div>

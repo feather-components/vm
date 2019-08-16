@@ -44,6 +44,11 @@ export default {
         disabled: {
             type: Boolean,
             default: false
+        },
+
+        border: {
+            type: Boolean,
+            default: true
         }
     },
 
@@ -60,7 +65,10 @@ export default {
 
             if (hollow) {
                 style.color = color;
-                style.border = `1px solid ${color}`;
+                
+                if (this.border) {
+                    style.border = `1px solid ${color}`;
+                }
             } else {
                 style.background = color;
             }

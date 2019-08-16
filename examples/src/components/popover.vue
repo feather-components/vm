@@ -1,6 +1,6 @@
 <template>
     <page>
-        <topbar slot="header">
+        <vm-topbar slot="header">
             popover组件
             <vm-popover slot="right">
                 <a href="javascript:" style="display: flex; align-items: center; height: 44px; float: right;">12333
@@ -14,7 +14,7 @@
                     <vm-popover-action style="color: #fff; font-weight: bold;">自定义一下</vm-popover-action>
                 </template>
             </vm-popover>
-        </topbar>
+        </vm-topbar>
 
         <vm-popover style="width: 50px; height: 30px; position: absolute; bottom: 40%; left: 45%;" message="hello, world">
             点击我
