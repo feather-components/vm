@@ -9,7 +9,10 @@
                 <div class="vm-searchbar-box">
                     <div class="vm-searchbar-placeholder">
                         <icon type="search" class="vm-searchbar-icon" />
-                        <div class="vm-searchbar-placeholder-text">
+                        <div 
+                            class="vm-searchbar-placeholder-text"
+                            :style="placeholderStyle"
+                        >
                             {{placeholder}}
                         </div>
                     </div>
@@ -85,6 +88,12 @@ export default {
                 'vm-searchbar', 
                 this.focusing || this.val ? 'vm-searchbar-x' : ''
             ];
+        },
+
+        placeholderStyle () {
+            return {
+                visibility: this.val ? 'hidden' : 'visible'
+            };
         }
     },
 
@@ -190,6 +199,7 @@ export default {
 .vm-searchbar-placeholder-text {
     transition: flex .3s ease;
     flex-shrink: 1;
+    opacity: 0.7;
 }
 
 .vm-searchbar-x .vm-searchbar-placeholder {
@@ -201,7 +211,7 @@ export default {
 
     .vm-searchbar-placeholder-text {
         flex-grow: 1;
-        visibility: hidden;
+
     }
 }
 

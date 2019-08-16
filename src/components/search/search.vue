@@ -1,5 +1,5 @@
 <template>
-    <overlay position="right" class="vm-search" :visible="visibility">
+    <div class="vm-search">
         <searchbar 
             :placeholder="placeholder" 
             :maxlength="maxlength" 
@@ -31,24 +31,22 @@
                 <!-- <div v-for="(row, key) of list"></div> -->
             </div>
         </scroll>
-    </overlay>
+    </div>
 </template>
 
 <script>
-import Overlay from '../overlay';
 import Searchbar from '../searchbar';
 import Scroll from '../scroll';
 import Historys from './history';
+import Model from '../../mixins/model';
 import Config from '../../config';
 import { Util } from '../../helper';
 
 export default {
     name: 'search',
-
-    mixins: [Overlay], 
+    mixins: [Model],
 
     components: {
-        Overlay,
         Searchbar,
         Historys,
         Scroll
@@ -75,7 +73,7 @@ export default {
 
         autofocus: {
             type: Boolean,
-            default: true
+            default: false
         },
 
         cache: {
@@ -91,18 +89,6 @@ export default {
         closeAfterSelectHistory: {
             type: Boolean,
             default: true
-        },
-
-        cancelHandler: {
-            type: Function,
-            default () {
-                history.back();
-            }
-        },
-
-        value: {
-            type: String,
-            default: ''
         }
     },
 
@@ -112,16 +98,6 @@ export default {
                 background: Config('topbar.background') || Config('search.bar.background')
             };
         }
-    },
-
-    watch: {
-        value (val) {
-            this.val = val;
-        }
-    },
-
-    mounted () {
-        
     },
 
     data () {
@@ -136,7 +112,6 @@ export default {
             isEmpty: true,
             historys: historys,
             timeout: '',
-            val: this.value,
             list: []
         };
     },
