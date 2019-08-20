@@ -2,21 +2,14 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
-    entry: {
-        vue: ['vue'],
-        vm: './src/index'
-    },
+    entry: './src',
 
     resolve: {
-        alias: {
-            type: 'type-of',
-            ajax: 'component-ajax'
-        },
         extensions: ['.js', '.vue']
     },
 
     output: {
-        path: path.resolve(__dirname, 'dist'),
+        path: path.join(__dirname, 'dist'),
         filename: '[name].js',
         library: 'this',
         libraryTarget: 'umd'
@@ -25,33 +18,42 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.vue$/,
-                loader: 'vue-loader',
-                options: {
-                    postcss: [require('autoprefixer')()]
-                }
-            },
-            
-            {
-                test: /\.(png|jpg|gif)$/,
-                loader: 'url-loader'
-            },
-
-            {
                 test: /\.css$/,
                 loader: 'style-loader!css-loader'
             },
+            {
+                test: /\.vue$/,
+                loader: 'vue-loader',
+                options: {
+                    loaders: [
+                        'vue-style-loader',
+                        'css-loader',
+                        {
+                            loader: 'postcss-loader',
+                            options: {
+                                plugins: {
+                                    autoprefixer: {}
+                                }
+                            }
+                        }
+                    ]
+                }
+            },
 
             {
-                test: /\.(woff2?|eot|ttf|otf|svg)(\?.*)?$/,
+                test: /\.js$/,
+                loader: 'babel-loader'
+            },
+
+            {
+                test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+                loader: 'url-loader'
+            },
+
+            {
+                test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
                 loader: 'url-loader'
             }
         ]
-    },
-
-    plugins: [
-        new webpack.optimize.CommonsChunkPlugin({
-            name: ['vm', 'vue']
-        })
-    ]
+    }
 };

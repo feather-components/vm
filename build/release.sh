@@ -18,6 +18,6 @@ then
     VERSION=$nextVersion
 fi
 
-sed -i "s/\"version\".*/\"version\": \"${VERSION}\",/" package.json
+sed -i "" "s/\"version\".*/\"version\": \"${VERSION}\",/" package.json
 
 build $VERSION
