@@ -16,11 +16,10 @@ export default {
         primary: ''
     },
     'segment.color': '#fff',
-    'segment.high-color': '',
+    'segment.active-color': '',
     'loading.color': '',
-    'tabs.high-color': '',
+    'tabs.header-active-color': '',
     'loading.color': '',
-    'tick.color': '#009933',
     'scroll.ignores': null,
     'scroll.use-transform': false,
     'list.label.page': 'page',
@@ -40,5 +39,7 @@ export default {
     'datepicker.units': ['年', '月', '日'],
 
     'modal.button.normal': '',
-    'modal.button.confirm': ''
+    'modal.button.confirm': '',
+    'swiper.indicator-color': 'rgba(0, 0, 0, 0.2)',
+    'swiper.indicator-active-color': ''
 };

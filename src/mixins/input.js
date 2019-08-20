@@ -24,6 +24,11 @@ export default {
             default: 100000000
         },
 
+        autofocus: {
+            type: Boolean,
+            default: false
+        },
+
         theme: {
             type: String,
             default: 'default'

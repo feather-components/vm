@@ -123,16 +123,13 @@ export default {
 }
 
 .vm-overlay-center {
-    /* top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    -webkit-transform: translate(-50%, -50%);
-    white-space: nowrap; */
+    top: 50%;
+    transform: translate(0px, -50%);
+    -webkit-transform: translate(0px, -50%);
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 100%;
 }
 
 .vm-overlay-left,

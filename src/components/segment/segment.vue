@@ -1,6 +1,11 @@
 <template>
-	<span class="vm-segment" :style="{border: '1px solid ' + highColor}">
-		<button v-for="(item, i) of options" :style="index == i ? highStyle : style" @click="onItemClick(i)">
+	<span class="vm-segment" :style="containerStyle">
+		<button
+            v-for="(item, key) of options" 
+            :key="key"
+            :style="index == key ? activeStyle : style" 
+            @click="onItemClick(key)"
+        >
             {{item.label || item}}
         </button>
 	</span>
@@ -27,10 +32,10 @@ export default {
             }
         },
 
-        highColor: {
+        activeColor: {
             type: String,
             default () {
-                return Config('segment.high-color') || Config('theme');
+                return Config('segment.active-color') || Config('theme');
             }
         },
 
@@ -42,18 +47,32 @@ export default {
 
     data () {
         return {
-            index: this.defaultIndex,
-            style: {
+            index: this.defaultIndex
+        };
+    },
+
+    computed: {
+        containerStyle () {
+            return {
+                border: '1px solid ' + this.activeColor
+            };
+        },
+
+        style () {
+            return {
                 color: this.color,
-                background: this.highColor,
-                borderColor: this.color
-            },
-            highStyle: {
-                color: this.highColor,
-                background: this.color,
+                background: this.activeColor,
                 borderColor: this.color
             }
-        };
+        },
+
+        activeStyle () {
+            return {
+                color: this.activeColor,
+                background: this.color,
+                borderColor: this.color
+            };
+        }
     },
 
     methods: {

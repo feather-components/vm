@@ -3,11 +3,13 @@
         <searchbar 
             :placeholder="placeholder" 
             :maxlength="maxlength" 
+            :autofocus="autofocus"
             :style="barSty"
             :inner-style="barInnerStyle"
             v-model="val"
+            ref="bar"
             @input="onInput"
-            @submit="submit" 
+            @submit="onConfirm" 
         >
             <a 
                 href="javascript:" 
@@ -19,16 +21,19 @@
             </a>
         </searchbar>
         
-        <scroll class="vm-search-panel">
-            <historys :id="historyId" v-if="!val"  />
+        <scroll>
+            <div class="vm-search-panel">
+                <historys :id="historyId"  v-show="!val" @select="onConfirm" />
 
-            <div class="vm-search-default" v-if="!empty2load && !val">
                 <slot></slot>
-            </div>  
 
-            <div slot="rows">
-                {{list}}
-                <!-- <div v-for="(row, key) of list"></div> -->
+                <div slot="words" class="vm-search-words" v-show="words.length">
+                    <div v-for="(word, index) of words" :key="index" class="vm-search-word">
+                        <slot name="word" word="word" index="index">
+                            <div @click="onConfirm(word)">{{word}}</div>
+                        </slot>
+                    </div>
+                </div>
             </div>
         </scroll>
     </div>
@@ -45,11 +50,22 @@ import { Util } from '../../helper';
 export default {
     name: 'search',
     mixins: [Model],
+    
+    model: {
+        prop: 'value',
+        event: 'confirm'
+    },
 
     components: {
         Searchbar,
         Historys,
         Scroll
+    },
+
+    provide () {
+        return {
+            _$search: this
+        };
     },
 
     props: {
@@ -69,24 +85,11 @@ export default {
         },
 
         maxlength: null,
+        placeholder: null,
+        autofocus: null,
         historyId: null,
 
-        autofocus: {
-            type: Boolean,
-            default: false
-        },
-
         cache: {
-            type: Boolean,
-            default: true
-        },
-
-        empty2load: {
-            type: Boolean,
-            default: false
-        },
-
-        closeAfterSelectHistory: {
             type: Boolean,
             default: true
         }
@@ -101,124 +104,81 @@ export default {
     },
 
     data () {
-        var historys = [];
-
-        try {
-            historys = JSON.parse(localStorage.getItem('_vm_history_stores_.' + this.historyMark)) || [];
-        } catch (e) {};
-
         return {
             caches: {},
-            isEmpty: true,
-            historys: historys,
-            timeout: '',
-            list: []
+            words: []
         };
     },
 
     methods: {
         onInput () {
-            if (!this.empty2load && this.val) {
-                return false;
-            }
-
-            if (this.caches[this.val]) {
-                this.list = this.caches[this.val];
+            if (this.val) {
+                if (this.caches[this.val]) {
+                    this.words = this.caches[this.val];
+                } else {
+                    this.fetch();
+                }                           
             } else {
-                this.loadByRemote();
+                this.words = [];
             }
+            
+            this.$emit('input', this.val);
         },
 
-        loadByRemote: Util.debounce(function () {
+        fetch: Util.debounce(function () {
             let val = this.val;
 
-            Util.acm(this.api(this.val), this).then((list) => {
-                this.caches[val] = this.list = list;
+            Util.acm(this.api(this.val), this).then((words) => {
+                this.caches[val] = this.words = words || [];
             });
         }, 300),
 
-        submit () {
-            var self = this;
-
-            if (this.closeAfterSelectHistory) {
-                self.cancel();
-                self.addHistory();
-                self.$emit('confirm', self.val);
-            }
-        },
-
-        clickHistory (text) {
-            this.val = text;
-            this.submit();
-        },
-
-        clickClearHistory () {
-            this.clearHistoryHandler(() => {
-                this.clearHistory();
-            });
-        },
-
-        clearHistory () {
-            this.historys = [];
-            this.storeHistory();
-        },
-
-        storeHistory () {
-            localStorage.setItem('_vm_history_stores_.' + this.historyMark, JSON.stringify(this.historys));
-        },
-
-        addHistory (val = this.val) {
-            var self = this;
-
-            if (val && self.historys.indexOf(val) == -1) {
-                self.historys.unshift(val);
-                self.historys = self.historys.slice(0, 10);
-                self.storeHistory();
-            }
+        onConfirm (val) {
+            this.$emit('confirm', this.val = val);
         },
 
         onCancel () {
-            this.cancelHandler();
             this.$emit('cancel');
+        },
+
+        focus () {
+            setTimeout(() => {
+                this.$refs.bar.focus();
+            }, 300);
+        },
+
+        blur () {
+            this.$refs.bar.blur();
         }
     }
 };
 </script>
 
 <style lang="less">
+.vm-search {
+    background: #fff;
+    width: 100%;
+    height: 100%;
+}
+
 .vm-search-cancel {
     width: 32px;
     display: inline-block;
     text-decoration: none;
-    color: #999;
-    font-size: 14px;
     margin-left: 16px;
-    font-weight: normal;
-}
-
-.vm-search {
-    font-weight: normal;
-
-    .vm-list-rows {
-        margin-bottom: .3rem;
-    }
-
-    .vm-searchbar-inner {
-        margin: 0px;
-    }
-
-    .vm-searchbar {
-        padding-top: 0px;
-        padding-bottom: 0px;
-        padding-right: 0.45rem;
-        box-sizing: border-box;
-        width: 100%;
-    }
+    color: inherit;
 }
 
 .vm-search-panel {
-    position: fixed;
-    left: 0px;
-    width: 100%;
+    padding: 15px 16px;
+}
+
+.vm-search-word {
+    padding: 10px 0px;
+    border-bottom: 1px solid #eee;
+}
+
+.vm-search-word:nth-last-child(1) {
+    border-bottom: 0px;
 }
 </style>

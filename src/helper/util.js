@@ -1,4 +1,13 @@
 export default {
+    storage (key, value) {
+        if (value != null) {
+            localStorage.setItem(key, JSON.stringify(value));
+        } else {
+            let item = localStorage.getItem(key);
+            return item == null ? item : JSON.parse(item);
+        }
+    },
+
     pad (str) {
         return str < 10 ? `0${str}` : str;
     },

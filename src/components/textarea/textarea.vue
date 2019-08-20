@@ -2,6 +2,7 @@
     <textarea 
         :placeholder="placeholder"
         :readonly="readonly"
+        :autofocus="autofocus"
         class="vm-textarea needsclick"
         @input="onInput"
     >
@@ -16,12 +17,6 @@ export default {
     name: 'textarea',
 
     mixins: [Mixins],
-
-    data () {
-        return {
-            focusing: false
-        };
-    },
 
     methods: {
         onInput: function (e) {

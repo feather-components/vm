@@ -25,7 +25,6 @@
 <script>
 import Scroll from './scroll';
 import Loading from '../loading';
-import Tick from '../tick';
 import {Dom} from '../../helper';
 
 export default {
@@ -54,7 +53,6 @@ export default {
 
     components: {
         Loading,
-        Tick,
         Scroll
     },
 

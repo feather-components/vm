@@ -2,7 +2,7 @@
     <page>
         <vm-topbar :left-enabled="false">vm</vm-topbar>
 
-        <vm-scroll class="navs" >
+        <vm-scroll class="navs" style="height: 100%;" >
             <a href="javascript:" v-for="item of source" @click="go(item)">{{item}}</a>
         </vm-scroll>
     </page>

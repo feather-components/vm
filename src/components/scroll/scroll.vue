@@ -393,6 +393,8 @@ export default {
 
     .vm-scroll-inner {
         min-height: 100%;
+        transform: translate3d(0px, 0px, 0px);
+        -webkit-transform: translate3d(0px, 0px, 0px);
         -webkit-backface-visibility: hidden;
         -webkit-transform-style: preserve-3d;
     }
@@ -413,6 +415,7 @@ export default {
     & > .vm-scroll-inner {
         float: left;
         white-space: nowrap;
+        min-width: 100%;
     }
 }
 </style>

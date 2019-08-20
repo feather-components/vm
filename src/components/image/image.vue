@@ -1,7 +1,7 @@
 <template>
     <div class="vm-image">
-        <loading v-if="!rurl" />
-        <img :src="rurl" v-else />
+        <loading v-if="!url" />
+        <img :src="url" v-else />
     </div>
 </template>
 
@@ -33,8 +33,7 @@ export default {
 
     data () {
         return {
-            url: null,
-            rurl: null
+            url: null
         };
     },
 
@@ -46,9 +45,6 @@ export default {
 
             if (top < HEIGHT && left < WIDTH && left >= 0) {
                 this.url = this.src;
-                setTimeout(() => {
-                    this.rurl = this.url;
-                }, Math.random() * 1000);
                 _.off(this);
             }
         }

@@ -1,7 +1,7 @@
 <script>
 import Overlay from '../overlay';
 import Popup from '../popup';
-import Tick from '../tick';
+import Tick from './tick';
 import Loading from '../loading';
 import Config from '../../config';
 

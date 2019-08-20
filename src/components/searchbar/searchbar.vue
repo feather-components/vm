@@ -9,12 +9,12 @@
                 <div class="vm-searchbar-box">
                     <div class="vm-searchbar-placeholder">
                         <icon type="search" class="vm-searchbar-icon" />
-                        <div 
+                        <span 
                             class="vm-searchbar-placeholder-text"
                             :style="placeholderStyle"
                         >
                             {{placeholder}}
-                        </div>
+                        </span>
                     </div>
                     
                     <x-input 
@@ -22,6 +22,7 @@
                         theme="transparent"
                         :type="searchButtonEnabled ? 'search': 'text'" 
                         :maxlength="maxlength" 
+                        :autofocus="autofocus"
                         v-model="val"
                         ref="input" 
                         @input="onInput"
@@ -61,10 +62,8 @@ export default {
             default: '请输入关键字'
         },
 
-        readonly: {
-            type: Boolean,
-            default: false
-        },
+        readonly: null,
+        autofocus: null,
 
         searchButtonEnabled: {
             type: Boolean,
@@ -131,7 +130,7 @@ export default {
         },
 
         onSubmit () {
-            this.$emit('submit');
+            this.$emit('submit', this.val);
             this.blur();
         },
 

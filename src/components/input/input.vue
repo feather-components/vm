@@ -5,6 +5,7 @@
                 :style="{'text-align': align}"
                 :placeholder="placeholder"
                 :readonly="readonly"
+                :autofocus="autofocus"
                 type="text"
                 ref="input"
                 @blur="onBlur"
@@ -15,7 +16,7 @@
             />
         </div>
 
-        <icon type="close" class="vm-input-clear" v-if="val" @click.native="onClearClick" />
+        <icon type="close" class="vm-input-clear" v-if="val && !readonly" @click.native="onClearClick" />
     </div>
 </template>
 

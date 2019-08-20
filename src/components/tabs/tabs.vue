@@ -1,14 +1,17 @@
 <template>
 	<div class="vm-tabs">
         <scroll axis="x" ref="headers" :style="headersStyle">
-            <div class="vm-tabs-headers" :class="['vm-tabs-headers', centerLayout ? 'vm-tabs-headers-cl' : '']">
+            <div class="vm-tabs-headers">
                 <a
                     v-for="(item, key) of headers"
                     :key="key"
-                    :class="['vm-tabs-header', key == index ? 'vm-tabs-header-actived' : '']"
+                    :class="{
+                        'vm-tabs-header': true,
+                        'vm-tabs-header-actived': key == index 
+                    }"
                     :style="{
-                        color: key == index ? highColor : 'inherit',
-                        borderBottomColor: key == index ? highColor : 'inherit'
+                        color: key == index ? headerActiveColor : 'inherit',
+                        borderBottomColor: key == index ? headerActiveColor : 'inherit'
                     }"
                     @click="onHeaderClick(key)"
                 >
@@ -61,10 +64,10 @@ export default {
             default: ''
         },
 
-        highColor: {
+        headerActiveColor: {
             type: String,
             default () {
-                return Config('tabs.high-color');
+                return Config('tabs.header-active-color') || Config('theme');
             }
         },
 
@@ -144,11 +147,8 @@ export default {
     white-space: nowrap;
     height: 44px;
     font-size: 14px;
-    background: #fff;
-}
-
-.vm-tabs-headers-cl {
     text-align: center;
+    background: #fff;
 }
 
 .vm-tabs-header {
