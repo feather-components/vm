@@ -2,6 +2,8 @@ var path = require('path');
 var webpack = require('webpack');
 var HtmlWepackPlugin = require('html-webpack-plugin');
 
+process.env.NODE_ENV != 'ci' && require('./app');
+
 function resolve (dir) {
     return path.join(__dirname, dir);
 }

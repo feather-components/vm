@@ -141,4 +141,7 @@ export {
     Helper
 };
 
-export default {install, Helper};
+export default {
+    install, 
+    Helper
+};

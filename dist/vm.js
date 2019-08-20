@@ -1890,7 +1890,10 @@ function install(Vue) {
 
 
 
-/* harmony default export */ __webpack_exports__["default"] = ({ install: install, Helper: __WEBPACK_IMPORTED_MODULE_35__helper__["d" /* default */] });
+/* harmony default export */ __webpack_exports__["default"] = ({
+    install: install,
+    Helper: __WEBPACK_IMPORTED_MODULE_35__helper__["d" /* default */]
+});
 
 /***/ }),
 /* 30 */

@@ -1,19 +1,21 @@
 {
   "name": "vmui",
-  "version": "1.1.37",
+  "version": "2.0.0",
   "description": "基于vue2的ui组件库",
-  "main": "src/index.js",
+  "main": "dist/vm.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "release": "sh ./build/release.sh",
     "beta": "sh ./build/beta.sh",
-    "example": "webpack --config ./examples/webpack.config.js & node examples/app.js",
+    "example": "webpack --config ./examples/webpack.config.js",
     "ef": "eslint --fix --ext .js,.vue ./src ./examples/src"
   },
   "author": "zhanghao <jsyczhanghao@sina.com>",
   "license": "ISC",
   "devDependencies": {
     "app-transition": "github:feather-components/app-transition",
+    "component-ajax": "0.0.2",
+    "type-of": "^2.0.1",
     "autoprefixer": "^7.1.1",
     "autoprefixer-loader": "^3.2.0",
     "babel-core": "^6.24.1",
@@ -46,9 +48,5 @@
     "vue-template-compiler": "^2.3.3",
     "webpack": "^3.6.0",
     "webpack-cli": "^3.3.2"
-  },
-  "dependencies": {
-    "component-ajax": "0.0.2",
-    "type-of": "^2.0.1"
   }
 }

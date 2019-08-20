@@ -2,7 +2,9 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
-    entry: './src',
+    entry: {
+        vm: './src'
+    },
 
     resolve: {
         extensions: ['.js', '.vue']
