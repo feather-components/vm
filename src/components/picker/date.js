@@ -1,6 +1,5 @@
 import Picker from './picker';
 import TimePicker from './time';
-import Overlay from '../overlay';
 import Config from '../../config';
 import {Util} from '../../helper';
 

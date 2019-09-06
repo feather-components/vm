@@ -100,6 +100,8 @@ export default {
     display: flex;
 
     button {
+        transition: all .5s ease;
+        -webkit-transition: all .5s ease;
         margin: 0px;
         padding: 0px 10px;
         flex-grow: 1;
@@ -109,9 +111,8 @@ export default {
         background: #fff;
         border: 0px;
         border-left: 1px solid #000;
-        height: 22px;
-        line-height: 22px;
         border-radius: 0px;
+        box-sizing: border-box;
         outline: none;
     }
 

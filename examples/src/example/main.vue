@@ -2,7 +2,7 @@
     <page>
         <vm-topbar :left-enabled="false">vm</vm-topbar>
 
-        <vm-scroll class="navs" style="height: 100%;" >
+        <vm-scroll class="navs">
             <a href="javascript:" v-for="item of source" @click="go(item)">{{item}}</a>
         </vm-scroll>
     </page>
@@ -69,8 +69,7 @@ export default {
                 'components/uploader',
                 'components/popover',
                 'components/form',
-                'components/filter',
-                'components/slider',
+                'components/swiper',
                 'components/tabs',
                 'directives/badge',
                 'directives/lazyload',

@@ -15,7 +15,6 @@ import Search from './components/search.vue';
 import Uploader from './components/uploader.vue';
 import Popover from './components/popover.vue';
 import Form from './components/form.vue';
-import Filter from './components/filter.vue';
 import Popup from './components/popup.vue';
 import Slider from './components/slider.vue';
 import Tabs from './components/tabs.vue';
@@ -29,6 +28,8 @@ import Configs from './cfg.js';
 
 import VM, {Topbar} from 'vm';
 import Ajax from 'ajax';
+
+require('fastclick').attach(document.body);
 
 Vue.use(AppTransition);
 Vue.use(VueRouter);
@@ -87,11 +88,6 @@ const router = new VueRouter({
         {
             path: '/components/popup',
             component: Popup
-        },
-
-        {
-            path: '/components/filter',
-            component: Filter
         },
 
         {
