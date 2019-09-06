@@ -43,6 +43,13 @@ export default [
                 description: '',
                 url: '/pages/layout/box~row',
                 demo: 'components/layout'
+            },
+
+            {
+                title: 'List',
+                description: '列表分页',
+                url: '/pages/layout/list',
+                demo: 'components/list'
             }
         ]
     }

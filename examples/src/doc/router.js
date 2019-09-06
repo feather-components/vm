@@ -28,6 +28,11 @@ export default new VueRouter({
         {
             path: '/pages/layout/box~row',
             component: (resolve) => require(['./pages/layout/box~row.md'], resolve)
+        },
+
+        {
+            path: '/pages/layout/list',
+            component: (resolve) => require(['./pages/layout/list.md'], resolve)
         }
     ]
 });
