@@ -26,6 +26,11 @@ export default new VueRouter({
         },
 
         {
+            path: '/pages/layout/topbar',
+            component: (resolve) => require(['./pages/layout/topbar.md'], resolve)
+        },
+
+        {
             path: '/pages/layout/box~row',
             component: (resolve) => require(['./pages/layout/box~row.md'], resolve)
         },
@@ -33,6 +38,11 @@ export default new VueRouter({
         {
             path: '/pages/layout/list',
             component: (resolve) => require(['./pages/layout/list.md'], resolve)
+        },
+
+        {
+            path: '/pages/layout/toast',
+            component: (resolve) => require(['./pages/layout/toast.md'], resolve)
         }
     ]
 });

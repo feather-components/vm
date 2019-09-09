@@ -50,6 +50,13 @@ export default [
                 description: '列表分页',
                 url: '/pages/layout/list',
                 demo: 'components/list'
+            },
+
+            {
+                title: 'Toast',
+                description: '全局组件',
+                url: '/pages/layout/toast',
+                demo: 'components/toast'
             }
         ]
     }
