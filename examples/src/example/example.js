@@ -24,9 +24,10 @@ import Badge from './directives/badge.vue';
 import Draggable from './directives/draggable.vue';
 import Lazyload from './directives/lazyload.vue';
 import Segment from './components/segment.vue';
+import Topbar from './components/topbar.vue';
 import Configs from './cfg.js';
 
-import VM, {Topbar} from 'vm';
+import VM from 'vm';
 import Ajax from 'ajax';
 
 require('fastclick').attach(document.body);
@@ -37,7 +38,7 @@ Vue.use(VueRouter);
 VM.install(Vue, {
     'topbar.border-bottom': '1px solid #eee',
     'requestHelper': (url, params) => {
-        
+
     }
 });
 
@@ -153,6 +154,11 @@ const router = new VueRouter({
         {
             path: '/components/tabs',
             component: Tabs
+        },
+
+        {
+            path: '/components/topbar',
+            component: Topbar
         }
     ]
 });

@@ -4,7 +4,10 @@
 
 ```html
 Toast('提示语');
-this.$toast('提示语');
+
+this.$toast({
+    message: '操作成功操作成功操作成功<br>换行'
+});
 ```  
 
 ### 全局方法

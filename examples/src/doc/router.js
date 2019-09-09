@@ -26,6 +26,11 @@ export default new VueRouter({
         },
 
         {
+            path: '/pages/layout/page',
+            component: (resolve) => require(['./pages/layout/page.md'], resolve)
+        },
+
+        {
             path: '/pages/layout/topbar',
             component: (resolve) => require(['./pages/layout/topbar.md'], resolve)
         },
