@@ -48,6 +48,16 @@ export default new VueRouter({
         {
             path: '/pages/layout/toast',
             component: (resolve) => require(['./pages/layout/toast.md'], resolve)
+        },
+
+        {
+            path: '/pages/layout/modal',
+            component: (resolve) => require(['./pages/layout/modal.md'], resolve)
+        },
+
+        {
+            path: '/pages/layout/scroll',
+            component: (resolve) => require(['./pages/layout/scroll.md'], resolve)
         }
     ]
 });

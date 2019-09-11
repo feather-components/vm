@@ -13,7 +13,7 @@
 ```  
 
 ### Slot
-名称 | 说明 | Slot-Scpoe/VNode
+名称 | 说明 | Slot-Scpoe
 -----|-----|-------|------
 left | 左边按钮，默认执行history.back() | <icon \/\>
 right | 右边按钮 | -

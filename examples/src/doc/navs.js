@@ -57,6 +57,20 @@ export default [
                 description: '全局组件',
                 url: '/pages/layout/toast',
                 demo: 'components/toast'
+            },
+
+            {
+                title: 'Alert',
+                description: '全局组件',
+                url: '/pages/layout/modal',
+                demo: 'components/alert'
+            },
+
+            {
+                title: 'Scroll',
+                description: '滚动组件',
+                url: '/pages/layout/scroll',
+                demo: 'components/scroll'
             }
         ]
     }
