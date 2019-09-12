@@ -3,14 +3,13 @@
 ### 代码演示
 
 ```html
-<vm-topbar style="background:#ff0">页面标题</vm-topbar>
+1. <vm-topbar>页面标题</vm-topbar>
    
-<vm-topbar>
-    <span>自定义右边按钮</span>
-    <div slot="right">
-        <a>添加</a>
-    </div>
-</vm-topbar>
+2. <vm-topbar>
+    <div slot="left">back</div>
+    <span>页面标题</span>
+    <div slot="right">right</div>
+   </vm-topbar>
 ```  
 
 ### Slot

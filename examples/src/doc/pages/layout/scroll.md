@@ -4,6 +4,11 @@
 
 ```html
 <vm-scroll></vm-scroll>
+
+设置下拉自动刷新
+<vm-pulldown2refresh axis="y" @refresh="callback">
+    <a v-for="(i, a) of 50">scroll组件</a>
+</vm-pulldown2refresh>
 ```  
 
 ### Slots

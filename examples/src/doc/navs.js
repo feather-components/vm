@@ -71,6 +71,13 @@ export default [
                 description: '滚动组件',
                 url: '/pages/layout/scroll',
                 demo: 'components/scroll'
+            },
+
+            {
+                title: 'ActionSheet',
+                description: '',
+                url: '/pages/layout/actionsheet',
+                demo: 'components/actionsheet'
             }
         ]
     }

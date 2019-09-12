@@ -58,6 +58,11 @@ export default new VueRouter({
         {
             path: '/pages/layout/scroll',
             component: (resolve) => require(['./pages/layout/scroll.md'], resolve)
+        },
+
+        {
+            path: '/pages/layout/actionsheet',
+            component: (resolve) => require(['./pages/layout/actionsheet.md'], resolve)
         }
     ]
 });
