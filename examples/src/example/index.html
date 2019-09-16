@@ -25,6 +25,8 @@ body{
     </div>
 </body>
 <script>
-document.addEventListener('touchmove', () => {}, {passive: false});
+document.addEventListener('touchmove', (e) => {
+    e.preventDefault();
+}, {passive: false});
 </script>
 </html>
