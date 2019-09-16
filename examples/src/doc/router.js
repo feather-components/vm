@@ -63,6 +63,31 @@ export default new VueRouter({
         {
             path: '/pages/layout/actionsheet',
             component: (resolve) => require(['./pages/layout/actionsheet.md'], resolve)
+        },
+
+        {
+            path: '/pages/layout/tabs',
+            component: (resolve) => require(['./pages/layout/tabs.md'], resolve)
+        },
+
+        {
+            path: '/pages/layout/swiper',
+            component: (resolve) => require(['./pages/layout/swiper.md'], resolve)
+        },
+
+        {
+            path: '/pages/layout/segment',
+            component: (resolve) => require(['./pages/layout/segment.md'], resolve)
+        },
+
+        {
+            path: '/pages/layout/popup',
+            component: (resolve) => require(['./pages/layout/popup.md'], resolve)
+        },
+
+        {
+            path: '/pages/layout/popover',
+            component: (resolve) => require(['./pages/layout/popover.md'], resolve)
         }
     ]
 });

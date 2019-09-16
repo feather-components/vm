@@ -3,7 +3,7 @@
         <vm-topbar slot="header">
             popover组件
             <vm-popover slot="right">
-                <a href="javascript:" style="display: flex; align-items: center; height: 44px; float: right;">12333
+                <a href="javascript:">12333
                     <i class="ion-ios-add icon"></i>
                 </a>
 

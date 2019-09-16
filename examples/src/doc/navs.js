@@ -78,6 +78,41 @@ export default [
                 description: '',
                 url: '/pages/layout/actionsheet',
                 demo: 'components/actionsheet'
+            },
+
+            {
+                title: 'Tabs',
+                description: '',
+                url: '/pages/layout/tabs',
+                demo: 'components/tabs'
+            },
+
+            {
+                title: 'Swiper',
+                description: '',
+                url: '/pages/layout/swiper',
+                demo: 'components/slider'
+            },
+
+            {
+                title: 'Segment',
+                description: '',
+                url: '/pages/layout/segment',
+                demo: 'components/segment'
+            },
+
+            {
+                title: 'Popup',
+                description: '',
+                url: '/pages/layout/popup',
+                demo: 'components/popup'
+            },
+
+            {
+                title: 'Popover',
+                description: '',
+                url: '/pages/layout/popover',
+                demo: 'components/popover'
             }
         ]
     }
