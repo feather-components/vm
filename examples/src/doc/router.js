@@ -26,8 +26,38 @@ export default new VueRouter({
         },
 
         {
+            path: '/pages/layout/page',
+            component: (resolve) => require(['./pages/layout/page.md'], resolve)
+        },
+
+        {
+            path: '/pages/layout/topbar',
+            component: (resolve) => require(['./pages/layout/topbar.md'], resolve)
+        },
+
+        {
             path: '/pages/layout/box~row',
             component: (resolve) => require(['./pages/layout/box~row.md'], resolve)
+        },
+
+        {
+            path: '/pages/layout/list',
+            component: (resolve) => require(['./pages/layout/list.md'], resolve)
+        },
+
+        {
+            path: '/pages/layout/toast',
+            component: (resolve) => require(['./pages/layout/toast.md'], resolve)
+        },
+
+        {
+            path: '/pages/layout/modal',
+            component: (resolve) => require(['./pages/layout/modal.md'], resolve)
+        },
+
+        {
+            path: '/pages/layout/scroll',
+            component: (resolve) => require(['./pages/layout/scroll.md'], resolve)
         }
     ]
 });
