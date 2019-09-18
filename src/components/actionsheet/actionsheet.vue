@@ -3,8 +3,8 @@
         <div class="vm-actionsheet-items">
             <slot>
                 <template v-if="actions">
-                    <item 
-                        v-for="(action, key) of options" 
+                    <item
+                        v-for="(action, key) of actions"
                         :key="key"
                         @click="action.handler"
                         :disabled="action.disabled"

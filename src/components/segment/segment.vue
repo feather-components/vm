@@ -1,9 +1,9 @@
 <template>
 	<span class="vm-segment" :style="containerStyle">
 		<button
-            v-for="(item, key) of options" 
+            v-for="(item, key) of options"
             :key="key"
-            :style="index == key ? activeStyle : style" 
+            :style="index == key ? activeStyle : style"
             @click="onItemClick(key)"
         >
             {{item.label || item}}
@@ -63,7 +63,7 @@ export default {
                 color: this.color,
                 background: this.activeColor,
                 borderColor: this.color
-            }
+            };
         },
 
         activeStyle () {

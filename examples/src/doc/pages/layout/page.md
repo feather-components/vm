@@ -3,7 +3,15 @@
 ### 代码演示
 
 ```html
-<vm-page>页面内容</vm-page>
+<vm-page>
+    <template slot="header">
+        <div>header</div>
+    </template>
+    页面内容主体
+    <template slot="footer">
+        <div>footer</div>
+    </template>
+</vm-page>
 ```  
 
 ### Slot
