@@ -1,11 +1,9 @@
 <template>
     <page>
-        <vm-topbar slot="header">
+        <topbar slot="header">
             popover组件
-            <vm-popover slot="right">
-                <a href="javascript:">12333
-                    <i class="ion-ios-add icon"></i>
-                </a>
+            <popover slot="right">
+                <a href="javascript:">操作</a>
 
                 <template slot="actions">
                     <vm-popover-action><i class="vm-iconfont vm-icon-up" slot="icon"></i> 相机</vm-popover-action>
@@ -13,12 +11,12 @@
                     <vm-popover-action>连连看</vm-popover-action>
                     <vm-popover-action style="color: #fff; font-weight: bold;">自定义一下</vm-popover-action>
                 </template>
-            </vm-popover>
-        </vm-topbar>
+            </popover>
+        </topbar>
 
-        <vm-popover style="width: 50px; height: 30px; position: absolute; bottom: 40%; left: 45%;" message="hello, world">
+        <popover style="width: 50px; height: 30px; position: absolute; bottom: 40%; left: 45%;" message="hello, world">
             点击我
-        </vm-popover>
+        </popover>
     </page>
 </template>
 

@@ -139,7 +139,7 @@ export default {
 
             years: [
                 {
-                    	label: 2015,
+                    label: 2015,
                     value: 2015
                 },
                 {

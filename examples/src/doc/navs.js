@@ -113,6 +113,20 @@ export default [
                 description: '',
                 url: '/pages/layout/popover',
                 demo: 'components/popover'
+            },
+
+            {
+                title: 'Badge',
+                description: '',
+                url: '/pages/layout/badge',
+                demo: 'components/badge'
+            },
+
+            {
+                title: 'Form',
+                description: '',
+                url: '/pages/layout/form',
+                demo: 'components/form'
             }
         ]
     }

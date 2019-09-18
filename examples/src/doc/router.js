@@ -88,6 +88,17 @@ export default new VueRouter({
         {
             path: '/pages/layout/popover',
             component: (resolve) => require(['./pages/layout/popover.md'], resolve)
+        },
+
+        {
+            path: '/pages/layout/form',
+            component: (resolve) => require(['./pages/layout/form.md'], resolve)
+        },
+
+        {
+            path: '/pages/layout/badge',
+            component: (resolve) => require(['./pages/layout/badge.md'], resolve)
         }
+
     ]
 });

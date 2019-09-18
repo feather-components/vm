@@ -4,7 +4,7 @@
 
 ```html
 <vm-popover slot="right">
-    <a href="javascript:" style="display: flex; align-items: center; height: 44px; float: right;">12333</a>
+    <a href="javascript:">操作</a>
 
     <template slot="actions">
         <vm-popover-action><i class="vm-iconfont vm-icon-up" slot="icon"></i> 相机</vm-popover-action>
