@@ -9,7 +9,7 @@
 
             <vm-form-row align="right" label="输入价格">
                 <vm-input />
-                <vm-forward :arrow-size="14" @click="alert(3)"/>
+                <vm-forward :arrow-size="14" @click="onForWard"/>
             </vm-form-row>
 
             <vm-form-row label="icon checker">
@@ -58,7 +58,8 @@ import Source from '../filter.json';
 
 const selectList = [
     [
-        {label: '第一个',
+        {
+            label: '第一个',
             value: 1,
             children: [
                 {label: '1', value: 1},
@@ -73,7 +74,8 @@ const selectList = [
                 {label: '10', value: 10},
                 {label: '11', value: 11},
                 {label: '11', value: 12}
-            ]},
+            ]
+        },
         {label: '2', value: 2},
         {label: '3', value: 3},
         {label: '4', value: 4},
@@ -126,17 +128,13 @@ export default {
                 h: [],
                 date: '2017/01/01'
             },
-
             source: Source,
-
             selectList: selectList,
             show: false,
             val: [2, 3],
             style: style,
             dateValue: '2018-1-1',
             dateShow: false,
-            //				initDate: [2018, 1, 1],
-
             years: [
                 {
                     label: 2015,
@@ -159,13 +157,10 @@ export default {
     },
 
     mounted () {
-        //          setInterval(() => {
-        //          	  console.log(this.val)
-        //          }, 1000)
 
         setTimeout(() => {
-            this.checkers = [2018, 2019];
-        }, 5000);
+            this.checkers = [2018];
+        }, 1000);
 
         document.activeElement.blur();
         setTimeout(() => {
@@ -195,6 +190,9 @@ export default {
     },
 
     methods: {
+        onForWard () {
+            alert('您点击了ForWard')
+        },
         onCheckerChange (...args) {
             console.log(...args);
         },

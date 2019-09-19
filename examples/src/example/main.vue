@@ -9,7 +9,7 @@
 </template>
 
 <style scoped lang="less">
-    
+
 
     header{
         padding: 0px 10px;
@@ -53,6 +53,7 @@ export default {
     data () {
         return {
             source: [
+                'components/page',
                 'components/layout',
                 'components/button',
                 'components/segment',
@@ -71,6 +72,7 @@ export default {
                 'components/form',
                 'components/swiper',
                 'components/tabs',
+                'components/badge',
                 'directives/badge',
                 'directives/lazyload',
                 'directives/draggable'
