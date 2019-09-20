@@ -73,6 +73,7 @@ export default {
                 'components/swiper',
                 'components/tabs',
                 'components/badge',
+                'components/filter',
                 'directives/badge',
                 'directives/lazyload',
                 'directives/draggable'
