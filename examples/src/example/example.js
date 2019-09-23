@@ -26,6 +26,7 @@ import Draggable from './directives/draggable.vue';
 import Lazyload from './directives/lazyload.vue';
 import Segment from './components/segment.vue';
 import Topbar from './components/topbar.vue';
+import Page from './components/page.vue';
 import Configs from './cfg.js';
 
 import VM from 'vm';
@@ -50,6 +51,11 @@ const router = new VueRouter({
         {
             path: '/',
             component: Main
+        },
+
+        {
+            path: '/components/page',
+            component: Page
         },
 
         {

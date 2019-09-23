@@ -98,6 +98,16 @@ export default new VueRouter({
         {
             path: '/pages/layout/badge',
             component: (resolve) => require(['./pages/layout/badge.md'], resolve)
+        },
+
+        {
+            path: '/pages/layout/dropdown',
+            component: (resolve) => require(['./pages/layout/dropdown.md'], resolve)
+        },
+
+        {
+            path: '/pages/layout/filter',
+            component: (resolve) => require(['./pages/layout/filter.md'], resolve)
         }
 
     ]

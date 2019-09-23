@@ -85,7 +85,7 @@ export default {
     height: 100%;
     width: 250px;
     font-size: 14px;
-    
+    overflow-y: auto;
     .inner {
         margin: 30px 0px;
         border-right: 1px solid #eee;
@@ -121,7 +121,7 @@ export default {
 
     .description {
         font-size: 12px;
-        color: #999;
+        color: #999;    
         margin-left: 10px;
     }
 }
@@ -129,7 +129,7 @@ export default {
 .async {
     height: 100%;
     flex: 1;
-    overflow: scroll;
+    overflow: auto;
     margin-right: 10px;
     box-sizing: border-box;
     padding: 20px;

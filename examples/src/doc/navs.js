@@ -127,6 +127,20 @@ export default [
                 description: '',
                 url: '/pages/layout/form',
                 demo: 'components/form'
+            },
+
+            {
+                title: 'Dropdown',
+                description: '',
+                url: '/pages/layout/dropdown',
+                demo: 'components/dropdown'
+            },
+
+            {
+                title: 'Filter',
+                description: '',
+                url: '/pages/layout/filter',
+                demo: 'components/filter'
             }
         ]
     }
