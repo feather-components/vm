@@ -20,6 +20,7 @@ import Slider from './components/slider.vue';
 import Tabs from './components/tabs.vue';
 import Layout from './components/layout.vue';
 import Forward from './components/forward.vue';
+import VmBadge from './components/badge.vue';
 import Badge from './directives/badge.vue';
 import Draggable from './directives/draggable.vue';
 import Lazyload from './directives/lazyload.vue';
@@ -71,6 +72,11 @@ const router = new VueRouter({
             component: Forward
         },
 
+        {
+            path: '/components/badge',
+            component: VmBadge
+        },
+        
         {
             path: '/directives/badge',
             component: Badge
