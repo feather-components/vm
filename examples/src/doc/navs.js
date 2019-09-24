@@ -123,13 +123,6 @@ export default [
             },
 
             {
-                title: 'Form',
-                description: '',
-                url: '/pages/layout/form',
-                demo: 'components/form'
-            },
-
-            {
                 title: 'Dropdown',
                 description: '',
                 url: '/pages/layout/dropdown',
@@ -141,6 +134,24 @@ export default [
                 description: '',
                 url: '/pages/layout/filter',
                 demo: 'components/filter'
+            }
+        ]
+    },
+
+    {
+        title: '表单组件',
+        subs: [
+            {
+                title: 'Form',
+                description: 'Form集合',
+                url: '/pages/forms/form',
+                demo: 'components/form'
+            },
+            {
+                title: 'Input',
+                description: '',
+                url: '/pages/forms/input',
+                demo: 'components/input'
             }
         ]
     }

@@ -3,10 +3,10 @@
         <div class="navs">
             <div class="inner">
                 <template v-for="(nav, key) of navs">
-                    <a  
-                        v-if="!nav.subs" 
-                        :key="key" 
-                        :href="'#' + nav.url" 
+                    <a
+                        v-if="!nav.subs"
+                        :key="key"
+                        :href="'#' + nav.url"
                         :class="{
                             selected: nav.url == url
                         }"
@@ -18,10 +18,10 @@
 
                     <div v-else :key="key" class="l">
                         <div class="s">{{nav.title}}</div>
-                        <a 
-                            v-for="(sub, i) of nav.subs" 
-                            :key="i" 
-                            :href="'#' + sub.url" 
+                        <a
+                            v-for="(sub, i) of nav.subs"
+                            :key="i"
+                            :href="'#' + sub.url"
                             :class="{
                                 selected: sub.url == url
                             }"
@@ -62,16 +62,33 @@ export default {
     mounted () {
         setTimeout(() => {
             this.url = this.$route.path;
-        }, 200);
+            this.demo = this.getdemo(this.url);
+        }, 100);
     },
 
     methods: {
+        getdemo (url = '') {
+            const f = (list) => {
+                list.forEach(item => {
+                    if (item.url === url) {
+                        url = item.demo;
+                        return url;
+                    }
+                    if (item.subs) {
+                        f(item.subs);
+                    }
+                });
+                return url;
+            };
+
+            return f(navs) || '';
+        },
         go2v (info) {
             this.url = info.url;
             this.demo = info.demo || '';
         }
     }
-}
+};
 </script>
 
 <style scoped lang="less">
@@ -121,7 +138,7 @@ export default {
 
     .description {
         font-size: 12px;
-        color: #999;    
+        color: #999;
         margin-left: 10px;
     }
 }

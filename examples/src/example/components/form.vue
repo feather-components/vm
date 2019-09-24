@@ -166,6 +166,7 @@ export default {
         setTimeout(() => {
             this.postData.f.push('https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=4152229571,503740049&fm=11&gp=0.jpg');
         }, 10000);
+
     },
 
     watch: {

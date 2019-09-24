@@ -6,7 +6,7 @@
 <vm-button>button</vm-button>
 ```  
 
-### $Props
+### Props
 属性 | 说明 | 类型 | 默认值
 -----|-----|-------|------
 type | 按钮类型，可选值为'large', 'normal', 'small', 'mini'或者不设 | string | primary
