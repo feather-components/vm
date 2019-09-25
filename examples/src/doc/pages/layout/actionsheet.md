@@ -20,4 +20,11 @@ cancel | 可自定义取消按钮 | 取消
 属性 | 说明 | 类型 | 默认值
 -----|-----|-------|------
 cancelDisabled | 是否隐藏取消按钮 | Boolean | false
-actions | actions 数据，如果设置则不需要手动构造 actionsheet-item 节点 | array<{title,disabled, handler, extrasss}> | null
+actions | actions数据，如果设置则不需要手动构造actionsheet-item节点 | array\<actionsheet-item\> | null
+
+* ActionSheetItem
+
+属性 | 说明 | 类型 | 默认值
+-----|-----|-------|------
+extras | 描述文字 | String | -
+disabled | 是否可操作 | Boolean | false

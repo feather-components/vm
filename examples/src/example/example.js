@@ -27,6 +27,7 @@ import Lazyload from './directives/lazyload.vue';
 import Segment from './components/segment.vue';
 import Topbar from './components/topbar.vue';
 import Page from './components/page.vue';
+import Input from './components/input.vue';
 import Configs from './cfg.js';
 
 import VM from 'vm';
@@ -171,6 +172,11 @@ const router = new VueRouter({
         {
             path: '/components/topbar',
             component: Topbar
+        },
+
+        {
+            path: '/components/input',
+            component: Input
         }
     ]
 });

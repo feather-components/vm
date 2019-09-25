@@ -26,7 +26,13 @@ export default {
             visible: true
         };
     },
-
+    mounted () {
+        this.$confirm('确认该操作吗?').$on('cancel', () => {
+            alert('取消');
+        }).$on('confirm', () => {
+            alert('您点击了确定');
+        });
+    },
     methods: {
         alert () {
             this.$alert('hello，我是alert');
@@ -36,7 +42,7 @@ export default {
             let $confirm = this.$confirm('我是confirm，请点击确定', {
                 buttonClick2hide: false
             });
-            
+
             $confirm.$on('cancel', () => {
                 this.$confirm('确定取消吗？').$on('confirm', () => {
                     $confirm.destroy();
@@ -44,7 +50,7 @@ export default {
             }).$on('confirm', () => {
                 this.$alert('你点击了确定');
                 $confirm.destroy();
-            })
+            });
         },
 
         defined (flex) {

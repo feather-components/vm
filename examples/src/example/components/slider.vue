@@ -1,39 +1,44 @@
 <template>
     <page>
         <vm-topbar slot="header">swiper组件</vm-topbar>
-        <swiper @switch="slideTo" axis="x">
-            <swiper-item style="height: 300px;">
+        <swiper @switch="slideTo" axis="x" style="height: 500px">
+            <swiper-item style="height: 500px;background:#ccc">
                 向右滑
             </swiper-item>
 
             <swiper-item>
-                <list
-                    source="https://3g.163.com/touch/jsonp/sy/recommend/10-10.html?hasad=1&miss=59&refresh=A&offset=0&size=10&callback=?"
+                <vm-list
+                    :api="api"
                     :max-count-per-page="10"
-                    :data-formatter="formatter"
                     :pullup2load="true"
                     :pulldown2refresh="true"
                     ref="list"
-                    :auto-refresh="true"
                 >
                     <header slot="header">网易实时新闻</header>
-                    <template slot="row" scope="props">
+                    <template v-slot:row="{data, index}">
                         <div class="row">
-                            <a class="inner" :href="props.data.link">
-                                <template v-if="!props.data.title">
-                                    <img class="ads" src="http://cms-bucket.nosdn.127.net/96d8cf0375f64c24a819d50ae190b51820170601175516.jpeg?imageView&thumbnail=690y230&quality=45&type=webp&interlace=1&enlarge=1" />
-                                </template>
-                                <template v-else>
-                                    <img v-if="props.data.picInfo[0]" :src="props.data.picInfo[0].url"  />
-                                    <span class="title">{{props.data.digest}}</span>
-                                </template>
+                            <a class="inner" href="javascript:">
+                                <vm-swipeout>
+                                    <div :class="{
+                                    content: true,
+                                    active: false
+                                    }" >
+                                        <template v-if="!data.title">
+                                        <vm-image class="ads" src="http://cms-bucket.nosdn.127.net/96d8cf0375f64c24a819d50ae190b51820170601175516.jpeg?imageView&thumbnail=690y230&quality=45&type=webp&interlace=1&enlarge=1" />
+                                        </template>
+                                        <template v-else>
+                                            <vm-image v-if="data.picInfo[0]" :src="data.picInfo[0].url"  />
+                                            <span class="title">{{data.digest}}{{data.digest}}{{data.digest}}{{data.digest}}{{data.digest}}{{data.digest}}{{data.digest}}{{data.digest}}{{data.digest}}{{data.digest}}{{data.digest}}{{data.digest}}{{data.digest}}{{data.digest}}{{data.digest}}{{data.digest}}{{data.digest}}{{data.digest}}{{data.digest}}{{data.digest}}{{data.digest}}{{data.digest}}{{data.digest}}{{data.digest}}{{data.digest}}{{data.digest}}{{data.digest}}{{data.digest}}{{data.digest}}{{data.digest}}{{data.digest}}{{data.digest}}{{data.digest}}{{data.digest}}{{data.digest}}{{data.digest}}{{data.digest}}</span>
+                                        </template>
+                                    </div>
+                                </vm-swipeout>
                             </a>
                         </div>
                     </template>
-                </list>
+                </vm-list>
             </swiper-item>
 
-            <swiper-item style="height: 300px;">
+            <swiper-item style="background:#ddd">
                 向左滑
             </swiper-item>
         </swiper>
@@ -118,6 +123,7 @@ import {
     SwiperItem
 } from 'vm';
 
+import Ajax from 'ajax';
 export default {
     components: {
         Page,
@@ -134,8 +140,17 @@ export default {
     },
 
     methods: {
-        formatter (data) {
-            return data.list;
+        api (params) {
+            return new Promise((resolve, reject) => {
+                Ajax({
+                    url: 'https://3g.163.com/touch/jsonp/sy/recommend/10-10.html?hasad=1&miss=59&refresh=A&offset=0&size=10&callback=?',
+                    dataType: 'json',
+                    success (data) {
+                        resolve(data.list);
+                    },
+                    error: reject
+                });
+            });
         },
 
         slideTo (to, from) {

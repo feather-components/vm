@@ -16,7 +16,7 @@
 ### Slot
 名称 | 说明 | Slot-Scpoe
 -----|-----|-------|------
-left | 左边按钮，默认执行history.back() | <icon \/\>
+left | 左边按钮，默认执行history.back() | -
 right | 右边按钮 | -
 
 ### Props

@@ -16,11 +16,10 @@
 ### Solts
 名称 | 说明 | Slot-Scpoe
 -----|-----|-------|------
-header | 固定在列表滚动前顶部位置 | -
-footer | 固定在列表滚动前后底部位置 | -
-rows | 所有数据集合，用于渲染列表（需手动处理渲染列表） | slot -> row, slot-scpoe(props)
-row | 列表循环后逐条数据渲染 | slot-scope(props)
-if-loading | 正在加载时提示文字 | <loading \/\>正在加载中
+header | 固定在列表滚动顶部位置 | -
+footer | 固定在列表滚动底部位置 | -
+row | 列表循环后逐条数据渲染 | Object{data=>当前条数据，index=>当前条数索引}
+if-loading | 正在加载时提示文字 | 正在加载中
 if-failed | 加载失败时提示文字 | 网络异常，加载失败
 if-empty | 返回空数组时提示文字 | 神马都木有
 if-nomore | 最后一页时提示文字 | 就这么多啦

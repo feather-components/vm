@@ -158,11 +158,11 @@ export default {
 
         dragEnd (event) {
             var info = event.data;
+
             this.active = true;
             setTimeout(() => {
                 info.e.target.style.transform = `translate3d(${info.x < -50 ? -100 : 0}px, 0px, 0px)`;
             }, 100);
-            
         },
 
         onDel () {
@@ -170,7 +170,7 @@ export default {
         },
 
         onComment () {
-            console.log('comment')
+            console.log('comment');
         }
     }
 };

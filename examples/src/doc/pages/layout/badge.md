@@ -4,17 +4,11 @@
 ```html
 <vm-badge>10</vm-badge>
 
-<vm-badge style="width: 60px; height: 30px">10</vm-badge>
+<vm-badge>未读消息</vm-badge>
 
 <vm-badge style="width: 100px; height: 60px;line-height: 60px;" color="blue">10</vm-badge>
 
-<vm-badge>未读消息</vm-badge>
 ```  
-### Slot
-名称 | 说明 | 默认值
------|-----|-------|------
-- | 如未设置props text属性 |
-
 
 ### Props
 属性 | 说明 | 类型 | 默认值

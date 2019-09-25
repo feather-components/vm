@@ -2,7 +2,7 @@
     <vm-page>
         <vm-topbar slot="header">toast组件</vm-topbar>
 
-        <div style="margin: 20px; display: flex;">
+        <div style="margin: 40px; display: flex;">
             <vm-button radius="0" size="large" @click="show()">提示</vm-button>
             <vm-button radius="0" size="large" @click="success()">成功</vm-button>
             <vm-button radius="0" size="large" @click="loading()">loading</vm-button>
@@ -11,7 +11,14 @@
 </template>
 
 <script>
+import {Toast} from 'vm';
 export default {
+    mounted () {
+        Toast({
+            message: 'hello',
+            type: 'loading'
+        });
+    },
     methods: {
         show () {
             this.$toast({

@@ -3,7 +3,7 @@
         <vm-topbar :left-enabled="false">vm</vm-topbar>
 
         <vm-scroll class="navs">
-            <a href="javascript:" v-for="item of source" @click="go(item)">{{item}}</a>
+            <a href="javascript:" v-for="item of source" :key="item" @click="go(item)">{{item}}</a>
         </vm-scroll>
     </page>
 </template>
@@ -80,7 +80,9 @@ export default {
             ]
         };
     },
+    watch: {
 
+    },
     methods: {
         go (url) {
             this.$router.push(url);

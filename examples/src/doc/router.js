@@ -89,26 +89,30 @@ export default new VueRouter({
             path: '/pages/layout/popover',
             component: (resolve) => require(['./pages/layout/popover.md'], resolve)
         },
-
-        {
-            path: '/pages/layout/form',
-            component: (resolve) => require(['./pages/layout/form.md'], resolve)
-        },
-
+        
         {
             path: '/pages/layout/badge',
             component: (resolve) => require(['./pages/layout/badge.md'], resolve)
         },
-
+        
         {
             path: '/pages/layout/dropdown',
             component: (resolve) => require(['./pages/layout/dropdown.md'], resolve)
         },
-
+        
         {
             path: '/pages/layout/filter',
             component: (resolve) => require(['./pages/layout/filter.md'], resolve)
-        }
+        },
+        
+        {
+            path: '/pages/forms/form',
+            component: (resolve) => require(['./pages/forms/form.md'], resolve)
+        },
 
+        {
+            path: '/pages/forms/input',
+            component: (resolve) => require(['./pages/forms/input.md'], resolve)
+        },
     ]
 });
