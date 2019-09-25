@@ -34,14 +34,14 @@ export default {
     computed: {
         boxStyle () {
             return {
-                left: this.boxOffset,
+                left: this.boxOffset + 'px',
                 background: this.bgColor
             };
         },
 
         arrowStyle () {
             return {
-                left: this.arrowOffset,
+                left: this.arrowOffset + 'px',
                 borderColor: this.bgColor
             };
         }
