@@ -28,6 +28,10 @@ import Segment from './components/segment.vue';
 import Topbar from './components/topbar.vue';
 import Page from './components/page.vue';
 import Input from './components/input.vue';
+import Textarea from './components/textarea.vue';
+import Switch from './components/switch.vue';
+import Picker from './components/picker.vue';
+import DatePicker from './components/datepicker.vue';
 import Configs from './cfg.js';
 
 import VM from 'vm';
@@ -83,7 +87,7 @@ const router = new VueRouter({
             path: '/components/badge',
             component: VmBadge
         },
-        
+
         {
             path: '/directives/badge',
             component: Badge
@@ -177,6 +181,26 @@ const router = new VueRouter({
         {
             path: '/components/input',
             component: Input
+        },
+
+        {
+            path: '/components/textarea',
+            component: Textarea
+        },
+
+        {
+            path: '/components/switch',
+            component: Switch
+        },
+
+        {
+            path: '/components/picker',
+            component: Picker
+        },
+
+        {
+            path: '/components/datepicker',
+            component: DatePicker
         }
     ]
 });

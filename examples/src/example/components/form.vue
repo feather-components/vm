@@ -18,14 +18,13 @@
 
             <vm-form-row label="checker">
                 <vm-checker-group :options="years" @change="onCheckerChange" v-model="checkers">
-                    
+
                 </vm-checker-group>
             </vm-form-row>
-        
+
             <vm-form-row label="textarea">
                 <vm-textarea placeholder="多行文本" class="textarea" />
-            </vm-form-row>            
-
+            </vm-form-row>
 
             <!-- <vm-textarea label="多行文本" placeholder="多行文本" tips="tips" v-model="postData.b">这里是一些备注之类
                 <template slot="label">多行&nbsp;<span style="font-size: 0.12rem" :style="{color: postData.b.length > 10 ? 'red' : ''}">({{postData.b.length}}/10)</span></template>
@@ -41,9 +40,9 @@
                 <vm-switch checked />
             </vm-form-row>
 
-<!-- 
+<!--
             <vm-dateinput label="选择日期" v-model="postData.date" /> -->
-<!-- 
+<!--
             <vm-select label="下拉" :source="selectList" v-model="postData.e" /> -->
 
             <!-- <images label="上传图片" v-model="postData.f" :size="10" v-lightbox /> -->
@@ -55,7 +54,7 @@
 
 <script>
 import Source from '../filter.json';
-
+import {Toast} from 'vm';
 const selectList = [
     [
         {
@@ -157,7 +156,6 @@ export default {
     },
 
     mounted () {
-
         setTimeout(() => {
             this.checkers = [2018];
         }, 1000);
@@ -166,7 +164,6 @@ export default {
         setTimeout(() => {
             this.postData.f.push('https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=4152229571,503740049&fm=11&gp=0.jpg');
         }, 10000);
-
     },
 
     watch: {
@@ -182,23 +179,23 @@ export default {
         },
 
         aaa (v) {
-            console.log('jfkdjfkdsfds', v)
+            console.log('jfkdjfkdsfds', v);
         },
 
         abc (v) {
-            console.log(v)
+            console.log(v);
         }
     },
 
     methods: {
         onForWard () {
-            alert('您点击了ForWard')
+            alert('您点击了ForWard');
         },
         onCheckerChange (...args) {
             console.log(...args);
         },
         onInputinput (...args) {
-            console.log(...args)
+            console.log(...args);
         },
 
         selectFormatter (data) {

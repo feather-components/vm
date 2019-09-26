@@ -10,7 +10,6 @@
 
 <style scoped lang="less">
 
-
     header{
         padding: 0px 10px;
         height: 50px;
@@ -74,6 +73,8 @@ export default {
                 'components/tabs',
                 'components/badge',
                 'components/filter',
+                'components/switch',
+                'components/datepick',
                 'directives/badge',
                 'directives/lazyload',
                 'directives/draggable'

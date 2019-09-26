@@ -130,11 +130,19 @@ export default [
             },
 
             {
-                title: 'Filter',
+                title: 'Picker',
                 description: '',
-                url: '/pages/layout/filter',
-                demo: 'components/filter'
+                url: '/pages/layout/picker',
+                demo: 'components/picker'
+            },
+
+            {
+                title: 'DateTime Picker',
+                description: '',
+                url: '/pages/layout/datepicker',
+                demo: 'components/datepicker'
             }
+
         ]
     },
 
@@ -147,11 +155,26 @@ export default [
                 url: '/pages/forms/form',
                 demo: 'components/form'
             },
+
             {
                 title: 'Input',
                 description: '',
                 url: '/pages/forms/input',
                 demo: 'components/input'
+            },
+
+            {
+                title: 'Textarea',
+                description: '',
+                url: '/pages/forms/textarea',
+                demo: 'components/textarea'
+            },
+
+            {
+                title: 'Switch',
+                description: '',
+                url: '/pages/forms/switch',
+                demo: 'components/switch'
             }
         ]
     }

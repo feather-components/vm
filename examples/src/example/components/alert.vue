@@ -26,13 +26,7 @@ export default {
             visible: true
         };
     },
-    mounted () {
-        this.$confirm('确认该操作吗?').$on('cancel', () => {
-            alert('取消');
-        }).$on('confirm', () => {
-            alert('您点击了确定');
-        });
-    },
+
     methods: {
         alert () {
             this.$alert('hello，我是alert');
