@@ -23,11 +23,16 @@ export default {
 ### Props
 属性 | 说明 | 类型 | 默认值
 -----|-----|-------|------
-options | 选择项，可直接对象数组,{label,value}格式 | Array | []
 confirmText | 确认按钮 | String | 确定
 cancelText | 取消按钮 | String | 取消
 title | 标题文字 | String | -
-
+minDate | 日期的最小可选值 | [String,Date] | 1970-01-01
+maxDate | 日期的最大可选值 | [String,Date] | new Date()
+formatter | 日期需要的格式 | String | yyyy/mm/dd
+units | 展示格式 | Array | ['年', '月', '日','时','分']
+### 全局配置
+Vmui.config => datepicker.units   
+Vmui.config => timepicker.units
 ### Events
 事件名称|说明|回调参数
 ---|----|----

@@ -63,7 +63,7 @@ export default {
         setTimeout(() => {
             this.url = this.$route.path;
             this.demo = this.getdemo(this.url);
-        }, 100);
+        }, 200);
     },
 
     methods: {

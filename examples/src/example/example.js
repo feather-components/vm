@@ -30,8 +30,10 @@ import Page from './components/page.vue';
 import Input from './components/input.vue';
 import Textarea from './components/textarea.vue';
 import Switch from './components/switch.vue';
+import Checker from './components/checker.vue';
 import Picker from './components/picker.vue';
 import DatePicker from './components/datepicker.vue';
+import Image from './components/image.vue';
 import Configs from './cfg.js';
 
 import VM from 'vm';
@@ -194,6 +196,11 @@ const router = new VueRouter({
         },
 
         {
+            path: '/components/checker',
+            component: Checker
+        },
+
+        {
             path: '/components/picker',
             component: Picker
         },
@@ -201,7 +208,13 @@ const router = new VueRouter({
         {
             path: '/components/datepicker',
             component: DatePicker
+        },
+
+        {
+            path: '/components/image',
+            component: Image
         }
+
     ]
 });
 

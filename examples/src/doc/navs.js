@@ -141,6 +141,27 @@ export default [
                 description: '',
                 url: '/pages/layout/datepicker',
                 demo: 'components/datepicker'
+            },
+
+            {
+                title: 'Search',
+                description: '',
+                url: '/pages/layout/search',
+                demo: 'components/search'
+            },
+
+            {
+                title: 'SearchBar',
+                description: '',
+                url: '/pages/layout/searchbar',
+                demo: 'components/searchbar'
+            },
+
+            {
+                title: 'Image',
+                description: '',
+                url: '/pages/layout/image',
+                demo: 'components/image'
             }
 
         ]
@@ -175,6 +196,13 @@ export default [
                 description: '',
                 url: '/pages/forms/switch',
                 demo: 'components/switch'
+            },
+
+            {
+                title: 'Checker',
+                description: '',
+                url: '/pages/forms/checker',
+                demo: 'components/checker'
             }
         ]
     }

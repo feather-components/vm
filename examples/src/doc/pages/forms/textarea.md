@@ -2,7 +2,7 @@
 
 ### 代码演示
 ```html
-    <vm-textarea />
+<vm-textarea />
 ```  
 
 ### Props

@@ -126,6 +126,11 @@ export default new VueRouter({
         },
 
         {
+            path: '/pages/forms/checker',
+            component: (resolve) => require(['./pages/forms/checker.md'], resolve)
+        },
+
+        {
             path: '/pages/layout/picker',
             component: (resolve) => require(['./pages/layout/picker.md'], resolve)
         },
@@ -133,6 +138,22 @@ export default new VueRouter({
         {
             path: '/pages/layout/datepicker',
             component: (resolve) => require(['./pages/layout/datepicker.md'], resolve)
+        },
+
+        {
+            path: '/pages/layout/search',
+            component: (resolve) => require(['./pages/layout/search.md'], resolve)
+        },
+
+        {
+            path: '/pages/layout/searchbar',
+            component: (resolve) => require(['./pages/layout/searchbar.md'], resolve)
+        },
+
+        {
+            path: '/pages/layout/image',
+            component: (resolve) => require(['./pages/layout/image.md'], resolve)
         }
+
     ]
 });
