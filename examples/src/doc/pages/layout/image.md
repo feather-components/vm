@@ -1,7 +1,7 @@
 ## Image
 
 ### 代码演示
-
+* 图片异步加载
 ```html
 <vm-image 
     style="margin:0 auto" 

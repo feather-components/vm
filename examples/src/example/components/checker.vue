@@ -7,12 +7,16 @@
                 <vm-checker>选中</vm-checker>
             </vm-form-row>
 
-            <vm-form-row label="icon checker">
-                <vm-checker-group :options="years" icon-type @change="onCheckerChange" v-model="checkers" />
+            <vm-form-row label="checker square">
+                <vm-checker square>确定</vm-checker>
             </vm-form-row>
 
             <vm-form-row label="checker group">
-                <vm-checker-group :options="years" @change="onCheckerChange" v-model="checkers"></vm-checker-group>
+                <vm-checker-group :options="years" icon-type @change="onCheckerChange" v-model="checkers" />
+            </vm-form-row>
+
+            <vm-form-row label="checker radio">
+                <vm-checker-group radio :options="years" @change="onCheckerChange" v-model="radioVal"></vm-checker-group>
             </vm-form-row>
 
     </vm-page>
@@ -81,6 +85,7 @@ export default {
         return {
             abc: '11:11',
             checkers: 2019,
+            radioVal: 2018,
             aaa: '',
             postData: {
                 a: '33',
@@ -101,10 +106,6 @@ export default {
             dateValue: '2018-1-1',
             dateShow: false,
             years: [
-                {
-                    label: 2015,
-                    value: 2015
-                },
                 {
                     label: 2016,
                     value: 2016
