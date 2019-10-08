@@ -34,6 +34,7 @@ import Checker from './components/checker.vue';
 import Picker from './components/picker.vue';
 import DatePicker from './components/datepicker.vue';
 import Image from './components/image.vue';
+import Loading from './components/loading.vue';
 import Configs from './cfg.js';
 
 import VM from 'vm';
@@ -213,6 +214,11 @@ const router = new VueRouter({
         {
             path: '/components/image',
             component: Image
+        },
+
+        {
+            path: '/components/loading',
+            component: Loading
         }
 
     ]

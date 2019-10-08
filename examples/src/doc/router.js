@@ -153,6 +153,16 @@ export default new VueRouter({
         {
             path: '/pages/layout/image',
             component: (resolve) => require(['./pages/layout/image.md'], resolve)
+        },
+
+        {
+            path: '/pages/layout/loading',
+            component: (resolve) => require(['./pages/layout/loading.md'], resolve)
+        },
+
+        {
+            path: '/pages/layout/forward',
+            component: (resolve) => require(['./pages/layout/forward.md'], resolve)
         }
 
     ]

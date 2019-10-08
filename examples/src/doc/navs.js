@@ -162,6 +162,20 @@ export default [
                 description: '',
                 url: '/pages/layout/image',
                 demo: 'components/image'
+            },
+
+            {
+                title: 'Loading',
+                description: '',
+                url: '/pages/layout/loading',
+                demo: 'components/loading'
+            },
+
+            {
+                title: 'Forward',
+                description: '',
+                url: '/pages/layout/forward',
+                demo: 'components/forward'
             }
 
         ]
