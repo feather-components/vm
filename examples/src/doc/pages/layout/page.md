@@ -20,5 +20,5 @@
 header | 三层布局顶部位置 | -
 footer | 三层布局底部位置 | -
 
-### 全局配置
-Vmui.config => page.background
+### Config  
+page.background

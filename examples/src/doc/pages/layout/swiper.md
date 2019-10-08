@@ -3,7 +3,7 @@
 ### 代码演示
 
 ```html
-<vm-swiper @switch="slideTo" axis="x" style="height:500px;">
+<vm-swiper @switch="slideTo" axis="x">
     <vm-swiper-item>
         向右滑
     </vm-swiper-item>

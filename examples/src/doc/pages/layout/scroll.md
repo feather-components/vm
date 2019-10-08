@@ -3,7 +3,8 @@
 ### 代码演示
 
 ```html
-<vm-scroll></vm-scroll>
+<vm-scroll>默认竖向滚动</vm-scroll>
+<vm-scroll axios="x">横向滚动</vm-scroll>
 ```  
 
 ### Slots

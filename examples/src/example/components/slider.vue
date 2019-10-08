@@ -1,8 +1,8 @@
 <template>
     <page>
         <vm-topbar slot="header">swiper组件</vm-topbar>
-        <swiper @switch="slideTo" axis="x" style="height: 500px">
-            <swiper-item style="height: 500px;background:#ccc">
+        <swiper @switch="slideTo" axis="x">
+            <swiper-item style="height: 100%;background:#ccc">
                 向右滑
             </swiper-item>
 

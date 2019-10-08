@@ -11,7 +11,7 @@
 </vm-actionsheet>
 ```  
 
-### Slot
+### Slots
 名称 | 说明 | Slot-Scpoe
 -----|-----|-------|------
 cancel | 可自定义取消按钮 | 取消
@@ -22,7 +22,7 @@ cancel | 可自定义取消按钮 | 取消
 cancelDisabled | 是否隐藏取消按钮 | Boolean | false
 actions | actions数据，如果设置则不需要手动构造actionsheet-item节点 | array\<actionsheet-item\> | null
 
-* ActionSheetItem
+### ActionSheetItem
 
 属性 | 说明 | 类型 | 默认值
 -----|-----|-------|------

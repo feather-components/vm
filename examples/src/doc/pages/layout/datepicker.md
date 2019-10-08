@@ -30,13 +30,15 @@ minDate | 日期的最小可选值 | [String,Date] | 1970-01-01
 maxDate | 日期的最大可选值 | [String,Date] | new Date()
 formatter | 日期需要的格式 | String | yyyy/mm/dd
 units | 展示格式 | Array | ['年', '月', '日','时','分']
-### 全局配置
-Vmui.config => datepicker.units   
-Vmui.config => timepicker.units
+
 ### Events
 事件名称|说明|回调参数
 ---|----|----
 update:visible | 遮罩变更时触发 | boolean => void
 confirm | 确定时触发（获取当前被选中的值） | (str, arr) => void
 cancel | 隐藏时触发 | (bool) => void
-select | 当前选择项 | (currData) => void
+select | 当前选择项 | (currData) => void  
+
+### Config 
+datepicker.units   
+timepicker.units

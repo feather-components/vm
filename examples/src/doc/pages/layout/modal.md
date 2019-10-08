@@ -10,7 +10,7 @@ Alert('hello，我是alert');
 
 ### 全局方法
 ##### 组件已挂载Vue，使用方式和参数如下：  
-```html
+```js
 this.$alert('hello，我是alert');   
 
 var $confirm = this.$confirm('我是confirm，请点击确定', {
