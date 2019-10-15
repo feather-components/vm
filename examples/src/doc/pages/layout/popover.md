@@ -28,6 +28,6 @@ visible | 显示隐藏 | Boolean | false
 ### Events
 事件名称|说明|回调参数
 ---|----|----
-update:visible | 遮罩变更时触发 | boolean => void
-show | 遮罩显示时触发 | () => void
-hide | 遮罩隐藏时触发 | () => void
+update:visible | 遮罩变更时触发 | Boolean
+show | 遮罩显示时触发 | -
+hide | 遮罩隐藏时触发 | -

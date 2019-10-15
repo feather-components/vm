@@ -16,3 +16,6 @@ defaultIndex | 默认选中索引 | Number | 0
 headersStyle | 自定义tabs的样式 | String,Object | 
 headers | tabs数据配置 | Array | [] 
 headerActiveColor | 色值，可使用vmui公共配置 | String | tabs.header-active-color
+
+### Config  
+tabs.header-active-color

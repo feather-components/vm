@@ -32,5 +32,9 @@ indicatorActiveColor | 当前色值，可设置vmui公共配置 | String | swipe
 ### Events
 事件名称|说明|回调参数
 ---|----|----
-switch| 切换时触发 | (index, oldIndex) => void
-draging| 移动时触发 | e => void
+switch| 切换时触发 | index:Number, oldIndex:Number
+draging| 移动时触发 | Event
+
+### Config  
+swiper.indicator-color   
+swiper.indicator-active-color

@@ -37,6 +37,6 @@ autofocus | 规定输入字段在页面加载时是否获得焦点 | Boolean | f
 ### Events
 事件名称|说明|回调参数
 ---|----|----
-submit | 搜索提交时触发 | val => void
-focus | 搜索框聚焦时触发 | () => void
-blur | 搜索框失焦时触发 | () => void
+submit | 搜索提交时触发 | FormsData: Any
+focus | 搜索框聚焦时触发 | -
+blur | 搜索框失焦时触发 | -

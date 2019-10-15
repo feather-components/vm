@@ -34,10 +34,10 @@ units | 展示格式 | Array | ['年', '月', '日','时','分']
 ### Events
 事件名称|说明|回调参数
 ---|----|----
-update:visible | 遮罩变更时触发 | boolean => void
-confirm | 确定时触发（获取当前被选中的值） | (str, arr) => void
-cancel | 隐藏时触发 | (bool) => void
-select | 当前选择项 | (currData) => void  
+update:visible | 遮罩变更时触发 | Boolean
+confirm | 确定时触发（获取当前被选中的值） | String, Array
+cancel | 隐藏时触发 | Boolean
+select | 当前选择项 | currData:Any
 
 ### Config 
 datepicker.units   

@@ -18,4 +18,4 @@ color | 色值，可设置vmui公共配置 | String | segment.color
 ### Events
 事件名称|说明|回调参数
 ---|----|----
-switch| 切换时触发 | (index, data) => void
+switch| 切换时触发 | index:Number, data?:Any

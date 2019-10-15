@@ -38,5 +38,5 @@ cancelButton | 取消按钮文字 | String | -
 ### Events
 事件名称|说明|回调参数
 ---|----|----
-confirm|点击确认触发|Function
-cancel|点击取消触发|Function
+confirm|点击确认触发|-
+cancel|点击取消触发|-

@@ -55,7 +55,7 @@ export default {
 ### Props
 属性 | 说明 | 类型 | 默认值
 -----|-----|-------|------
-api | 设置请求地址，返回Promise（resolve[Array]）， | Object[Promise] | -
+api | 设置请求地址，返回Promise[resolve:Array]， | Function:Promise | -
 barStyle | 搜索框自定义样式 | String，Object | -
 historyId | 制定搜索历史使用的标识 | - | [hash [,pathname]]
 placeholder | 规定帮助用户填写输入字段的提示 | String | -
@@ -65,6 +65,6 @@ maxlength | 规定输入字段中的字符的最大长度 | Number | -
 ### Events
 事件名称|说明|回调参数
 ---|----|----
-input | 搜索时输入的内容 | val => void
-confirm | 点击搜索结果中的选中的值 | row => void
-cancel | 取消搜索 | () => void
+input | 搜索时输入的内容 | value:[Number,String]
+confirm | 点击搜索结果中的选中的值 | data:Any
+cancel | 取消搜索 | -

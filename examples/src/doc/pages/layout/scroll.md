@@ -25,5 +25,5 @@ disabled | 禁止触发滚动 | Boolean | false
 ### Events
 事件名称|说明|回调参数
 ---|----|----
-scrolling| 正在滚动时触发 | e => void
-draging| 移动时触发 | pos => void
+scrolling| 正在滚动时触发 | Event
+draging| 移动时触发 | Pos
