@@ -3,7 +3,7 @@
         <vm-topbar>input组件</vm-topbar>
 
         <vm-form-row vertical-layout label="输入价格">
-            <vm-input style="padding:0 10px"/>
+            <vm-input style="padding:0 10px" theme="transparent"/>
         </vm-form-row>
 
         <vm-form-row align="right" label="输入价格">

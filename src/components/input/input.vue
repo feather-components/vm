@@ -1,4 +1,4 @@
-<template>  
+<template>
     <div class="vm-input" :style="style">
         <div class="vm-input-helper">
             <input
@@ -23,14 +23,6 @@
 <script>
 import Mixins from '../../mixins/input';
 import Icon from '../icon';
-import Config from '../../config';
-
-const INPUT_PRE_STYLES = {
-    'default': 'background: #F3F6FB',
-    'transparent': 'background: transparent',
-    'underline': 'border-bottom: 1px solid #333',
-    ...Config('input.pre-themes')
-};
 
 export default {
     name: 'input',
@@ -61,22 +53,11 @@ export default {
             default () {
                 return this.rowAlign;
             }
-        },
-
-        theme: {
-            type: String,
-            default: 'default'
         }
     },
 
     components: {
         Icon
-    },
-
-    data () {
-        return {
-            style: INPUT_PRE_STYLES[this.theme]
-        };
     },
 
     methods: {

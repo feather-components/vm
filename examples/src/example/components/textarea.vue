@@ -3,7 +3,7 @@
         <vm-topbar>Textarea组件</vm-topbar>
 
         <vm-form-row label="textarea">
-            <vm-textarea placeholder="多行文本" style="background:#f1f1f1" />
+            <vm-textarea ref="textarea" v-model="t" theme="default" placeholder="多行文本"/>
         </vm-form-row>
     </vm-page>
 </template>

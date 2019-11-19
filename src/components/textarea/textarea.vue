@@ -1,12 +1,15 @@
 <template>
-    <textarea 
-        :placeholder="placeholder"
-        :readonly="readonly"
-        :autofocus="autofocus"
-        class="vm-textarea needsclick"
-        @input="onInput"
-    >
-    </textarea>
+    <div class="vm-textarea" :style="style">
+        <textarea
+            :placeholder="placeholder"
+            :readonly="readonly"
+            :autofocus="autofocus"
+            class="vm-textarea needsclick"
+            @input="onInput"
+            v-model="val"
+        >
+        </textarea>
+    </div>
 </template>
 
 <script>
@@ -21,6 +24,7 @@ export default {
     methods: {
         onInput: function (e) {
             const el = e.target;
+
             el.style.height = 'auto';
             el.style.height = el.scrollHeight + 'px';
         }
@@ -42,7 +46,7 @@ export default {
     box-sizing: border-box;
     min-height: 40px;
     border: 0px;
-
+    background: transparent;
     &::-webkit-input-placeholder {
         font-weight: 300;
         opacity: 0.7;
