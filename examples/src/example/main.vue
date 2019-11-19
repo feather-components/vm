@@ -2,14 +2,13 @@
     <page>
         <vm-topbar :left-enabled="false">vm</vm-topbar>
 
-        <vm-scroll class="navs" style="height: 100%;" >
-            <a href="javascript:" v-for="item of source" @click="go(item)">{{item}}</a>
+        <vm-scroll class="navs">
+            <a href="javascript:" v-for="item of source" :key="item" @click="go(item)">{{item}}</a>
         </vm-scroll>
     </page>
 </template>
 
 <style scoped lang="less">
-    
 
     header{
         padding: 0px 10px;
@@ -53,6 +52,7 @@ export default {
     data () {
         return {
             source: [
+                'components/page',
                 'components/layout',
                 'components/button',
                 'components/segment',
@@ -69,16 +69,21 @@ export default {
                 'components/uploader',
                 'components/popover',
                 'components/form',
-                'components/filter',
-                'components/slider',
+                'components/swiper',
                 'components/tabs',
+                'components/badge',
+                'components/filter',
+                'components/switch',
+                'components/datepick',
                 'directives/badge',
                 'directives/lazyload',
                 'directives/draggable'
             ]
         };
     },
+    watch: {
 
+    },
     methods: {
         go (url) {
             this.$router.push(url);

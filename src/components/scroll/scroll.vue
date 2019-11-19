@@ -46,6 +46,20 @@ const FUNCTIONS = {
 export default {
     name: 'scroll',
 
+    provide () {
+        return {
+            _$link: this
+        };
+    },
+
+    inject: {
+        _$link: {
+            default () {
+                return null;
+            }
+        }
+    },
+
     props: {
         scrollbars: {
             type: Boolean,
@@ -83,12 +97,6 @@ export default {
     directives: {
         Autosize,
         Draggable
-    },
-
-    provide () {
-        return {
-            _$scroller: this
-        };
     },
 
     data () {

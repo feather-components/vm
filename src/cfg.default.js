@@ -1,5 +1,3 @@
-import Util from './helper/util';
-
 export default {
     'theme': '#E74D4D',
     'box.margin-top': '12px',

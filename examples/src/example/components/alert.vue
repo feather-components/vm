@@ -36,7 +36,7 @@ export default {
             let $confirm = this.$confirm('我是confirm，请点击确定', {
                 buttonClick2hide: false
             });
-            
+
             $confirm.$on('cancel', () => {
                 this.$confirm('确定取消吗？').$on('confirm', () => {
                     $confirm.destroy();
@@ -44,7 +44,7 @@ export default {
             }).$on('confirm', () => {
                 this.$alert('你点击了确定');
                 $confirm.destroy();
-            })
+            });
         },
 
         defined (flex) {

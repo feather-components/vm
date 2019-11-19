@@ -1,5 +1,5 @@
 <template>
-	<div class="vm-tabs">
+    <div class="vm-tabs">
         <scroll axis="x" ref="headers" :style="headersStyle">
             <div class="vm-tabs-headers">
                 <a
@@ -7,7 +7,7 @@
                     :key="key"
                     :class="{
                         'vm-tabs-header': true,
-                        'vm-tabs-header-actived': key == index 
+                        'vm-tabs-header-actived': key == index
                     }"
                     :style="{
                         color: key == index ? headerActiveColor : 'inherit',
@@ -25,7 +25,7 @@
                 <slot></slot>
             </div>
         </div>
-	</div>
+    </div>
 </template>
 
 <script>
@@ -42,8 +42,7 @@ export default {
     },
 
     components: {
-        Scroll,
-        Headers
+        Scroll
     },
 
     props: {

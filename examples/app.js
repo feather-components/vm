@@ -1,13 +1,12 @@
-const template = require('fs').readFileSync(require('path').join(__dirname, '_build_/index.html'), 'utf-8');
 const server = require('express')()
 
 server.get('*', (req, res) => {
-  if (/\.js|\.css/.test(req.url)) {
-    res.end(require('fs').readFileSync(require('path').join(__dirname, '_build_', req.url), 'utf-8'));
-    return;
-  }
+    if (req.url == '/favicon.ico') {
+        res.end();
+        return false;
+    }
 
-  res.end(template);
+    res.end(require('fs').readFileSync(require('path').join(__dirname, '_build_', req.url), 'utf-8'));
 });
 
 server.listen(9090)

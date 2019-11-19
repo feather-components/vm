@@ -4,7 +4,7 @@ import Model from '../../mixins/model';
 import Config from '../../config';
 import {Util} from '../../helper';
 
-const HOURS = 23, MINUTES = 59;
+const HOURS = 23; const MINUTES = 59;
 
 let TimePicker = {
     name: 'timepicker',
@@ -17,14 +17,14 @@ let TimePicker = {
             default () {
                 return Config('timepicker.units');
             }
-        },
+        }
     },
 
     data () {
         return {
             options: [
-                TimePicker.lv(HOURS, 0, this.units[0]), 
-                TimePicker.lv(MINUTES, this.units[1])
+                TimePicker.lv(HOURS, 0, this.units[0]),
+                TimePicker.lv(MINUTES, 0, this.units[1])
             ],
             vals: this.analyseValue(this.value)
         };

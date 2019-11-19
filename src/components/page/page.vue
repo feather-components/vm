@@ -23,7 +23,7 @@ export default {
     data () {
         return {
             style: {
-                background: Config('page.background') || Config('theme')
+                background: Config('page.background')
             }
         };
     }

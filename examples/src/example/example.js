@@ -15,20 +15,32 @@ import Search from './components/search.vue';
 import Uploader from './components/uploader.vue';
 import Popover from './components/popover.vue';
 import Form from './components/form.vue';
-import Filter from './components/filter.vue';
 import Popup from './components/popup.vue';
 import Slider from './components/slider.vue';
 import Tabs from './components/tabs.vue';
 import Layout from './components/layout.vue';
 import Forward from './components/forward.vue';
+import VmBadge from './components/badge.vue';
 import Badge from './directives/badge.vue';
 import Draggable from './directives/draggable.vue';
 import Lazyload from './directives/lazyload.vue';
 import Segment from './components/segment.vue';
+import Topbar from './components/topbar.vue';
+import Page from './components/page.vue';
+import Input from './components/input.vue';
+import Textarea from './components/textarea.vue';
+import Switch from './components/switch.vue';
+import Checker from './components/checker.vue';
+import Picker from './components/picker.vue';
+import DatePicker from './components/datepicker.vue';
+import Image from './components/image.vue';
+import Loading from './components/loading.vue';
 import Configs from './cfg.js';
 
-import VM, {Topbar} from 'vm';
+import VM from 'vm';
 import Ajax from 'ajax';
+
+require('fastclick').attach(document.body);
 
 Vue.use(AppTransition);
 Vue.use(VueRouter);
@@ -36,7 +48,7 @@ Vue.use(VueRouter);
 VM.install(Vue, {
     'topbar.border-bottom': '1px solid #eee',
     'requestHelper': (url, params) => {
-        
+
     }
 });
 
@@ -47,6 +59,11 @@ const router = new VueRouter({
         {
             path: '/',
             component: Main
+        },
+
+        {
+            path: '/components/page',
+            component: Page
         },
 
         {
@@ -70,6 +87,11 @@ const router = new VueRouter({
         },
 
         {
+            path: '/components/badge',
+            component: VmBadge
+        },
+
+        {
             path: '/directives/badge',
             component: Badge
         },
@@ -87,11 +109,6 @@ const router = new VueRouter({
         {
             path: '/components/popup',
             component: Popup
-        },
-
-        {
-            path: '/components/filter',
-            component: Filter
         },
 
         {
@@ -157,7 +174,53 @@ const router = new VueRouter({
         {
             path: '/components/tabs',
             component: Tabs
+        },
+
+        {
+            path: '/components/topbar',
+            component: Topbar
+        },
+
+        {
+            path: '/components/input',
+            component: Input
+        },
+
+        {
+            path: '/components/textarea',
+            component: Textarea
+        },
+
+        {
+            path: '/components/switch',
+            component: Switch
+        },
+
+        {
+            path: '/components/checker',
+            component: Checker
+        },
+
+        {
+            path: '/components/picker',
+            component: Picker
+        },
+
+        {
+            path: '/components/datepicker',
+            component: DatePicker
+        },
+
+        {
+            path: '/components/image',
+            component: Image
+        },
+
+        {
+            path: '/components/loading',
+            component: Loading
         }
+
     ]
 });
 

@@ -68,13 +68,13 @@ export default {
 
             if (this.above) {
                 this.boxStyle = {
-                    bottom: BODY_HEIGHT - top,
-                    height: top
+                    bottom: BODY_HEIGHT - top + 'px',
+                    height: top + 'px'
                 };
             } else {
                 this.boxStyle = {
-                    top: bottom,
-                    height: BODY_HEIGHT - bottom
+                    top: bottom + 'px',
+                    height: BODY_HEIGHT - bottom + 'px'
                 };
             }
         }
