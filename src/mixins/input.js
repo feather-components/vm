@@ -60,6 +60,10 @@ export default {
 
         onClick () {
             this.$emit('click');
+        },
+
+        onChange () {
+            this.$emit('change');
         }
     }
 };

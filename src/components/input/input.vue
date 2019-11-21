@@ -6,17 +6,18 @@
                 :placeholder="placeholder"
                 :readonly="readonly"
                 :autofocus="autofocus"
-                type="text"
+                :type="type"
                 ref="input"
                 @blur="onBlur"
                 @focus="onFocus"
+                @change="onChange"
                 @click="onClick"
                 :maxlength="maxlength"
                 v-model="val"
             />
         </div>
 
-        <icon type="close" class="vm-input-clear" v-if="val && !readonly" @click.native="onClearClick" />
+        <icon type="close" class="vm-input-clear" v-if="clearable && val && !readonly" @click.native="onClearClick" />
     </div>
 </template>
 
@@ -38,11 +39,6 @@ export default {
     },
 
     props: {
-        clearable: {
-            type: Boolean,
-            default: false
-        },
-
         type: {
             type: String,
             default: 'text'
@@ -68,6 +64,10 @@ export default {
 
         focus () {
             this.$refs.input.focus();
+        },
+
+        change () {
+            this.$refs.input.change();
         },
 
         blur () {
