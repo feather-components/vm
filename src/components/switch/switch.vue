@@ -35,7 +35,7 @@ export default {
             type: Boolean,
             default: false
         }
-    }, 
+    },
 
     data () {
         return {
@@ -58,7 +58,7 @@ export default {
 
         classes () {
             return [
-                'vm-switch', 
+                'vm-switch',
                 this.selected ? 'vm-switch-checked' : '',
                 this.disabled ? 'vm-switch-disabled' : ''
             ];
@@ -68,8 +68,10 @@ export default {
     methods: {
         onClick () {
             if (this.disabled) return false;
+            this.selected = !this.selected;
 
-            this.$emit('change', this.selected = !this.selected);
+            this.$emit('input', this.selected);
+            this.$emit('change', this.selected);
         }
     }
 };
