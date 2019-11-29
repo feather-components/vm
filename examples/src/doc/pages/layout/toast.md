@@ -2,20 +2,24 @@
 
 ### 代码演示
 
-```html
+```js
 import {Toast} from 'vmui'  
 
 Toast('提示语');
 
-Toast({ message: '操作成功操作成功操作成功<br>换行' })
+Toast({ message: '操作成功操作成功操作成功<br>换行', duration: 3000 })
 ```  
 
 ### 全局方法
 ##### 组件提供了一些静态方法，使用方式和参数如下：
 
-```html
-this.$toast.success(content);  
-this.$toast.loading(content);  
+```js
+var config = { 
+    message: '配置提示语', 
+    duration: 3000 
+}
+this.$toast.success(config);  
+this.$toast.loading(config);  
 this.$toast.destroy();
 ```  
 
