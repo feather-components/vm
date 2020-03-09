@@ -17,5 +17,10 @@ headersStyle | 自定义tabs的样式 | String,Object |
 headers | tabs数据配置 | Array | [] 
 headerActiveColor | 色值，可使用vmui公共配置 | String | tabs.header-active-color
 
+### Events
+事件名称|说明|回调参数
+---|----|----
+switch| 切换时触发 | index:Number, oldIndex:Number
+
 ### Config  
 tabs.header-active-color

@@ -28,7 +28,7 @@ if-nomore | 最后一页时提示文字 | -
 ### Props
 属性 | 说明 | 类型 | 默认值
 -----|-----|-------|------
-api | 设置请求地址，返回Promise[resolve:Array]， | Function:Promise | -
+api | 设置请求地址，返回Promise[resolve:Array]指定数据格式 | Function:Promise | -
 params | 请求参数（可设置固定参数 简化触发刷新操作更改参数后自动触发列表刷新） | Object | -
 autoRefresh | 首次渲染时或Promise返回时，设置是否自动刷新 | Boolean | true
 maxCountPerPage | 设置请求分页值 | Number | 20
