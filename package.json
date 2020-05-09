@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "release": "sh ./build/release.sh",
-    "beta": "sh ./build/beta.sh",
+    "build": "webpack",
     "example": "webpack --config ./examples/webpack.config.js",
     "ef": "eslint --fix --ext .js,.vue ./src ./examples/src"
   },
